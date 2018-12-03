@@ -162,42 +162,28 @@ public class AppLockManager {
         print("LockScreen hidden")
     }
     
-    /// Checks if the keychain has an App Lock passcode.
+    /// Checks if there is a stored App Lock passcode.
     /// - Throws: KeychainError
     public func isPasscodeSet() throws -> Bool {
-        let storedHash = try Keychain.shared.get(account: .appPasscode)
-        return (storedHash != nil)
+        return try Keychain.shared.isAppPasscodeSet() // throws KeychainError
     }
 
-    /// Saves a hash of the given passcode in keychain.
+    /// Saves the given passcode.
     /// - Throws: KeychainError
     internal func setPasscode(passcode: String) throws {
-        guard let data = passcode.data(using: .utf8, allowLossyConversion: false) else {
-            fatalError("Failed to convert passcode to UTF8")
-        }
-        let dataHash = ByteArray(data: data).sha256.asData
-        try Keychain.shared.set(account: .appPasscode, data: dataHash) // throws KeychainError
+        try Keychain.shared.setAppPasscode(passcode) // throws KeychainError
     }
 
-    /// Removes passcode hash from keychain.
+    /// Removes App Lock passcode.
     /// - Throws: KeychainError
     internal func resetPasscode() throws {
-        try Keychain.shared.remove(account: .appPasscode) // throws KeychainError
+        try Keychain.shared.removeAppPasscode() // throws KeychainError
     }
 
-    /// Checks if the (hash of) given passcode matches the previously saved one.
+    /// Checks if `passcode` value matches the previously saved one.
     /// - Throws: KeychainError
     internal func isPasscodeMatch(passcode: String) throws -> Bool {
-        guard let storedHash = try Keychain.shared.get(account: .appPasscode) else {
-            // no passcode saved in keychain
-            return false
-        }
-
-        guard let passcodeData = passcode.data(using: .utf8, allowLossyConversion: false) else {
-            fatalError("Failed to convert passcode to UTF8")
-        }
-        let passcodeHash = ByteArray(data: passcodeData).sha256.asData
-        return passcodeHash == storedHash
+        return try Keychain.shared.isAppPasscodeMatch(passcode) // throws KeychainError
     }
     
     /// True if hardware provides biometric authentication, and the app supports it.
