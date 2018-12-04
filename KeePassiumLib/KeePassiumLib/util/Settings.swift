@@ -745,7 +745,7 @@ public class Settings {
         }
     }
     
-    /// Whether to store database master key in keychain after unlock
+    /// Whether to store database's key in keychain after unlock
     public var isRememberDatabaseKey: Bool {
         get {
             let stored = UserDefaults.appGroupShared
