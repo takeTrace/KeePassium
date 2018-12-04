@@ -74,7 +74,6 @@ public class Database2: Database {
     private(set) var meta: Meta2!
     public var binaries: ContiguousArray<Binary2> = []
     public var customIcons: [UUID: CustomIcon2] { return meta.customIcons }
-    private var compositeKey = SecureByteArray()
     private var cipherKey = SecureByteArray()
     private var hmacKey = ByteArray()
     private var deletedObjects: ContiguousArray<DeletedObject2> = []
@@ -96,7 +95,6 @@ public class Database2: Database {
         header.erase()
         meta.erase()
         binaries.removeAll()
-        compositeKey.erase()
         cipherKey.erase()
         hmacKey.erase()
         deletedObjects.removeAll()

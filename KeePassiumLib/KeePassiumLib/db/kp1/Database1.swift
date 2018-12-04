@@ -49,7 +49,6 @@ public class Database1: Database {
     private let _keyHelper = KeyHelper1()
     
     private(set) var header: Header1!
-    private(set) var compositeKey = SecureByteArray()
     private(set) var masterKey = SecureByteArray()
     private(set) var backupGroup: Group1?
     private var metaStreamEntries = ContiguousArray<Entry1>()

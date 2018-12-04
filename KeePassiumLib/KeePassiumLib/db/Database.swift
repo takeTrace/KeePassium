@@ -71,6 +71,9 @@ open class Database: Eraseable {
     /// Progress of load/save operations
     public internal(set) var progress = ProgressEx()
 
+    /// Composite key of the database, before derivation
+    internal var compositeKey = SecureByteArray()
+    
     /// Returns a fresh instance of progress for load/save operations
     public func initProgress() -> ProgressEx {
         progress = ProgressEx()
@@ -96,6 +99,7 @@ open class Database: Eraseable {
         root?.erase()
         root = nil
         filePath?.erase()
+        compositeKey.erase()
     }
 
     /// Checks if given data starts with compatible KeePass signature.
