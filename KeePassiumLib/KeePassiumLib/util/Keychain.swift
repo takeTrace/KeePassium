@@ -24,7 +24,7 @@ public enum KeychainError: LocalizedError {
 /// Helper class to simplify access to the system keychain.
 public class Keychain {
     public static let shared = Keychain()
-    private static let accessGroup: String? = nil // keychain items can be used only by KeePassium
+    private static let accessGroup: String? = nil
     private enum Service: String {
         case general = "KeePassium"
         case databaseKeys = "KeePassium.dbKeys"
@@ -40,7 +40,7 @@ public class Keychain {
     private func makeQuery(service: Service, account: String?) -> [String: AnyObject] {
         var result = [String: AnyObject]()
         result[kSecClass as String] = kSecClassGenericPassword
-        result[kSecAttrService as String] = service as AnyObject?
+        result[kSecAttrService as String] = service.rawValue as AnyObject?
         if let account = account {
             result[kSecAttrAccount as String] = account as AnyObject?
         }
