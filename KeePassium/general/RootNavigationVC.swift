@@ -27,17 +27,6 @@ class RootNavigationVC: UINavigationController, UINavigationControllerDelegate {
     
     func navigationController(
         _ navigationController: UINavigationController,
-        didShow viewController: UIViewController,
-        animated: Bool)
-    {
-        if viewController is UnlockDatabaseVC || viewController is ChooseDatabaseVC {
-            // We either just started the app, or just popped from ViewGroupVC. Anyway, the DB must be closed now.
-            DatabaseManager.shared.closeDatabase()
-        }
-    }
-    
-    func navigationController(
-        _ navigationController: UINavigationController,
         willShow viewController: UIViewController,
         animated: Bool)
     {
