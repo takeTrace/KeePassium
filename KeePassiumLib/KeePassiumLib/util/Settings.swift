@@ -68,6 +68,7 @@ public class Settings {
         case backupDatabaseOnSave
         case backupFilesVisible
         case biometricAppLockEnabled
+        case rememberDatabaseKey
         case passwordGeneratorLength
         case passwordGeneratorIncludeLowerCase
         case passwordGeneratorIncludeUpperCase
@@ -734,6 +735,21 @@ public class Settings {
             updateAndNotify(oldValue: isBiometricAppLockEnabled,
                             newValue: newValue,
                             key: .biometricAppLockEnabled)
+        }
+    }
+    
+    /// Whether to store database master key in keychain after unlock
+    public var isRememberDatabaseKey: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.rememberDatabaseKey.rawValue)
+                as? Bool
+            return stored ?? false
+        }
+        set {
+            updateAndNotify(oldValue: isRememberDatabaseKey,
+                            newValue: newValue,
+                            key: .rememberDatabaseKey)
         }
     }
     

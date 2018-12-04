@@ -20,6 +20,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     @IBOutlet private weak var errorDetailButton: UIButton!
     @IBOutlet private weak var watchdogTimeoutLabel: UILabel!
     @IBOutlet private weak var databaseIconImage: UIImageView!
+    @IBOutlet weak var rememberDatabaseKeySwitch: UISwitch!
     
     public var databaseRef: URLReference! {
         didSet {
@@ -122,6 +123,8 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         
         let associatedKeyFileRef = Settings.current.getKeyFileForDatabase(databaseRef: databaseRef)
         onKeyFileSelected(urlRef: associatedKeyFileRef)
+        
+        rememberDatabaseKeySwitch.isOn = Settings.current.isRememberDatabaseKey
     }
     
     // MARK: - Showing/hiding various messagess
@@ -255,13 +258,13 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     
     // MARK: - Actions
     
-    @IBAction func didPressUnlock(_ sender: Any) {
-        tryToUnlockDatabase()
-    }
-    
     @IBAction func didPressErrorDetails(_ sender: Any) {
         let diagInfoVC = ViewDiagnosticsVC.make()
         present(diagInfoVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func didToggleRememberDatabaseKey(_ sender: Any) {
+        Settings.current.isRememberDatabaseKey = rememberDatabaseKeySwitch.isOn
     }
     
     // MARK: - DB unlocking
@@ -304,8 +307,9 @@ extension UnlockDatabaseVC: KeyFileChooserDelegate {
             keyFileField.text = ""
             return
         }
-        if refInfo.hasError {
-            showErrorMessage(refInfo.errorMessage)
+        if let errorDetails = refInfo.errorMessage {
+            let errorMessage = NSLocalizedString("Key file error: \(errorDetails)", comment: "Error message related to key file")
+            showErrorMessage(errorMessage)
             keyFileField.text = ""
         } else {
             keyFileField.text = refInfo.fileName
