@@ -93,8 +93,12 @@ public class DatabaseManager {
         progress.totalUnitCount = ProgressSteps.all
         progress.completedUnitCount = 0
         
-        let dbLoader = DatabaseLoader(dbRef: dbRef, password: password, keyFileRef: keyFileRef,
-                                      progress: progress, completion: databaseLoaded)
+        let dbLoader = DatabaseLoader(
+            dbRef: dbRef,
+            password: password,
+            keyFileRef: keyFileRef,
+            progress: progress,
+            completion: databaseLoaded)
         dbLoader.load()
     }
     
@@ -106,8 +110,7 @@ public class DatabaseManager {
     /// Save previously opened database to its original path.
     /// Asynchronous call, returns immediately.
     public func startSavingDatabase() {
-        guard let databaseDocument = databaseDocument,
-                let dbRef = databaseRef else {
+        guard let databaseDocument = databaseDocument, let dbRef = databaseRef else {
             Diag.warning("Tried to save database before opening one.")
             assertionFailure("Tried to save database before opening one.")
             return
@@ -166,7 +169,9 @@ public class DatabaseManager {
                 errorHandler(NSLocalizedString("Password and key file are both empty.", comment: "Error message"))
                 return
             }
-            let compositeKey = keyHelper.makeCompositeKey(passwordData: passwordData, keyFileData: keyFileData)
+            let compositeKey = keyHelper.makeCompositeKey(
+                passwordData: passwordData,
+                keyFileData: keyFileData)
             Diag.debug("New composite key created successfully")
             successHandler(compositeKey)
         }
@@ -292,12 +297,14 @@ public class DatabaseManager {
         
         let userInfo: [AnyHashable: Any]
         if let reason = reason {
-            userInfo = [Notifications.userInfoURLRefKey: urlRef,
-                        Notifications.userInfoErrorMessageKey: message,
-                        Notifications.userInfoErrorReasonKey: reason]
+            userInfo = [
+                Notifications.userInfoURLRefKey: urlRef,
+                Notifications.userInfoErrorMessageKey: message,
+                Notifications.userInfoErrorReasonKey: reason]
         } else {
-            userInfo = [Notifications.userInfoURLRefKey: urlRef,
-                        Notifications.userInfoErrorMessageKey: message]
+            userInfo = [
+                Notifications.userInfoURLRefKey: urlRef,
+                Notifications.userInfoErrorMessageKey: message]
         }
         NotificationCenter.default.post(
             name: Notifications.loadingError,
@@ -351,12 +358,14 @@ public class DatabaseManager {
         }
         let userInfo: [AnyHashable: Any]
         if let reason = reason {
-            userInfo = [Notifications.userInfoURLRefKey: urlRef,
-                        Notifications.userInfoErrorMessageKey: message,
-                        Notifications.userInfoErrorReasonKey: reason]
+            userInfo = [
+                Notifications.userInfoURLRefKey: urlRef,
+                Notifications.userInfoErrorMessageKey: message,
+                Notifications.userInfoErrorReasonKey: reason]
         } else {
-            userInfo = [Notifications.userInfoURLRefKey: urlRef,
-                        Notifications.userInfoErrorMessageKey: message]
+            userInfo = [
+                Notifications.userInfoURLRefKey: urlRef,
+                Notifications.userInfoErrorMessageKey: message]
         }
         NotificationCenter.default.post(
             name: Notifications.savingError,
@@ -550,13 +559,15 @@ fileprivate class DatabaseLoader {
             Diag.error("Both password and key file are empty")
             notifier.notifyDatabaseInvalidMasterKey(
                 database: dbRef,
-                message: NSLocalizedString("Please provide at least a password or a key file",
-                                           comment: "Error message"))
+                message: NSLocalizedString(
+                    "Please provide at least a password or a key file",
+                    comment: "Error message"))
             endBackgroundTask()
             return
         }
         let compositeKey = keyHelper.makeCompositeKey(
-            passwordData: passwordData, keyFileData: keyFileData)
+            passwordData: passwordData,
+            keyFileData: keyFileData)
         onCompositeKeyReady(dbDoc: dbDoc, compositeKey: compositeKey)
     }
     
@@ -660,8 +671,7 @@ fileprivate class DatabaseSaver {
         guard let appShared = AppGroup.applicationShared else { return }
         
         print("Starting background task")
-        backgroundTask = appShared.beginBackgroundTask(withName: "DatabaseSaving")
-        {
+        backgroundTask = appShared.beginBackgroundTask(withName: "DatabaseSaving") {
             self.progress.cancel()
             self.endBackgroundTask()
         }

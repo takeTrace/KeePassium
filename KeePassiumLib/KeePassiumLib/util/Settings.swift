@@ -479,8 +479,9 @@ public class Settings {
         }
         set {
             let oldValue = startupDatabase
-            UserDefaults.appGroupShared.set(newValue?.serialize(),
-                                            forKey: Keys.startupDatabase.rawValue)
+            UserDefaults.appGroupShared.set(
+                newValue?.serialize(),
+                forKey: Keys.startupDatabase.rawValue)
             if newValue != oldValue {
                 postChangeNotification(changedKey: Keys.startupDatabase)
             }
@@ -501,8 +502,9 @@ public class Settings {
             UserDefaults.appGroupShared.set(newValue, forKey: Keys.keepKeyFileAssociations.rawValue)
             if !newValue {
                 // clear existing associations
-                UserDefaults.appGroupShared.setValue(Dictionary<String, Data>(),
-                                                     forKey: Keys.keyFileAssociations.rawValue)
+                UserDefaults.appGroupShared.setValue(
+                    Dictionary<String, Data>(),
+                    forKey: Keys.keyFileAssociations.rawValue)
             }
             if newValue != oldValue {
                 postChangeNotification(changedKey: Keys.keepKeyFileAssociations)
@@ -590,8 +592,9 @@ public class Settings {
         }
         set {
             let oldValue = databaseCloseTimeout
-            UserDefaults.appGroupShared.set(newValue.rawValue,
-                                            forKey: Keys.databaseCloseTimeout.rawValue)
+            UserDefaults.appGroupShared.set(
+                newValue.rawValue,
+                forKey: Keys.databaseCloseTimeout.rawValue)
             if newValue != oldValue {
                 postChangeNotification(changedKey: Keys.databaseCloseTimeout)
             }
@@ -603,7 +606,7 @@ public class Settings {
         get {
             if let rawValue = UserDefaults.appGroupShared
                     .object(forKey: Keys.clipboardTimeout.rawValue) as? Int,
-            let timeout = ClipboardTimeout(rawValue: rawValue)
+                let timeout = ClipboardTimeout(rawValue: rawValue)
             {
                 return timeout
             }
@@ -687,9 +690,10 @@ public class Settings {
             return stored ?? true
         }
         set {
-            updateAndNotify(oldValue: isBackupDatabaseOnSave,
-                            newValue: newValue,
-                            key: .backupDatabaseOnSave)
+            updateAndNotify(
+                oldValue: isBackupDatabaseOnSave,
+                newValue: newValue,
+                key: .backupDatabaseOnSave)
         }
     }
     
@@ -702,9 +706,10 @@ public class Settings {
             return stored ?? false
         }
         set {
-            updateAndNotify(oldValue: isBackupFilesVisible,
-                            newValue: newValue,
-                            key: .backupFilesVisible)
+            updateAndNotify(
+                oldValue: isBackupFilesVisible,
+                newValue: newValue,
+                key: .backupFilesVisible)
         }
     }
     
@@ -717,9 +722,10 @@ public class Settings {
             return stored ?? false
         }
         set {
-            updateAndNotify(oldValue: isStartWithSearch,
-                            newValue: newValue,
-                            key: .startWithSearch)
+            updateAndNotify(
+                oldValue: isStartWithSearch,
+                newValue: newValue,
+                key: .startWithSearch)
         }
     }
     
@@ -732,9 +738,10 @@ public class Settings {
             return stored ?? true
         }
         set {
-            updateAndNotify(oldValue: isBiometricAppLockEnabled,
-                            newValue: newValue,
-                            key: .biometricAppLockEnabled)
+            updateAndNotify(
+                oldValue: isBiometricAppLockEnabled,
+                newValue: newValue,
+                key: .biometricAppLockEnabled)
         }
     }
     
@@ -747,9 +754,10 @@ public class Settings {
             return stored ?? false
         }
         set {
-            updateAndNotify(oldValue: isRememberDatabaseKey,
-                            newValue: newValue,
-                            key: .rememberDatabaseKey)
+            updateAndNotify(
+                oldValue: isRememberDatabaseKey,
+                newValue: newValue,
+                key: .rememberDatabaseKey)
         }
     }
     
@@ -762,9 +770,10 @@ public class Settings {
             return stored ?? PasswordGenerator.defaultLength
         }
         set {
-            updateAndNotify(oldValue: passwordGeneratorLength,
-                            newValue: newValue,
-                            key: .passwordGeneratorLength)
+            updateAndNotify(
+                oldValue: passwordGeneratorLength,
+                newValue: newValue,
+                key: .passwordGeneratorLength)
         }
     }
     public var passwordGeneratorIncludeLowerCase: Bool {
@@ -775,9 +784,10 @@ public class Settings {
             return stored ?? true
         }
         set {
-            updateAndNotify(oldValue: passwordGeneratorIncludeLowerCase,
-                            newValue: newValue,
-                            key: .passwordGeneratorIncludeLowerCase)
+            updateAndNotify(
+                oldValue: passwordGeneratorIncludeLowerCase,
+                newValue: newValue,
+                key: .passwordGeneratorIncludeLowerCase)
         }
     }
     public var passwordGeneratorIncludeUpperCase: Bool {
@@ -788,9 +798,10 @@ public class Settings {
             return stored ?? true
         }
         set {
-            updateAndNotify(oldValue: passwordGeneratorIncludeUpperCase,
-                            newValue: newValue,
-                            key: .passwordGeneratorIncludeUpperCase)
+            updateAndNotify(
+                oldValue: passwordGeneratorIncludeUpperCase,
+                newValue: newValue,
+                key: .passwordGeneratorIncludeUpperCase)
         }
     }
     public var passwordGeneratorIncludeSpecials: Bool {
@@ -801,9 +812,10 @@ public class Settings {
             return stored ?? true
         }
         set {
-            updateAndNotify(oldValue: passwordGeneratorIncludeSpecials,
-                            newValue: newValue,
-                            key: .passwordGeneratorIncludeSpecials)
+            updateAndNotify(
+                oldValue: passwordGeneratorIncludeSpecials,
+                newValue: newValue,
+                key: .passwordGeneratorIncludeSpecials)
         }
     }
     public var passwordGeneratorIncludeDigits: Bool {
@@ -814,9 +826,10 @@ public class Settings {
             return stored ?? true
         }
         set {
-            updateAndNotify(oldValue: passwordGeneratorIncludeDigits,
-                            newValue: newValue,
-                            key: .passwordGeneratorIncludeDigits)
+            updateAndNotify(
+                oldValue: passwordGeneratorIncludeDigits,
+                newValue: newValue,
+                key: .passwordGeneratorIncludeDigits)
         }
     }
     public var passwordGeneratorIncludeLookAlike: Bool {
@@ -827,9 +840,10 @@ public class Settings {
             return stored ?? false
         }
         set {
-            updateAndNotify(oldValue: passwordGeneratorIncludeLookAlike,
-                            newValue: newValue,
-                            key: .passwordGeneratorIncludeLookAlike)
+            updateAndNotify(
+                oldValue: passwordGeneratorIncludeLookAlike,
+                newValue: newValue,
+                key: .passwordGeneratorIncludeLookAlike)
         }
     }
     
