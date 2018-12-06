@@ -40,7 +40,9 @@ public class DatabaseManager {
     public var isDatabaseOpen: Bool { return database != nil }
     
     private var databaseDocument: DatabaseDocument?
-    private var savingGroup: DispatchGroup?
+    private var serialDispatchQueue = DispatchQueue(
+        label: "com.keepassium.DatabaseManager",
+        qos: .userInitiated)
     
     private init() {
         // left empty
@@ -55,11 +57,7 @@ public class DatabaseManager {
     public func closeDatabase(completion callback: (() -> Void)?=nil, clearStoredKey: Bool) {
         guard database != nil else { return }
         Diag.debug("Will close database")
-        DispatchQueue.global(qos: .background).async {
-            Diag.verbose("savingGroup.wait started")
-            self.savingGroup?.wait()
-            Diag.verbose("savingGroup.wait finished")
-            
+        serialDispatchQueue.async {
             guard let dbDoc = self.databaseDocument else { return }
             
             if clearStoredKey {
@@ -90,7 +88,7 @@ public class DatabaseManager {
         password: String,
         keyFile keyFileRef: URLReference?)
     {
-        DispatchQueue.global(qos: .userInitiated).async {
+        serialDispatchQueue.async {
             self._loadDatabase(dbRef: dbRef, compositeKey: nil, password: password, keyFileRef: keyFileRef)
         }
     }
@@ -99,7 +97,7 @@ public class DatabaseManager {
     /// (as opposed to password/keyfile pair).
     /// Returns immediately, works asynchronously.
     public func startLoadingDatabase(database dbRef: URLReference, compositeKey: SecureByteArray) {
-        DispatchQueue.global(qos: .userInitiated).async {
+        serialDispatchQueue.async {
             self._loadDatabase(dbRef: dbRef, compositeKey: compositeKey, password: "", keyFileRef: nil)
         }
     }
@@ -163,9 +161,7 @@ public class DatabaseManager {
             return
         }
         
-        savingGroup = DispatchGroup()
-        let queue = DispatchQueue.global(qos: .userInitiated)
-        queue.async(group: savingGroup) {
+        serialDispatchQueue.async {
             self._saveDatabase(databaseDocument, dbRef: dbRef)
             Diag.info("Async database saving finished")
         }
