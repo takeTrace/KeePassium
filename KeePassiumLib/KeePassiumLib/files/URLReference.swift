@@ -47,13 +47,13 @@ public class URLReference: Equatable, Codable {
         public var description: String {
             switch self {
             case .internalDocuments:
-                return NSLocalizedString("Internal / Local", comment: "Human-readable file location. 'Internal' means the file is inside app sandbox.")
+                return NSLocalizedString("Local (in-app copy)", comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
             case .internalInbox:
-                return NSLocalizedString("Internal / Local Inbox", comment: "Human-readable file location. 'Internal' means the file is inside app sandbox.")
+                return NSLocalizedString("Local (in-app copy): Inbox", comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
             case .internalBackup:
-                return NSLocalizedString("Internal / Local Backup", comment: "Human-readable file location. 'Internal' means the file is inside app sandbox.")
+                return NSLocalizedString("Local (in-app copy): Backup", comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
             case .external:
-                return NSLocalizedString("External / Cloud", comment: "Human-readable file location. 'External' means the file is outside the app sandbox.")
+                return NSLocalizedString("Another App / Cloud Storage", comment: "Human-readable file location. The file is situated in some other app or in cloud storage.")
             }
         }
     }
