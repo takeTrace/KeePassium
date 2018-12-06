@@ -560,6 +560,7 @@ fileprivate class DatabaseLoader {
         dbDoc.database = db
         if let compositeKey = compositeKey {
             // Shortcut: we already have the composite key, so skip password/key file processing
+            progress.completedUnitCount += ProgressSteps.readKeyFile
             onCompositeKeyReady(dbDoc: dbDoc, compositeKey: compositeKey)
             return
         }
