@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             url: inputURL,
             mode: isOpenInPlace ? .openInPlace : .import)
         
-        DatabaseManager.shared.closeDatabase()
+        DatabaseManager.shared.closeDatabase(clearStoredKey: false)
         return true
     }
     

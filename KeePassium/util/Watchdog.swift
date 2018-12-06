@@ -131,13 +131,15 @@ class Watchdog {
         self.databaseDeadline = nil
         self.databaseTimer?.invalidate()
         self.databaseTimer = nil
-        DatabaseManager.shared.closeDatabase( completion: {
-            self._isDatabaseTimeoutExpired = true
-            NotificationCenter.default.post(
-                name: Watchdog.Notifications.databaseCloseTimeout,
-                object: self)
-            self.isDatabaseCloseScheduled = false
-        })
+        DatabaseManager.shared.closeDatabase(
+            completion: {
+                self._isDatabaseTimeoutExpired = true
+                NotificationCenter.default.post(
+                    name: Watchdog.Notifications.databaseCloseTimeout,
+                    object: self)
+                self.isDatabaseCloseScheduled = false
+            },
+            clearStoredKey: true)
     }
     
     /// Pauses the timer -- for example, before the app going to background.

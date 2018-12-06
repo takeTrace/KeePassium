@@ -48,7 +48,11 @@ public class DatabaseManager {
     
     /// Schedules to close database when any ongoing saving is finished.
     /// Asynchronous call, returns immediately.
-    public func closeDatabase(completion callback: (() -> Void)?=nil) {
+    ///
+    /// - Parameters:
+    ///   - callback: called after successfully closing the database.
+    ///   - clearStoredKey: whether to remove the database key stored in keychain (if any)
+    public func closeDatabase(completion callback: (() -> Void)?=nil, clearStoredKey: Bool) {
         guard database != nil else { return }
         Diag.debug("Will close database")
         DispatchQueue.global(qos: .background).async {
@@ -57,6 +61,12 @@ public class DatabaseManager {
             Diag.verbose("savingGroup.wait finished")
             
             guard let dbDoc = self.databaseDocument else { return }
+            
+            if clearStoredKey {
+                try? Keychain.shared.removeDatabaseKey(databaseRef: self.databaseRef)
+                    // throws KeychainError, ignored
+            }
+            
             dbDoc.close(successHandler: {
                 guard let dbRef = self.databaseRef else { assertionFailure(); return }
                 self.notifyDatabaseWillClose(database: dbRef)
@@ -81,11 +91,26 @@ public class DatabaseManager {
         keyFile keyFileRef: URLReference?)
     {
         DispatchQueue.global(qos: .userInitiated).async {
-            self._loadDatabase(dbRef: dbRef, password: password, keyFileRef: keyFileRef)
+            self._loadDatabase(dbRef: dbRef, compositeKey: nil, password: password, keyFileRef: keyFileRef)
         }
     }
     
-    private func _loadDatabase(dbRef: URLReference, password: String, keyFileRef: URLReference?) {
+    /// Tries to load database and unlock it with the given composite key
+    /// (as opposed to password/keyfile pair).
+    /// Returns immediately, works asynchronously.
+    public func startLoadingDatabase(database dbRef: URLReference, compositeKey: SecureByteArray) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self._loadDatabase(dbRef: dbRef, compositeKey: compositeKey, password: "", keyFileRef: nil)
+        }
+    }
+    
+    /// If `compositeKey` is specified, `password` and `keyFileRef` are ignored.
+    private func _loadDatabase(
+        dbRef: URLReference,
+        compositeKey: SecureByteArray?,
+        password: String,
+        keyFileRef: URLReference?)
+    {
         precondition(database == nil, "Can only load one database at a time")
 
         Diag.info("Will load database")
@@ -95,6 +120,7 @@ public class DatabaseManager {
         
         let dbLoader = DatabaseLoader(
             dbRef: dbRef,
+            compositeKey: compositeKey,
             password: password,
             keyFileRef: keyFileRef,
             progress: progress,
@@ -105,6 +131,27 @@ public class DatabaseManager {
     private func databaseLoaded(_ dbDoc: DatabaseDocument, _ dbRef: URLReference) {
         self.databaseDocument = dbDoc
         self.databaseRef = dbRef
+    }
+
+    /// Stores current database's key in keychain.
+    ///
+    /// - Throws: KeychainError
+    public func rememberDatabaseKey() throws {
+        guard let databaseRef = databaseRef, let database = database else { return }
+        try Keychain.shared.setDatabaseKey(
+            databaseRef: databaseRef,
+            key: database.compositeKey)
+            // throws KeychainError
+        Diag.info("Database key saved in keychain.")
+    }
+    
+    /// True if keychain contains a key for the given database.
+    ///
+    /// - Parameter databaseRef: identifies the database of interest
+    /// - Throws: KeychainError
+    public func hasKey(for databaseRef: URLReference) throws -> Bool {
+        let key = try Keychain.shared.getDatabaseKey(databaseRef: databaseRef)
+        return key != nil
     }
     
     /// Save previously opened database to its original path.
@@ -196,6 +243,7 @@ public class DatabaseManager {
             dataReadyHandler(ByteArray())
         }
     }
+    
     
 //    /// Creates a template database file at a given location with the given master key.
 //    /// Asynchronous call, returns immediately.
@@ -398,6 +446,7 @@ public class DatabaseManager {
 
 fileprivate class DatabaseLoader {
     private let dbRef: URLReference
+    private let compositeKey: SecureByteArray?
     private let password: String
     private let keyFileRef: URLReference?
     private let progress: ProgressEx
@@ -406,12 +455,14 @@ fileprivate class DatabaseLoader {
     
     init(
         dbRef: URLReference,
+        compositeKey: SecureByteArray?,
         password: String,
         keyFileRef: URLReference?,
         progress: ProgressEx,
         completion: @escaping((DatabaseDocument, URLReference) -> Void))
     {
         self.dbRef = dbRef
+        self.compositeKey = compositeKey
         self.password = password
         self.keyFileRef = keyFileRef
         self.progress = progress
@@ -511,6 +562,12 @@ fileprivate class DatabaseLoader {
         }
         
         dbDoc.database = db
+        if let compositeKey = compositeKey {
+            // Shortcut: we already have the composite key, so skip password/key file processing
+            onCompositeKeyReady(dbDoc: dbDoc, compositeKey: compositeKey)
+            return
+        }
+        
         if let keyFileRef = keyFileRef {
             //TODO: maybe replace with DatabaseManager.createCompositeKey
             progress.localizedDescription = NSLocalizedString("Loading key file...", comment: "Status message: loading key file in progress")
@@ -549,7 +606,7 @@ fileprivate class DatabaseLoader {
         }
     }
     
-    func onKeyFileDataReady(dbDoc: DatabaseDocument, keyFileData: ByteArray) {
+    private func onKeyFileDataReady(dbDoc: DatabaseDocument, keyFileData: ByteArray) {
         guard let database = dbDoc.database else { fatalError() }
         
         progress.completedUnitCount += ProgressSteps.readKeyFile

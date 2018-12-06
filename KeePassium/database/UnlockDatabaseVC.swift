@@ -89,6 +89,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         if FileKeeper.shared.hasPendingFileOperations {
             processPendingFileOperations()
         }
+        
+        let isDatabaseKeyStored = try? DatabaseManager.shared.hasKey(for: databaseRef)
+            // throws KeychainError, ignored
+        if isDatabaseKeyStored ?? false {
+            tryToUnlockDatabase()
+        }
     }
     
     @objc func onAppDidBecomeActive() {
@@ -275,10 +281,23 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         passwordField.resignFirstResponder()
         hideWatchdogTimeoutMessage(animated: true)
         databaseManagerNotifications.startObserving()
-        DatabaseManager.shared.startLoadingDatabase(
-            database: databaseRef,
-            password: password,
-            keyFile: keyFileRef)
+        
+        do {
+            if let databaseKey = try Keychain.shared.getDatabaseKey(databaseRef: databaseRef) {
+                // throws KeychainError
+                DatabaseManager.shared.startLoadingDatabase(
+                    database: databaseRef,
+                    compositeKey: databaseKey)
+            } else {
+                DatabaseManager.shared.startLoadingDatabase(
+                    database: databaseRef,
+                    password: password,
+                    keyFile: keyFileRef)
+            }
+        } catch {
+            Diag.error(error.localizedDescription)
+            showErrorMessage(error.localizedDescription)
+        }
     }
     
     /// Called when the DB is successfully loaded, shows it in ViewGroupVC
@@ -359,6 +378,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         databaseManagerNotifications.stopObserving()
+        try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         hideProgressOverlay()
         // cancelled by the user, no errors to show
         return
@@ -371,6 +391,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     func databaseManager(database urlRef: URLReference, invalidMasterKey message: String) {
         databaseManagerNotifications.stopObserving()
         hideProgressOverlay()
+        try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         showErrorMessage(message)
     }
     
@@ -379,12 +400,25 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
         hideProgressOverlay()
         
         Watchdog.default.restart()
+        
+        if Settings.current.isRememberDatabaseKey {
+            do {
+                try DatabaseManager.shared.rememberDatabaseKey() // throws KeychainError
+            } catch {
+                Diag.error("Failed to remember database key [message: \(error.localizedDescription)]")
+                let errorAlert = UIAlertController.make(
+                    title: LString.titleKeychainError,
+                    message: error.localizedDescription)
+                present(errorAlert, animated: true, completion: nil)
+            }
+        }
         showDatabaseRoot()
     }
 
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?) {
         databaseManagerNotifications.stopObserving()
         hideProgressOverlay()
+        try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         showErrorMessage(message, details: reason)
     }
 }
