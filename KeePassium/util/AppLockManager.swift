@@ -96,8 +96,10 @@ public class AppLockManager {
     
     /// Shows biometric authentication UI, if supported and enabled.
     ///
+    /// - Parameter completion: called after biometric authentication,
+    ///         with a `Bool` parameter indicating success of the bioauth.
     /// - Returns: `true` if biometric authentication shown, `false` otherwise.
-    open func maybeShowBiometricAuth() -> Bool {
+    open func maybeShowBiometricAuth(completion: @escaping ((Bool) -> Void)) -> Bool {
         guard Settings.current.isBiometricAppLockEnabled else { return false }
         guard !isBiometricAuthShown else { return false }
         
@@ -114,9 +116,11 @@ public class AppLockManager {
                         print("FaceID success")
                         self.unlock()
                         Watchdog.default.restart()
+                        completion(true)
                     } else {
                         print("FaceID failed")
                         Diag.warning("TouchID failed [error: \(authError?.localizedDescription ?? "nil")]")
+                        completion(false)
                     }
                 }
             }

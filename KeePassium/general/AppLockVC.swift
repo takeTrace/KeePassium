@@ -43,6 +43,13 @@ public class AppLockVC: UIViewController {
         
         print("AppLockVC appeared")
         let isShowing = AppLockManager.shared.maybeShowBiometricAuth()
+        {
+            [weak self] (isAuthSuccess) in
+            if !isAuthSuccess {
+                // biometric authentication failed, so show the old faithful keyboard
+                self?.textField.becomeFirstResponder()
+            }
+        }
         if !isShowing {
             textField.becomeFirstResponder()
         }
