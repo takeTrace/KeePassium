@@ -517,7 +517,8 @@ public class Settings {
         guard let db2key = UserDefaults.appGroupShared
             .dictionary(forKey: Keys.keyFileAssociations.rawValue) else { return nil }
         
-        if let keyFileRefData = db2key[databaseRef.hash.base64EncodedString()] as? Data {
+        let databaseID = databaseRef.info.fileName
+        if let keyFileRefData = db2key[databaseID] as? Data {
             return URLReference.deserialize(from: keyFileRefData)
         } else { 
             return nil
@@ -532,12 +533,14 @@ public class Settings {
         if let storedDict = UserDefaults.appGroupShared
             .dictionary(forKey: Keys.keyFileAssociations.rawValue)
         {
-            for (storedDatabaseRefHash, storedKeyFileRefData) in storedDict {
+            for (storedDatabaseID, storedKeyFileRefData) in storedDict {
                 guard let storedKeyFileRefData = storedKeyFileRefData as? Data else { continue }
-                db2key[storedDatabaseRefHash] = storedKeyFileRefData
+                db2key[storedDatabaseID] = storedKeyFileRefData
             }
         }
-        db2key[databaseRef.hash.base64EncodedString()] = keyFileRef?.serialize()
+        
+        let databaseID = databaseRef.info.fileName
+        db2key[databaseID] = keyFileRef?.serialize()
         UserDefaults.appGroupShared.setValue(db2key, forKey: Keys.keyFileAssociations.rawValue)
         postChangeNotification(changedKey: Keys.keyFileAssociations)
     }
@@ -549,10 +552,10 @@ public class Settings {
         if let storedDict = UserDefaults.appGroupShared
             .dictionary(forKey: Keys.keyFileAssociations.rawValue)
         {
-            for (storedDatabaseRefHash, storedKeyFileRefData) in storedDict {
+            for (storedDatabaseID, storedKeyFileRefData) in storedDict {
                 guard let storedKeyFileRefData = storedKeyFileRefData as? Data else { continue }
                 if keyFileRef != URLReference.deserialize(from: storedKeyFileRefData) {
-                    db2key[storedDatabaseRefHash] = storedKeyFileRefData
+                    db2key[storedDatabaseID] = storedKeyFileRefData
                 }
             }
         }
