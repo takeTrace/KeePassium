@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		750C683220D767F6001A6AA0 /* EditEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C683120D767F6001A6AA0 /* EditEntryVC.swift */; };
+		750CFBC821BA9ACD00E62B09 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7550D231215D758800360E0C /* AuthenticationServices.framework */; };
+		750CFBCB21BA9ACD00E62B09 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */; };
+		750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */; };
+		750CFBD321BA9ACD00E62B09 /* KeePassium AutoFill.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		750CFBD721BA9B6200E62B09 /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEC2222175292C0034334B /* KeePassiumLib.framework */; };
+		750CFBD821BA9E6700E62B09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754BF0892082A6BD00E3A292 /* Assets.xcassets */; };
 		750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D127D20CF071600BE0CCE /* EditGroupVC.swift */; };
 		751A13F92147D49100C77B63 /* SupportEmailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A13F82147D49100C77B63 /* SupportEmailComposer.swift */; };
 		751BE253211C395D0071050A /* ViewDiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */; };
@@ -109,6 +115,16 @@
 		75FEC2232175292C0034334B /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEC2222175292C0034334B /* KeePassiumLib.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		750CFBD121BA9ACD00E62B09 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 754BF0732082A6BD00E3A292 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 750CFBC621BA9ACD00E62B09;
+			remoteInfo = "KeePassium AutoFill";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		7550D241215D758800360E0C /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -116,6 +132,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				750CFBD321BA9ACD00E62B09 /* KeePassium AutoFill.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +152,11 @@
 
 /* Begin PBXFileReference section */
 		750C683120D767F6001A6AA0 /* EditEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEntryVC.swift; sourceTree = "<group>"; };
+		750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "KeePassium AutoFill.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		750CFBCD21BA9ACD00E62B09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		750CFBCF21BA9ACD00E62B09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		750CFBD021BA9ACD00E62B09 /* KeePassium_AutoFill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KeePassium_AutoFill.entitlements; sourceTree = "<group>"; };
 		750D127D20CF071600BE0CCE /* EditGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupVC.swift; sourceTree = "<group>"; };
 		751A13F82147D49100C77B63 /* SupportEmailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportEmailComposer.swift; sourceTree = "<group>"; };
 		751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDiagnosticsVC.swift; sourceTree = "<group>"; };
@@ -240,6 +262,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		750CFBC421BA9ACD00E62B09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				750CFBD721BA9B6200E62B09 /* KeePassiumLib.framework in Frameworks */,
+				750CFBC821BA9ACD00E62B09 /* AuthenticationServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		754BF0782082A6BD00E3A292 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -264,6 +295,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		750CFBC921BA9ACD00E62B09 /* KeePassium AutoFill */ = {
+			isa = PBXGroup;
+			children = (
+				750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */,
+				750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */,
+				750CFBCF21BA9ACD00E62B09 /* Info.plist */,
+				750CFBD021BA9ACD00E62B09 /* KeePassium_AutoFill.entitlements */,
+			);
+			path = "KeePassium AutoFill";
+			sourceTree = "<group>";
+		};
 		7546FBC420C1024200C5D834 /* settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +328,7 @@
 			isa = PBXGroup;
 			children = (
 				754BF07D2082A6BD00E3A292 /* KeePassium */,
+				750CFBC921BA9ACD00E62B09 /* KeePassium AutoFill */,
 				754BF07C2082A6BD00E3A292 /* Products */,
 				16DE7C3A873A37E1B4636309 /* Frameworks */,
 			);
@@ -295,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				754BF07B2082A6BD00E3A292 /* KeePassium.app */,
+				750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -461,6 +505,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		750CFBC621BA9ACD00E62B09 /* KeePassium AutoFill */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 750CFBD621BA9ACD00E62B09 /* Build configuration list for PBXNativeTarget "KeePassium AutoFill" */;
+			buildPhases = (
+				750CFBC321BA9ACD00E62B09 /* Sources */,
+				750CFBC421BA9ACD00E62B09 /* Frameworks */,
+				750CFBC521BA9ACD00E62B09 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "KeePassium AutoFill";
+			productName = "KeePassium AutoFill";
+			productReference = 750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		754BF07A2082A6BD00E3A292 /* KeePassium */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 754BF0912082A6BD00E3A292 /* Build configuration list for PBXNativeTarget "KeePassium" */;
@@ -474,6 +535,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				750CFBD221BA9ACD00E62B09 /* PBXTargetDependency */,
 			);
 			name = KeePassium;
 			productName = KeePassium;
@@ -490,6 +552,18 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Andrei Popleteev";
 				TargetAttributes = {
+					750CFBC621BA9ACD00E62B09 = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
 					754BF07A2082A6BD00E3A292 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1000;
@@ -505,7 +579,7 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -528,11 +602,21 @@
 			projectRoot = "";
 			targets = (
 				754BF07A2082A6BD00E3A292 /* KeePassium */,
+				750CFBC621BA9ACD00E62B09 /* KeePassium AutoFill */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		750CFBC521BA9ACD00E62B09 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				750CFBD821BA9E6700E62B09 /* Assets.xcassets in Resources */,
+				750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		754BF0792082A6BD00E3A292 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -576,6 +660,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		750CFBC321BA9ACD00E62B09 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				750CFBCB21BA9ACD00E62B09 /* CredentialProviderViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		754BF0772082A6BD00E3A292 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -648,7 +740,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		750CFBD221BA9ACD00E62B09 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 750CFBC621BA9ACD00E62B09 /* KeePassium AutoFill */;
+			targetProxy = 750CFBD121BA9ACD00E62B09 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				750CFBCD21BA9ACD00E62B09 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		754BF0862082A6BD00E3A292 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -668,6 +776,45 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		750CFBD421BA9ACD00E62B09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = "KeePassium AutoFill/KeePassium_AutoFill.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 84W4PHXS24;
+				INFOPLIST_FILE = "KeePassium AutoFill/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.keepassium.ios.KeePassium-AutoFill";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		750CFBD521BA9ACD00E62B09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = "KeePassium AutoFill/KeePassium_AutoFill.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 84W4PHXS24;
+				INFOPLIST_FILE = "KeePassium AutoFill/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.keepassium.ios.KeePassium-AutoFill";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		754BF08F2082A6BD00E3A292 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -786,6 +933,7 @@
 		754BF0922082A6BD00E3A292 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = KeePassium/KeePassium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -808,6 +956,7 @@
 		754BF0932082A6BD00E3A292 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = KeePassium/KeePassium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -830,6 +979,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		750CFBD621BA9ACD00E62B09 /* Build configuration list for PBXNativeTarget "KeePassium AutoFill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				750CFBD421BA9ACD00E62B09 /* Debug */,
+				750CFBD521BA9ACD00E62B09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		754BF0762082A6BD00E3A292 /* Build configuration list for PBXProject "KeePassium" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
