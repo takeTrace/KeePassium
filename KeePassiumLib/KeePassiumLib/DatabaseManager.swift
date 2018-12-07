@@ -133,9 +133,17 @@ public class DatabaseManager {
 
     /// Stores current database's key in keychain.
     ///
+    /// - Parameter onlyIfExists:
+    ///     If `true`, the method will only update an already stored key
+    ///     (and do nothing if there is none).
+    ///     If `false`, the method will set/update the key in any case.
     /// - Throws: KeychainError
-    public func rememberDatabaseKey() throws {
+    public func rememberDatabaseKey(onlyIfExists: Bool = false) throws {
         guard let databaseRef = databaseRef, let database = database else { return }
+        
+        if onlyIfExists {
+            guard try hasKey(for: databaseRef) else { return }
+        }
         try Keychain.shared.setDatabaseKey(
             databaseRef: databaseRef,
             key: database.compositeKey)

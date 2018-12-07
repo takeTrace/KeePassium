@@ -76,6 +76,7 @@ class ChangeMasterKeyVC: UIViewController {
                 guard let _self = self else { return }
                 let dbm = DatabaseManager.shared
                 dbm.changeCompositeKey(to: newCompositeKey)
+                try? dbm.rememberDatabaseKey(onlyIfExists: true) // throws KeychainError, ignored
                 _self.databaseManagerNotifications.startObserving()
                 dbm.startSavingDatabase()
             },
