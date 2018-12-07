@@ -192,8 +192,11 @@ final class Meta2: Eraseable {
                 self.settingsChangedTime = database.xmlStringToDate(tag.value) ?? Date.now
             case Xml2.headerHash: // v3 only
                 guard formatVersion == .v3 else {
-                    Diag.error("Found \(tag.name) tag in non-V3 database")
-                    throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: nil)
+                    // Experience shows that this tag sometimes occures also in v4.
+                    // (Probably remains after v3->v4 conversion.)
+                    // Since it does not matter much, we just log and ignore it.
+                    Diag.warning("Found \(tag.name) tag in non-V3 database. Ignoring")
+                    continue
                 }
                 self.headerHash = ByteArray(base64Encoded: tag.value) // ok if nil
             case Xml2.databaseName:
