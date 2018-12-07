@@ -267,7 +267,12 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
         let field = sortedFields[fieldNumber]
         text = field.value
 
-        Clipboard.general.insert(text, timeout: Double(Settings.current.clipboardTimeout.seconds))
+        let timeout = Double(Settings.current.clipboardTimeout.seconds)
+        if text.isOpenableURL {
+            Clipboard.general.insert(url: URL(string: text)!, timeout: timeout)
+        } else {
+            Clipboard.general.insert(text: text, timeout: timeout)
+        }
         animateCopyToClipboard(indexPath: indexPath)
     }
     
