@@ -35,7 +35,8 @@ public class Clipboard {
             UIPasteboard.general.setItems(items, options: [.localOnly: true])
         } else {
             UIPasteboard.general.setItems(
-                items, options: [
+                items,
+                options: [
                     .localOnly: true,
                     .expirationDate: Date(timeIntervalSinceNow: timeout)
                 ]
