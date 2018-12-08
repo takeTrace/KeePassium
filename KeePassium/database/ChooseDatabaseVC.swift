@@ -328,28 +328,15 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
         cellForRowAt indexPath: IndexPath
         ) -> UITableViewCell
     {
-        let urlRef = databaseRefs[indexPath.row]
-        let fileInfo = urlRef.info
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellID.fileItem, for: indexPath)
-        cell.textLabel?.text = fileInfo.fileName
-        if fileInfo.hasError {
-            cell.detailTextLabel?.text = fileInfo.errorMessage
-            cell.detailTextLabel?.textColor = UIColor.errorMessage
-            cell.imageView?.image = UIImage(asset: .databaseErrorListitem)
-        } else {
-            cell.imageView?.image = UIImage.databaseIcon(for: urlRef)
-            if let modificationDate = fileInfo.modificationDate {
-                let dateString = DateFormatter.localizedString(
-                    from: modificationDate,
-                    dateStyle: .long,
-                    timeStyle: .medium)
-                cell.detailTextLabel?.text = dateString
-            } else {
-                cell.detailTextLabel?.text = nil
-            }
-            cell.detailTextLabel?.textColor = UIColor.secondaryText
+        guard databaseRefs.count > 0 else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: CellID.noFiles, for: indexPath)
+            return cell
         }
+   
+        let cell = tableView
+            .dequeueReusableCell(withIdentifier: CellID.fileItem, for: indexPath)
+            as! DatabaseFileListCell
+        cell.urlRef = databaseRefs[indexPath.row]
         return cell
     }
     
