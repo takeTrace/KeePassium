@@ -28,11 +28,16 @@ public class FileKeeper {
     public static let shared = FileKeeper()
     
     private enum UserDefaultsKey {
-        static let prefix = "com.keepassium.recentFiles"
-        static let internalDatabases = prefix + ".internal.databases"
-        static let internalKeyFiles = prefix + ".internal.keyFiles"
-        static let externalDatabases = prefix + ".external.databases"
-        static let externalKeyFiles = prefix + ".external.keyFiles"
+        // Since the extension cannot resolve URL bookmarks created
+        // by the main app, the app and the extension have separate
+        // and independent file lists. Therefore, different prefixes.
+        static let mainAppPrefix = "com.keepassium.recentFiles"
+        static let autoFillExtensionPrefix = "com.keepassium.autoFill.recentFiles"
+        
+        static let internalDatabases = ".internal.databases"
+        static let internalKeyFiles = ".internal.keyFiles"
+        static let externalDatabases = ".external.databases"
+        static let externalKeyFiles = ".external.keyFiles"
     }
     
     private static let documentsDirectoryName = "Documents"
@@ -112,21 +117,28 @@ public class FileKeeper {
     }
     
     private func userDefaultsKey(for fileType: FileType, external isExternal: Bool) -> String {
+        let keySuffix: String
         switch fileType {
         case .database:
             if isExternal {
-                return UserDefaultsKey.externalDatabases
+                keySuffix = UserDefaultsKey.externalDatabases
             } else {
-                return UserDefaultsKey.internalDatabases
+                keySuffix = UserDefaultsKey.internalDatabases
             }
         case .keyFile:
             if isExternal {
-                return UserDefaultsKey.externalKeyFiles
+                keySuffix = UserDefaultsKey.externalKeyFiles
             } else {
-                return UserDefaultsKey.internalKeyFiles
+                keySuffix = UserDefaultsKey.internalKeyFiles
             }
         }
+        if AppGroup.isMainApp {
+            return UserDefaultsKey.mainAppPrefix + keySuffix
+        } else {
+            return UserDefaultsKey.autoFillExtensionPrefix + keySuffix
+        }
     }
+    
     /// Returns URL references stored in user defaults.
     private func getStoredReferences(
         fileType: FileType,
@@ -255,7 +267,6 @@ public class FileKeeper {
     
     /// Stores the `url` to be added (opened or imported) as a file at some later point.
     public func prepareToAddFile(url: URL, mode: OpenMode) {
-        assert(AppGroup.isMainApp, "App extension should not be importing files")
         Diag.debug("Preparing to add file [mode: \(mode)]")
         self.urlToOpen = url
         self.openMode = mode
@@ -274,7 +285,6 @@ public class FileKeeper {
         guard let sourceURL = urlToOpen else { return }
         urlToOpen = nil
 
-        assert(AppGroup.isMainApp, "App extension should not be importing files")
         Diag.debug("Will process pending file operations")
 
         guard sourceURL.isFileURL else {
@@ -347,32 +357,53 @@ public class FileKeeper {
                 successHandler?(urlRef)
                 return
             }
-            addExternalFileRef(url: sourceURL, fileType: fileType, success: { urlRef in
-                Settings.current.startupDatabase = urlRef
-                FileKeeperNotifier.notifyFileAdded(urlRef: urlRef, fileType: fileType)
-                Diag.info("External database added successfully")
-                successHandler?(urlRef)
-            }, error: errorHandler)
-        case .keyFile:
-            importFile(url: sourceURL, success: { url in
-                do {
-                    let urlRef = try URLReference(
-                        from: url,
-                        location: self.getLocation(for: url))
+            addExternalFileRef(
+                url: sourceURL,
+                fileType: fileType,
+                success: { urlRef in
+                    Settings.current.startupDatabase = urlRef
                     FileKeeperNotifier.notifyFileAdded(urlRef: urlRef, fileType: fileType)
-                    Diag.info("External key file imported successfully")
+                    Diag.info("External database added successfully")
                     successHandler?(urlRef)
-                } catch {
-                    Diag.error("""
-                        Failed to import external file [
-                            type: \(fileType),
-                            message: \(error.localizedDescription),
-                            url: \(sourceURL.redacted)]
-                        """)
-                    let importError = FileKeeperError.importError(reason: error.localizedDescription)
-                    errorHandler?(importError)
-                }
-            }, error: errorHandler)
+                },
+                error: errorHandler)
+        case .keyFile:
+            guard AppGroup.isMainApp else {
+                addExternalFileRef(
+                    url: sourceURL,
+                    fileType: fileType,
+                    success: { (urlRef) in
+                        FileKeeperNotifier.notifyFileAdded(urlRef: urlRef, fileType: fileType)
+                        Diag.info("External key file added successfully")
+                        successHandler?(urlRef)
+                    },
+                    error: errorHandler
+                )
+                return 
+            }
+            importFile(
+                url: sourceURL,
+                success: { (url) in
+                    do {
+                        let urlRef = try URLReference(
+                            from: url,
+                            location: self.getLocation(for: url))
+                        FileKeeperNotifier.notifyFileAdded(urlRef: urlRef, fileType: fileType)
+                        Diag.info("External key file imported successfully")
+                        successHandler?(urlRef)
+                    } catch {
+                        Diag.error("""
+                            Failed to import external file [
+                                type: \(fileType),
+                                message: \(error.localizedDescription),
+                                url: \(sourceURL.redacted)]
+                            """)
+                        let importError = FileKeeperError.importError(reason: error.localizedDescription)
+                        errorHandler?(importError)
+                    }
+                },
+                error: errorHandler
+            )
         }
     }
     
