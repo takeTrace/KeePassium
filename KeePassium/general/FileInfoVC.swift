@@ -111,10 +111,6 @@ class FileInfoVC: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fields.count
     }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return NSLocalizedString("File Info", comment: "")
-    }
     
     override func tableView(
         _ tableView: UITableView,
