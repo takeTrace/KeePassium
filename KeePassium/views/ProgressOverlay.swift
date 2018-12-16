@@ -56,7 +56,13 @@ class ProgressOverlay: UIView {
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
-    func dismiss(animated: Bool, completion: @escaping (Bool) -> Void) {
+    
+    /// Dismisses the overlay view from its parent.
+    ///
+    /// - Parameters:
+    ///   - animated: whether the transition should be animated.
+    ///   - completion: animation completion handler
+    func dismiss(animated: Bool, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(
             withDuration: 0.3,
             delay: 0,
