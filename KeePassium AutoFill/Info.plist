@@ -19,7 +19,9 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>5</string>
+	<string>6</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionMainStoryboard</key>
@@ -27,5 +29,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.authentication-services-credential-provider-ui</string>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Use FaceID to unlock KeePassium</string>
 </dict>
 </plist>

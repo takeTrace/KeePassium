@@ -10,12 +10,30 @@ import AuthenticationServices
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
 
+    var mainCoordinator: MainCoordinator? // strong ref, we own it
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mainCoordinator = MainCoordinator(rootController: self)
+        mainCoordinator?.start()
+    }
+    
+    func dismiss() {
+        self.extensionContext.cancelRequest(withError:
+            NSError(
+                domain: ASExtensionErrorDomain,
+                code:ASExtensionError.userCanceled.rawValue
+            )
+        )
+    }
+    
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        mainCoordinator?.setServiceIdentifiers(serviceIdentifiers)
     }
 
     /*
