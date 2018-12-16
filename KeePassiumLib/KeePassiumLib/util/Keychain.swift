@@ -154,7 +154,10 @@ public class Keychain {
     ///   - key: key for the database
     /// - Throws: KeychainError
     public func setDatabaseKey(databaseRef: URLReference, key: SecureByteArray) throws {
-        let account = databaseRef.hash.asHexString
+        guard !databaseRef.info.hasError else { return }
+        
+        // let account = databaseRef.hash.asHexString
+        let account = databaseRef.info.fileName
         try set(service: .databaseKeys, account: account, data: key.asData) // throws KeychainError
     }
 
@@ -163,7 +166,10 @@ public class Keychain {
     /// - Returns: stored key, or `nil` if none found.
     /// - Throws: KeychainError
     public func getDatabaseKey(databaseRef: URLReference) throws -> SecureByteArray? {
-        let account = databaseRef.hash.asHexString
+        guard !databaseRef.info.hasError else { return nil }
+        
+        // let account = databaseRef.hash.asHexString
+        let account = databaseRef.info.fileName
         guard let data = try get(service: .databaseKeys, account: account) else {
             // nothing found
             return nil
@@ -176,7 +182,9 @@ public class Keychain {
     /// - Throws: KeychainError
     public func removeDatabaseKey(databaseRef: URLReference?) throws {
         if let databaseRef = databaseRef {
-            let account = databaseRef.hash.asHexString
+            guard !databaseRef.info.hasError else { return }
+            // let account = databaseRef.hash.asHexString
+            let account = databaseRef.info.fileName
             try remove(service: .databaseKeys, account: account)
         } else {
             try remove(service: .databaseKeys, account: nil)
