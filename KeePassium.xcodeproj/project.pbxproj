@@ -241,7 +241,6 @@
 		75B24DB621C3C012003C9486 /* PasswordTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		75B24DB921C3CADB003C9486 /* EntryFinderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryFinderVC.swift; sourceTree = "<group>"; };
 		75B24DBB21C3CAE8003C9486 /* EntryFinderVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EntryFinderVC.storyboard; sourceTree = "<group>"; };
-		75B24DC121C411CA003C9486 /* AutoFillTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoFillTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75B24DD421C523AE003C9486 /* SearchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHelper.swift; sourceTree = "<group>"; };
 		75B3B7BB20EABD9D007E8FA9 /* PlaceholderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderVC.swift; sourceTree = "<group>"; };
 		75B5EAB1215764050039C654 /* CreateDatabaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDatabaseVC.swift; sourceTree = "<group>"; };
@@ -325,13 +324,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		75B24DBE21C411CA003C9486 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -395,7 +387,6 @@
 			children = (
 				754BF07B2082A6BD00E3A292 /* KeePassium.app */,
 				750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */,
-				75B24DC121C411CA003C9486 /* AutoFillTester.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -633,23 +624,6 @@
 			productReference = 754BF07B2082A6BD00E3A292 /* KeePassium.app */;
 			productType = "com.apple.product-type.application";
 		};
-		75B24DC021C411CA003C9486 /* AutoFillTester */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 75B24DD021C411CB003C9486 /* Build configuration list for PBXNativeTarget "AutoFillTester" */;
-			buildPhases = (
-				75B24DBD21C411CA003C9486 /* Sources */,
-				75B24DBE21C411CA003C9486 /* Frameworks */,
-				75B24DBF21C411CA003C9486 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AutoFillTester;
-			productName = AutoFillTester;
-			productReference = 75B24DC121C411CA003C9486 /* AutoFillTester.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -697,10 +671,6 @@
 							};
 						};
 					};
-					75B24DC021C411CA003C9486 = {
-						CreatedOnToolsVersion = 10.1;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 754BF0762082A6BD00E3A292 /* Build configuration list for PBXProject "KeePassium" */;
@@ -718,7 +688,6 @@
 			targets = (
 				754BF07A2082A6BD00E3A292 /* KeePassium */,
 				750CFBC621BA9ACD00E62B09 /* KeePassium AutoFill */,
-				75B24DC021C411CA003C9486 /* AutoFillTester */,
 			);
 		};
 /* End PBXProject section */
@@ -777,13 +746,6 @@
 				75C38019217A078D006F74C2 /* SettingsClipboardTimeoutVC.storyboard in Resources */,
 				7546FBCA20C104EE00C5D834 /* SettingsVC.storyboard in Resources */,
 				75C3802D217A2650006F74C2 /* AppCoverVC.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		75B24DBF21C411CA003C9486 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,13 +848,6 @@
 				7596771E20FB36BD00E54827 /* SettingsAppTimeoutVC.swift in Sources */,
 				75B5EAB2215764050039C654 /* CreateDatabaseVC.swift in Sources */,
 				7546FBDB20C3AC5E00C5D834 /* main.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		75B24DBD21C411CA003C9486 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,43 +1089,6 @@
 			};
 			name = Release;
 		};
-		75B24DD121C411CB003C9486 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 84W4PHXS24;
-				INFOPLIST_FILE = AutoFillTester/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.anmipo.apple.AutoFillTester;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		75B24DD221C411CB003C9486 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 84W4PHXS24;
-				INFOPLIST_FILE = AutoFillTester/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.anmipo.apple.AutoFillTester;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1197,15 +1115,6 @@
 			buildConfigurations = (
 				754BF0922082A6BD00E3A292 /* Debug */,
 				754BF0932082A6BD00E3A292 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		75B24DD021C411CB003C9486 /* Build configuration list for PBXNativeTarget "AutoFillTester" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				75B24DD121C411CB003C9486 /* Debug */,
-				75B24DD221C411CB003C9486 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
