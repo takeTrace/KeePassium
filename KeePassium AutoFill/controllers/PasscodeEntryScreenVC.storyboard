@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KmH-Rg-WCs">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Unlock KeePassium-->
+        <scene sceneID="cXB-RN-boi">
+            <objects>
+                <viewController storyboardIdentifier="PasscodeEntryScreenVC" title="Unlock KeePassium" id="KmH-Rg-WCs" customClass="PasscodeEntryScreenVC" customModule="KeePassium_AutoFill" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZhN-Z7-r4d">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Enter Passcode" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZTd-Zj-qAs" customClass="PasswordTextField" customModule="KeePassium_AutoFill" customModuleProvider="target">
+                                <rect key="frame" x="20" y="262" width="280" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="1bo-cl-ZZV"/>
+                                    <constraint firstAttribute="height" constant="44" id="LsL-gj-gZm"/>
+                                </constraints>
+                                <color key="textColor" name="PrimaryText"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                <connections>
+                                    <action selector="didChangePasscodeField:" destination="KmH-Rg-WCs" eventType="valueChanged" id="pX1-3Y-Vtf"/>
+                                </connections>
+                            </textField>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Error message)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmf-2d-AN4">
+                                <rect key="frame" x="98.5" y="204.5" width="123.5" height="20.5"/>
+                                <color key="backgroundColor" name="WarningBackground"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" name="WarningText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2Z-Q7-JRa">
+                                <rect key="frame" x="20" y="314" width="280" height="44"/>
+                                <color key="backgroundColor" name="ActionTint"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="nSI-oU-RRJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                <color key="tintColor" name="ActionText"/>
+                                <state key="normal" title="Unlock"/>
+                                <connections>
+                                    <action selector="didPressUnlockButton:" destination="KmH-Rg-WCs" eventType="touchUpInside" id="asw-QZ-dsm"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter passcode to open KeePassium" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mQ-t6-0ty">
+                                <rect key="frame" x="20" y="233" width="278.5" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" name="PrimaryText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Dmf-2d-AN4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="B1T-XF-h6z" secondAttribute="top" id="1Fd-JP-3vV"/>
+                            <constraint firstItem="i2Z-Q7-JRa" firstAttribute="top" secondItem="ZTd-Zj-qAs" secondAttribute="bottom" constant="8" id="4KE-z1-11k"/>
+                            <constraint firstItem="3mQ-t6-0ty" firstAttribute="leading" secondItem="ZTd-Zj-qAs" secondAttribute="leading" id="7St-RE-swb"/>
+                            <constraint firstItem="3mQ-t6-0ty" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ZTd-Zj-qAs" secondAttribute="trailing" id="HDJ-R3-0GJ"/>
+                            <constraint firstItem="3mQ-t6-0ty" firstAttribute="top" secondItem="Dmf-2d-AN4" secondAttribute="bottom" constant="8" id="OhC-es-Ky5"/>
+                            <constraint firstItem="B1T-XF-h6z" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="i2Z-Q7-JRa" secondAttribute="bottom" id="Vyg-QB-GLT"/>
+                            <constraint firstItem="Dmf-2d-AN4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="B1T-XF-h6z" secondAttribute="leading" constant="8" id="ZCL-tL-fYT"/>
+                            <constraint firstItem="Dmf-2d-AN4" firstAttribute="centerX" secondItem="ZhN-Z7-r4d" secondAttribute="centerX" id="fcb-44-XkL"/>
+                            <constraint firstItem="B1T-XF-h6z" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Dmf-2d-AN4" secondAttribute="trailing" constant="8" id="hIo-I4-G3p"/>
+                            <constraint firstItem="i2Z-Q7-JRa" firstAttribute="centerX" secondItem="ZhN-Z7-r4d" secondAttribute="centerX" id="iOU-wr-NLS"/>
+                            <constraint firstItem="ZTd-Zj-qAs" firstAttribute="centerX" secondItem="ZhN-Z7-r4d" secondAttribute="centerX" id="omW-Jt-miS"/>
+                            <constraint firstItem="i2Z-Q7-JRa" firstAttribute="width" secondItem="ZTd-Zj-qAs" secondAttribute="width" id="ouf-mp-ZOh"/>
+                            <constraint firstItem="ZTd-Zj-qAs" firstAttribute="top" secondItem="3mQ-t6-0ty" secondAttribute="bottom" constant="8.5" id="u1U-We-vJX"/>
+                            <constraint firstItem="ZTd-Zj-qAs" firstAttribute="centerY" secondItem="ZhN-Z7-r4d" secondAttribute="centerY" id="uS6-r1-gnY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="B1T-XF-h6z"/>
+                    </view>
+                    <connections>
+                        <outlet property="errorMessageLabel" destination="Dmf-2d-AN4" id="ch6-dU-Wzm"/>
+                        <outlet property="passcodeTextField" destination="ZTd-Zj-qAs" id="CYO-9J-fW4"/>
+                        <outlet property="unlockButton" destination="i2Z-Q7-JRa" id="ce3-RS-hP3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oVN-tK-xWV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="214" y="144"/>
+        </scene>
+    </scenes>
+    <resources>
+        <namedColor name="ActionText">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ActionTint">
+            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="PrimaryText">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
+        <namedColor name="WarningBackground">
+            <color red="0.94199997186660767" green="0.59700000286102295" blue="0.21699999272823334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="WarningText">
+            <color red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

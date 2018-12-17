@@ -79,6 +79,8 @@
 		75B24DBC21C3CAE8003C9486 /* EntryFinderVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75B24DBB21C3CAE8003C9486 /* EntryFinderVC.storyboard */; };
 		75B24DD521C523AE003C9486 /* SearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B24DD421C523AE003C9486 /* SearchHelper.swift */; };
 		75B3B7BC20EABD9D007E8FA9 /* PlaceholderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B3B7BB20EABD9D007E8FA9 /* PlaceholderVC.swift */; };
+		75B5804C21C8084D007F03B7 /* PasscodeEntryScreenVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75B5804B21C8084D007F03B7 /* PasscodeEntryScreenVC.storyboard */; };
+		75B5804E21C80861007F03B7 /* PasscodeEntryScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5804D21C80861007F03B7 /* PasscodeEntryScreenVC.swift */; };
 		75B5EAB2215764050039C654 /* CreateDatabaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5EAB1215764050039C654 /* CreateDatabaseVC.swift */; };
 		75B5FB7720D53EA700D402D9 /* ViewEntryFieldsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5FB7620D53EA700D402D9 /* ViewEntryFieldsVC.swift */; };
 		75B5FB7920D6101100D402D9 /* ItemCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5FB7820D6101100D402D9 /* ItemCategory.swift */; };
@@ -243,6 +245,8 @@
 		75B24DBB21C3CAE8003C9486 /* EntryFinderVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EntryFinderVC.storyboard; sourceTree = "<group>"; };
 		75B24DD421C523AE003C9486 /* SearchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHelper.swift; sourceTree = "<group>"; };
 		75B3B7BB20EABD9D007E8FA9 /* PlaceholderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderVC.swift; sourceTree = "<group>"; };
+		75B5804B21C8084D007F03B7 /* PasscodeEntryScreenVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PasscodeEntryScreenVC.storyboard; sourceTree = "<group>"; };
+		75B5804D21C80861007F03B7 /* PasscodeEntryScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeEntryScreenVC.swift; sourceTree = "<group>"; };
 		75B5EAB1215764050039C654 /* CreateDatabaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDatabaseVC.swift; sourceTree = "<group>"; };
 		75B5FB7620D53EA700D402D9 /* ViewEntryFieldsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEntryFieldsVC.swift; sourceTree = "<group>"; };
 		75B5FB7820D6101100D402D9 /* ItemCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCategory.swift; sourceTree = "<group>"; };
@@ -580,6 +584,8 @@
 				75B24DBB21C3CAE8003C9486 /* EntryFinderVC.storyboard */,
 				7532A24C21C5A035005DF56F /* KeyFileChooserVC.swift */,
 				7532A24E21C5A03F005DF56F /* KeyFileChooserVC.storyboard */,
+				75B5804D21C80861007F03B7 /* PasscodeEntryScreenVC.swift */,
+				75B5804B21C8084D007F03B7 /* PasscodeEntryScreenVC.storyboard */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -704,6 +710,7 @@
 				750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */,
 				750CFC0621BAD96C00E62B09 /* WelcomeVC.storyboard in Resources */,
 				75CBABA321C16D8E00B8AFE2 /* FirstSetupVC.storyboard in Resources */,
+				75B5804C21C8084D007F03B7 /* PasscodeEntryScreenVC.storyboard in Resources */,
 				7532A24F21C5A03F005DF56F /* KeyFileChooserVC.storyboard in Resources */,
 				75CBABA621C1C2DB00B8AFE2 /* FileInfoVC.storyboard in Resources */,
 			);
@@ -770,6 +777,7 @@
 				75CBABA121C16CD000B8AFE2 /* FirstSetupVC.swift in Sources */,
 				750CFBDB21BAD7FF00E62B09 /* UIAlertController+extensions.swift in Sources */,
 				75CBAB9D21C166D600B8AFE2 /* Coordinator.swift in Sources */,
+				75B5804E21C80861007F03B7 /* PasscodeEntryScreenVC.swift in Sources */,
 				75CFBE2D21C2FE340029A80A /* UIView+extension.swift in Sources */,
 				75B24DB821C3C594003C9486 /* ProgressOverlay.swift in Sources */,
 				75B24DD521C523AE003C9486 /* SearchHelper.swift in Sources */,

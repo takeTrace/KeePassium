@@ -46,8 +46,21 @@ class MainCoordinator: NSObject, Coordinator {
 
         databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         databaseManagerNotifications?.startObserving()
-
+        
         rootController.present(navigationController, animated: false, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5){
+            [weak self] in
+            guard let _self = self else { return }
+            do {
+                try _self.maybeRequirePasscode() // throws KeychainError
+            } catch {
+                let errorAlert = UIAlertController.make(
+                    title: LString.titleKeychainError,
+                    message: error.localizedDescription,
+                    cancelButtonTitle: LString.actionDismiss)
+                _self.navigationController.present(errorAlert, animated: true, completion: nil)
+            }
+        }
     }
     
     func setServiceIdentifiers(_ identifiers: [ASCredentialServiceIdentifier]) {
@@ -67,7 +80,7 @@ class MainCoordinator: NSObject, Coordinator {
 
     /// Provides entry's details to the authentication services
     /// and quits the extension.
-    func provideCredentials(entry: Entry) {
+    func returnCredentials(entry: Entry) {
         let passwordCredential = ASPasswordCredential(user: entry.userName, password: entry.password)
         rootController.extensionContext.completeRequest(
             withSelectedCredential: passwordCredential,
@@ -106,6 +119,14 @@ class MainCoordinator: NSObject, Coordinator {
     }
     
     // MARK: - Actions
+    
+    /// Asks user to unlock the app, if the lock is set.
+    ///
+    /// - Throws: KeychainError
+    func maybeRequirePasscode() throws {
+        guard try Keychain.shared.isAppPasscodeSet() else { return }
+        showLockWindow()
+    }
     
     func addDatabase() {
         let picker = UIDocumentPickerViewController(documentTypes: FileType.databaseUTIs, in: .open)
@@ -185,6 +206,38 @@ class MainCoordinator: NSObject, Coordinator {
         var vcs = navigationController.viewControllers
         vcs[vcs.count - 1] = entriesVC
         navigationController.setViewControllers(vcs, animated: true)
+    }
+    
+    // MARK: App Lock window management
+    private var lockWindow: UIWindow?
+    private func showLockWindow() {
+        let bounds = rootController.view.bounds
+        lockWindow = UIWindow(frame: bounds)
+        lockWindow!.screen = UIScreen.main
+        lockWindow!.backgroundColor = UIColor.green
+        lockWindow!.windowLevel = UIWindow.Level.alert + 1
+        lockWindow!.isHidden = false
+        
+        let vc = PasscodeEntryScreenVC.instantiateFromStoryboard()
+        vc.delegate = self
+        
+        lockWindow!.rootViewController = vc
+        lockWindow!.makeKeyAndVisible()
+    }
+    
+    private func hideLockWindow() {
+        lockWindow?.isHidden = true
+        lockWindow = nil
+    }
+}
+
+extension MainCoordinator: PasscodeEntryScreenDelegate {
+    func passcodeEntryScreenShouldCancel(_ sender: PasscodeEntryScreenVC) {
+        dismissAndQuit()
+    }
+    
+    func passcodeEntryScreenDidUnlock(_ sender: PasscodeEntryScreenVC) {
+        hideLockWindow()
     }
 }
 
@@ -341,7 +394,7 @@ extension MainCoordinator: UINavigationControllerDelegate {
 
 extension MainCoordinator: EntryFinderDelegate {
     func entryFinder(_ sender: EntryFinderVC, didSelectEntry entry: Entry) {
-        provideCredentials(entry: entry)
+        returnCredentials(entry: entry)
     }
     
     func entryFinderShouldLockDatabase(_ sender: EntryFinderVC) {
