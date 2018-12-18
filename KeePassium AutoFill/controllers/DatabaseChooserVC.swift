@@ -8,6 +8,19 @@
 
 import KeePassiumLib
 
+protocol DatabaseChooserDelegate: class {
+    /// Called when the user presses "Cancel"
+    func databaseChooserShouldCancel(_ sender: DatabaseChooserVC)
+    /// Called when the user presses "Add database"
+    func databaseChooserShouldAddDatabase(_ sender: DatabaseChooserVC)
+    /// Called when the user selects a database from the list
+    func databaseChooser(_ sender: DatabaseChooserVC, didSelectDatabase urlRef: URLReference)
+    /// Called when the user wants to remove a database from the list
+    func databaseChooser(_ sender: DatabaseChooserVC, shouldRemoveDatabase urlRef: URLReference)
+    /// Called when the user requests additional info about a database file
+    func databaseChooser(_ sender: DatabaseChooserVC, shouldShowInfoForDatabase urlRef: URLReference)
+}
+
 class DatabaseChooserVC: UITableViewController, Refreshable {
     private enum CellID {
         static let fileItem = "FileItemCell"
@@ -15,14 +28,9 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
     }
     
     weak var coordinator: MainCoordinator?
+    weak var delegate: DatabaseChooserDelegate?
     
     private var databaseRefs: [URLReference] = []
-    
-    static func make(coordinator: MainCoordinator) -> DatabaseChooserVC {
-        let vc = DatabaseChooserVC.instantiateFromStoryboard()
-        vc.coordinator = coordinator
-        return vc
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,11 +68,11 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
     // MARK: - Actions
     
     @IBAction func didPressCancel(_ sender: Any) {
-        coordinator?.dismissAndQuit()
+        delegate?.databaseChooserShouldCancel(self)
     }
     
     @IBAction func didPressAddDatabase(_ sender: Any) {
-        coordinator?.addDatabase()
+        delegate?.databaseChooserShouldAddDatabase(self)
     }
     
     // MARK: - Table view data source
@@ -98,7 +106,7 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard databaseRefs.count > 0 else { return }
         let dbRef = databaseRefs[indexPath.row]
-        coordinator?.showDatabaseUnlocker(database: dbRef, animated: true)
+        delegate?.databaseChooser(self, didSelectDatabase: dbRef)
     }
     
     override func tableView(
@@ -106,9 +114,7 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
         accessoryButtonTappedForRowWith indexPath: IndexPath)
     {
         let urlRef = databaseRefs[indexPath.row]
-        let cell = tableView.cellForRow(at: indexPath)!
-        let databaseInfoVC = FileInfoVC.make(urlRef: urlRef, popoverSource: cell)
-        present(databaseInfoVC, animated: true, completion: nil)
+        delegate?.databaseChooser(self, shouldShowInfoForDatabase: urlRef)
     }
     
     // Override to support conditional editing of the table view.
@@ -127,10 +133,11 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
             style: .destructive,
             title: LString.actionRemoveFile)
         {
-            [unowned self] (_,_) in
-            self.setEditing(false, animated: true)
-            let urlRef = self.databaseRefs[indexPath.row]
-            self.coordinator?.removeDatabase(urlRef)
+            [weak self] (_,_) in
+            guard let _self = self else { return }
+            _self.setEditing(false, animated: true)
+            let urlRef = _self.databaseRefs[indexPath.row]
+            _self.delegate?.databaseChooser(_self, shouldRemoveDatabase: urlRef)
         }
         deleteAction.backgroundColor = UIColor.destructiveTint
         

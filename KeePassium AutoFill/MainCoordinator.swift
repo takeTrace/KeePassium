@@ -169,7 +169,9 @@ class MainCoordinator: NSObject, Coordinator {
     }
     
     func showDatabaseChooser() {
-        let databaseChooserVC = DatabaseChooserVC.make(coordinator: self)
+        let databaseChooserVC = DatabaseChooserVC.instantiateFromStoryboard()
+        databaseChooserVC.coordinator = self
+        databaseChooserVC.delegate = self
         navigationController.pushViewController(databaseChooserVC, animated: false)
         
         let allRefs = FileKeeper.shared.getAllReferences(fileType: .database, includeBackup: false)
@@ -199,6 +201,11 @@ class MainCoordinator: NSObject, Coordinator {
         refreshFileList()
     }
     
+    func showDatabaseFileInfo(fileRef: URLReference) {
+        let databaseInfoVC = FileInfoVC.make(urlRef: fileRef, popoverSource: nil)
+        navigationController.pushViewController(databaseInfoVC, animated: true)
+    }
+
     func showDatabaseUnlocker(database: URLReference, animated: Bool) {
         let storedDatabaseKey: SecureByteArray?
         do {
@@ -275,6 +282,28 @@ extension MainCoordinator: PasscodeEntryScreenDelegate {
     }
 }
 
+extension MainCoordinator: DatabaseChooserDelegate {
+    func databaseChooserShouldCancel(_ sender: DatabaseChooserVC) {
+        dismissAndQuit()
+    }
+    
+    func databaseChooserShouldAddDatabase(_ sender: DatabaseChooserVC) {
+        addDatabase()
+    }
+    
+    func databaseChooser(_ sender: DatabaseChooserVC, didSelectDatabase urlRef: URLReference) {
+        showDatabaseUnlocker(database: urlRef, animated: true)
+    }
+    
+    func databaseChooser(_ sender: DatabaseChooserVC, shouldRemoveDatabase urlRef: URLReference) {
+        removeDatabase(urlRef)
+    }
+    
+    func databaseChooser(_ sender: DatabaseChooserVC, shouldShowInfoForDatabase urlRef: URLReference) {
+        showDatabaseFileInfo(fileRef: urlRef)
+    }
+}
+
 extension MainCoordinator: DatabaseUnlockerDelegate {
     func databaseUnlockerShouldUnlock(
         _ sender: DatabaseUnlockerVC,
@@ -334,11 +363,7 @@ extension MainCoordinator: DatabaseManagerObserver {
     }
     
     func databaseManager(didLoadDatabase urlRef: URLReference) {
-        guard let databaseUnlockerVC = navigationController.topViewController
-            as? DatabaseUnlockerVC else { return }
-        
-        // The overlay remains for nicer transition
-        //databaseUnlockerVC.hideProgressOverlay()
+        // not hiding progress overlay, for nicer transition
         
         if Settings.current.isRememberDatabaseKey {
             do {
