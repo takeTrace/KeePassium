@@ -21,7 +21,7 @@
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fAZ-VX-s1Y" userLabel="KeyboardAdjView">
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <subviews>
-                                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Crk-4o-Fqu" userLabel="ErrorPanel">
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Crk-4o-Fqu" userLabel="ErrorPanel">
                                         <rect key="frame" x="86.5" y="157.5" width="147" height="20"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="(Error message)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dID-zL-AtZ">
@@ -159,6 +159,7 @@
                                     <constraint firstItem="3AW-w8-RdW" firstAttribute="trailing" secondItem="Q5g-RY-uXD" secondAttribute="trailing" id="MZz-SY-69c"/>
                                     <constraint firstItem="Q5g-RY-uXD" firstAttribute="centerX" secondItem="fAZ-VX-s1Y" secondAttribute="centerX" id="Mgu-j5-XDW"/>
                                     <constraint firstItem="66o-BC-gwg" firstAttribute="centerX" secondItem="fAZ-VX-s1Y" secondAttribute="centerX" id="O7O-gU-15a"/>
+                                    <constraint firstItem="Crk-4o-Fqu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fAZ-VX-s1Y" secondAttribute="top" constant="8" id="QDE-9y-Dkn"/>
                                     <constraint firstItem="89h-8b-LRO" firstAttribute="width" secondItem="Q5g-RY-uXD" secondAttribute="width" id="Sjy-yu-iDS"/>
                                     <constraint firstItem="Q5g-RY-uXD" firstAttribute="top" secondItem="66o-BC-gwg" secondAttribute="bottom" constant="16" id="TLd-6f-2Ea"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="66o-BC-gwg" secondAttribute="trailing" constant="8" id="TgO-13-YE7"/>
@@ -168,7 +169,7 @@
                                     <constraint firstItem="89h-8b-LRO" firstAttribute="centerX" secondItem="fAZ-VX-s1Y" secondAttribute="centerX" id="dGG-W5-J5x"/>
                                     <constraint firstItem="i0B-8N-nM0" firstAttribute="centerY" secondItem="66o-BC-gwg" secondAttribute="centerY" id="dSY-ts-aEq"/>
                                     <constraint firstItem="89h-8b-LRO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="9jZ-6o-Ggj" secondAttribute="bottom" constant="8" id="dTF-ST-zJm"/>
-                                    <constraint firstItem="Q5g-RY-uXD" firstAttribute="centerY" secondItem="fAZ-VX-s1Y" secondAttribute="centerY" priority="750" id="gaS-ck-Wc3"/>
+                                    <constraint firstItem="Q5g-RY-uXD" firstAttribute="centerY" secondItem="fAZ-VX-s1Y" secondAttribute="centerY" priority="250" id="gaS-ck-Wc3"/>
                                     <constraint firstItem="3AW-w8-RdW" firstAttribute="top" secondItem="Q5g-RY-uXD" secondAttribute="bottom" priority="750" constant="8" id="jBP-Av-QZo"/>
                                     <constraint firstItem="i0B-8N-nM0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fAZ-VX-s1Y" secondAttribute="leading" constant="8" id="m4A-7S-ULI"/>
                                     <constraint firstItem="3AW-w8-RdW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9jZ-6o-Ggj" secondAttribute="trailing" constant="8" id="qC7-Gx-h3a"/>
@@ -182,7 +183,7 @@
                             <constraint firstItem="IWv-PL-Eda" firstAttribute="trailing" secondItem="fAZ-VX-s1Y" secondAttribute="trailing" id="Bf0-le-JFo"/>
                             <constraint firstItem="fAZ-VX-s1Y" firstAttribute="top" secondItem="IWv-PL-Eda" secondAttribute="top" id="TLU-J1-ftW"/>
                             <constraint firstItem="fAZ-VX-s1Y" firstAttribute="leading" secondItem="IWv-PL-Eda" secondAttribute="leading" id="Tme-D6-MJh"/>
-                            <constraint firstItem="IWv-PL-Eda" firstAttribute="bottom" secondItem="fAZ-VX-s1Y" secondAttribute="bottom" id="p1m-Aa-EAI" customClass="KeyboardLayoutConstraint" customModule="KeePassium_AutoFill" customModuleProvider="target"/>
+                            <constraint firstItem="IWv-PL-Eda" firstAttribute="bottom" secondItem="fAZ-VX-s1Y" secondAttribute="bottom" priority="750" id="p1m-Aa-EAI" customClass="KeyboardLayoutConstraint" customModule="KeePassium_AutoFill" customModuleProvider="target"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IWv-PL-Eda"/>
                     </view>

@@ -37,6 +37,7 @@ class DatabaseUnlockerVC: UIViewController {
     }
     var keyFileRef: URLReference? {
         didSet {
+            hideErrorMessage(animated: false)
             keyFileField.text = keyFileRef?.info.fileName
         }
     }
@@ -48,6 +49,8 @@ class DatabaseUnlockerVC: UIViewController {
         // make background image
         view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
         view.layer.isOpaque = false
+        
+        errorMessagePanel.alpha = 0.0
         
         refreshDatabaseInfo()
         
@@ -66,18 +69,45 @@ class DatabaseUnlockerVC: UIViewController {
     }
     
     func showErrorMessage(text: String) {
-        errorMessageLabel.text = text
-        errorMessagePanel.isHidden = false
+        errorMessageLabel.text = " " + text + " "
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0.0,
+            options: .curveEaseIn,
+            animations: {
+                [weak self] in
+                self?.errorMessagePanel.alpha = 1.0
+            },
+            completion: {
+                [weak self] (finished) in
+                self?.errorMessagePanel.shake()
+            }
+        )
     }
     
-    func hideErrorMessage() {
-        errorMessageLabel.text = ""
-        errorMessagePanel.isHidden = true
+    func hideErrorMessage(animated: Bool) {
+        if animated {
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0.0,
+                options: .curveEaseOut,
+                animations: {
+                    [weak self] in
+                    self?.errorMessagePanel.alpha = 0.0
+                },
+                completion: {
+                    [weak self] (finished) in
+                    self?.errorMessageLabel.text = " "
+                }
+            )
+        } else {
+            errorMessagePanel.alpha = 0.0
+            errorMessageLabel.text = " "
+        }
     }
 
     func showMasterKeyInvalid(message: String) {
         showErrorMessage(text: message)
-        inputPanel.shake()
     }
     
     private func refreshDatabaseInfo() {
@@ -155,6 +185,15 @@ extension DatabaseUnlockerVC: UITextFieldDelegate {
             coordinator?.selectKeyFile()
             passwordField.becomeFirstResponder()
         }
+    }
+    
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String) -> Bool
+    {
+        hideErrorMessage(animated: true)
+        return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
