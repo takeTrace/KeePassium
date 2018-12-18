@@ -103,6 +103,7 @@ class DatabaseUnlockerVC: UIViewController {
     private(set) var progressOverlay: ProgressOverlay?
 
     public func showProgressOverlay(animated: Bool) {
+        navigationItem.hidesBackButton = true
         progressOverlay = ProgressOverlay.addTo(
             self.view,
             title: LString.databaseStatusLoading,
@@ -114,6 +115,7 @@ class DatabaseUnlockerVC: UIViewController {
     }
     
     public func hideProgressOverlay() {
+        navigationItem.hidesBackButton = false
         progressOverlay?.dismiss(animated: true) {
             [weak self] (finished) in
             guard finished, let _self = self else { return }
