@@ -143,7 +143,7 @@ class MainCoordinator: NSObject, Coordinator {
         if isBiometricsAvailable {
             Diag.debug("Biometric auth: showing request")
             context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
-                [unowned self] (authSuccessful, authError) in
+                (authSuccessful, authError) in
                 if authSuccessful {
                     Diag.info("Biometric auth successful")
                     DispatchQueue.main.async {
