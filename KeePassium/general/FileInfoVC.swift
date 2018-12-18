@@ -30,17 +30,21 @@ class FileInfoCell: UITableViewCell {
 class FileInfoVC: UITableViewController {
     private var fields = [(String, String)]()
     
-    /// - Parameter urlRef: reference to the file
-    public static func make(urlRef: URLReference, popoverSource: UIView) -> UIViewController {
+    /// - Parameters:
+    ///   - urlRef: reference to the file
+    ///   - popoverSource: optional, use `nil` for non-popover presentation
+    public static func make(urlRef: URLReference, popoverSource: UIView?) -> FileInfoVC {
         let vc = FileInfoVC.instantiateFromStoryboard()
         vc.setupFields(urlRef: urlRef)
         
-        vc.modalPresentationStyle = .popover
-        if let popover = vc.popoverPresentationController {
-            popover.sourceView = popoverSource
-            popover.sourceRect = popoverSource.bounds
-            popover.permittedArrowDirections = [.left]
-            popover.delegate = vc
+        if let popoverSource = popoverSource {
+            vc.modalPresentationStyle = .popover
+            if let popover = vc.popoverPresentationController {
+                popover.sourceView = popoverSource
+                popover.sourceRect = popoverSource.bounds
+                popover.permittedArrowDirections = [.left]
+                popover.delegate = vc
+            }
         }
         return vc
     }
