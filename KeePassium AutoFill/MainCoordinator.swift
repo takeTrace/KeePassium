@@ -76,6 +76,7 @@ class MainCoordinator: NSObject, Coordinator {
 
     // Clears and closes any resources before quitting the extension.
     func cleanup() {
+        databaseManagerNotifications?.stopObserving()
         DatabaseManager.shared.closeDatabase(clearStoredKey: false)
     }
 
