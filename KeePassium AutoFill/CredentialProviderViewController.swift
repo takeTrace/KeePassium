@@ -14,7 +14,16 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // make background image
+        view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
+        view.layer.isOpaque = false
+        
         mainCoordinator = MainCoordinator(rootController: self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         mainCoordinator?.start()
     }
     
@@ -33,7 +42,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        mainCoordinator?.setServiceIdentifiers(serviceIdentifiers)
+        mainCoordinator?.serviceIdentifiers = serviceIdentifiers
     }
 
     /*
@@ -64,14 +73,4 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
     }
     */
-
-    @IBAction func cancel(_ sender: AnyObject?) {
-        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
-    }
-
-    @IBAction func passwordSelected(_ sender: AnyObject?) {
-        let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
-        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-    }
-
 }

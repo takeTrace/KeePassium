@@ -9,13 +9,14 @@
 import UIKit
 import KeePassiumLib
 import AuthenticationServices
+import LocalAuthentication
 
 class MainCoordinator: NSObject, Coordinator {
     unowned var rootController: CredentialProviderViewController
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
-    fileprivate var serviceIdentifiers = [ASCredentialServiceIdentifier]()
+    var serviceIdentifiers = [ASCredentialServiceIdentifier]()
     fileprivate var databaseManagerNotifications: DatabaseManagerNotifications?
     fileprivate var isLoadingUsingStoredDatabaseKey = false
     
@@ -31,40 +32,46 @@ class MainCoordinator: NSObject, Coordinator {
     }
     
     func start() {
-        let databaseChooserVC = DatabaseChooserVC.make(coordinator: self)
-        navigationController.pushViewController(databaseChooserVC, animated: false)
-
-        let allRefs = FileKeeper.shared.getAllReferences(fileType: .database, includeBackup: false)
-        if allRefs.isEmpty {
-            let firstSetupVC = FirstSetupVC.make(coordinator: self)
-            firstSetupVC.navigationItem.hidesBackButton = true
-            navigationController.pushViewController(firstSetupVC, animated: false)
-        } else if allRefs.count == 1 {
-            // If only one database, open it straight away
-            showDatabaseUnlocker(database: allRefs.first!, animated: false)
-        }
-
         databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         databaseManagerNotifications?.startObserving()
         
-        rootController.present(navigationController, animated: false, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5){
-            [weak self] in
-            guard let _self = self else { return }
+        let isBiometricsShown = showBiometricAuthIfEnabled() {
+            [weak self] (authSuccess) in
+            self?.startMainFlow(requirePasscode: !authSuccess)
+        }
+        
+        if !isBiometricsShown {
+            startMainFlow(requirePasscode: true)
+        }
+    }
+
+    /// Instantiates root navigation controller and its first VC.
+    /// If `requirePasscode` is `true`, requires the user to enter
+    /// a correct passcode first.
+    ///
+    /// - Parameter requirePasscode: whether to require App Lock
+    ///     passcode first. If passcode has not been set,
+    ///     this parameter is ignored.
+    private func startMainFlow(requirePasscode: Bool) {
+        if requirePasscode {
             do {
-                try _self.maybeRequirePasscode() // throws KeychainError
+                if try Keychain.shared.isAppPasscodeSet() { // throws KeychainError
+                    try showPasscodeRequest() // throws KeychainError
+                    return
+                }
             } catch {
+                Diag.error("Keychain error [message: \(error.localizedDescription)]")
                 let errorAlert = UIAlertController.make(
                     title: LString.titleKeychainError,
                     message: error.localizedDescription,
                     cancelButtonTitle: LString.actionDismiss)
-                _self.navigationController.present(errorAlert, animated: true, completion: nil)
+                rootController.present(errorAlert, animated: true, completion: nil)
+                return
             }
         }
-    }
-    
-    func setServiceIdentifiers(_ identifiers: [ASCredentialServiceIdentifier]) {
-        self.serviceIdentifiers = identifiers
+        
+        rootController.present(navigationController, animated: true, completion: nil)
+        showDatabaseChooser()
     }
 
     // Clears and closes any resources before quitting the extension.
@@ -120,12 +127,60 @@ class MainCoordinator: NSObject, Coordinator {
     
     // MARK: - Actions
     
-    /// Asks user to unlock the app, if the lock is set.
+    /// Shows biometric authentication UI, if supported and enabled.
     ///
+    /// - Parameter completion: called after biometric authentication,
+    ///         with a `Bool` parameter indicating success of the bioauth.
+    /// - Returns: `true` if biometric authentication is shown, `false` otherwise.
+    open func showBiometricAuthIfEnabled(completion: @escaping ((Bool) -> Void)) -> Bool {
+        guard Settings.current.isBiometricAppLockEnabled else { return false }
+        
+        let context = LAContext()
+        let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
+        context.localizedFallbackTitle = "" // hide "Enter Password" fallback; nil won't work
+        
+        let isBiometricsAvailable = context.canEvaluatePolicy(policy, error: nil)
+        if isBiometricsAvailable {
+            Diag.debug("Biometric auth: showing request")
+            context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
+                [unowned self] (authSuccessful, authError) in
+                if authSuccessful {
+                    Diag.info("Biometric auth successful")
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                } else {
+                    Diag.warning("Biometric auth failed [error: \(authError?.localizedDescription ?? "nil")]")
+                    DispatchQueue.main.async {
+                        completion(false)
+                    }
+                }
+            }
+            return true
+        }
+        return false
+    }
+    
     /// - Throws: KeychainError
-    func maybeRequirePasscode() throws {
-        guard try Keychain.shared.isAppPasscodeSet() else { return }
-        showLockWindow()
+    func showPasscodeRequest() throws {
+        let passcodeVC = PasscodeEntryScreenVC.instantiateFromStoryboard()
+        passcodeVC.delegate = self
+        rootController.present(passcodeVC, animated: true, completion: nil)
+    }
+    
+    func showDatabaseChooser() {
+        let databaseChooserVC = DatabaseChooserVC.make(coordinator: self)
+        navigationController.pushViewController(databaseChooserVC, animated: false)
+        
+        let allRefs = FileKeeper.shared.getAllReferences(fileType: .database, includeBackup: false)
+        if allRefs.isEmpty {
+            let firstSetupVC = FirstSetupVC.make(coordinator: self)
+            firstSetupVC.navigationItem.hidesBackButton = true
+            navigationController.pushViewController(firstSetupVC, animated: false)
+        } else if allRefs.count == 1 {
+            // If only one database, open it straight away
+            showDatabaseUnlocker(database: allRefs.first!, animated: false)
+        }
     }
     
     func addDatabase() {
@@ -207,28 +262,6 @@ class MainCoordinator: NSObject, Coordinator {
         vcs[vcs.count - 1] = entriesVC
         navigationController.setViewControllers(vcs, animated: true)
     }
-    
-    // MARK: App Lock window management
-    private var lockWindow: UIWindow?
-    private func showLockWindow() {
-        let bounds = rootController.view.bounds
-        lockWindow = UIWindow(frame: bounds)
-        lockWindow!.screen = UIScreen.main
-        lockWindow!.backgroundColor = UIColor.green
-        lockWindow!.windowLevel = UIWindow.Level.alert + 1
-        lockWindow!.isHidden = false
-        
-        let vc = PasscodeEntryScreenVC.instantiateFromStoryboard()
-        vc.delegate = self
-        
-        lockWindow!.rootViewController = vc
-        lockWindow!.makeKeyAndVisible()
-    }
-    
-    private func hideLockWindow() {
-        lockWindow?.isHidden = true
-        lockWindow = nil
-    }
 }
 
 extension MainCoordinator: PasscodeEntryScreenDelegate {
@@ -237,7 +270,8 @@ extension MainCoordinator: PasscodeEntryScreenDelegate {
     }
     
     func passcodeEntryScreenDidUnlock(_ sender: PasscodeEntryScreenVC) {
-        hideLockWindow()
+        rootController.dismiss(animated: true, completion: nil)
+        startMainFlow(requirePasscode: false)
     }
 }
 

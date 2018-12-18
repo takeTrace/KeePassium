@@ -12,7 +12,7 @@
         <!--Entries-->
         <scene sceneID="5TI-sf-QvZ">
             <objects>
-                <tableViewController storyboardIdentifier="EntryFinderVC" title="Entries" id="14C-rX-ove" customClass="EntryFinderVC" customModule="KeePassium_AutoFill" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="EntryFinderVC" title="Entries" modalTransitionStyle="crossDissolve" id="14C-rX-ove" customClass="EntryFinderVC" customModule="KeePassium_AutoFill" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="o0d-5d-uRM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

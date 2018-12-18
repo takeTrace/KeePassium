@@ -7,7 +7,6 @@
 //
 
 import KeePassiumLib
-import LocalAuthentication
 
 protocol PasscodeEntryScreenDelegate: class {
     /// Called when the user passes TouchID/FaceID check or enters correct passcode
@@ -21,12 +20,19 @@ class PasscodeEntryScreenVC: UIViewController {
     @IBOutlet weak var errorMessageLabel: UILabel!
     @IBOutlet weak var passcodeTextField: PasswordTextField!
     @IBOutlet weak var unlockButton: UIButton!
+    @IBOutlet weak var keyboardTypeSegments: UISegmentedControl!
     
     weak var delegate: PasscodeEntryScreenDelegate?
     private var isBiometricAuthShown = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // make background image
+        view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
+        view.layer.isOpaque = false
+        
+        passcodeTextField.delegate = self
         
         let cancelButton = UIBarButtonItem(
             barButtonSystemItem: .cancel,
@@ -38,19 +44,7 @@ class PasscodeEntryScreenVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let isUsingBiometrics = maybeShowBiometricAuth() {
-            [weak self] (successful) in
-            guard let _self = self else { return }
-            if successful {
-                _self.delegate?.passcodeEntryScreenDidUnlock(_self)
-            } else {
-                _self.passcodeTextField.becomeFirstResponder()
-            }
-        }
-        
-        if !isUsingBiometrics {
-            passcodeTextField.becomeFirstResponder()
-        }
+        passcodeTextField.becomeFirstResponder()
     }
     
     private func showError(message: String) {
@@ -58,56 +52,10 @@ class PasscodeEntryScreenVC: UIViewController {
         errorMessageLabel.text = message
     }
     
-    /// Shows biometric authentication UI, if supported and enabled.
-    ///
-    /// - Parameter completion: called after biometric authentication,
-    ///         with a `Bool` parameter indicating success of the bioauth.
-    /// - Returns: `true` if biometric authentication is shown, `false` otherwise.
-    open func maybeShowBiometricAuth(completion: @escaping ((Bool) -> Void)) -> Bool {
-        guard Settings.current.isBiometricAppLockEnabled else { return false }
-        guard !isBiometricAuthShown else { return false }
-        
-        let context = LAContext()
-        let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
-        context.localizedFallbackTitle = "" // hide "Enter Password" fallback; nil won't work
-        
-        let isBiometricsAvailable = context.canEvaluatePolicy(policy, error: nil)
-        if isBiometricsAvailable {
-            Diag.debug("Biometric auth: showing request")
-            context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
-                [unowned self] (authSuccessful, authError) in
-                self.isBiometricAuthShown = false
-                if authSuccessful {
-                    Diag.info("Biometric auth successful")
-                    DispatchQueue.main.async {
-                        completion(true)
-                    }
-                } else {
-                    if let error = authError {
-                        self.showError(message: error.localizedDescription)
-                        Diag.warning("Biometric auth failed [error: \(error.localizedDescription)]")
-                    } else {
-                        Diag.error("Biometric auth failed [error: nil]")
-                    }
-                    DispatchQueue.main.async {
-                        completion(false)
-                    }
-                }
-            }
-            isBiometricAuthShown = true
-        }
-        return isBiometricAuthShown
-    }
-    
-    
     // MARK: - Actions
     
-    @objc func didPressCancelButton(_ sender: Any) {
+    @IBAction func didPressCancelButton(_ sender: Any) {
         delegate?.passcodeEntryScreenShouldCancel(self)
-    }
-    
-    @IBAction func didChangePasscodeField(_ sender: Any) {
-        unlockButton.isEnabled = passcodeTextField.text?.isNotEmpty ?? false
     }
     
     @IBAction func didPressUnlockButton(_ sender: Any) {
@@ -117,7 +65,6 @@ class PasscodeEntryScreenVC: UIViewController {
             if isOK {
                 delegate?.passcodeEntryScreenDidUnlock(self)
             } else {
-//                showError(message: LString.NSLocalizedString("Try again", comment: "Shown when entered app passcode is wrong"))
                 passcodeTextField.shake()
             }
         } catch {
@@ -125,5 +72,11 @@ class PasscodeEntryScreenVC: UIViewController {
             showError(message: error.localizedDescription)
         }
     }
-    
+}
+
+extension PasscodeEntryScreenVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        didPressUnlockButton(textField)
+        return false
+    }
 }

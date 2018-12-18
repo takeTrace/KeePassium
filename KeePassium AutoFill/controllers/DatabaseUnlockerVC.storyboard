@@ -13,7 +13,7 @@
         <!--Unlock Database-->
         <scene sceneID="Iw4-YB-y36">
             <objects>
-                <viewController storyboardIdentifier="DatabaseUnlockerVC" title="Unlock Database" modalTransitionStyle="flipHorizontal" id="bxv-kR-0w1" customClass="DatabaseUnlockerVC" customModule="KeePassium_AutoFill" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DatabaseUnlockerVC" title="Unlock Database" modalTransitionStyle="crossDissolve" id="bxv-kR-0w1" customClass="DatabaseUnlockerVC" customModule="KeePassium_AutoFill" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GNR-ie-eMS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -39,7 +39,6 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="dID-zL-AtZ" secondAttribute="bottom" id="4C3-Vk-VyV"/>
                                             <constraint firstItem="dnT-Je-y2j" firstAttribute="centerY" secondItem="Crk-4o-Fqu" secondAttribute="centerY" id="C89-VZ-is7"/>
