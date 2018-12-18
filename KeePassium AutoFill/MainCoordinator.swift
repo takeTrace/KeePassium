@@ -251,7 +251,9 @@ class MainCoordinator: NSObject, Coordinator {
     }
     
     func showDiagnostics() {
-        //TODO: diagnostics viewer
+        let vc = DiagnosticsViewerVC.instantiateFromStoryboard()
+        vc.delegate = self
+        navigationController.pushViewController(vc, animated: true)
     }
     
     func showDatabaseContent(database: Database, databaseRef: URLReference) {
@@ -459,5 +461,17 @@ extension MainCoordinator: EntryFinderDelegate {
     func entryFinderShouldLockDatabase(_ sender: EntryFinderVC) {
         DatabaseManager.shared.closeDatabase(clearStoredKey: true)
         navigationController.popToRootViewController(animated: true)
+    }
+}
+
+extension MainCoordinator: DiagnosticsViewerDelegate {
+    func diagnosticsViewer(_ sender: DiagnosticsViewerVC, didCopyContents text: String) {
+        let infoAlert = UIAlertController.make(
+            title: nil,
+            message: NSLocalizedString(
+                "Diagnostic log has been copied to clipboard.",
+                comment: "[Diagnostics] notification/confirmation message"),
+            cancelButtonTitle: LString.actionOK)
+        navigationController.present(infoAlert, animated: true, completion: nil)
     }
 }

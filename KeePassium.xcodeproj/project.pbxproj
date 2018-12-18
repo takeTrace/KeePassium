@@ -25,8 +25,10 @@
 		750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */; };
 		750CFC0B21BADBCB00E62B09 /* DatabaseChooserVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 750CFC0A21BADBCB00E62B09 /* DatabaseChooserVC.storyboard */; };
 		750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D127D20CF071600BE0CCE /* EditGroupVC.swift */; };
-		751A13F92147D49100C77B63 /* SupportEmailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A13F82147D49100C77B63 /* SupportEmailComposer.swift */; };
 		751BE253211C395D0071050A /* ViewDiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */; };
+		7523F71321C94C7F0025C706 /* DiagnosticsViewerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7523F71221C94C7F0025C706 /* DiagnosticsViewerVC.storyboard */; };
+		7523F71521C94DD90025C706 /* DiagnosticsViewerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7523F71421C94DD90025C706 /* DiagnosticsViewerVC.swift */; };
+		7523F71D21C98D620025C706 /* SupportEmailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7523F71C21C98D620025C706 /* SupportEmailComposer.swift */; };
 		7529310B21ADA44C00E4B0D2 /* FileInfoVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7529310A21ADA44C00E4B0D2 /* FileInfoVC.storyboard */; };
 		7529310D21ADA46C00E4B0D2 /* FileInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529310C21ADA46C00E4B0D2 /* FileInfoVC.swift */; };
 		7529EAE721139E6E0093B117 /* SettingsPasscodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529EAE621139E6E0093B117 /* SettingsPasscodeVC.swift */; };
@@ -190,8 +192,10 @@
 		750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseChooserVC.swift; sourceTree = "<group>"; };
 		750CFC0A21BADBCB00E62B09 /* DatabaseChooserVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DatabaseChooserVC.storyboard; sourceTree = "<group>"; };
 		750D127D20CF071600BE0CCE /* EditGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupVC.swift; sourceTree = "<group>"; };
-		751A13F82147D49100C77B63 /* SupportEmailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportEmailComposer.swift; sourceTree = "<group>"; };
 		751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDiagnosticsVC.swift; sourceTree = "<group>"; };
+		7523F71221C94C7F0025C706 /* DiagnosticsViewerVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DiagnosticsViewerVC.storyboard; sourceTree = "<group>"; };
+		7523F71421C94DD90025C706 /* DiagnosticsViewerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsViewerVC.swift; sourceTree = "<group>"; };
+		7523F71C21C98D620025C706 /* SupportEmailComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportEmailComposer.swift; sourceTree = "<group>"; };
 		7529310A21ADA44C00E4B0D2 /* FileInfoVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FileInfoVC.storyboard; sourceTree = "<group>"; };
 		7529310C21ADA46C00E4B0D2 /* FileInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInfoVC.swift; sourceTree = "<group>"; };
 		7529EAE621139E6E0093B117 /* SettingsPasscodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPasscodeVC.swift; sourceTree = "<group>"; };
@@ -428,7 +432,7 @@
 				755E9C4C20BE5DC200FD7C7A /* UIImage+extensions.swift */,
 				75C3801A217A0B76006F74C2 /* UIViewController+storyboard.swift */,
 				7542D2412129640F00C8A926 /* String+extensions.swift */,
-				751A13F82147D49100C77B63 /* SupportEmailComposer.swift */,
+				7523F71C21C98D620025C706 /* SupportEmailComposer.swift */,
 				75CD364021537A310018AF46 /* AppStoreReviewHelper.swift */,
 			);
 			path = util;
@@ -586,6 +590,8 @@
 				7532A24E21C5A03F005DF56F /* KeyFileChooserVC.storyboard */,
 				75B5804D21C80861007F03B7 /* PasscodeEntryScreenVC.swift */,
 				75B5804B21C8084D007F03B7 /* PasscodeEntryScreenVC.storyboard */,
+				7523F71421C94DD90025C706 /* DiagnosticsViewerVC.swift */,
+				7523F71221C94C7F0025C706 /* DiagnosticsViewerVC.storyboard */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -706,6 +712,7 @@
 				75CFBE2821C2BDC60029A80A /* DatabaseUnlockerVC.storyboard in Resources */,
 				750CFC0B21BADBCB00E62B09 /* DatabaseChooserVC.storyboard in Resources */,
 				75B24DBC21C3CAE8003C9486 /* EntryFinderVC.storyboard in Resources */,
+				7523F71321C94C7F0025C706 /* DiagnosticsViewerVC.storyboard in Resources */,
 				750CFBD821BA9E6700E62B09 /* Assets.xcassets in Resources */,
 				750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */,
 				750CFC0621BAD96C00E62B09 /* WelcomeVC.storyboard in Resources */,
@@ -768,6 +775,7 @@
 				750CFBCB21BA9ACD00E62B09 /* CredentialProviderViewController.swift in Sources */,
 				75CBAB9F21C1671F00B8AFE2 /* MainCoordinator.swift in Sources */,
 				75D3A3B121BAE66F00255FC3 /* DatabaseFileListCell.swift in Sources */,
+				7523F71521C94DD90025C706 /* DiagnosticsViewerVC.swift in Sources */,
 				75B24DBA21C3CADB003C9486 /* EntryFinderVC.swift in Sources */,
 				750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */,
 				750CFBD921BAD7FF00E62B09 /* Refreshable.swift in Sources */,
@@ -826,6 +834,7 @@
 				750C683220D767F6001A6AA0 /* EditEntryVC.swift in Sources */,
 				755E9C4D20BE5DC200FD7C7A /* UIImage+extensions.swift in Sources */,
 				75F5CACD20BD18320056C969 /* UIView+extension.swift in Sources */,
+				7523F71D21C98D620025C706 /* SupportEmailComposer.swift in Sources */,
 				756AE9D320CF8B5E00995846 /* ChooseIconVC.swift in Sources */,
 				7546FBDD20C3ACFD00C5D834 /* KPApplication.swift in Sources */,
 				7529EAE721139E6E0093B117 /* SettingsPasscodeVC.swift in Sources */,
@@ -838,7 +847,6 @@
 				7542D2422129640F00C8A926 /* String+extensions.swift in Sources */,
 				75E371942108CA08002602BD /* ProgressOverlay.swift in Sources */,
 				7561850520E0379F00EEFAEE /* ValidatingTextView.swift in Sources */,
-				751A13F92147D49100C77B63 /* SupportEmailComposer.swift in Sources */,
 				75CD364121537A320018AF46 /* AppStoreReviewHelper.swift in Sources */,
 				75B5FB7720D53EA700D402D9 /* ViewEntryFieldsVC.swift in Sources */,
 				75B3B7BC20EABD9D007E8FA9 /* PlaceholderVC.swift in Sources */,
