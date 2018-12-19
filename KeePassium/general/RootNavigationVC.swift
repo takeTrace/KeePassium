@@ -32,7 +32,7 @@ class RootNavigationVC: UINavigationController, UINavigationControllerDelegate {
     {
         if viewController is UnlockDatabaseVC || viewController is ChooseDatabaseVC {
             // We either just started the app, or just popped from ViewGroupVC. Anyway, the DB must be closed now.
-            DatabaseManager.shared.closeDatabase()
+            DatabaseManager.shared.closeDatabase(clearStoredKey: true)
         }
     }
     

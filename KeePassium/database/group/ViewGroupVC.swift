@@ -515,7 +515,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     }
     
     @IBAction func didPressLockDatabase(_ sender: Any) {
-        DatabaseManager.shared.closeDatabase()
+        DatabaseManager.shared.closeDatabase(clearStoredKey: true)
     }
     
     @IBAction func didPressChangeDatabaseSettings(_ sender: Any) {
