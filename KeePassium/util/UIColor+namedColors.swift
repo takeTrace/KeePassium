@@ -30,8 +30,8 @@ extension UIColor {
     static var primaryText: UIColor {
         return UIColor(named: "PrimaryText") ?? .black
     }
-    static var secondaryText: UIColor {
-        return UIColor(named: "SecondaryText") ?? .darkGray
+    static var auxiliaryText: UIColor {
+        return UIColor(named: "AuxiliaryText") ?? .darkGray
     }
 
 //    static var navBarTint: UIColor {

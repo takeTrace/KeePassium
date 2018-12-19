@@ -88,7 +88,7 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
             } else {
                 passcodeCell.detailTextLabel?.text = LString.statusPasscodeNotSet
             }
-            passcodeCell.detailTextLabel?.textColor = UIColor.secondaryText
+            passcodeCell.detailTextLabel?.textColor = UIColor.auxiliaryText
         } catch { // KeychainError
             passcodeCell.detailTextLabel?.text = LString.titleKeychainError
             passcodeCell.detailTextLabel?.textColor = UIColor.errorMessage

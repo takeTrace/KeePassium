@@ -35,7 +35,7 @@ class DatabaseFileListCell: UITableViewCell {
             } else {
                 detailTextLabel?.text = nil
             }
-            detailTextLabel?.textColor = UIColor.secondaryText
+            detailTextLabel?.textColor = UIColor.auxiliaryText
         }
     }
 }
