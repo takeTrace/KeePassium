@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sWN-0A-UAO">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,11 +15,11 @@
             <objects>
                 <viewController storyboardIdentifier="FirstSetupVC" title="KeePassium" id="sWN-0A-UAO" customClass="FirstSetupVC" customModule="KeePassium_AutoFill" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Rn-iq-uS6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enW-gs-tra">
-                                <rect key="frame" x="47.5" y="311.5" width="280" height="44"/>
+                                <rect key="frame" x="20" y="262" width="280" height="44"/>
                                 <color key="backgroundColor" name="ActionTint"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="3vK-JY-mNd"/>
@@ -37,28 +37,43 @@
                                     <action selector="didPressAddDatabase:" destination="sWN-0A-UAO" eventType="touchUpInside" id="F1e-av-prM"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P0M-N3-ynf">
-                                <rect key="frame" x="16.5" y="143" width="342.5" height="152.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="hdd-93-OLq"/>
-                                </constraints>
-                                <string key="text">For security reasons, auto fill feature cannot automatically access databases you created or added in the KeePassium app.
-
-Please re-add databases you want to use with the auto fill feature. You will need to do this only this one time.</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="Please re-add databases and key files you want to use with the AutoFill feature." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P0M-N3-ynf">
+                                <rect key="frame" x="16" y="181.5" width="288" height="64.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="PrimaryText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEV-ce-7s3">
+                                <rect key="frame" x="16" y="322" width="288" height="52"/>
+                                <string key="text">For security reasons, AutoFill extension cannot automatically access any files you have already created or added to the main KeePassium app.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" name="AuxiliaryText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="AutoFill Setup" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIl-6L-Msp">
+                                <rect key="frame" x="82.5" y="134" width="155.5" height="31.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <color key="textColor" name="PrimaryText"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="BEV-ce-7s3" firstAttribute="top" secondItem="enW-gs-tra" secondAttribute="bottom" constant="16" id="17n-6c-z5d"/>
                             <constraint firstItem="enW-gs-tra" firstAttribute="centerX" secondItem="6Rn-iq-uS6" secondAttribute="centerX" id="3BI-MT-oAH"/>
+                            <constraint firstItem="P0M-N3-ynf" firstAttribute="leading" secondItem="6Rn-iq-uS6" secondAttribute="leadingMargin" id="46e-Fg-gsa"/>
+                            <constraint firstItem="pIl-6L-Msp" firstAttribute="centerX" secondItem="6Rn-iq-uS6" secondAttribute="centerX" id="500-zb-49a"/>
+                            <constraint firstItem="5e5-l3-iUK" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BEV-ce-7s3" secondAttribute="bottom" constant="8" id="CNS-ux-lLV"/>
+                            <constraint firstItem="P0M-N3-ynf" firstAttribute="top" secondItem="pIl-6L-Msp" secondAttribute="bottom" constant="16" id="Gr4-4Q-84M"/>
                             <constraint firstItem="enW-gs-tra" firstAttribute="centerY" secondItem="6Rn-iq-uS6" secondAttribute="centerY" priority="250" id="HUo-UZ-pq7"/>
-                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="P0M-N3-ynf" secondAttribute="trailing" id="KlZ-Jk-2nX"/>
-                            <constraint firstItem="enW-gs-tra" firstAttribute="top" secondItem="P0M-N3-ynf" secondAttribute="bottom" constant="16" id="aTG-mF-iWX"/>
-                            <constraint firstItem="P0M-N3-ynf" firstAttribute="centerX" secondItem="6Rn-iq-uS6" secondAttribute="centerX" id="euN-4N-Lau"/>
-                            <constraint firstItem="P0M-N3-ynf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Rn-iq-uS6" secondAttribute="leadingMargin" id="g93-lG-ar6"/>
-                            <constraint firstItem="P0M-N3-ynf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5e5-l3-iUK" secondAttribute="top" constant="8" id="qhU-bt-VdL"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="pIl-6L-Msp" secondAttribute="trailing" id="MeA-EH-DYV"/>
+                            <constraint firstItem="pIl-6L-Msp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5e5-l3-iUK" secondAttribute="top" constant="16" id="NHu-pE-VGg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="P0M-N3-ynf" secondAttribute="trailing" id="XaH-ti-MBW"/>
+                            <constraint firstItem="enW-gs-tra" firstAttribute="top" secondItem="P0M-N3-ynf" secondAttribute="bottom" constant="16" id="cFv-aB-XZz"/>
+                            <constraint firstItem="pIl-6L-Msp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Rn-iq-uS6" secondAttribute="leadingMargin" id="erw-Gm-AKb"/>
+                            <constraint firstItem="enW-gs-tra" firstAttribute="centerY" secondItem="6Rn-iq-uS6" secondAttribute="centerY" priority="250" id="nNu-AQ-Ra7"/>
+                            <constraint firstItem="BEV-ce-7s3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Rn-iq-uS6" secondAttribute="leadingMargin" id="xfd-d0-ZQV"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="BEV-ce-7s3" secondAttribute="trailing" id="zgC-Ym-C07"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="5e5-l3-iUK"/>
                     </view>
@@ -81,6 +96,12 @@ Please re-add databases you want to use with the auto fill feature. You will nee
         </namedColor>
         <namedColor name="ActionTint">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="AuxiliaryText">
+            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
+        <namedColor name="PrimaryText">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
     </resources>
 </document>
