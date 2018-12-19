@@ -119,16 +119,6 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         }
     }
 
-    open override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-        
-        guard let group = group else { return }
-        if parent == nil && group.isRoot {
-            // poping root group VC from navigation => close database
-            DatabaseManager.shared.closeDatabase(clearStoredKey: true)
-        }
-    }
-    
     override open func viewDidDisappear(_ animated: Bool) {
         settingsNotifications.stopObserving()
         groupChangeNotifications.stopObserving()
@@ -525,7 +515,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     }
     
     @IBAction func didPressLockDatabase(_ sender: Any) {
-        DatabaseManager.shared.closeDatabase(clearStoredKey: true)
+        DatabaseManager.shared.closeDatabase()
     }
     
     @IBAction func didPressChangeDatabaseSettings(_ sender: Any) {
