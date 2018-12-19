@@ -18,7 +18,7 @@ public enum FileType {
         "be.kyuran.kypass.kdb"]
     
     public static let keyFileUTIs =
-        ["com.keepassium.keyfile", "public.data"]
+        ["com.keepassium.keyfile", "public.data", "public.content"]
     
     public static let databaseExtensions = ["kdb", "kdbx"]
     //public static let keyFileExtensions = anything except database
