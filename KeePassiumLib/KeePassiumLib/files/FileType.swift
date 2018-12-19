@@ -13,6 +13,8 @@ public enum FileType {
         "com.keepassium.kdb", "com.keepassium.kdbx",
         "com.jflan.MiniKeePass.kdb", "com.jflan.MiniKeePass.kdbx",
         "com.kptouch.kdb", "com.kptouch.kdbx",
+        "com.markmcguill.strongbox.kdb",
+        "com.markmcguill.strongbox.kdbx",
         "be.kyuran.kypass.kdb"]
     
     public static let keyFileUTIs =

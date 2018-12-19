@@ -25,6 +25,8 @@
 				<string>com.jflan.MiniKeePass.kdbx</string>
 				<string>com.kptouch.kdb</string>
 				<string>com.kptouch.kdbx</string>
+				<string>com.markmcguill.strongbox.kdb</string>
+				<string>com.markmcguill.strongbox.kdbx</string>
 				<string>be.kyuran.kypass.kdb</string>
 			</array>
 		</dict>
@@ -189,6 +191,26 @@
 			<string>be.kyuran.kypass.kdb</string>
 			<key>UTTypeTagSpecification</key>
 			<dict/>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.markmcguill.strongbox.kdb</string>
+			</array>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.markmcguill.strongbox.kdb</string>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.markmcquill.strongbox.kdbx</string>
+			</array>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.markmcguill.strongbox.kdbx</string>
 		</dict>
 	</array>
 </dict>
