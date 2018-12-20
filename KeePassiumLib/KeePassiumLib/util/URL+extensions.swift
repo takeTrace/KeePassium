@@ -24,6 +24,13 @@ public extension URL {
         return attr[FileAttributeKey.creationDate] as? Date
     }
     
+    /// Size of the file at this URL.
+    public var fileSize: Int64? {
+        guard let attr = try? FileManager.default
+            .attributesOfItem(atPath: self.path) else { return nil}
+        return attr[FileAttributeKey.size] as? Int64
+    }
+    
     /// True for directories.
     public var isDirectory: Bool {
         let res = try? resourceValues(forKeys: [.isDirectoryKey])

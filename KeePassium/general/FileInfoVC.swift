@@ -50,32 +50,39 @@ class FileInfoVC: UITableViewController {
     }
     
     private func setupFields(urlRef: URLReference) {
-        fields.append((
-            NSLocalizedString("File Name", comment: ""),
-            urlRef.info.fileName
-        ))
-        fields.append((
-            NSLocalizedString("File Location", comment: ""),
-            urlRef.location.description
-        ))
-        if let errorMessage = urlRef.info.errorMessage {
+        let fileInfo = urlRef.info
+        if let errorMessage = fileInfo.errorMessage {
             fields.append((
-                NSLocalizedString("Error", comment: "Title of a field with an error message"),
+                NSLocalizedString("Error", comment: "[FileInfo] Title of a field with an error message"),
                 errorMessage
             ))
         }
-        if let creationDate = urlRef.info.creationDate {
+        fields.append((
+            NSLocalizedString("File Name", comment: "[FileInfo] Field title"),
+            fileInfo.fileName
+        ))
+        fields.append((
+            NSLocalizedString("File Location", comment: "[FileInfo] Field title"),
+            urlRef.location.description
+        ))
+        if let fileSize = fileInfo.fileSize {
             fields.append((
-                NSLocalizedString("Creation Date", comment: ""),
+                NSLocalizedString("File Size", comment: "[FileInfo] Field title"),
+                ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
+            ))
+        }
+        if let creationDate = fileInfo.creationDate {
+            fields.append((
+                NSLocalizedString("Creation Date", comment: "[FileInfo] Field title"),
                 DateFormatter.localizedString(
                     from: creationDate,
                     dateStyle: .medium,
                     timeStyle: .medium)
             ))
         }
-        if let modificationDate = urlRef.info.modificationDate {
+        if let modificationDate = fileInfo.modificationDate {
             fields.append((
-                NSLocalizedString("Last Modification Date", comment: ""),
+                NSLocalizedString("Last Modification Date", comment: "[FileInfo] Field title"),
                 DateFormatter.localizedString(
                     from: modificationDate,
                     dateStyle: .medium,

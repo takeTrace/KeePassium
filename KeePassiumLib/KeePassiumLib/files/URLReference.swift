@@ -14,6 +14,7 @@ public struct FileInfo {
     public var hasError: Bool { return errorMessage != nil}
     public var errorMessage: String?
     
+    public var fileSize: Int64?
     public var creationDate: Date?
     public var modificationDate: Date?
 }
@@ -127,12 +128,14 @@ public class URLReference: Equatable, Codable {
             return FileInfo(
                 fileName: url.lastPathComponent,
                 errorMessage: nil,
+                fileSize: url.fileSize,
                 creationDate: url.fileCreationDate,
                 modificationDate: url.fileModificationDate)
         } catch {
             return FileInfo(
                 fileName: "?",
                 errorMessage: error.localizedDescription,
+                fileSize: nil,
                 creationDate: nil,
                 modificationDate: nil)
         }
