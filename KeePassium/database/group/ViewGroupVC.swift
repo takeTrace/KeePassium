@@ -118,6 +118,20 @@ open class ViewGroupVC: UITableViewController, Refreshable {
             }
         }
     }
+    
+    open override func didMove(toParent parent: UIViewController?) {
+        guard let group = group else { return }
+        
+        // FIXME: this check avoids group.isRoot crashing when the DB is closed.
+        if DatabaseManager.shared.isDatabaseOpen {
+            if parent == nil && group.isRoot {
+                // poping root group VC from navigation => close database
+                DatabaseManager.shared.closeDatabase(clearStoredKey: true)
+            }
+        }
+        super.didMove(toParent: parent)
+    }
+
 
     override open func viewDidDisappear(_ animated: Bool) {
         settingsNotifications.stopObserving()
