@@ -111,11 +111,16 @@ public class URLReference: Equatable, Codable {
         return url
     }
     
-    /// Information about resolved URL.
+    /// Cached information about resolved URL.
+    /// Cached after first call; use `getInfo()` to update.
     /// In case of trouble, only `hasError` and `errorMessage` fields are valid.
     public lazy var info: FileInfo = getInfo()
     
-    private func getInfo() -> FileInfo {
+    /// Returns information about resolved URL (also updates the `info` property).
+    /// Might be slow, as it needs to resolve the URL.
+    /// In case of trouble, only `hasError` and `errorMessage` fields are valid.
+    public func getInfo() -> FileInfo {
+        let result: FileInfo
         do {
             let url = try resolve()
             // without secruity scoping, won't get file attributes
@@ -125,19 +130,21 @@ public class URLReference: Equatable, Codable {
                     url.stopAccessingSecurityScopedResource()
                 }
             }
-            return FileInfo(
+            result = FileInfo(
                 fileName: url.lastPathComponent,
                 errorMessage: nil,
                 fileSize: url.fileSize,
                 creationDate: url.fileCreationDate,
                 modificationDate: url.fileModificationDate)
         } catch {
-            return FileInfo(
+            result = FileInfo(
                 fileName: "?",
                 errorMessage: error.localizedDescription,
                 fileSize: nil,
                 creationDate: nil,
                 modificationDate: nil)
         }
+        self.info = result
+        return result
     }
 }

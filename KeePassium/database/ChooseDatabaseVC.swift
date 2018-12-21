@@ -218,7 +218,7 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
         
     func didPressDeleteDatabase(at indexPath: IndexPath) {
         let urlRef = databaseRefs[indexPath.row]
-        let info = urlRef.info
+        let info = urlRef.getInfo()
         if info.hasError {
             // dead reference, just remove it without confirmation
             deleteDatabaseFile(urlRef: urlRef)
@@ -275,10 +275,11 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
 
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         do {
+            let fileInfo = urlRef.getInfo()
             try FileKeeper.shared.deleteFile(
                 urlRef,
                 fileType: .database,
-                ignoreErrors: urlRef.info.hasError)
+                ignoreErrors: fileInfo.hasError)
                 // throws `FileKeeperError`
             refresh()
         } catch {
@@ -379,8 +380,9 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
         
         // For deletion, the action name depends on where that file is.
         let urlRef = databaseRefs[indexPath.row]
+        let fileInfo = urlRef.getInfo()
         let deleteActionTitle: String
-        if urlRef.location == .external || urlRef.info.hasError {
+        if urlRef.location == .external || fileInfo.hasError {
             deleteActionTitle = LString.actionRemoveFile
         } else {
             deleteActionTitle = LString.actionDeleteFile

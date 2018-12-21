@@ -18,7 +18,7 @@ class DatabaseFileListCell: UITableViewCell {
     }
     
     private func setupCell() {
-        let fileInfo = urlRef.info
+        let fileInfo = urlRef.getInfo()
         textLabel?.text = fileInfo.fileName
         if fileInfo.hasError {
             detailTextLabel?.text = fileInfo.errorMessage

@@ -103,13 +103,13 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
     
     func didPressDeleteKeyFile(at indexPath: IndexPath) {
         let urlRef = urlRefs[indexPath.row - 1]
-        let refInfo = urlRef.info
-        if refInfo.hasError {
+        let fileInfo = urlRef.getInfo()
+        if fileInfo.hasError {
             // there is nothing useful in this reference, so delete without confirmation
             deleteKeyFile(urlRef: urlRef)
         } else {
             let confirmDeletionAlert = UIAlertController.make(
-                title: urlRef.info.fileName,
+                title: fileInfo.fileName,
                 message: LString.confirmKeyFileDeletion,
                 cancelButtonTitle: LString.actionCancel)
             let deleteAction = UIAlertAction(title: LString.actionDelete, style: .destructive)
@@ -143,7 +143,7 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
                 for: indexPath)
         }
         
-        let fileInfo = urlRefs[indexPath.row - 1].info
+        let fileInfo = urlRefs[indexPath.row - 1].getInfo()
 
         let cell = tableView.dequeueReusableCell(withIdentifier: CellID.keyFile, for: indexPath)
         cell.textLabel?.text = fileInfo.fileName
