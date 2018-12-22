@@ -76,7 +76,7 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        fileKeeperNotifications.startObserving()
+        fileKeeperNotifications.stopObserving()
         super.viewDidDisappear(animated)
     }
 
