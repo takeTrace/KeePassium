@@ -40,7 +40,7 @@ final class KeyHelper2: KeyHelper {
         } else if !passwordData.isEmpty {
             Diag.info("Using password only")
             preKey = passwordData.sha256
-        } else if keyFileData.isEmpty {
+        } else if !keyFileData.isEmpty {
             Diag.info("Using key file only")
             preKey = processKeyFile(keyFileData: keyFileData)
             // in KP2, preKey is kept for another sha256 (in KP1, is returned as is)
