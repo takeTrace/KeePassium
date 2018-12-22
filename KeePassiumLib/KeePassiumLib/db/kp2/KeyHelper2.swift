@@ -29,24 +29,27 @@ final class KeyHelper2: KeyHelper {
     }
     
     override func makeCompositeKey(passwordData: ByteArray, keyFileData: ByteArray) -> SecureByteArray {
-        precondition(!passwordData.isEmpty || !keyFileData.isEmpty)
+        let hasPassword = !passwordData.isEmpty
+        let hasKeyFile = !keyFileData.isEmpty
+
+        precondition(hasPassword || hasKeyFile)
         
-        var preKey: ByteArray
-        if !passwordData.isEmpty && !keyFileData.isEmpty {
+        let preKey: ByteArray
+        if hasPassword && hasKeyFile {
             Diag.info("Using password and key file")
             preKey = SecureByteArray.concat(
                 passwordData.sha256,
                 processKeyFile(keyFileData: keyFileData))
-        } else if !passwordData.isEmpty {
+        } else if hasPassword {
             Diag.info("Using password only")
             preKey = passwordData.sha256
-        } else if !keyFileData.isEmpty {
+        } else if hasKeyFile {
             Diag.info("Using key file only")
             preKey = processKeyFile(keyFileData: keyFileData)
             // in KP2, preKey is kept for another sha256 (in KP1, is returned as is)
         } else {
-            // should not happen, already checked above
-            preKey = ByteArray() // needed to hush the compiler warning
+            // Nothing is provided. This should have already been checked above.
+            fatalError("Both password and key file are empty after being checked.")
         }
         return SecureByteArray(preKey.sha256)
     }

@@ -35,23 +35,26 @@ class KeyHelper1: KeyHelper {
         keyFileData: ByteArray
         ) -> SecureByteArray
     {
-        precondition(!passwordData.isEmpty || !keyFileData.isEmpty)
+        let hasPassword = !passwordData.isEmpty
+        let hasKeyFile = !keyFileData.isEmpty
         
-        if !passwordData.isEmpty && !keyFileData.isEmpty {
+        precondition(hasPassword || hasKeyFile)
+        
+        if hasPassword && hasKeyFile {
             Diag.info("Using password and key file")
             let preKey = ByteArray.concat(
                 passwordData.sha256,
                 processKeyFile(keyFileData: keyFileData))
             return SecureByteArray(preKey.sha256)
-        } else if !passwordData.isEmpty {
+        } else if hasPassword {
             Diag.info("Using password")
             return SecureByteArray(passwordData.sha256)
-        } else if !keyFileData.isEmpty {
+        } else if hasKeyFile {
             Diag.info("Using key file")
             return processKeyFile(keyFileData: keyFileData) // in KP1 returned as is (in KP2 undergoes another sha256)
         } else {
             // should not happen, already checked above
-            fatalError("Unexpectedly got both empty password and empty key file.")
+            fatalError("Both password and key file are empty after being checked.")
         }
     }
     
