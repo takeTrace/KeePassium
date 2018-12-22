@@ -149,9 +149,10 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         guard let message = message else { return }
         
         if let details = details {
-            errorLabel.text = "\(message)\n\(details)"
+            errorLabel.text = " \(message)\n\(details) "
         } else {
-            errorLabel.text = message
+            // surrounding spaces extend side margins in UILabel
+            errorLabel.text = " " + message + " "
         }
         UIView.animate(
             withDuration: 0.3,
