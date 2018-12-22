@@ -48,13 +48,14 @@ extension Diag.Level {
 }
 
 /// Diagnostic info viewer
-class ViewDiagnosticsVC: UITableViewController {
+class ViewDiagnosticsVC: UITableViewController, Refreshable {
     @IBOutlet private weak var textView: UITextView!
     private var items: [Diag.Item] = []
     
     static func make() -> UIViewController {
         let vc = ViewDiagnosticsVC.instantiateFromStoryboard()
         let navVC = UINavigationController(rootViewController: vc)
+        navVC.isToolbarHidden = false
         navVC.modalPresentationStyle = .formSheet
         return navVC
     }
@@ -62,6 +63,10 @@ class ViewDiagnosticsVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
+        refresh()
+    }
+    
+    func refresh() {
         items = Diag.itemsSnapshot()
         tableView.reloadData()
     }
@@ -76,6 +81,11 @@ class ViewDiagnosticsVC: UITableViewController {
             [weak self] (success) in
             self?.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    @IBAction func didPressClear(_ sender: Any) {
+        Diag.clear()
+        refresh()
     }
     
     // MARK: Table data source
