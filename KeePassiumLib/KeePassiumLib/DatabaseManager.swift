@@ -577,11 +577,13 @@ fileprivate class DatabaseLoader {
         if let compositeKey = compositeKey {
             // Shortcut: we already have the composite key, so skip password/key file processing
             progress.completedUnitCount += ProgressSteps.readKeyFile
+            Diag.info("Using a ready composite key")
             onCompositeKeyReady(dbDoc: dbDoc, compositeKey: compositeKey)
             return
         }
         
         if let keyFileRef = keyFileRef {
+            Diag.debug("Loading key file")
             //TODO: maybe replace with DatabaseManager.createCompositeKey
             progress.localizedDescription = NSLocalizedString("Loading key file...", comment: "Status message: loading key file in progress")
             let keyFileURL: URL
