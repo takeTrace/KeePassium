@@ -325,22 +325,29 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
 }
 
 extension UnlockDatabaseVC: KeyFileChooserDelegate {
-    func onKeyFileSelected(urlRef: URLReference?) {
+    func setKeyFile(urlRef: URLReference?) {
         // can be nil, can have error, can be ok
         keyFileRef = urlRef
         Settings.current.setKeyFileForDatabase(databaseRef: databaseRef, keyFileRef: keyFileRef)
 
-        guard let refInfo = urlRef?.info else {
+        guard let fileInfo = urlRef?.info else {
+            Diag.debug("No key file selected")
             keyFileField.text = ""
             return
         }
-        if let errorDetails = refInfo.errorMessage {
+        if let errorDetails = fileInfo.errorMessage {
             let errorMessage = NSLocalizedString("Key file error: \(errorDetails)", comment: "Error message related to key file")
+            Diag.warning(errorMessage)
             showErrorMessage(errorMessage)
             keyFileField.text = ""
         } else {
-            keyFileField.text = refInfo.fileName
+            Diag.info("Key file set successfully")
+            keyFileField.text = fileInfo.fileName
         }
+    }
+    
+    func onKeyFileSelected(urlRef: URLReference?) {
+        setKeyFile(urlRef: urlRef)
     }
 }
 
