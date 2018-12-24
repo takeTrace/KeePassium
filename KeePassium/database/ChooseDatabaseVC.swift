@@ -229,7 +229,7 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
         let info = urlRef.getInfo()
         if info.hasError {
             // dead reference, just remove it without confirmation
-            deleteDatabaseFile(urlRef: urlRef)
+            removeDatabaseFile(urlRef: urlRef)
             return
         }
         
