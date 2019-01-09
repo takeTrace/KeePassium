@@ -227,6 +227,10 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
                 items = [url]
             }
         let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = tableView
+            popover.sourceRect = tableView.rectForRow(at: indexPath)
+        }
         present(activityVC, animated: true)
     }
     
