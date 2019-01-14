@@ -88,7 +88,6 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
         if !(splitViewController?.isCollapsed ?? true) {
