@@ -74,6 +74,7 @@ class PasscodeEntryScreenVC: UIViewController {
                 delegate?.passcodeEntryScreenDidUnlock(self)
             } else {
                 passcodeTextField.shake()
+                passcodeTextField.selectAll(nil)
             }
         } catch {
             Diag.error("Keychain error [message: \(error.localizedDescription)]")

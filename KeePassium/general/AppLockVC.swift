@@ -81,6 +81,7 @@ public class AppLockVC: UIViewController {
                 doUnlock()
             } else {
                 textField.shake()
+                textField.selectAll(nil)
             }
         } catch { // KeychainError
             let errorAlert = UIAlertController.make(
