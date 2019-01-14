@@ -171,7 +171,9 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
     }
     
     @IBAction func didPressAddDatabase(_ sender: Any) {
-        let picker = UIDocumentPickerViewController(documentTypes: FileType.databaseUTIs, in: .open)
+        let picker = UIDocumentPickerViewController(
+            documentTypes: FileType.publicDataUTIs,
+            in: .open)
         picker.delegate = self
         picker.modalPresentationStyle = .pageSheet
         present(picker, animated: true, completion: nil)
@@ -441,7 +443,18 @@ extension ChooseDatabaseVC: UIDocumentPickerDelegate {
         didPickDocumentsAt urls: [URL])
     {
         guard let url = urls.first else { return }
-
+        guard FileType.isDatabaseFile(url: url) else {
+            let fileName = url.lastPathComponent
+            let errorAlert = UIAlertController.make(
+                title: LString.titleWarning,
+                message: NSLocalizedString(
+                    "Selected file \"\(fileName)\" does not look like a database.",
+                    comment: "Warning when trying to add a file"),
+                cancelButtonTitle: LString.actionOK)
+            present(errorAlert, animated: true, completion: nil)
+            return
+        }
+        
         switch controller.documentPickerMode {
         case .open:
             FileKeeper.shared.prepareToAddFile(url: url, mode: .openInPlace)

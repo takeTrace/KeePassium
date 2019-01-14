@@ -195,7 +195,9 @@ class MainCoordinator: NSObject, Coordinator {
     }
     
     func addDatabase() {
-        let picker = UIDocumentPickerViewController(documentTypes: FileType.databaseUTIs, in: .open)
+        let picker = UIDocumentPickerViewController(
+            documentTypes: FileType.publicDataUTIs,
+            in: .open)
         picker.delegate = self
         navigationController.topViewController?.present(picker, animated: true, completion: nil)
         
@@ -405,6 +407,18 @@ extension MainCoordinator: UIDocumentPickerDelegate {
     }
     
     private func addDatabaseURL(_ url: URL) {
+        guard FileType.isDatabaseFile(url: url) else {
+            let fileName = url.lastPathComponent
+            let errorAlert = UIAlertController.make(
+                title: LString.titleWarning,
+                message: NSLocalizedString(
+                    "Selected file \"\(fileName)\" does not look like a database.",
+                    comment: "Warning when trying to add a file"),
+                cancelButtonTitle: LString.actionOK)
+            navigationController.present(errorAlert, animated: true, completion: nil)
+            return
+        }
+        
         FileKeeper.shared.prepareToAddFile(url: url, mode: .openInPlace)
         FileKeeper.shared.processPendingOperations(
             success: { (urlRef) in

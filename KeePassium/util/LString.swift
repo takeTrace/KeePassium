@@ -103,7 +103,7 @@ internal enum LString {
     public static let actionOpenDatabase  = NSLocalizedString("Open Database", comment: "Action/button")
     public static let actionImportDatabase  = NSLocalizedString("Import Database", comment: "Action/button")
     public static let defaultNewDatabaseName  = NSLocalizedString("MyPasswords", comment: "Default file name for a new password database")
-    
+
     // Master key changing
     public static let masterKeySuccessfullyChanged = NSLocalizedString("Master key successfully changed", comment: "Notification message")
     

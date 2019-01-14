@@ -17,6 +17,8 @@
 import Foundation
 
 public enum FileType {
+    public static let publicDataUTIs = ["public.data"]
+    
     public static let databaseUTIs = [
         "com.keepassium.kdb", "com.keepassium.kdbx",
         "com.jflan.MiniKeePass.kdb", "com.jflan.MiniKeePass.kdbx",
