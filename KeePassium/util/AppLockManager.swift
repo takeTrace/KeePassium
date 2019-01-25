@@ -141,15 +141,11 @@ public class AppLockManager {
     open func maybeLock() {
         guard !isLocked else { return }
         guard Settings.current.appLockTimeout != .never else { return }
-        do {
-            if try isPasscodeSet() { // throws KeychainError
-                Diag.info("App locked")
-                showLockScreen()
-            } else {
-                Diag.debug("App Lock passcode not set, skipping the lock")
-            }
-        } catch { // KeychainError
-            showLockScreen(message: error.localizedDescription)
+        if Settings.current.isAppLockEnabled {
+            Diag.info("AppLock engaged")
+            showLockScreen()
+        } else {
+            Diag.debug("AppLock disabled, skipping the lock")
         }
     }
     
@@ -158,12 +154,16 @@ public class AppLockManager {
         hideLockScreen()
     }
     
-    /// Shows the lock screen, with an optional custom message.
-    private func showLockScreen(message: String? = nil) {
+    /// Shows the lock screen.
+    private func showLockScreen() {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
         lockWindow!.screen = UIScreen.main
         lockWindow!.windowLevel = UIWindow.Level.alert
-        lockWindow!.rootViewController = AppLockVC.make(message: message)
+        let passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
+        passcodeInputVC.delegate = self
+        passcodeInputVC.mode = .verification
+        passcodeInputVC.isCancellable = false // for the main app
+        lockWindow!.rootViewController = passcodeInputVC
         lockWindow!.makeKeyAndVisible()
         print("LockScreen shown")
     }
@@ -177,31 +177,31 @@ public class AppLockManager {
     /// Checks if there is a stored App Lock passcode.
     /// - Throws: KeychainError
     public func isPasscodeSet() throws -> Bool {
-        return try Keychain.shared.isAppPasscodeSet() // throws KeychainError
+        let hasPasscode = try Keychain.shared.isAppPasscodeSet() // throws KeychainError
+        return Settings.current.isAppLockEnabled && hasPasscode
     }
 
-    /// Saves the given passcode.
-    /// - Throws: KeychainError
-    internal func setPasscode(passcode: String) throws {
-        try Keychain.shared.setAppPasscode(passcode) // throws KeychainError
-    }
-
-    /// Removes App Lock passcode.
-    /// - Throws: KeychainError
-    internal func resetPasscode() throws {
-        try Keychain.shared.removeAppPasscode() // throws KeychainError
-    }
-
-    /// Checks if `passcode` value matches the previously saved one.
-    /// - Throws: KeychainError
-    internal func isPasscodeMatch(passcode: String) throws -> Bool {
-        return try Keychain.shared.isAppPasscodeMatch(passcode) // throws KeychainError
-    }
-    
     /// True if hardware provides biometric authentication, and the app supports it.
     public func isBiometricsAvailable() -> Bool {
         let context = LAContext()
         let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
         return context.canEvaluatePolicy(policy, error: nil)
+    }
+}
+
+extension AppLockManager: PasscodeInputDelegate {
+    func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String) {
+        do {
+            if try Keychain.shared.isAppPasscodeMatch(passcode) { // throws KeychainError
+                hideLockScreen()
+            } else {
+                sender.animateWrongPassccode()
+            }
+        } catch {
+            let alert = UIAlertController.make(
+                title: LString.titleKeychainError,
+                message: error.localizedDescription)
+            sender.present(alert, animated: true, completion: nil)
+        }
     }
 }

@@ -61,25 +61,12 @@ class MainCoordinator: NSObject, Coordinator {
     ///     passcode first. If passcode has not been set,
     ///     this parameter is ignored.
     private func startMainFlow(requirePasscode: Bool) {
-        if requirePasscode {
-            do {
-                if try Keychain.shared.isAppPasscodeSet() { // throws KeychainError
-                    try showPasscodeRequest() // throws KeychainError
-                    return
-                }
-            } catch {
-                Diag.error("Keychain error [message: \(error.localizedDescription)]")
-                let errorAlert = UIAlertController.make(
-                    title: LString.titleKeychainError,
-                    message: error.localizedDescription,
-                    cancelButtonTitle: LString.actionDismiss)
-                rootController.present(errorAlert, animated: true, completion: nil)
-                return
-            }
+        if requirePasscode && Settings.current.isAppLockEnabled {
+            showPasscodeRequest()
+        } else {
+            rootController.present(navigationController, animated: true, completion: nil)
+            showDatabaseChooser()
         }
-        
-        rootController.present(navigationController, animated: true, completion: nil)
-        showDatabaseChooser()
     }
 
     // Clears and closes any resources before quitting the extension.
@@ -170,10 +157,11 @@ class MainCoordinator: NSObject, Coordinator {
         return false
     }
     
-    /// - Throws: KeychainError
-    func showPasscodeRequest() throws {
-        let passcodeVC = PasscodeEntryScreenVC.instantiateFromStoryboard()
+    func showPasscodeRequest() {
+        let passcodeVC = PasscodeInputVC.instantiateFromStoryboard()
         passcodeVC.delegate = self
+        passcodeVC.mode = .verification
+        passcodeVC.isCancellable = true
         rootController.present(passcodeVC, animated: true, completion: nil)
     }
     
@@ -284,14 +272,26 @@ class MainCoordinator: NSObject, Coordinator {
     }
 }
 
-extension MainCoordinator: PasscodeEntryScreenDelegate {
-    func passcodeEntryScreenShouldCancel(_ sender: PasscodeEntryScreenVC) {
+extension MainCoordinator: PasscodeInputDelegate {
+    func passcodeInputDidCancel(_ sender: PasscodeInputVC) {
         dismissAndQuit()
     }
     
-    func passcodeEntryScreenDidUnlock(_ sender: PasscodeEntryScreenVC) {
-        rootController.dismiss(animated: true, completion: nil)
-        startMainFlow(requirePasscode: false)
+    func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String) {
+        do {
+            if try Keychain.shared.isAppPasscodeMatch(passcode) { // throws KeychainError
+                sender.dismiss(animated: true, completion: nil)
+                startMainFlow(requirePasscode: false)
+            } else {
+                sender.animateWrongPassccode()
+            }
+        } catch {
+            Diag.error(error.localizedDescription)
+            let alert = UIAlertController.make(
+                title: LString.titleKeychainError,
+                message: error.localizedDescription)
+            sender.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
