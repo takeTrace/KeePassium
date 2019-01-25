@@ -32,13 +32,19 @@ extension ValidatingTextFieldDelegate {
     func validatingTextField(_ sender: ValidatingTextField, validityDidChange isValid: Bool) {}
 }
 
-class ValidatingTextField: WatchdogAwareTextField {
-
+/// Checks and visualizes the validity of the entered text.
+/// If there is `Watchdog` available, can also restart it on every text input event.
+class ValidatingTextField: UITextField {
+    
     /// Delegate which checks validity and is notified about its changes.
     var validityDelegate: ValidatingTextFieldDelegate?
     
     /// Background color for when the contents is invalid. Use `nil` for no color change.
-    var invalidBackgroundColor: UIColor? = UIColor.red.withAlphaComponent(0.2)
+    
+    @IBInspectable var invalidBackgroundColor: UIColor? = UIColor.red.withAlphaComponent(0.2)
+    
+    /// Background color to use when the contents is valid (by default, clear).
+    @IBInspectable var validBackgroundColor: UIColor? = UIColor.clear
     
     var isValid: Bool {
         get { return validityDelegate?.validatingTextFieldShouldValidate(self) ?? true }
@@ -48,15 +54,22 @@ class ValidatingTextField: WatchdogAwareTextField {
         didSet { validate() }
     }
     
+    public var isWatchdogAware = true
+
     private var wasValid: Bool?
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        validBackgroundColor = backgroundColor
         addTarget(self, action: #selector(onEditingChanged), for: .editingChanged)
     }
     
     @objc
-    override func onEditingChanged(textField: UITextField) {
-        super.onEditingChanged(textField: textField)
+    private func onEditingChanged(textField: UITextField) {
+        #if MAIN_APP
+        if isWatchdogAware {
+            Watchdog.default.restart()
+        }
+        #endif
         validityDelegate?.validatingTextField(self, textDidChange: textField.text ?? "")
         validate()
     }
@@ -64,7 +77,7 @@ class ValidatingTextField: WatchdogAwareTextField {
     func validate() {
         let isValid = validityDelegate?.validatingTextFieldShouldValidate(self) ?? true
         if isValid {
-            backgroundColor = UIColor.clear
+            backgroundColor = validBackgroundColor
         } else if (wasValid ?? true) { // just became invalid
             backgroundColor = invalidBackgroundColor
         }
