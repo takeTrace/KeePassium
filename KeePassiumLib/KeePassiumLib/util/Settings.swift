@@ -64,6 +64,7 @@ public class Settings {
     
     public enum Keys: String {
         case startupDatabase
+        case appLockEnabled
         case appLockTimeout
         case databaseCloseTimeout
         case clipboardTimeout
@@ -586,6 +587,20 @@ public class Settings {
         UserDefaults.appGroupShared.setValue(db2key, forKey: Keys.keyFileAssociations.rawValue)
     }
     
+    public var isAppLockEnabled: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.appLockEnabled.rawValue)
+                as? Bool
+            return stored ?? false
+        }
+        set {
+            updateAndNotify(
+                oldValue: isAppLockEnabled,
+                newValue: newValue,
+                key: .appLockEnabled)
+        }
+    }
     /// Timeout for automatically locking the app, in seconds.
     public var appLockTimeout: AppLockTimeout {
         get {

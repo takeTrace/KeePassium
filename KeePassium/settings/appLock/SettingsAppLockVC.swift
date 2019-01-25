@@ -19,7 +19,7 @@ import LocalAuthentication
 import KeePassiumLib
 
 class SettingsAppLockVC: UITableViewController, Refreshable {
-    @IBOutlet weak var passcodeCell: UITableViewCell!
+    @IBOutlet weak var appLockEnabledSwitch: UISwitch!
     @IBOutlet weak var biometricsCell: UITableViewCell!
     @IBOutlet weak var appLockTimeoutCell: UITableViewCell!
     @IBOutlet weak var biometricsSwitch: UISwitch!
@@ -28,6 +28,8 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     
     private var settingsNotifications: SettingsNotifications!
     private var isBiometricsSupported = false
+    private var passcodeInputVC: PasscodeInputVC?
+    
     // Table section numbers
     private enum Sections: Int {
         case passcode = 0
@@ -83,45 +85,20 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     
     func refresh() {
         let settings = Settings.current
+        let isAppLockEnabled = settings.isAppLockEnabled
+        appLockEnabledSwitch.isOn = isAppLockEnabled
         appLockTimeoutCell.detailTextLabel?.text = settings.appLockTimeout.shortTitle
         biometricsSwitch.isOn = settings.isBiometricAppLockEnabled
         
-        // Disable timeout cell when passcode is not set.
-        // (plus keychain error handling)
-        let isPasscodeSet: Bool
-        do {
-            isPasscodeSet = try AppLockManager.shared.isPasscodeSet() // throws KeychainError
-            if isPasscodeSet {
-                passcodeCell.detailTextLabel?.text = LString.statusPasscodeSet
-            } else {
-                passcodeCell.detailTextLabel?.text = LString.statusPasscodeNotSet
-            }
-            passcodeCell.detailTextLabel?.textColor = UIColor.auxiliaryText
-        } catch { // KeychainError
-            passcodeCell.detailTextLabel?.text = LString.titleKeychainError
-            passcodeCell.detailTextLabel?.textColor = UIColor.errorMessage
-            
-            let alert = UIAlertController.make(
-                title: LString.titleKeychainError,
-                message: error.localizedDescription)
-            present(alert, animated: true, completion: nil)
-            isPasscodeSet = false
-        }
-        appLockTimeoutCell.setEnabled(isPasscodeSet)
-        biometricsCell.setEnabled(isPasscodeSet)
-        biometricsCell.contentView.alpha = isPasscodeSet ? 1.0 : 0.44 // simulate disabled view
-        biometricsSwitch.isEnabled = isPasscodeSet
+        appLockTimeoutCell.setEnabled(isAppLockEnabled)
+        biometricsCell.setEnabled(isAppLockEnabled)
+        biometricsCell.contentView.alpha = isAppLockEnabled ? 1.0 : 0.44 // simulate disabled view
+        biometricsSwitch.isEnabled = isAppLockEnabled
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
         switch selectedCell {
-        case passcodeCell:
-            let passcodeVC = SettingsPasscodeVC.make(completion: {
-                [unowned self] in
-                self.navigationController?.popToViewController(self, animated: true)
-            })
-            show(passcodeVC, sender: self)
         case appLockTimeoutCell:
             let timeoutVC = SettingsAppTimeoutVC.make()
             show(timeoutVC, sender: self)
@@ -129,6 +106,28 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
             assertionFailure("Unexpected cell selected")
         }
     }
+    
+    @IBAction func didChangeAppLockEnabledSwitch(_ sender: Any) {
+        if !appLockEnabledSwitch.isOn {
+            Settings.current.isAppLockEnabled = false
+            do {
+                try Keychain.shared.removeAppPasscode() // throws `KeychainError`
+            } catch {
+                Diag.error(error.localizedDescription)
+                let alert = UIAlertController.make(
+                    title: LString.titleKeychainError,
+                    message: error.localizedDescription)
+                present(alert, animated: true, completion: nil)
+            }
+        } else {
+            // The user wants to enable App Lock, so we ask for passcode first
+            passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
+            passcodeInputVC!.delegate = self
+            passcodeInputVC!.mode = .setup
+            present(passcodeInputVC!, animated: true, completion: nil)
+        }
+    }
+    
     @IBAction func didToggleBiometricsSwitch(_ sender: Any) {
         Settings.current.isBiometricAppLockEnabled = biometricsSwitch.isOn
     }
@@ -137,10 +136,37 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
 extension SettingsAppLockVC: SettingsObserver {
     func settingsDidChange(key: Settings.Keys) {
         switch key {
-        case .appLockTimeout, .biometricAppLockEnabled:
+        case .appLockEnabled, .appLockTimeout, .biometricAppLockEnabled:
             refresh()
         default:
             break
+        }
+    }
+}
+
+extension SettingsAppLockVC: PasscodeInputDelegate {
+    func passcodeInputDidCancel(_ sender: PasscodeInputVC) {
+        Settings.current.isAppLockEnabled = false
+        passcodeInputVC?.dismiss(animated: true, completion: nil)
+    }
+    
+    func passcodeInput(_sender: PasscodeInputVC, canAcceptPasscode passcode: String) -> Bool {
+        return passcode.count > 0
+    }
+    
+    func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String) {
+        passcodeInputVC?.dismiss(animated: true) {
+            [weak self] in
+            do {
+                try Keychain.shared.setAppPasscode(passcode)
+                Settings.current.isAppLockEnabled = true
+            } catch {
+                Diag.error(error.localizedDescription)
+                let alert = UIAlertController.make(
+                    title: LString.titleKeychainError,
+                    message: error.localizedDescription)
+                self?.present(alert, animated: true, completion: nil)
+            }
         }
     }
 }
