@@ -83,6 +83,7 @@ public class Settings {
         case passwordGeneratorIncludeSpecials
         case passwordGeneratorIncludeDigits
         case passwordGeneratorIncludeLookAlike
+        case passcodeKeyboardType
     }
 
     /// Notification constants
@@ -94,7 +95,7 @@ public class Settings {
     public enum AppLockTimeout: Int {
         public static let allValues = [
             immediately, /* after5seconds,*/ after15seconds, after30seconds,
-            after1minute, after2minutes, after5minutes, never]
+            after1minute, after2minutes, after5minutes /*, never */]
         case never = -1
         case immediately = 0
         case after5seconds = 5
@@ -472,6 +473,21 @@ public class Settings {
                 guard let date1 = lhs.info.modificationDate,
                     let date2 = rhs.info.modificationDate else { return false }
                 return date1.compare(date2) == .orderedDescending
+            }
+        }
+    }
+    
+    /// Type of keyboard to use for App Lock passcode
+    public enum PasscodeKeyboardType: Int {
+        public static let allValues = [numeric, alphanumeric]
+        case numeric
+        case alphanumeric
+        public var title: String {
+            switch self {
+            case .numeric:
+                return NSLocalizedString("Numeric", comment: "Type of keyboard to show for App Lock passcode: digits-only.")
+            case .alphanumeric:
+                return NSLocalizedString("Alphanumeric", comment: "Type of keyboard to show for App Lock passcode: letters and digits.")
             }
         }
     }
@@ -855,6 +871,26 @@ public class Settings {
                 oldValue: passwordGeneratorIncludeLookAlike,
                 newValue: newValue,
                 key: .passwordGeneratorIncludeLookAlike)
+        }
+    }
+    
+    /// Type of keyboard to show for App Lock passcode.
+    public var passcodeKeyboardType: PasscodeKeyboardType {
+        get {
+            if let rawValue = UserDefaults.appGroupShared
+                .object(forKey: Keys.passcodeKeyboardType.rawValue) as? Int,
+                let keyboardType = PasscodeKeyboardType(rawValue: rawValue)
+            {
+                return keyboardType
+            }
+            return PasscodeKeyboardType.numeric
+        }
+        set {
+            let oldValue = passcodeKeyboardType
+            UserDefaults.appGroupShared.set(newValue.rawValue, forKey: Keys.passcodeKeyboardType.rawValue)
+            if newValue != oldValue {
+                postChangeNotification(changedKey: Keys.passcodeKeyboardType)
+            }
         }
     }
     
