@@ -92,7 +92,6 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
         
         appLockTimeoutCell.setEnabled(isAppLockEnabled)
         biometricsCell.setEnabled(isAppLockEnabled)
-        biometricsCell.contentView.alpha = isAppLockEnabled ? 1.0 : 0.44 // simulate disabled view
         biometricsSwitch.isEnabled = isAppLockEnabled
     }
 

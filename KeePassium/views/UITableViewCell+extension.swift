@@ -21,8 +21,7 @@ extension UITableViewCell {
     /// Enables/disables the cell and user interaction on it.
     func setEnabled(_ isEnabled: Bool) {
         let alpha: CGFloat = isEnabled ? 1.0 : 0.43
-        textLabel?.alpha = alpha
-        detailTextLabel?.alpha = alpha
+        contentView.alpha = alpha
         isUserInteractionEnabled = isEnabled
     }
 }
