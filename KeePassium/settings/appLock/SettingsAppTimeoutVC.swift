@@ -58,7 +58,7 @@ class SettingsAppTimeoutVC: UITableViewController, Refreshable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let timeout = Settings.AppLockTimeout.allValues[indexPath.row]
         Settings.current.appLockTimeout = timeout
-        Watchdog.default.restart() // apply the change
+        Watchdog.shared.restart() // apply the change
         refresh()
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)

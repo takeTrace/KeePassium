@@ -85,6 +85,7 @@ public class Settings {
         case passwordGeneratorIncludeDigits
         case passwordGeneratorIncludeLookAlike
         case passcodeKeyboardType
+        case recentUserActivityTimestamp
     }
 
     /// Notification constants
@@ -610,7 +611,7 @@ public class Settings {
             {
                 return timeout
             }
-            return AppLockTimeout.never
+            return AppLockTimeout.immediately
         }
         set {
             let oldValue = appLockTimeout
@@ -786,7 +787,7 @@ public class Settings {
                 key: .biometricAppLockEnabled)
         }
     }
-    
+
     /// Whether to store database's key in keychain after unlock
     public var isRememberDatabaseKey: Bool {
         get {
@@ -800,6 +801,34 @@ public class Settings {
                 oldValue: isRememberDatabaseKey,
                 newValue: newValue,
                 key: .rememberDatabaseKey)
+        }
+    }
+    
+    /// Timestamp of most recent user activity event (touching or typing).
+    public var recentUserActivityTimestamp: Date {
+        get {
+            if let storedTimestamp = UserDefaults.appGroupShared
+                .object(forKey: Keys.recentUserActivityTimestamp.rawValue)
+                as? Date
+            {
+                return storedTimestamp
+            }
+            return Date.now
+        }
+        set {
+            if contains(key: Keys.recentUserActivityTimestamp) {
+                // We'll ignore sub-second differences, just to avoid too frequent writes.
+                // (They are probably cached, but anyway.)
+                let oldWholeSeconds = floor(recentUserActivityTimestamp.timeIntervalSinceReferenceDate)
+                let newWholeSeconds = floor(newValue.timeIntervalSinceReferenceDate)
+                if newWholeSeconds == oldWholeSeconds {
+                    return
+                }
+            }
+            UserDefaults.appGroupShared.set(
+                newValue,
+                forKey: Keys.recentUserActivityTimestamp.rawValue)
+            postChangeNotification(changedKey: Keys.recentUserActivityTimestamp)
         }
     }
     

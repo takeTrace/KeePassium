@@ -16,15 +16,22 @@
 
 import UIKit
 import KeePassiumLib
+import LocalAuthentication
 
 class Watchdog {
-    public static let `default` = Watchdog()
+    public static let shared = Watchdog()
     
     public enum Notifications {
-        /// Notification name for watchdog timeout
-        public static let appLockTimeout = Notification.Name("com.keepassium.Watchdog.appLockTimeout")
-        public static let databaseCloseTimeout = Notification.Name("com.keepassium.Watchdog.databaseCloseTimeout")
+        /// Notification name for watchdog triggers
+        public static let appLockDidEngage = Notification.Name("com.keepassium.Watchdog.appLockDidEngage")
+        public static let databaseLockDidEngage = Notification.Name("com.keepassium.Watchdog.databaseLockDidEngage")
     }
+    
+    /// True if AppLock is engaged (asking for passcode/biometrics)
+    public var isAppLocked: Bool { return appLockWindow != nil }
+
+    /// True if main app UI is protected by a cover window
+    public var isAppCovered: Bool { return appCoverWindow != nil }
     
     /// Returns `true` *once* after the database timeout was triggered.
     /// After the first call, resets back to `false`.
@@ -38,176 +45,336 @@ class Watchdog {
     }
     private var _isDatabaseTimeoutExpired = false
     
-    private var appDeadline: Date?
-    private var databaseDeadline: Date?
-    private var appTimer: Timer?
-    private var databaseTimer: Timer?
+    private var appCoverWindow: UIWindow?
+    private var appLockWindow: UIWindow?
+    private var isBiometricAuthShown = false
+    private var wasShowingBiometricAuth = false
+    
+    private var appLockTimer: Timer?
+    private var databaseLockTimer: Timer?
 
+    
     init() {
-        // left empty
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidFinishLaunching),
+            name: UIApplication.didFinishLaunchingNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillResignActive),
+            name: UIApplication.willResignActiveNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidEnterBackground),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil)
     }
     
-    func restart() {
+    // MARK: - App state transitions
+    
+    @objc private func appDidFinishLaunching(_ notification: Notification) {
+        print("App did finish launching")
+    }
+    @objc private func appWillEnterForeground(_ notification: Notification) {
+        print("App will enter foreground")
+    }
+    @objc private func appDidBecomeActive(_ notification: Notification) {
+        print("App did become active")
+        restartAppTimer()
+        restartDatabaseTimer()
+        if wasShowingBiometricAuth {
+            wasShowingBiometricAuth = false
+        } else {
+            maybeLockSomething()
+        }
+        hideAppCover()
+    }
+    @objc private func appWillResignActive(_ notification: Notification) {
+        print("App will resign active")
+        showAppCover(application: KPApplication.shared)
+        if isBiometricAuthShown { return }
+        if isAppLocked { return }
+
+        let databaseTimeout = Settings.current.databaseCloseTimeout
+        if databaseTimeout == .immediately {
+            Diag.debug("Going to background: Database Lock engaged")
+            engageDatabaseLock()
+        }
+        
+        let appTimeout = Settings.current.appLockTimeout
+        if appTimeout == .immediately {
+            Diag.debug("Going to background: App Lock engaged")
+            // do nothing, this case is handled on appDidBecomeActive
+        }
+        
+        // Timers don't run reliably in background anyway, so kill them
+        appLockTimer?.invalidate()
+        databaseLockTimer?.invalidate()
+        appLockTimer = nil
+        databaseLockTimer = nil
+    }
+    
+    @objc private func appDidEnterBackground(_ notification: Notification) {
+        print("App did enter background")
+    }
+    
+    // MARK: - Watchdog functions
+    
+    @objc private func maybeLockSomething() {
+        if isShouldEngageAppLock() {
+            engageAppLock()
+        }
+        if isShouldEngageDatabaseLock() {
+            engageDatabaseLock()
+        }
+    }
+    
+    open func restart() {
+        guard !isAppLocked else { return }
+        Settings.current.recentUserActivityTimestamp = Date.now
         restartAppTimer()
         restartDatabaseTimer()
     }
 
-    func restartAppTimer() {
-        if let timer = appTimer {
-            timer.invalidate()
+    private func isShouldEngageAppLock() -> Bool {
+        guard Settings.current.isAppLockEnabled else { return false }
+        let timeout = Settings.current.appLockTimeout
+        switch timeout {
+        case .never: // app lock disabled
+            return false
+        case .immediately:
+            return true
+        default:
+            let timestampOfRecentActivity = Settings.current
+                .recentUserActivityTimestamp
+                .timeIntervalSinceReferenceDate
+            let timestampNow = Date.now.timeIntervalSinceReferenceDate
+            let secondsPassed = timestampNow - timestampOfRecentActivity
+            return secondsPassed > Double(timeout.seconds)
+        }
+    }
+    
+    private func isShouldEngageDatabaseLock() -> Bool {
+        let timeout = Settings.current.databaseCloseTimeout
+        switch timeout {
+        case .never:
+            return false
+        case .immediately:
+            return true
+        default:
+            let timestampOfRecentActivity = Settings.current
+                .recentUserActivityTimestamp
+                .timeIntervalSinceReferenceDate
+            let timestampNow = Date.now.timeIntervalSinceReferenceDate
+            let secondsPassed = timestampNow - timestampOfRecentActivity
+            return secondsPassed > Double(timeout.seconds)
+        }
+    }
+    
+    private func restartAppTimer() {
+        if let appLockTimer = appLockTimer {
+            appLockTimer.invalidate()
         }
         
         let timeout = Settings.current.appLockTimeout
-        Diag.verbose("App Lock timeout: \(timeout.seconds)")
         switch timeout {
-        case .never: // watchdog disabled
-            return
-        case .immediately: // handled in `appWillResignActive`
-            // Not setting a timer, only a deadline sufficient for the app to return to foreground
-            appDeadline = Date(timeIntervalSinceNow: Double(1.0))
+        case .never, .immediately:
             return
         default:
-            // actual timer delay, process further
-            appDeadline = Date(timeIntervalSinceNow: Double(timeout.seconds))
-            appTimer = Timer.scheduledTimer(
+            self.appLockTimer = Timer.scheduledTimer(
                 timeInterval: Double(timeout.seconds),
                 target: self,
-                selector: #selector(appDidTimeout),
+                selector: #selector(maybeLockSomething),
                 userInfo: nil,
                 repeats: false)
         }
     }
 
-    func restartDatabaseTimer() {
-        if let timer = databaseTimer {
-            timer.invalidate()
+    private func restartDatabaseTimer() {
+        if let databaseLockTimer = databaseLockTimer {
+            databaseLockTimer.invalidate()
         }
         
         let timeout = Settings.current.databaseCloseTimeout
         Diag.verbose("Database Lock timeout: \(timeout.seconds)")
         switch timeout {
-        case .never: // watchdog disabled
-            return
-        case .immediately: // handled in `appWillResignActive`
+        case .never, .immediately:
             return
         default:
-            // actual timer delay, process further
-            databaseDeadline = Date(timeIntervalSinceNow: Double(timeout.seconds))
-            databaseTimer = Timer.scheduledTimer(
+            databaseLockTimer = Timer.scheduledTimer(
                 timeInterval: Double(timeout.seconds),
                 target: self,
-                selector: #selector(databaseDidTimeout),
+                selector: #selector(maybeLockSomething),
                 userInfo: nil,
                 repeats: false)
         }
     }
 
-    @objc private func appDidTimeout() {
-        Diag.debug("Watchdog: App Lock timeout")
-        triggerApp()
-    }
-    
-    @objc private func databaseDidTimeout() {
-        Diag.debug("Watchdog: Database Lock timeout")
-        triggerDatabase()
-    }
-
     /// Triggers an app lock timeout notification.
-    private func triggerApp() {
-        self.appDeadline = nil
-        self.appTimer?.invalidate()
-        self.appTimer = nil
-        AppLockManager.shared.maybeLock()
-        NotificationCenter.default.post(name: Watchdog.Notifications.appLockTimeout, object: self)
+    private func engageAppLock() {
+        guard !isAppLocked else { return }
+        Diag.info("Engaging App Lock")
+        self.appLockTimer?.invalidate()
+        self.appLockTimer = nil
+        showAppLockScreen()
+        NotificationCenter.default.post(name: Watchdog.Notifications.appLockDidEngage, object: self)
     }
-    
-    // A flag to prevent repeated closeDatabase() calls
-    private var isDatabaseCloseScheduled = false
     
     /// Triggers a database timeout notification (only if there is an open DB).
-    private func triggerDatabase() {
-        guard DatabaseManager.shared.isDatabaseOpen else {
-            Diag.debug("Watchdog: no DB open, nothing to do")
-            return
-        }
-        guard !isDatabaseCloseScheduled else {
-            Diag.warning("Watchdog: repeated attempt to close DB ignored")
-            return
-        }
-        Diag.info("Watchdog: DB timeout, closing current database")
-        isDatabaseCloseScheduled = true
-        self.databaseDeadline = nil
-        self.databaseTimer?.invalidate()
-        self.databaseTimer = nil
+    private func engageDatabaseLock() {
+        Diag.info("Engaging Database Lock")
+        self.databaseLockTimer?.invalidate()
+        self.databaseLockTimer = nil
         DatabaseManager.shared.closeDatabase(
             completion: {
-                self._isDatabaseTimeoutExpired = true
                 NotificationCenter.default.post(
-                    name: Watchdog.Notifications.databaseCloseTimeout,
+                    name: Watchdog.Notifications.databaseLockDidEngage,
                     object: self)
-                self.isDatabaseCloseScheduled = false
             },
             clearStoredKey: true)
     }
     
-    /// Pauses the timer -- for example, before the app going to background.
-    func pause() {
-        appTimer?.invalidate()
-        databaseTimer?.invalidate()
-        appTimer = nil
-        databaseTimer = nil
+    // MARK: - Application cover UI
+    
+    /// Obscures the UI while in background
+    private func showAppCover(application: UIApplication)  {
+        guard appCoverWindow == nil else { return }
+        
+        appCoverWindow = UIWindow(frame: UIScreen.main.bounds)
+        appCoverWindow!.screen = UIScreen.main
+        appCoverWindow!.windowLevel = UIWindow.Level.alert
+        let coverVC = AppCoverVC.make()
+        appCoverWindow!.rootViewController = coverVC
+        appCoverWindow!.makeKeyAndVisible()
+        print("App cover shown")
+        
+        coverVC.view.snapshotView(afterScreenUpdates: true)
     }
     
-    /// Called externally from `applicationWIllResignActive`.
-    func appWillResignActive() {
-        let databaseTimeout = Settings.current.databaseCloseTimeout
-        if databaseTimeout == .immediately {
-            Diag.debug("Going to background: database watchdog triggered")
-            triggerDatabase()
-        }
-        
-        let appTimeout = Settings.current.appLockTimeout
-        if appTimeout == .immediately {
-            Diag.debug("Going to background: app watchdog triggered")
-//            triggerApp()
-            restartAppTimer()
-        }
-        
-        pause()
+    private func hideAppCover() {
+        guard let appCoverWindow = appCoverWindow else { return }
+        appCoverWindow.isHidden = true
+        self.appCoverWindow = nil
+        print("App cover hidden")
     }
     
-    /// Called externally from AppDelegate.
-    func appDidBecomeActive() {
-        // When we are here, the watchdog is either disabled or paused.
-        // So we check each manually or restart if needed.
-        let now = Date.now
+    // MARK: - App Lock UI
+    
+    /// Shows biometric authentication UI, if supported and enabled.
+    ///
+    /// - Parameter completion: called after biometric authentication,
+    ///         with a `Bool` parameter indicating success of the bioauth.
+    private func maybeShowBiometricAuth(completion: @escaping ((Bool) -> Void)) {
+        guard Settings.current.isBiometricAppLockEnabled else { return }
+        guard !isBiometricAuthShown else { return }
         
-        // (Workaround for https://forums.developer.apple.com/thread/91384)
-        // When we show biometric auth window, the app becomes inactive then active again -
-        // all within split-second. This is enough to miss the appDeadline,
-        // so we get stuck in an infinite loop of Face ID requests.
-        // Workaround: postpone the deadline by a second in these cases.
-        var appExtraTime = 0.0
-        if Settings.current.appLockTimeout == .immediately
+        let context = LAContext()
+        let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
+        context.localizedFallbackTitle = "" // hide "Enter Password" fallback; nil won't work
+        if isBiometricsAvailable() {
+            context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
+                [unowned self] (authSuccessful, authError) in
+                self.isBiometricAuthShown = false
+                DispatchQueue.main.async { [unowned self] in
+                    self.wasShowingBiometricAuth = true
+                    if authSuccessful {
+                        self.unlockApp()
+                        completion(true)
+                    } else {
+                        Diag.warning("TouchID failed [message: \(authError?.localizedDescription ?? "nil")]")
+                        completion(false)
+                    }
+                }
+            }
+            isBiometricAuthShown = true
+        }
+        isBiometricAuthShown = false
+    }
+    
+    open func unlockApp() {
+        guard isAppLocked else { return }
+        hideAppLockScreen()
+        restart()
+    }
+    
+    /// Shows the lock screen.
+    private func showAppLockScreen() {
+        let isRepeatedBiometricsAllowed = isBiometricsAvailable()
             && Settings.current.isBiometricAppLockEnabled
-        {
-            appExtraTime = 1.0
-        }
+        appLockWindow = UIWindow(frame: UIScreen.main.bounds)
+        appLockWindow!.screen = UIScreen.main
+        appLockWindow!.windowLevel = UIWindow.Level.alert
+        let passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
+        passcodeInputVC.delegate = self
+        passcodeInputVC.mode = .verification
+        passcodeInputVC.isCancelAllowed = false // for the main app
+        passcodeInputVC.isBiometricsAllowed = isRepeatedBiometricsAllowed
+        appLockWindow!.rootViewController = passcodeInputVC
+        appLockWindow!.makeKeyAndVisible()
+        print("appLockWindow shown")
         
-        if let appDeadline = appDeadline, now > appDeadline + appExtraTime {
-            Diag.debug("Returned from background: app timeout expired")
-            triggerApp()
-        } else {
-            Diag.debug("Returned from background: restarting app timer")
-            restartAppTimer()
+        maybePerformBiometricUnlock(passcodeInput: passcodeInputVC)
+    }
+    
+    private func hideAppLockScreen() {
+        appLockWindow?.isHidden = true
+        appLockWindow = nil
+        print("appLockWindow hidden")
+    }
+    
+    /// True if hardware provides biometric authentication, and the app supports it.
+    public func isBiometricsAvailable() -> Bool {
+        let context = LAContext()
+        let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
+        return context.canEvaluatePolicy(policy, error: nil)
+    }
+    
+    /// Shows biometric auth, if available
+    private func maybePerformBiometricUnlock(passcodeInput: PasscodeInputVC?) {
+        weak var _passcodeInput = passcodeInput
+        maybeShowBiometricAuth() {
+            [weak self] (isAuthSuccessful) in
+            guard let _self = self else { return }
+            if isAuthSuccessful {
+                _self.unlockApp()
+            } else {
+                let isAnotherBiometricsAttemptAllowed = _self.isBiometricsAvailable()
+                    && Settings.current.isBiometricAppLockEnabled
+                _passcodeInput?.isBiometricsAllowed = isAnotherBiometricsAttemptAllowed
+            }
         }
-        
-        if let dbDeadline = databaseDeadline, now > dbDeadline {
-            Diag.debug("Returned from background: database timeout expired")
-            triggerDatabase()
-        } else {
-            Diag.debug("Returned from background: restarting database timer")
-            restartDatabaseTimer()
+    }
+}
+
+extension Watchdog: PasscodeInputDelegate {
+    func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String) {
+        do {
+            if try Keychain.shared.isAppPasscodeMatch(passcode) { // throws KeychainError
+                unlockApp()
+            } else {
+                sender.animateWrongPassccode()
+            }
+        } catch {
+            let alert = UIAlertController.make(
+                title: LString.titleKeychainError,
+                message: error.localizedDescription)
+            sender.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func passcodeInputDidRequestBiometrics(_ sender: PasscodeInputVC) {
+        maybePerformBiometricUnlock(passcodeInput: sender)
     }
 }

@@ -74,15 +74,10 @@ class SettingsVC: UITableViewController, Refreshable {
     
     /// Returns App Lock status description: needs passcode/timeout/error
     private func getAppLockStatus() -> String {
-        do {
-            let isPasscodeSet = try AppLockManager.shared.isPasscodeSet() // throws KeychainError
-            if isPasscodeSet {
-                return Settings.current.appLockTimeout.shortTitle
-            } else {
-                return LString.statusAppLockIsDisabled
-            }
-        } catch { // KeychainError
-            return LString.titleKeychainError
+        if Settings.current.isAppLockEnabled {
+            return Settings.current.appLockTimeout.shortTitle
+        } else {
+            return LString.statusAppLockIsDisabled
         }
     }
     

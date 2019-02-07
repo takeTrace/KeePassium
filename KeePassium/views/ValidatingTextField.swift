@@ -67,7 +67,7 @@ class ValidatingTextField: UITextField {
     private func onEditingChanged(textField: UITextField) {
         #if MAIN_APP
         if isWatchdogAware {
-            Watchdog.default.restart()
+            Watchdog.shared.restart()
         }
         #endif
         validityDelegate?.validatingTextField(self, textDidChange: textField.text ?? "")

@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ) -> Bool
     {
         AppGroup.applicationShared = application
-        AppLockManager.shared.maybeLock() // init AppLockManager (it subscribes to notifications)
+        let _ = Watchdog.shared // init Watchdog
         return true
     }
     
@@ -54,4 +54,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
-

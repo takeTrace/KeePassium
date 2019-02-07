@@ -106,11 +106,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     }
     
     @objc func onAppDidBecomeActive() {
-        if !AppLockManager.shared.isLocked {
+        let watchdog = Watchdog.shared
+        if !watchdog.isAppLocked {
             passwordField.becomeFirstResponder()
         }
         
-        if Watchdog.default.isDatabaseTimeoutExpired {
+        if watchdog.isDatabaseTimeoutExpired {
             showWatchdogTimeoutMessage()
         } else {
             hideWatchdogTimeoutMessage(animated: false)
@@ -416,7 +417,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
         databaseManagerNotifications.stopObserving()
         hideProgressOverlay()
         
-        Watchdog.default.restart()
+//        Watchdog.shared.restart()
         
         if Settings.current.isRememberDatabaseKey {
             do {

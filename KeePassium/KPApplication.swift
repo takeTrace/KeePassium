@@ -25,7 +25,7 @@ class KPApplication: UIApplication {
         // Reset watchdog whenever anything is touched
         guard let allTouches = event.allTouches else { return }
         for touch in allTouches where touch.phase == .began {
-            Watchdog.default.restart()
+            Watchdog.shared.restart()
             break
         }
     }

@@ -39,6 +39,6 @@ class WatchdogAwareTextView: UITextView {
     
     @objc
     func onTextChanged() {
-        Watchdog.default.restart()
+        Watchdog.shared.restart()
     }
 }

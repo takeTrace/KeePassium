@@ -30,6 +30,6 @@ class WatchdogAwareTextField: UITextField {
     
     @objc
     func onEditingChanged(textField: UITextField) {
-        Watchdog.default.restart()
+        Watchdog.shared.restart()
     }
 }
