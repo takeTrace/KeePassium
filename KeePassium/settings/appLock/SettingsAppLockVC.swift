@@ -23,8 +23,6 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     @IBOutlet weak var biometricsCell: UITableViewCell!
     @IBOutlet weak var appLockTimeoutCell: UITableViewCell!
     @IBOutlet weak var biometricsSwitch: UISwitch!
-    @IBOutlet weak var biometricsLabel: UILabel!
-    @IBOutlet weak var biometricsIcon: UIImageView!
     
     private var settingsNotifications: SettingsNotifications!
     private var isBiometricsSupported = false
@@ -32,6 +30,7 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     
     // Table section numbers
     private enum Sections: Int {
+        static let allValues: [Sections] = [.passcode, .timeout, .biometrics]
         case passcode = 0
         case timeout = 1
         case biometrics = 2
@@ -63,24 +62,12 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
         }
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == Sections.biometrics.rawValue && !isBiometricsSupported {
-            // Hide biometric section content when not supported by hardware
-            return 0
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if isBiometricsSupported {
+            return Sections.allValues.count
+        } else {
+            return Sections.allValues.count - 1 // hide the last Biometrics section
         }
-        return super.tableView(tableView, numberOfRowsInSection: section)
-    }
-    
-    override func tableView(
-        _ tableView: UITableView,
-        titleForFooterInSection section: Int
-        ) -> String?
-    {
-        if section == Sections.biometrics.rawValue && !isBiometricsSupported {
-            // Hide biometric section footer when not supported by hardware
-            return nil
-        }
-        return super.tableView(tableView, titleForFooterInSection: section)
     }
     
     func refresh() {
@@ -97,12 +84,9 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
-        switch selectedCell {
-        case appLockTimeoutCell:
+        if selectedCell === appLockTimeoutCell {
             let timeoutVC = SettingsAppTimeoutVC.make()
             show(timeoutVC, sender: self)
-        default:
-            assertionFailure("Unexpected cell selected")
         }
     }
     
