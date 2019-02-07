@@ -161,7 +161,7 @@ class MainCoordinator: NSObject, Coordinator {
         let passcodeVC = PasscodeInputVC.instantiateFromStoryboard()
         passcodeVC.delegate = self
         passcodeVC.mode = .verification
-        passcodeVC.isCancellable = true
+        passcodeVC.isCancelAllowed = true
         rootController.present(passcodeVC, animated: true, completion: nil)
     }
     

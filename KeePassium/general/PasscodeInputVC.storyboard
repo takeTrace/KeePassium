@@ -88,21 +88,34 @@
                                     <action selector="didPressSwitchKeyboard:" destination="KmH-Rg-WCs" eventType="touchUpInside" id="AYY-AQ-iAB"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCs-4z-c3c">
+                                <rect key="frame" x="0.0" y="523" width="45" height="45"/>
+                                <color key="tintColor" name="ActionTint"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <state key="normal" image="applock-use-biometrics-listitem"/>
+                                <connections>
+                                    <action selector="didPressUseBiometricsButton:" destination="KmH-Rg-WCs" eventType="touchUpInside" id="OIK-5A-t60"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="i2Z-Q7-JRa" firstAttribute="top" secondItem="ZTd-Zj-qAs" secondAttribute="bottom" constant="8" id="4KE-z1-11k"/>
                             <constraint firstItem="3mQ-t6-0ty" firstAttribute="leading" secondItem="ZTd-Zj-qAs" secondAttribute="leading" id="7St-RE-swb"/>
                             <constraint firstItem="z0x-Rz-Nfj" firstAttribute="top" secondItem="B1T-XF-h6z" secondAttribute="top" constant="8" id="9hO-Gy-9mF"/>
+                            <constraint firstItem="B1T-XF-h6z" firstAttribute="bottom" secondItem="HCs-4z-c3c" secondAttribute="bottom" priority="750" id="9yr-Jb-oJo" customClass="KeyboardLayoutConstraint" customModule="KeePassium" customModuleProvider="target"/>
                             <constraint firstItem="B1T-XF-h6z" firstAttribute="bottom" secondItem="f5U-FH-tld" secondAttribute="bottom" priority="750" id="Cvw-BW-JuG" customClass="KeyboardLayoutConstraint" customModule="KeePassium" customModuleProvider="target"/>
                             <constraint firstItem="f5U-FH-tld" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i2Z-Q7-JRa" secondAttribute="bottom" constant="8" id="GPq-Ic-rbU"/>
                             <constraint firstItem="3mQ-t6-0ty" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ZTd-Zj-qAs" secondAttribute="trailing" id="HDJ-R3-0GJ"/>
+                            <constraint firstItem="f5U-FH-tld" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HCs-4z-c3c" secondAttribute="trailing" id="eOW-i6-VR5"/>
                             <constraint firstItem="f5U-FH-tld" firstAttribute="trailing" secondItem="B1T-XF-h6z" secondAttribute="trailing" id="fDc-nB-Z0t"/>
                             <constraint firstItem="i2Z-Q7-JRa" firstAttribute="centerX" secondItem="ZhN-Z7-r4d" secondAttribute="centerX" id="iOU-wr-NLS"/>
+                            <constraint firstItem="HCs-4z-c3c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i2Z-Q7-JRa" secondAttribute="bottom" constant="8" id="mya-dZ-0is"/>
                             <constraint firstItem="ZTd-Zj-qAs" firstAttribute="centerX" secondItem="ZhN-Z7-r4d" secondAttribute="centerX" id="omW-Jt-miS"/>
                             <constraint firstItem="i2Z-Q7-JRa" firstAttribute="width" secondItem="ZTd-Zj-qAs" secondAttribute="width" id="ouf-mp-ZOh"/>
                             <constraint firstItem="z0x-Rz-Nfj" firstAttribute="leading" secondItem="B1T-XF-h6z" secondAttribute="leading" constant="8" id="pes-IQ-vC6"/>
                             <constraint firstItem="i2Z-Q7-JRa" firstAttribute="centerY" secondItem="ZhN-Z7-r4d" secondAttribute="centerY" priority="250" id="pjs-2x-aDc"/>
+                            <constraint firstItem="HCs-4z-c3c" firstAttribute="leading" secondItem="B1T-XF-h6z" secondAttribute="leading" id="s3d-9V-vN6"/>
                             <constraint firstItem="ZTd-Zj-qAs" firstAttribute="top" secondItem="3mQ-t6-0ty" secondAttribute="bottom" constant="8" id="u1U-We-vJX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="B1T-XF-h6z"/>
@@ -116,6 +129,7 @@
                         <outlet property="mainButton" destination="i2Z-Q7-JRa" id="A8G-LI-2JU"/>
                         <outlet property="passcodeTextField" destination="ZTd-Zj-qAs" id="CYO-9J-fW4"/>
                         <outlet property="switchKeyboardButton" destination="f5U-FH-tld" id="412-ln-hvK"/>
+                        <outlet property="useBiometricsButton" destination="HCs-4z-c3c" id="Pl5-HL-Y9A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oVN-tK-xWV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -124,6 +138,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="applock-use-biometrics-listitem" width="29" height="29"/>
         <namedColor name="ActionText">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

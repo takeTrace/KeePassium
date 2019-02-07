@@ -25,6 +25,9 @@ protocol PasscodeInputDelegate: class {
     
     /// Called when the user presses "Unlock" / "Done" (depending on the mode)
     func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String)
+    
+    /// Called when the user presses "Touch ID / Face ID" button.
+    func passcodeInputDidRequestBiometrics(_ sender: PasscodeInputVC)
 }
 
 extension PasscodeInputDelegate {
@@ -34,6 +37,7 @@ extension PasscodeInputDelegate {
         return passcode.count > 0
     }
     func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode: String) {}
+    func passcodeInputDidRequestBiometrics(_ sender: PasscodeInputVC) {}
 }
 
 class PasscodeInputVC: UIViewController {
@@ -50,11 +54,20 @@ class PasscodeInputVC: UIViewController {
     @IBOutlet weak var passcodeTextField: ProtectedTextField!
     @IBOutlet weak var mainButton: UIButton!
     @IBOutlet weak var switchKeyboardButton: UIButton!
+    @IBOutlet weak var useBiometricsButton: UIButton!
     
     /// Defines whether the VC is kindly asking for or strictly checking the passcode.
     public var mode: Mode = .setup
     /// Whether to show the Cancel button (by default is `true`).
-    public var isCancellable = true
+    public var isCancelAllowed = true
+    /// Whether to show the "Touch ID / Face ID" button (false by default)
+    public var isBiometricsAllowed = false {
+        didSet {
+            if isViewLoaded {
+                useBiometricsButton.isHidden = !isBiometricsAllowed
+            }
+        }
+    }
     
     weak var delegate: PasscodeInputDelegate?
     private var nextKeyboardType = Settings.PasscodeKeyboardType.alphanumeric
@@ -91,16 +104,17 @@ class PasscodeInputVC: UIViewController {
         case .verification:
             mainButton.setTitle(LString.actionUnlock, for: .normal)
         }
-        cancelButton.isHidden = !isCancellable
+        cancelButton.isHidden = !isCancelAllowed
+        useBiometricsButton.isHidden = !isBiometricsAllowed
         mainButton.isEnabled = passcodeTextField.isValid
         passcodeTextField.becomeFirstResponder()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { [weak self] in
-            self?.passcodeTextField.becomeFirstResponder()
-        }
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { [weak self] in
+//            self?.passcodeTextField.becomeFirstResponder()
+//        }
     }
     
     private func setKeyboardType(_ type: Settings.PasscodeKeyboardType) {
@@ -139,6 +153,10 @@ class PasscodeInputVC: UIViewController {
     
     @IBAction func didPressSwitchKeyboard(_ sender: Any) {
         setKeyboardType(nextKeyboardType)
+    }
+    
+    @IBAction func didPressUseBiometricsButton(_ sender: Any) {
+        delegate?.passcodeInputDidRequestBiometrics(self)
     }
 }
 
