@@ -284,6 +284,10 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         Settings.current.isRememberDatabaseKey = rememberDatabaseKeySwitch.isOn
     }
     
+    @IBAction func didPressUnlock(_ sender: Any) {
+        tryToUnlockDatabase()
+    }
+    
     // MARK: - DB unlocking
     
     func tryToUnlockDatabase() {
