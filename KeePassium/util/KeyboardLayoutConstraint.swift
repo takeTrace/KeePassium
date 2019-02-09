@@ -1,4 +1,5 @@
 // The code below is from https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift
+// Modified by Andrei Popleteev for KeePassium
 
 // The MIT License (MIT)
 //
@@ -28,9 +29,17 @@ import UIKit
 @available(tvOS, unavailable)
 public class KeyboardLayoutConstraint: NSLayoutConstraint {
     
+    /// Adjusts constraint behavior for views that are raised above the bottom of the screen
+    /// (in particular, page sheets on iPad)
+    public var viewOffset: CGFloat = 0 {
+        didSet {
+            updateConstant()
+        }
+    }
+    
     private var offset : CGFloat = 0
     private var keyboardVisibleHeight : CGFloat = 0
-    
+
     @available(tvOS, unavailable)
     override public func awakeFromNib() {
         super.awakeFromNib()
@@ -110,7 +119,7 @@ public class KeyboardLayoutConstraint: NSLayoutConstraint {
     }
     
     func updateConstant() {
-        self.constant = offset + keyboardVisibleHeight
+        self.constant = offset + max(0, keyboardVisibleHeight - viewOffset)
     }
     
 }

@@ -55,6 +55,7 @@ class PasscodeInputVC: UIViewController {
     @IBOutlet weak var mainButton: UIButton!
     @IBOutlet weak var switchKeyboardButton: UIButton!
     @IBOutlet weak var useBiometricsButton: UIButton!
+    @IBOutlet weak var keyboardLayoutConstraint: KeyboardLayoutConstraint!
     
     /// Defines whether the VC is kindly asking for or strictly checking the passcode.
     public var mode: Mode = .setup
@@ -112,9 +113,24 @@ class PasscodeInputVC: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { [weak self] in
-//            self?.passcodeTextField.becomeFirstResponder()
-//        }
+        updateKeyboardLayoutConstraints()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        DispatchQueue.main.async {
+            self.updateKeyboardLayoutConstraints()
+        }
+    }
+    
+    private func updateKeyboardLayoutConstraints() {
+        if let window = view.window {
+            let viewTop = view.convert(view.frame.origin, to: window).y
+            let viewHeight = view.frame.height
+            let windowHeight = window.frame.height
+            let viewBottomOffset = windowHeight - (viewTop + viewHeight)
+            keyboardLayoutConstraint.viewOffset = viewBottomOffset
+        }
     }
     
     private func setKeyboardType(_ type: Settings.PasscodeKeyboardType) {

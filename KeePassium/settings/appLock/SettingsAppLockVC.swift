@@ -107,6 +107,8 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
             passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
             passcodeInputVC!.delegate = self
             passcodeInputVC!.mode = .setup
+            passcodeInputVC!.modalPresentationStyle = .formSheet
+            passcodeInputVC!.isCancelAllowed = true
             present(passcodeInputVC!, animated: true, completion: nil)
         }
     }
