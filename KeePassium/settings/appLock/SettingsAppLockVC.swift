@@ -131,6 +131,7 @@ extension SettingsAppLockVC: PasscodeInputDelegate {
     func passcodeInputDidCancel(_ sender: PasscodeInputVC) {
         Settings.current.isAppLockEnabled = false
         passcodeInputVC?.dismiss(animated: true, completion: nil)
+        refresh()
     }
     
     func passcodeInput(_sender: PasscodeInputVC, canAcceptPasscode passcode: String) -> Bool {
