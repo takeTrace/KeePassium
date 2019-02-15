@@ -165,18 +165,18 @@ class DatabaseUnlockerVC: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func keyFileFieldDidBeginEdit(_ sender: Any) {
-    }
-    
     @IBAction func didPressErrorDetailsButton(_ sender: Any) {
+        Watchdog.shared.restart()
         coordinator?.showDiagnostics()
     }
     
     @IBAction func didToggleRememberSwitch(_ sender: Any) {
+        Watchdog.shared.restart()
         Settings.current.isRememberDatabaseKey = rememberMasterKeySwitch.isOn
     }
     
     @IBAction func didPressUnlock(_ sender: Any) {
+        Watchdog.shared.restart()
         guard let databaseRef = databaseRef else { return }
         delegate?.databaseUnlockerShouldUnlock(
             self,
@@ -189,6 +189,7 @@ class DatabaseUnlockerVC: UIViewController {
 
 extension DatabaseUnlockerVC: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        Watchdog.shared.restart()
         if textField === keyFileField {
             coordinator?.selectKeyFile()
             passwordField.becomeFirstResponder()

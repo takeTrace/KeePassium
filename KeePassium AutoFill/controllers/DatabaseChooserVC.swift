@@ -35,7 +35,6 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
         static let noFiles = "NoFilesCell"
     }
     
-    weak var coordinator: MainCoordinator?
     weak var delegate: DatabaseChooserDelegate?
     
     private var databaseRefs: [URLReference] = []
@@ -76,10 +75,12 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
     // MARK: - Actions
     
     @IBAction func didPressCancel(_ sender: Any) {
+        Watchdog.shared.restart()
         delegate?.databaseChooserShouldCancel(self)
     }
     
     @IBAction func didPressAddDatabase(_ sender: Any) {
+        Watchdog.shared.restart()
         delegate?.databaseChooserShouldAddDatabase(self)
     }
     
@@ -121,6 +122,7 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
         _ tableView: UITableView,
         accessoryButtonTappedForRowWith indexPath: IndexPath)
     {
+        Watchdog.shared.restart()
         let urlRef = databaseRefs[indexPath.row]
         delegate?.databaseChooser(self, shouldShowInfoForDatabase: urlRef)
     }
@@ -135,6 +137,7 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
         editActionsForRowAt indexPath: IndexPath
         ) -> [UITableViewRowAction]?
     {
+        Watchdog.shared.restart()
         guard databaseRefs.count > 0 else { return nil }
         
         let deleteAction = UITableViewRowAction(

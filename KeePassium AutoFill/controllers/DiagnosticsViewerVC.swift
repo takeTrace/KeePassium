@@ -65,6 +65,7 @@ class DiagnosticsViewerVC: UITableViewController {
     // MARK: - Actions
     
     @IBAction func didPressCopy(_ sender: Any) {
+        Watchdog.shared.restart()
         let logText = Diag.toString()
         delegate?.diagnosticsViewer(self, didCopyContents: logText)
     }

@@ -166,12 +166,14 @@ class EntryFinderVC: UITableViewController {
     // MARK: - Actions
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Watchdog.shared.restart()
         guard searchResults.count > 0 else { return }
         let selectedEntry = searchResults[indexPath.section].entries[indexPath.row]
         delegate?.entryFinder(self, didSelectEntry: selectedEntry)
     }
     
     @IBAction func didPressLockDatabase(_ sender: Any) {
+        Watchdog.shared.restart()
         delegate?.entryFinderShouldLockDatabase(self)
     }
 }
@@ -179,6 +181,7 @@ class EntryFinderVC: UITableViewController {
 extension EntryFinderVC: UISearchResultsUpdating {
     // Called to update results of manual search
     public func updateSearchResults(for searchController: UISearchController) {
+        Watchdog.shared.restart()
         guard let searchText = searchController.searchBar.text,
             let database = database else { return }
         searchResults = searchHelper.find(database: database, searchText: searchText)
