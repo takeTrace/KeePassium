@@ -59,6 +59,9 @@ class PasscodeInputVC: UIViewController {
     
     /// Defines whether the VC is kindly asking for or strictly checking the passcode.
     public var mode: Mode = .setup
+    /// Automatically show up keyboard after appearing (true by default).
+    /// Disable this if passcode input is immedaitely followed by biometrics auth UI.
+    public var shouldActivateKeyboard = true
     /// Whether to show the Cancel button (by default is `true`).
     public var isCancelAllowed = true
     /// Whether to show the "Touch ID / Face ID" button (false by default)
@@ -108,7 +111,9 @@ class PasscodeInputVC: UIViewController {
         cancelButton.isHidden = !isCancelAllowed
         useBiometricsButton.isHidden = !isBiometricsAllowed
         mainButton.isEnabled = passcodeTextField.isValid
-        passcodeTextField.becomeFirstResponder()
+        if shouldActivateKeyboard {
+            passcodeTextField.becomeFirstResponder()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -131,6 +136,16 @@ class PasscodeInputVC: UIViewController {
             let viewBottomOffset = windowHeight - (viewTop + viewHeight)
             keyboardLayoutConstraint.viewOffset = viewBottomOffset
         }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return passcodeTextField.canBecomeFirstResponder
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        let result = super.becomeFirstResponder()
+        passcodeTextField.becomeFirstResponder()
+        return result
     }
     
     private func setKeyboardType(_ type: Settings.PasscodeKeyboardType) {
