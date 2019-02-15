@@ -199,7 +199,7 @@
                         <outlet property="errorMessagePanel" destination="Crk-4o-Fqu" id="WOd-6g-If7"/>
                         <outlet property="inputPanel" destination="Q5g-RY-uXD" id="6S7-1l-TIX"/>
                         <outlet property="keyFileField" destination="Dnl-vm-GMg" id="frD-BC-dbG"/>
-                        <outlet property="passwordField" destination="U6j-Ph-AWS" id="fbv-LT-dGA"/>
+                        <outlet property="passwordField" destination="U6j-Ph-AWS" id="eKJ-Bd-ciZ"/>
                         <outlet property="rememberMasterKeySwitch" destination="3AW-w8-RdW" id="gbw-Jf-tPb"/>
                     </connections>
                 </viewController>

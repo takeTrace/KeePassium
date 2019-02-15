@@ -33,7 +33,7 @@ class DatabaseUnlockerVC: UIViewController {
     @IBOutlet weak var databaseLocationIconImage: UIImageView!
     @IBOutlet weak var databaseFileNameLabel: UILabel!
     @IBOutlet weak var inputPanel: UIView!
-    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var passwordField: ProtectedTextField!
     @IBOutlet weak var keyFileField: UITextField!
     @IBOutlet weak var rememberMasterKeySwitch: UISwitch!
     
