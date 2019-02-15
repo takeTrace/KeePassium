@@ -257,10 +257,12 @@ class Watchdog {
         self.databaseLockTimer = nil
         DatabaseManager.shared.closeDatabase(
             completion: {
-                self.delegate?.watchdogDidCloseDatabase(self)
-                NotificationCenter.default.post(
-                    name: Watchdog.Notifications.databaseLockDidEngage,
-                    object: self)
+                DispatchQueue.main.async {
+                    self.delegate?.watchdogDidCloseDatabase(self)
+                    NotificationCenter.default.post(
+                        name: Watchdog.Notifications.databaseLockDidEngage,
+                        object: self)
+                }
             },
             clearStoredKey: true)
     }

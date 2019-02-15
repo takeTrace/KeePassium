@@ -464,6 +464,7 @@ extension MainCoordinator: WatchdogDelegate {
                     [weak self] in
                     self?.showBiometricAuth()
                 }
+                _self.isPasscodeInputShown = true
             }
         } else {
             // the rootController is empty, so we can present directly
@@ -471,8 +472,9 @@ extension MainCoordinator: WatchdogDelegate {
                 [weak self] in
                 self?.showBiometricAuth()
             })
+            isPasscodeInputShown = true
         }
-        isPasscodeInputShown = true
+        
     }
     
     func hideAppLock(_ sender: Watchdog) {
