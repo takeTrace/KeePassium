@@ -16,7 +16,41 @@
 
 import UIKit
 import KeePassiumLib
-import LocalAuthentication
+
+protocol WatchdogDelegate: class {
+    var isAppCoverVisible: Bool { get }
+    /// Should obscure the app UI while in background.
+    func showAppCover(_ sender: Watchdog)
+    /// Hides the cover shown by `showAppCover`.
+    func hideAppCover(_ sender: Watchdog)
+    
+    var isAppLockVisible: Bool { get }
+    /// Requests a passcode or biometric auth to access the app.
+    func showAppLock(_ sender: Watchdog)
+    /// Hides the AppLock passcode request (unlocks the app).
+    func hideAppLock(_ sender: Watchdog)
+
+    /// Called after watchdog has closed current database.
+    func watchdogDidCloseDatabase(_ sender: Watchdog)
+}
+
+extension WatchdogDelegate {
+    // Default empty implementations of delegate methods.
+    var isAppCoverVisible: Bool { return false }
+    func showAppCover(_ sender: Watchdog) { }
+    func hideAppCover(_ sender: Watchdog) { }
+    var isAppLockVisible: Bool { return false }
+    func showAppLock(_ sender: Watchdog) { }
+    func hideAppLock(_ sender: Watchdog) { }
+    func watchdogDidCloseDatabase(_ sender: Watchdog) { }
+}
+
+fileprivate extension WatchdogDelegate {
+    /// Internal synonym for `isAppLockVisible`
+    var isAppLocked: Bool {
+        return isAppLockVisible
+    }
+}
 
 class Watchdog {
     public static let shared = Watchdog()
@@ -26,12 +60,6 @@ class Watchdog {
         public static let appLockDidEngage = Notification.Name("com.keepassium.Watchdog.appLockDidEngage")
         public static let databaseLockDidEngage = Notification.Name("com.keepassium.Watchdog.databaseLockDidEngage")
     }
-    
-    /// True if AppLock is engaged (asking for passcode/biometrics)
-    public var isAppLocked: Bool { return appLockWindow != nil }
-
-    /// True if main app UI is protected by a cover window
-    public var isAppCovered: Bool { return appCoverWindow != nil }
     
     /// Returns `true` *once* after the database timeout was triggered.
     /// After the first call, resets back to `false`.
@@ -45,26 +73,13 @@ class Watchdog {
     }
     private var _isDatabaseTimeoutExpired = false
     
-    private var appCoverWindow: UIWindow?
-    private var appLockWindow: UIWindow?
-    private var isBiometricAuthShown = false
-    private var wasShowingBiometricAuth = false
+    public weak var delegate: WatchdogDelegate?
     
+    private var isBeingUnlocked = false
     private var appLockTimer: Timer?
     private var databaseLockTimer: Timer?
-
     
     init() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(appDidFinishLaunching),
-            name: UIApplication.didFinishLaunchingNotification,
-            object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(appWillEnterForeground),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(appDidBecomeActive),
@@ -75,37 +90,33 @@ class Watchdog {
             selector: #selector(appWillResignActive),
             name: UIApplication.willResignActiveNotification,
             object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(appDidEnterBackground),
-            name: UIApplication.didEnterBackgroundNotification,
-            object: nil)
     }
     
     // MARK: - App state transitions
     
-    @objc private func appDidFinishLaunching(_ notification: Notification) {
-        print("App did finish launching")
-    }
-    @objc private func appWillEnterForeground(_ notification: Notification) {
-        print("App will enter foreground")
-    }
     @objc private func appDidBecomeActive(_ notification: Notification) {
+        didBecomeActive()
+    }
+    
+    internal func didBecomeActive() {
         print("App did become active")
         restartAppTimer()
         restartDatabaseTimer()
-        if wasShowingBiometricAuth {
-            wasShowingBiometricAuth = false
+        // `appDidBecomeActive` is also being called after returning from biometric auth window.
+        // Flag `isBeingUnlocked` tracks this state to avoid immediate re-locking.
+        if isBeingUnlocked {
+            isBeingUnlocked = false
         } else {
             maybeLockSomething()
         }
-        hideAppCover()
+        delegate?.hideAppCover(self)
     }
+    
     @objc private func appWillResignActive(_ notification: Notification) {
         print("App will resign active")
-        showAppCover(application: KPApplication.shared)
-        if isBiometricAuthShown { return }
-        if isAppLocked { return }
+        guard let delegate = delegate else { return }
+        delegate.showAppCover(self)
+        if delegate.isAppLocked { return }
 
         let databaseTimeout = Settings.current.databaseCloseTimeout
         if databaseTimeout == .immediately {
@@ -126,13 +137,9 @@ class Watchdog {
         databaseLockTimer = nil
     }
     
-    @objc private func appDidEnterBackground(_ notification: Notification) {
-        print("App did enter background")
-    }
-    
     // MARK: - Watchdog functions
     
-    @objc private func maybeLockSomething() {
+    @objc public func maybeLockSomething() {
         if isShouldEngageAppLock() {
             engageAppLock()
         }
@@ -142,7 +149,8 @@ class Watchdog {
     }
     
     open func restart() {
-        guard !isAppLocked else { return }
+        guard let delegate = delegate else { return }
+        guard !delegate.isAppLocked else { return }
         Settings.current.recentUserActivityTimestamp = Date.now
         restartAppTimer()
         restartDatabaseTimer()
@@ -224,11 +232,13 @@ class Watchdog {
 
     /// Triggers an app lock timeout notification.
     private func engageAppLock() {
-        guard !isAppLocked else { return }
+        guard let delegate = delegate else { return }
+        guard !delegate.isAppLocked else { return }
         Diag.info("Engaging App Lock")
-        self.appLockTimer?.invalidate()
-        self.appLockTimer = nil
-        showAppLockScreen()
+        appLockTimer?.invalidate()
+        appLockTimer = nil
+        isBeingUnlocked = false
+        delegate.showAppLock(self)
         NotificationCenter.default.post(name: Watchdog.Notifications.appLockDidEngage, object: self)
     }
     
@@ -239,6 +249,7 @@ class Watchdog {
         self.databaseLockTimer = nil
         DatabaseManager.shared.closeDatabase(
             completion: {
+                self.delegate?.watchdogDidCloseDatabase(self)
                 NotificationCenter.default.post(
                     name: Watchdog.Notifications.databaseLockDidEngage,
                     object: self)
@@ -246,135 +257,12 @@ class Watchdog {
             clearStoredKey: true)
     }
     
-    // MARK: - Application cover UI
-    
-    /// Obscures the UI while in background
-    private func showAppCover(application: UIApplication)  {
-        guard appCoverWindow == nil else { return }
-        
-        appCoverWindow = UIWindow(frame: UIScreen.main.bounds)
-        appCoverWindow!.screen = UIScreen.main
-        appCoverWindow!.windowLevel = UIWindow.Level.alert
-        let coverVC = AppCoverVC.make()
-        appCoverWindow!.rootViewController = coverVC
-        appCoverWindow!.makeKeyAndVisible()
-        print("App cover shown")
-        
-        coverVC.view.snapshotView(afterScreenUpdates: true)
-    }
-    
-    private func hideAppCover() {
-        guard let appCoverWindow = appCoverWindow else { return }
-        appCoverWindow.isHidden = true
-        self.appCoverWindow = nil
-        print("App cover hidden")
-    }
-    
-    // MARK: - App Lock UI
-    
-    /// Shows biometric authentication UI, if supported and enabled.
-    ///
-    /// - Parameter completion: called after biometric authentication,
-    ///         with a `Bool` parameter indicating success of the bioauth.
-    private func maybeShowBiometricAuth(completion: @escaping ((Bool) -> Void)) {
-        guard Settings.current.isBiometricAppLockEnabled else { return }
-        guard !isBiometricAuthShown else { return }
-        
-        let context = LAContext()
-        let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
-        context.localizedFallbackTitle = "" // hide "Enter Password" fallback; nil won't work
-        if isBiometricsAvailable() {
-            context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
-                [unowned self] (authSuccessful, authError) in
-                self.isBiometricAuthShown = false
-                DispatchQueue.main.async { [unowned self] in
-                    self.wasShowingBiometricAuth = true
-                    if authSuccessful {
-                        self.unlockApp()
-                        completion(true)
-                    } else {
-                        Diag.warning("TouchID failed [message: \(authError?.localizedDescription ?? "nil")]")
-                        completion(false)
-                    }
-                }
-            }
-            isBiometricAuthShown = true
-        }
-        isBiometricAuthShown = false
-    }
-    
     open func unlockApp() {
-        guard isAppLocked else { return }
-        hideAppLockScreen()
+        guard let delegate = delegate else { return }
+        guard delegate.isAppLocked else { return }
+        isBeingUnlocked = true
+        delegate.hideAppLock(self)
         restart()
     }
     
-    /// Shows the lock screen.
-    private func showAppLockScreen() {
-        let isRepeatedBiometricsAllowed = isBiometricsAvailable()
-            && Settings.current.isBiometricAppLockEnabled
-        appLockWindow = UIWindow(frame: UIScreen.main.bounds)
-        appLockWindow!.screen = UIScreen.main
-        appLockWindow!.windowLevel = UIWindow.Level.alert
-        let passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
-        passcodeInputVC.delegate = self
-        passcodeInputVC.mode = .verification
-        passcodeInputVC.isCancelAllowed = false // for the main app
-        passcodeInputVC.isBiometricsAllowed = isRepeatedBiometricsAllowed
-        appLockWindow!.rootViewController = passcodeInputVC
-        appLockWindow!.makeKeyAndVisible()
-        print("appLockWindow shown")
-        
-        maybePerformBiometricUnlock(passcodeInput: passcodeInputVC)
-    }
-    
-    private func hideAppLockScreen() {
-        appLockWindow?.isHidden = true
-        appLockWindow = nil
-        print("appLockWindow hidden")
-    }
-    
-    /// True if hardware provides biometric authentication, and the app supports it.
-    public func isBiometricsAvailable() -> Bool {
-        let context = LAContext()
-        let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
-        return context.canEvaluatePolicy(policy, error: nil)
-    }
-    
-    /// Shows biometric auth, if available
-    private func maybePerformBiometricUnlock(passcodeInput: PasscodeInputVC?) {
-        weak var _passcodeInput = passcodeInput
-        maybeShowBiometricAuth() {
-            [weak self] (isAuthSuccessful) in
-            guard let _self = self else { return }
-            if isAuthSuccessful {
-                _self.unlockApp()
-            } else {
-                let isAnotherBiometricsAttemptAllowed = _self.isBiometricsAvailable()
-                    && Settings.current.isBiometricAppLockEnabled
-                _passcodeInput?.isBiometricsAllowed = isAnotherBiometricsAttemptAllowed
-            }
-        }
-    }
-}
-
-extension Watchdog: PasscodeInputDelegate {
-    func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String) {
-        do {
-            if try Keychain.shared.isAppPasscodeMatch(passcode) { // throws KeychainError
-                unlockApp()
-            } else {
-                sender.animateWrongPassccode()
-            }
-        } catch {
-            let alert = UIAlertController.make(
-                title: LString.titleKeychainError,
-                message: error.localizedDescription)
-            sender.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    func passcodeInputDidRequestBiometrics(_ sender: PasscodeInputVC) {
-        maybePerformBiometricUnlock(passcodeInput: sender)
-    }
 }
