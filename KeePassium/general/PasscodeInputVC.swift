@@ -142,6 +142,7 @@ class PasscodeInputVC: UIViewController {
         return passcodeTextField.canBecomeFirstResponder
     }
     
+    @discardableResult
     override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         passcodeTextField.becomeFirstResponder()

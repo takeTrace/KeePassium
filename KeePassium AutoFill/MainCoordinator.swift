@@ -120,7 +120,6 @@ class MainCoordinator: NSObject, Coordinator {
     
     func showDatabaseChooser(completion: (()->Void)?) {
         let databaseChooserVC = DatabaseChooserVC.instantiateFromStoryboard()
-        databaseChooserVC.coordinator = self
         databaseChooserVC.delegate = self
         navigationController.pushViewController(databaseChooserVC, animated: false)
         
