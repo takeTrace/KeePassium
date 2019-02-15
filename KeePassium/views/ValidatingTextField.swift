@@ -46,6 +46,9 @@ class ValidatingTextField: UITextField {
     /// Background color to use when the contents is valid (by default, clear).
     @IBInspectable var validBackgroundColor: UIColor? = UIColor.clear
     
+    /// Defines whether typing resets the watchdog (true by default).
+    @IBInspectable var isWatchdogAware = true
+
     var isValid: Bool {
         get { return validityDelegate?.validatingTextFieldShouldValidate(self) ?? true }
     }
@@ -54,8 +57,6 @@ class ValidatingTextField: UITextField {
         didSet { validate() }
     }
     
-    public var isWatchdogAware = true
-
     private var wasValid: Bool?
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -65,11 +66,9 @@ class ValidatingTextField: UITextField {
     
     @objc
     private func onEditingChanged(textField: UITextField) {
-        #if MAIN_APP
         if isWatchdogAware {
             Watchdog.shared.restart()
         }
-        #endif
         validityDelegate?.validatingTextField(self, textDidChange: textField.text ?? "")
         validate()
     }
