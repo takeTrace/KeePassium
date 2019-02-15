@@ -102,6 +102,8 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             // throws KeychainError, ignored
         if isDatabaseKeyStored ?? false {
             tryToUnlockDatabase()
+        } else {
+            passwordField.becomeFirstResponder()
         }
     }
     
