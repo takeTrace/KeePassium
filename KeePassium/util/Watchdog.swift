@@ -139,10 +139,18 @@ class Watchdog {
     
     // MARK: - Watchdog functions
     
-    @objc public func maybeLockSomething() {
+    @objc private func maybeLockSomething() {
+        maybeLockApp()
+        maybeLockDatabase()
+    }
+    
+    @objc private func maybeLockApp() {
         if isShouldEngageAppLock() {
             engageAppLock()
         }
+    }
+    
+    @objc private func maybeLockDatabase() {
         if isShouldEngageDatabaseLock() {
             engageDatabaseLock()
         }
@@ -201,10 +209,10 @@ class Watchdog {
         case .never, .immediately:
             return
         default:
-            self.appLockTimer = Timer.scheduledTimer(
+            appLockTimer = Timer.scheduledTimer(
                 timeInterval: Double(timeout.seconds),
                 target: self,
-                selector: #selector(maybeLockSomething),
+                selector: #selector(maybeLockApp),
                 userInfo: nil,
                 repeats: false)
         }
@@ -224,7 +232,7 @@ class Watchdog {
             databaseLockTimer = Timer.scheduledTimer(
                 timeInterval: Double(timeout.seconds),
                 target: self,
-                selector: #selector(maybeLockSomething),
+                selector: #selector(maybeLockDatabase),
                 userInfo: nil,
                 repeats: false)
         }
