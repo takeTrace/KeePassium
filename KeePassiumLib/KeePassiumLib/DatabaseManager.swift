@@ -65,13 +65,15 @@ public class DatabaseManager {
     public func closeDatabase(completion callback: (() -> Void)?=nil, clearStoredKey: Bool) {
         guard database != nil else { return }
         Diag.debug("Will close database")
+
+        // Clear the key synchronously, otherwise auto-unlock might be racing with the closing.
+        if clearStoredKey {
+            try? Keychain.shared.removeDatabaseKey(databaseRef: self.databaseRef)
+            // throws KeychainError, ignored
+        }
+
         serialDispatchQueue.async {
             guard let dbDoc = self.databaseDocument else { return }
-            
-            if clearStoredKey {
-                try? Keychain.shared.removeDatabaseKey(databaseRef: self.databaseRef)
-                    // throws KeychainError, ignored
-            }
             
             dbDoc.close(successHandler: {
                 guard let dbRef = self.databaseRef else { assertionFailure(); return }
