@@ -25,7 +25,7 @@ protocol DatabaseUnlockerDelegate: class {
         keyFile: URLReference?)
 }
 
-class DatabaseUnlockerVC: UIViewController {
+class DatabaseUnlockerVC: UIViewController, Refreshable {
 
     @IBOutlet weak var errorMessagePanel: UIView!
     @IBOutlet weak var errorMessageLabel: UILabel!
@@ -41,14 +41,9 @@ class DatabaseUnlockerVC: UIViewController {
     weak var delegate: DatabaseUnlockerDelegate?
     var shouldAutofocus = false
     var databaseRef: URLReference? {
-        didSet { refreshDatabaseInfo() }
+        didSet { refresh() }
     }
-    var keyFileRef: URLReference? {
-        didSet {
-            hideErrorMessage(animated: false)
-            keyFileField.text = keyFileRef?.info.fileName
-        }
-    }
+    private(set) var keyFileRef: URLReference?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +55,7 @@ class DatabaseUnlockerVC: UIViewController {
         
         errorMessagePanel.alpha = 0.0
         
-        refreshDatabaseInfo()
+        refresh()
         
         keyFileField.delegate = self
         passwordField.delegate = self
@@ -118,7 +113,7 @@ class DatabaseUnlockerVC: UIViewController {
         showErrorMessage(text: message)
     }
     
-    private func refreshDatabaseInfo() {
+    func refresh() {
         guard isViewLoaded else { return }
         guard let dbRef = databaseRef else {
             databaseLocationIconImage.image = nil
@@ -134,6 +129,36 @@ class DatabaseUnlockerVC: UIViewController {
             databaseFileNameLabel.text = fileInfo.fileName
             databaseFileNameLabel.textColor = UIColor.primaryText
             databaseLocationIconImage.image = UIImage.databaseIcon(for: dbRef)
+        }
+        
+        let settings = Settings.current
+        if let associatedKeyFileRef = settings.getKeyFileForDatabase(databaseRef: dbRef) {
+            setKeyFile(urlRef: associatedKeyFileRef)
+        }
+    }
+    
+    func setKeyFile(urlRef: URLReference?) {
+        // can be nil, can have error, can be ok
+        keyFileRef = urlRef
+        
+        hideErrorMessage(animated: false)
+
+        guard let databaseRef = databaseRef else { return }
+        Settings.current.setKeyFileForDatabase(databaseRef: databaseRef, keyFileRef: keyFileRef)
+        
+        guard let fileInfo = urlRef?.info else {
+            Diag.debug("No key file selected")
+            keyFileField.text = ""
+            return
+        }
+        if let errorDetails = fileInfo.errorMessage {
+            let errorMessage = NSLocalizedString("Key file error: \(errorDetails)", comment: "Error message related to key file")
+            Diag.warning(errorMessage)
+            showErrorMessage(text: errorMessage)
+            keyFileField.text = ""
+        } else {
+            Diag.info("Key file set successfully")
+            keyFileField.text = fileInfo.fileName
         }
     }
     

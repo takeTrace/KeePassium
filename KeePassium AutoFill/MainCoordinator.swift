@@ -266,11 +266,12 @@ extension MainCoordinator: DatabaseUnlockerDelegate {
 }
 
 extension MainCoordinator: KeyFileChooserDelegate {
+    
     func keyFileChooser(_ sender: KeyFileChooserVC, didSelectFile urlRef: URLReference?) {
         watchdog.restart()
         navigationController.popViewController(animated: true) // bye-bye, key file chooser
         if let databaseUnlockerVC = navigationController.topViewController as? DatabaseUnlockerVC {
-            databaseUnlockerVC.keyFileRef = urlRef
+            databaseUnlockerVC.setKeyFile(urlRef: urlRef)
         } else {
             assertionFailure()
         }
