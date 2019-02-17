@@ -62,7 +62,7 @@ public class EntryField: Eraseable {
 public class Entry: Eraseable {
     public static let defaultIconID = IconID.key
     
-    public unowned let database: Database
+    public weak var database: Database?
     public weak var parent: Group?
     public var uuid: UUID
     public var iconID: IconID
@@ -109,7 +109,7 @@ public class Entry: Eraseable {
     
     public var description: String { return "Entry[\(title)]" }
     
-    init(database: Database) {
+    init(database: Database?) {
         self.database = database
         parent = nil
         attachments = []

@@ -21,7 +21,7 @@ public class Group: Eraseable {
     public static let defaultOpenIconID = IconID.folderOpen
     
     // "up" refs are weak, refs to children are strong
-    public unowned let database: Database
+    public weak var database: Database?
     public weak var parent: Group?
     public var uuid: UUID
     public var iconID: IconID
@@ -43,14 +43,14 @@ public class Group: Eraseable {
     public var groups = [Group]()
     public var entries = [Entry]()
     
-    public var isRoot: Bool { return database.root === self }
+    public var isRoot: Bool { return database?.root === self }
 
     /// Checks if a group name is reserved for internal use and cannot be assigned by the user.
     public func isNameReserved(name: String) -> Bool {
         return false
     }
 
-    init(database: Database) {
+    init(database: Database?) {
         self.database = database
         parent = nil
         

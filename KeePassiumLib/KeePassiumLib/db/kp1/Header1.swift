@@ -61,7 +61,7 @@ class Header1 {
         case twofish = 1
     }
     
-    private unowned let database: Database1
+    private weak var database: Database1?
     private(set) var flags: UInt32 // used internally by KeePass
     private(set) var masterSeed: ByteArray
     private(set) var initialVector: ByteArray

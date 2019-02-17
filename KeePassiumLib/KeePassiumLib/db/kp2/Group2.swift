@@ -28,7 +28,7 @@ public class Group2: Group {
     public var locationChangedTime: Date
     public var customData: CustomData2 // v4 only
     
-    override init(database: Database) {
+    override init(database: Database?) {
         isExpanded = true
         customIconUUID = UUID.ZERO
         defaultAutoTypeSequence = ""

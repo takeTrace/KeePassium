@@ -20,7 +20,7 @@ import Foundation
 /// KP2 databases may maintain a list of deleted object.
 /// This class represents items of that list.
 public class DeletedObject2: Eraseable {
-    private unowned var database: Database2
+    private weak var database: Database2?
     private(set) var uuid: UUID
     private(set) var deletionTime: Date
     
@@ -45,6 +45,11 @@ public class DeletedObject2: Eraseable {
     func load(xml: AEXMLElement) throws {
         assert(xml.name == Xml2.deletedObject)
         Diag.verbose("Loading XML: deleted object")
+        guard let database = database else {
+            assertionFailure("Database is nil")
+            Diag.warning("Database is nil")
+            return 
+        }
         erase()
         for tag in xml.children {
             switch tag.name {
@@ -70,6 +75,11 @@ public class DeletedObject2: Eraseable {
     func toXml() -> AEXMLElement {
         Diag.verbose("Generating XML: deleted object")
         let xml = AEXMLElement(name: Xml2.deletedObject)
+        guard let database = database else {
+            assertionFailure("Database is nil")
+            Diag.warning("Database is nil")
+            return xml
+        }
         xml.addChild(name: Xml2.uuid, value: uuid.base64EncodedString())
         xml.addChild(name: Xml2.deletionTime, value: database.xmlDateToString(deletionTime))
         return xml

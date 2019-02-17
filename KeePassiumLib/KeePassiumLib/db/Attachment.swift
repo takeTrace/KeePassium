@@ -18,7 +18,7 @@ import Foundation
 
 /// A file attached to an entry
 public class Attachment: Eraseable {
-    unowned let database: Database
+    weak var database: Database?
     public internal(set) var id: Int
     public var name: String
     public internal(set) var isCompressed: Bool
@@ -41,7 +41,7 @@ public class Attachment: Eraseable {
         return uncompressedSize
     }
     
-    internal init(database: Database, id: Int, name: String, isCompressed: Bool, data: ByteArray) {
+    internal init(database: Database?, id: Int, name: String, isCompressed: Bool, data: ByteArray) {
         self.database = database
         self.id = id
         self.name = name

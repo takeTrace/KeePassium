@@ -277,7 +277,7 @@ public class Entry2: Entry {
     public var tags: String
     public var customData: CustomData2 // v4 only
     
-    override init(database: Database) {
+    override init(database: Database?) {
         _canExpire = false
         customIconUUID = UUID.ZERO
         autoType = AutoType()

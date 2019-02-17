@@ -56,7 +56,7 @@ public class Group1: Group {
         }
     }
     
-    override init(database: Database) {
+    override init(database: Database?) {
         id = -1
         level = 0
         flags = 0
@@ -123,6 +123,11 @@ public class Group1: Group {
     /// subgroups are deleted.
     /// - Returns: true if successful, false otherwise.
     override public func moveToBackup() -> Bool {
+        guard let database = database else {
+            Diag.warning("Database is nil")
+            assertionFailure("Database is nil")
+            return false
+        }
         guard let parentGroup = self.parent else {
             Diag.warning("Failed to get parent group")
             return false

@@ -78,7 +78,7 @@ public class Entry1: Entry {
             (title == MetaStreamID.title)
     }
 
-    override init(database: Database) {
+    override init(database: Database?) {
         groupID = 0
         super.init(database: database)
     }
@@ -344,6 +344,12 @@ public class Entry1: Entry {
     /// Moves the entry to the Backup group.
     /// - Returns: true if successful, false otherwise.
     override public func moveToBackup() -> Bool {
+        guard let database = database else {
+            assertionFailure("Database is nil")
+            Diag.warning("Database is nil")
+            return false
+        }
+        
         guard let backupGroup = database.getBackupGroup(createIfMissing: true) else {
             Diag.warning("Failed to get or create backup group")
             return false

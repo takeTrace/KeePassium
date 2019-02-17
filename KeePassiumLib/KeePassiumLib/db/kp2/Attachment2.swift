@@ -20,7 +20,7 @@ import Foundation
 /// Attachment of a KP2 entry
 public class Attachment2: Attachment {
     
-    override init(database: Database, id: Int, name: String, isCompressed: Bool, data: ByteArray) {
+    override init(database: Database?, id: Int, name: String, isCompressed: Bool, data: ByteArray) {
         super.init(database: database, id: id, name: name, isCompressed: isCompressed, data: data)
     }
     
