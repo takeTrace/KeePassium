@@ -140,28 +140,9 @@ extension AppDelegate: WatchdogDelegate {
         return context.canEvaluatePolicy(policy, error: nil)
     }
     
-    /// Shows biometric auth, if available
+    /// Shows biometric auth, if supported and enabled.
     private func maybePerformBiometricUnlock(passcodeInput: PasscodeInputVC?) {
         weak var _passcodeInput = passcodeInput
-        maybeShowBiometricAuth() {
-            [weak self] (isAuthSuccessful) in
-            guard let _self = self else { return }
-            if isAuthSuccessful {
-                _self.watchdog.unlockApp()
-            } else {
-                let isAnotherBiometricsAttemptAllowed = _self.isBiometricsAvailable()
-                    && Settings.current.isBiometricAppLockEnabled
-                _passcodeInput?.isBiometricsAllowed = isAnotherBiometricsAttemptAllowed
-            }
-        }
-    }
-    
-    
-    /// Shows biometric authentication UI, if supported and enabled.
-    ///
-    /// - Parameter completion: called after biometric authentication,
-    ///         with a `Bool` parameter indicating success of the bioauth.
-    private func maybeShowBiometricAuth(completion: @escaping ((Bool) -> Void)) {
         guard Settings.current.isBiometricAppLockEnabled else { return }
         guard !isBiometricAuthShown else { return }
         
@@ -170,15 +151,18 @@ extension AppDelegate: WatchdogDelegate {
         context.localizedFallbackTitle = "" // hide "Enter Password" fallback; nil won't work
         if isBiometricsAvailable() {
             context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
-                [unowned self] (authSuccessful, authError) in
-                self.isBiometricAuthShown = false
-                DispatchQueue.main.async { [unowned self] in
+                [weak self] (authSuccessful, authError) in
+                guard let _self = self else { return }
+                _self.isBiometricAuthShown = false
+                DispatchQueue.main.async { [weak self] in
+                    guard let _self = self else { return }
                     if authSuccessful {
-                        self.watchdog.unlockApp()
-                        completion(true)
+                        _self.watchdog.unlockApp(fromAnotherWindow: true)
                     } else {
                         Diag.warning("TouchID failed [message: \(authError?.localizedDescription ?? "nil")]")
-                        completion(false)
+                        let isAnotherBiometricsAttemptAllowed = _self.isBiometricsAvailable()
+                            && Settings.current.isBiometricAppLockEnabled
+                        _passcodeInput?.isBiometricsAllowed = isAnotherBiometricsAttemptAllowed
                     }
                 }
             }
@@ -193,7 +177,7 @@ extension AppDelegate: PasscodeInputDelegate {
     func passcodeInput(_ sender: PasscodeInputVC, didEnterPasscode passcode: String) {
         do {
             if try Keychain.shared.isAppPasscodeMatch(passcode) { // throws KeychainError
-                watchdog.unlockApp()
+                watchdog.unlockApp(fromAnotherWindow: false)
             } else {
                 sender.animateWrongPassccode()
             }
