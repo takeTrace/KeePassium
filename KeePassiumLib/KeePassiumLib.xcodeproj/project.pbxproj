@@ -109,6 +109,7 @@
 		75F4ACF0217749DC00B22D8B /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4ACEE217749DB00B22D8B /* AppGroup.swift */; };
 		75F4ACF321774A6400B22D8B /* Clipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4ACF121774A6300B22D8B /* Clipboard.swift */; };
 		75F4ACF421774A6400B22D8B /* URL+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4ACF221774A6300B22D8B /* URL+extensions.swift */; };
+		75F594B8221BDC51001729FD /* SettingsMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F594B7221BDC51001729FD /* SettingsMigrator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -218,6 +219,7 @@
 		75F4ACEE217749DB00B22D8B /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		75F4ACF121774A6300B22D8B /* Clipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard.swift; sourceTree = "<group>"; };
 		75F4ACF221774A6300B22D8B /* URL+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+extensions.swift"; sourceTree = "<group>"; };
+		75F594B7221BDC51001729FD /* SettingsMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMigrator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -369,6 +371,7 @@
 				75F4ACEE217749DB00B22D8B /* AppGroup.swift */,
 				75EA2D1621B2FB4000826FC6 /* Diag.swift */,
 				75F4ACE72177485D00B22D8B /* Settings.swift */,
+				75F594B7221BDC51001729FD /* SettingsMigrator.swift */,
 				75F4ACE82177485D00B22D8B /* Keychain.swift */,
 				75F4ACF121774A6300B22D8B /* Clipboard.swift */,
 				75D09C612174F89A00F7DEF2 /* ProgressEx.swift */,
@@ -659,6 +662,7 @@
 				75F4ACEF217749DC00B22D8B /* UserDefaults+appGroupShared.swift in Sources */,
 				75F4ACDF2177469500B22D8B /* TemporaryFileURL.swift in Sources */,
 				75D09C412174F77000F7DEF2 /* Database1.swift in Sources */,
+				75F594B8221BDC51001729FD /* SettingsMigrator.swift in Sources */,
 				75D09C422174F77000F7DEF2 /* Header1.swift in Sources */,
 				75D09BD22174F76500F7DEF2 /* ChaCha20.swift in Sources */,
 				75D09C3D2174F77000F7DEF2 /* AESDataCipher.swift in Sources */,

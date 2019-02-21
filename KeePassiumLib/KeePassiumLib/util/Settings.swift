@@ -60,9 +60,11 @@ public class SettingsNotifications {
 
 /// Singleton for KeePassium app settings.
 public class Settings {
+    public static let latestVersion = 3
     public static let current = Settings()
     
     public enum Keys: String {
+        case settingsVersion
         case startupDatabase
         case appLockEnabled
         case appLockTimeout
@@ -490,6 +492,22 @@ public class Settings {
                 return NSLocalizedString("Numeric", comment: "Type of keyboard to show for App Lock passcode: digits-only.")
             case .alphanumeric:
                 return NSLocalizedString("Alphanumeric", comment: "Type of keyboard to show for App Lock passcode: letters and digits.")
+            }
+        }
+    }
+    
+    public var settingsVersion: Int {
+        get {
+            let storedVersion = UserDefaults.appGroupShared
+                .object(forKey: Keys.settingsVersion.rawValue)
+                as? Int
+            return storedVersion ?? 0
+        }
+        set {
+            let oldValue = settingsVersion
+            UserDefaults.appGroupShared.set(newValue, forKey: Keys.settingsVersion.rawValue)
+            if newValue != oldValue {
+                postChangeNotification(changedKey: Keys.settingsVersion)
             }
         }
     }

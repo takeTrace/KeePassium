@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ) -> Bool
     {
         AppGroup.applicationShared = application
+        SettingsMigrator.maybeUpgrade(Settings.current)        
         return true
     }
     
