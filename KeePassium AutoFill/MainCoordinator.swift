@@ -20,8 +20,10 @@ import AuthenticationServices
 import LocalAuthentication
 
 class MainCoordinator: NSObject, Coordinator {
-    unowned var rootController: CredentialProviderViewController
     var childCoordinators = [Coordinator]()
+
+    unowned var rootController: CredentialProviderViewController
+    var pageController: UIPageViewController
     var navigationController: UINavigationController
     
     var serviceIdentifiers = [ASCredentialServiceIdentifier]()
@@ -39,6 +41,11 @@ class MainCoordinator: NSObject, Coordinator {
     
     init(rootController: CredentialProviderViewController) {
         self.rootController = rootController
+        pageController = UIPageViewController(
+            transitionStyle: .pageCurl,
+            navigationOrientation: .horizontal,
+            options: [:]
+        )
         navigationController = UINavigationController()
         navigationController.view.backgroundColor = .clear
         watchdog = Watchdog.shared // init
@@ -55,8 +62,13 @@ class MainCoordinator: NSObject, Coordinator {
         databaseManagerNotifications?.startObserving()
         watchdog.didBecomeActive()
         if !isAppLockVisible {
-            rootController.present(navigationController, animated: false, completion: nil)
+            pageController.setViewControllers(
+                [navigationController],
+                direction: .forward,
+                animated: true,
+                completion: nil)
         }
+        rootController.present(pageController, animated: false, completion: nil)
         startMainFlow()
     }
 
@@ -228,6 +240,7 @@ class MainCoordinator: NSObject, Coordinator {
     }
 }
 
+// MARK: - DatabaseChooserDelegate
 extension MainCoordinator: DatabaseChooserDelegate {
     func databaseChooserShouldCancel(_ sender: DatabaseChooserVC) {
         watchdog.restart()
@@ -255,6 +268,7 @@ extension MainCoordinator: DatabaseChooserDelegate {
     }
 }
 
+// MARK: - DatabaseUnlockerDelegate
 extension MainCoordinator: DatabaseUnlockerDelegate {
     func databaseUnlockerShouldUnlock(
         _ sender: DatabaseUnlockerVC,
@@ -267,6 +281,7 @@ extension MainCoordinator: DatabaseUnlockerDelegate {
     }
 }
 
+// MARK: - KeyFileChooserDelegate
 extension MainCoordinator: KeyFileChooserDelegate {
     
     func keyFileChooser(_ sender: KeyFileChooserVC, didSelectFile urlRef: URLReference?) {
@@ -280,6 +295,7 @@ extension MainCoordinator: KeyFileChooserDelegate {
     }
 }
 
+// MARK: - DatabaseManagerObserver
 extension MainCoordinator: DatabaseManagerObserver {
     
     func databaseManager(willLoadDatabase urlRef: URLReference) {
@@ -333,6 +349,7 @@ extension MainCoordinator: DatabaseManagerObserver {
     }
 }
 
+// MARK: - UIDocumentPickerDelegate
 extension MainCoordinator: UIDocumentPickerDelegate {
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         watchdog.restart()
@@ -401,6 +418,7 @@ extension MainCoordinator: UIDocumentPickerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension MainCoordinator: UINavigationControllerDelegate {
     func navigationController(
         _ navigationController: UINavigationController,
@@ -418,6 +436,7 @@ extension MainCoordinator: UINavigationControllerDelegate {
     }
 }
 
+// MARK: - EntryFinderDelegate
 extension MainCoordinator: EntryFinderDelegate {
     func entryFinder(_ sender: EntryFinderVC, didSelectEntry entry: Entry) {
         returnCredentials(entry: entry)
@@ -429,6 +448,7 @@ extension MainCoordinator: EntryFinderDelegate {
     }
 }
 
+// MARK: - DiagnosticsViewerDelegate
 extension MainCoordinator: DiagnosticsViewerDelegate {
     func diagnosticsViewer(_ sender: DiagnosticsViewerVC, didCopyContents text: String) {
         let infoAlert = UIAlertController.make(
@@ -441,6 +461,7 @@ extension MainCoordinator: DiagnosticsViewerDelegate {
     }
 }
 
+// MARK: - WatchdogDelegate
 extension MainCoordinator: WatchdogDelegate {
     var isAppLockVisible: Bool {
         return isBiometricAuthShown || isPasscodeInputShown
@@ -459,26 +480,15 @@ extension MainCoordinator: WatchdogDelegate {
         // so don't show the keyboard if there will be biometrics.
         passcodeInputController!.shouldActivateKeyboard = !shouldUseBiometrics
         
-        if rootController.presentedViewController != nil {
-            // we are already showing navigationController, replace it
-            rootController.dismiss(animated: false) {
-                [weak self] in
-                guard let _self = self else { return }
-                _self.rootController.present(_self.passcodeInputController!, animated: false) {
-                    [weak self] in
-                    self?.showBiometricAuth()
-                }
-                _self.isPasscodeInputShown = true
-            }
-        } else {
-            // the rootController is empty, so we can present directly
-            rootController.present(passcodeInputController!, animated: false, completion: {
-                [weak self] in
+        pageController.setViewControllers(
+            [passcodeInputController!],
+            direction: .reverse,
+            animated: true,
+            completion: { [weak self] (finished) in
                 self?.showBiometricAuth()
-            })
-            isPasscodeInputShown = true
-        }
-        
+            }
+        )
+        isPasscodeInputShown = true
     }
     
     func hideAppLock(_ sender: Watchdog) {
@@ -490,13 +500,14 @@ extension MainCoordinator: WatchdogDelegate {
     }
     
     private func dismissPasscodeAndContinue() {
-        guard rootController.presentedViewController === passcodeInputController else { return }
-        rootController.dismiss(animated: true) {
-            [weak self] in
-            guard let _self = self else { return }
-            _self.passcodeInputController = nil
-            _self.rootController.present(_self.navigationController, animated: false, completion: nil)
-        }
+        pageController.setViewControllers(
+            [navigationController],
+            direction: .forward,
+            animated: true,
+            completion: { [weak self] (finished) in
+                self?.passcodeInputController = nil
+            }
+        )
         isPasscodeInputShown = false
         watchdog.restart()
     }
@@ -541,6 +552,7 @@ extension MainCoordinator: WatchdogDelegate {
     }
 }
 
+// MARK: - PasscodeInputDelegate
 extension MainCoordinator: PasscodeInputDelegate {
     func passcodeInputDidCancel(_ sender: PasscodeInputVC) {
         dismissAndQuit()
