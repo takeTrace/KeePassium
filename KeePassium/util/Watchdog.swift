@@ -99,7 +99,7 @@ class Watchdog {
     }
     
     internal func didBecomeActive() {
-        print("App did become active")
+        print("App did become active (fromAnotherWindow: \(isBeingUnlockedFromAnotherWindow))")
         // `appDidBecomeActive` is also being called after returning from biometric auth window.
         // Flag `isBeingUnlockedFromAnotherWindow` tracks this state to avoid immediate re-locking.
         restartAppTimer()
@@ -271,6 +271,7 @@ class Watchdog {
         guard let delegate = delegate else { return }
         guard delegate.isAppLocked else { return }
         isBeingUnlockedFromAnotherWindow = fromAnotherWindow
+        delegate.hideAppCover(self)
         delegate.hideAppLock(self)
         restart()
     }

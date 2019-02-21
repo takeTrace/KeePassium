@@ -454,6 +454,7 @@ extension MainCoordinator: WatchdogDelegate {
         passcodeInputController!.mode = .verification
         passcodeInputController!.isCancelAllowed = true
         passcodeInputController!.isBiometricsAllowed = shouldUseBiometrics
+        passcodeInputController!.modalTransitionStyle = .crossDissolve
         // Auto-appearing keyboard messes up the biometrics UI,
         // so don't show the keyboard if there will be biometrics.
         passcodeInputController!.shouldActivateKeyboard = !shouldUseBiometrics
