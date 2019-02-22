@@ -347,7 +347,6 @@
 		750CFBC921BA9ACD00E62B09 /* KeePassium AutoFill */ = {
 			isa = PBXGroup;
 			children = (
-				75B24DB521C3BFE0003C9486 /* views */,
 				75CBABA421C16DD400B8AFE2 /* controllers */,
 				75B24DD321C5239D003C9486 /* util */,
 				75CBAB9C21C166D600B8AFE2 /* Coordinator.swift */,
@@ -540,13 +539,6 @@
 				758BF0DC20D220B300897C83 /* WatchdogAwareTextField.swift */,
 				7561850220E033DB00EEFAEE /* WatchdogAwareTextView.swift */,
 				7548BC1721B07BFE001B00E9 /* ProtectedTextField.swift */,
-			);
-			path = views;
-			sourceTree = "<group>";
-		};
-		75B24DB521C3BFE0003C9486 /* views */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = views;
 			sourceTree = "<group>";
