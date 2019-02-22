@@ -80,6 +80,7 @@ public class Settings {
         case backupFilesVisible
         case biometricAppLockEnabled
         case rememberDatabaseKey
+        case lockAllDatabasesOnFailedPasscode
         case passwordGeneratorLength
         case passwordGeneratorIncludeLowerCase
         case passwordGeneratorIncludeUpperCase
@@ -819,6 +820,23 @@ public class Settings {
                 oldValue: isRememberDatabaseKey,
                 newValue: newValue,
                 key: .rememberDatabaseKey)
+        }
+    }
+    
+    /// Whether to clear all database keys from keychain
+    /// after a wrong AppLock passcode has been entered.
+    public var isLockAllDatabasesOnFailedPasscode: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.lockAllDatabasesOnFailedPasscode.rawValue)
+                as? Bool
+            return stored ?? true
+        }
+        set {
+            updateAndNotify(
+                oldValue: isLockAllDatabasesOnFailedPasscode,
+                newValue: newValue,
+                key: .lockAllDatabasesOnFailedPasscode)
         }
     }
     

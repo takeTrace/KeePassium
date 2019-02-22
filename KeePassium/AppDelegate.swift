@@ -223,6 +223,10 @@ extension AppDelegate: PasscodeInputDelegate {
                 watchdog.unlockApp(fromAnotherWindow: false)
             } else {
                 sender.animateWrongPassccode()
+                if Settings.current.isLockAllDatabasesOnFailedPasscode {
+                    try? Keychain.shared.removeAllDatabaseKeys()
+                    DatabaseManager.shared.closeDatabase(clearStoredKey: true)
+                }
             }
         } catch {
             let alert = UIAlertController.make(

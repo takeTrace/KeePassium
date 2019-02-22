@@ -22,7 +22,9 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     @IBOutlet weak var appLockEnabledSwitch: UISwitch!
     @IBOutlet weak var biometricsCell: UITableViewCell!
     @IBOutlet weak var appLockTimeoutCell: UITableViewCell!
+    @IBOutlet weak var lockDatabasesOnFailedPasscodeCell: UITableViewCell!
     @IBOutlet weak var biometricsSwitch: UISwitch!
+    @IBOutlet weak var lockDatabasesOnFailedPasscodeSwitch: UISwitch!
     
     private var settingsNotifications: SettingsNotifications!
     private var isBiometricsSupported = false
@@ -30,10 +32,11 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     
     // Table section numbers
     private enum Sections: Int {
-        static let allValues: [Sections] = [.passcode, .timeout, .biometrics]
+        static let allValues: [Sections] = [.passcode, .timeout, .protectDatabases, .biometrics]
         case passcode = 0
         case timeout = 1
-        case biometrics = 2
+        case protectDatabases = 2
+        case biometrics = 3
     }
     
     public static func make() -> UIViewController {
@@ -75,9 +78,11 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
         let isAppLockEnabled = settings.isAppLockEnabled
         appLockEnabledSwitch.isOn = isAppLockEnabled
         appLockTimeoutCell.detailTextLabel?.text = settings.appLockTimeout.shortTitle
+        lockDatabasesOnFailedPasscodeSwitch.isOn = settings.isLockAllDatabasesOnFailedPasscode
         biometricsSwitch.isOn = settings.isBiometricAppLockEnabled
         
         appLockTimeoutCell.setEnabled(isAppLockEnabled)
+        lockDatabasesOnFailedPasscodeCell.setEnabled(isAppLockEnabled)
         biometricsCell.setEnabled(isAppLockEnabled)
         biometricsSwitch.isEnabled = isAppLockEnabled
     }
@@ -111,6 +116,10 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
             passcodeInputVC!.isCancelAllowed = true
             present(passcodeInputVC!, animated: true, completion: nil)
         }
+    }
+    
+    @IBAction func didChangeLockDatabasesOnFailedPasscodeSwitch(_ sender: UISwitch) {
+        Settings.current.isLockAllDatabasesOnFailedPasscode = lockDatabasesOnFailedPasscodeSwitch.isOn
     }
     
     @IBAction func didToggleBiometricsSwitch(_ sender: Any) {

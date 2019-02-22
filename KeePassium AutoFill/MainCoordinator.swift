@@ -564,6 +564,10 @@ extension MainCoordinator: PasscodeInputDelegate {
                 watchdog.unlockApp(fromAnotherWindow: false)
             } else {
                 sender.animateWrongPassccode()
+                if Settings.current.isLockAllDatabasesOnFailedPasscode {
+                    try? Keychain.shared.removeAllDatabaseKeys() // throws KeychainError
+                    DatabaseManager.shared.closeDatabase(clearStoredKey: true)
+                }
             }
         } catch {
             Diag.error(error.localizedDescription)
