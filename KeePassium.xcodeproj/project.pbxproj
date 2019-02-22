@@ -91,6 +91,8 @@
 		75B5FB7720D53EA700D402D9 /* ViewEntryFieldsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5FB7620D53EA700D402D9 /* ViewEntryFieldsVC.swift */; };
 		75B5FB7920D6101100D402D9 /* ItemCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5FB7820D6101100D402D9 /* ItemCategory.swift */; };
 		75B5FB7B20D61BC000D402D9 /* VisibleEntryField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5FB7A20D61BC000D402D9 /* VisibleEntryField.swift */; };
+		75C11F1E22208D6B0042FB2B /* LAContext+biometrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C11F1D22208D6B0042FB2B /* LAContext+biometrics.swift */; };
+		75C11F1F22208D6B0042FB2B /* LAContext+biometrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C11F1D22208D6B0042FB2B /* LAContext+biometrics.swift */; };
 		75C3800C217A02DD006F74C2 /* SettingsFileSortingVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C3800B217A02DD006F74C2 /* SettingsFileSortingVC.storyboard */; };
 		75C3800E217A0344006F74C2 /* SettingsItemListVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C3800D217A0344006F74C2 /* SettingsItemListVC.storyboard */; };
 		75C38013217A053D006F74C2 /* SettingsAppTimeoutVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C38012217A053D006F74C2 /* SettingsAppTimeoutVC.storyboard */; };
@@ -253,6 +255,7 @@
 		75B5FB7620D53EA700D402D9 /* ViewEntryFieldsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEntryFieldsVC.swift; sourceTree = "<group>"; };
 		75B5FB7820D6101100D402D9 /* ItemCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCategory.swift; sourceTree = "<group>"; };
 		75B5FB7A20D61BC000D402D9 /* VisibleEntryField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleEntryField.swift; sourceTree = "<group>"; };
+		75C11F1D22208D6B0042FB2B /* LAContext+biometrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LAContext+biometrics.swift"; sourceTree = "<group>"; };
 		75C3800B217A02DD006F74C2 /* SettingsFileSortingVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsFileSortingVC.storyboard; sourceTree = "<group>"; };
 		75C3800D217A0344006F74C2 /* SettingsItemListVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsItemListVC.storyboard; sourceTree = "<group>"; };
 		75C38012217A053D006F74C2 /* SettingsAppTimeoutVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsAppTimeoutVC.storyboard; sourceTree = "<group>"; };
@@ -428,6 +431,7 @@
 				7542D2412129640F00C8A926 /* String+extensions.swift */,
 				7523F71C21C98D620025C706 /* SupportEmailComposer.swift */,
 				75CD364021537A310018AF46 /* AppStoreReviewHelper.swift */,
+				75C11F1D22208D6B0042FB2B /* LAContext+biometrics.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -773,6 +777,7 @@
 				75CFBE2A21C2BDDF0029A80A /* DatabaseUnlockerVC.swift in Sources */,
 				750CFBDC21BAD7FF00E62B09 /* UIColor+namedColors.swift in Sources */,
 				75CBABA121C16CD000B8AFE2 /* FirstSetupVC.swift in Sources */,
+				75C11F1F22208D6B0042FB2B /* LAContext+biometrics.swift in Sources */,
 				757FB3CC21F9B4AF00F016FA /* ProtectedTextField.swift in Sources */,
 				750CFBDB21BAD7FF00E62B09 /* UIAlertController+extensions.swift in Sources */,
 				75CBAB9D21C166D600B8AFE2 /* Coordinator.swift in Sources */,
@@ -835,6 +840,7 @@
 				75C94C5F20B4BAB0004FA29D /* ViewEntryFilesVC.swift in Sources */,
 				7542D2422129640F00C8A926 /* String+extensions.swift in Sources */,
 				75E371942108CA08002602BD /* ProgressOverlay.swift in Sources */,
+				75C11F1E22208D6B0042FB2B /* LAContext+biometrics.swift in Sources */,
 				7561850520E0379F00EEFAEE /* ValidatingTextView.swift in Sources */,
 				75CD364121537A320018AF46 /* AppStoreReviewHelper.swift in Sources */,
 				75B5FB7720D53EA700D402D9 /* ViewEntryFieldsVC.swift in Sources */,

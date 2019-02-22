@@ -38,6 +38,8 @@ enum ImageAsset: String {
     case hideListitem = "hide-listitem"
     case unhideListitem = "unhide-listitem"
     case copyToClipboardAccessory = "copy-to-clipboard-accessory"
+    case biometryTouchIDListitem = "touch-id-listitem"
+    case biometryFaceIDListitem = "face-id-listitem"
 }
 
 extension UIImage {

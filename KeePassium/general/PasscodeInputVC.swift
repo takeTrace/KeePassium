@@ -15,6 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import KeePassiumLib
+import LocalAuthentication
 
 protocol PasscodeInputDelegate: class {
     /// Called when the user presses "Cancel"
@@ -66,11 +67,7 @@ class PasscodeInputVC: UIViewController {
     public var isCancelAllowed = true
     /// Whether to show the "Touch ID / Face ID" button (false by default)
     public var isBiometricsAllowed = false {
-        didSet {
-            if isViewLoaded {
-                useBiometricsButton.isHidden = !isBiometricsAllowed
-            }
-        }
+        didSet { refreshBiometricsButton() }
     }
     
     weak var delegate: PasscodeInputDelegate?
@@ -109,8 +106,9 @@ class PasscodeInputVC: UIViewController {
             mainButton.setTitle(LString.actionUnlock, for: .normal)
         }
         cancelButton.isHidden = !isCancelAllowed
-        useBiometricsButton.isHidden = !isBiometricsAllowed
         mainButton.isEnabled = passcodeTextField.isValid
+        refreshBiometricsButton()
+        
         if shouldActivateKeyboard {
             passcodeTextField.becomeFirstResponder()
         }
@@ -126,6 +124,15 @@ class PasscodeInputVC: UIViewController {
         DispatchQueue.main.async {
             self.updateKeyboardLayoutConstraints()
         }
+    }
+    
+    private func refreshBiometricsButton() {
+        guard isViewLoaded else { return }
+        useBiometricsButton.isHidden = !isBiometricsAllowed
+        
+        // biometrics icon should correspond to hardware capabilities
+        let biometryType = LAContext.getBiometryType()
+        useBiometricsButton.setImage(biometryType.icon, for: .normal)
     }
     
     private func updateKeyboardLayoutConstraints() {

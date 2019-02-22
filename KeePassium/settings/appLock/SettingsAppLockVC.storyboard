@@ -148,8 +148,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Touch ID / Face ID" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fez-6g-oyk">
-                                                    <rect key="frame" x="61" y="11.5" width="186" height="20.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="(Allow Touch ID / Face ID)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fez-6g-oyk">
+                                                    <rect key="frame" x="61" y="0.5" width="186" height="42.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" name="PrimaryText"/>
                                                     <nil key="highlightedColor"/>
@@ -160,7 +160,7 @@
                                                         <action selector="didToggleBiometricsSwitch:" destination="U5m-je-MhO" eventType="valueChanged" id="U22-gR-hnA"/>
                                                     </connections>
                                                 </switch>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-applock-biometric-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="Qtt-Tp-tnl">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="touch-id-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="Qtt-Tp-tnl">
                                                     <rect key="frame" x="16" y="7.5" width="29" height="29"/>
                                                     <color key="tintColor" name="IconTint"/>
                                                     <constraints>
@@ -189,9 +189,11 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="allowBiometricsLabel" destination="Fez-6g-oyk" id="wSc-Uh-l05"/>
                         <outlet property="appLockEnabledSwitch" destination="3af-il-hAW" id="TtT-9q-zH7"/>
                         <outlet property="appLockTimeoutCell" destination="DtW-MQ-6ly" id="KUo-cL-TP2"/>
                         <outlet property="biometricsCell" destination="e7F-0G-edd" id="OXS-CC-AE8"/>
+                        <outlet property="biometricsIcon" destination="Qtt-Tp-tnl" id="8iX-uJ-wSU"/>
                         <outlet property="biometricsSwitch" destination="BEv-H7-38c" id="wUI-vF-RuG"/>
                         <outlet property="lockDatabasesOnFailedPasscodeCell" destination="QlD-uB-XaI" id="yM8-WE-0P5"/>
                         <outlet property="lockDatabasesOnFailedPasscodeSwitch" destination="cLg-ic-wmL" id="VWQ-re-SIb"/>
@@ -205,7 +207,7 @@
     <resources>
         <image name="settings-app-lock-listitem" width="29" height="29"/>
         <image name="settings-app-lock-timeout-listitem" width="29" height="29"/>
-        <image name="settings-applock-biometric-listitem" width="29" height="29"/>
+        <image name="touch-id-listitem" width="29" height="29"/>
         <namedColor name="AuxiliaryText">
             <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>

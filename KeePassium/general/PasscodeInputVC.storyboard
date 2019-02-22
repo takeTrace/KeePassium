@@ -95,7 +95,7 @@
                                         <rect key="frame" x="275" y="503" width="45" height="45"/>
                                         <color key="tintColor" name="ActionTint"/>
                                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                                        <state key="normal" image="applock-use-biometrics-listitem"/>
+                                        <state key="normal" image="touch-id-listitem"/>
                                         <connections>
                                             <action selector="didPressUseBiometricsButton:" destination="KmH-Rg-WCs" eventType="touchUpInside" id="OIK-5A-t60"/>
                                         </connections>
@@ -152,7 +152,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="applock-use-biometrics-listitem" width="29" height="29"/>
+        <image name="touch-id-listitem" width="29" height="29"/>
         <namedColor name="ActionText">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

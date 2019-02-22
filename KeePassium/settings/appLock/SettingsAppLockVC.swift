@@ -20,12 +20,14 @@ import KeePassiumLib
 
 class SettingsAppLockVC: UITableViewController, Refreshable {
     @IBOutlet weak var appLockEnabledSwitch: UISwitch!
-    @IBOutlet weak var biometricsCell: UITableViewCell!
     @IBOutlet weak var appLockTimeoutCell: UITableViewCell!
     @IBOutlet weak var lockDatabasesOnFailedPasscodeCell: UITableViewCell!
-    @IBOutlet weak var biometricsSwitch: UISwitch!
     @IBOutlet weak var lockDatabasesOnFailedPasscodeSwitch: UISwitch!
-    
+    @IBOutlet weak var biometricsCell: UITableViewCell!
+    @IBOutlet weak var biometricsIcon: UIImageView!
+    @IBOutlet weak var allowBiometricsLabel: UILabel!
+    @IBOutlet weak var biometricsSwitch: UISwitch!
+
     private var settingsNotifications: SettingsNotifications!
     private var isBiometricsSupported = false
     private var passcodeInputVC: PasscodeInputVC?
@@ -52,17 +54,25 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        checkBiometricsSupport()
+        refreshBiometricsSupport()
         refresh()
     }
     
-    private func checkBiometricsSupport() {
+    private func refreshBiometricsSupport() {
         let context = LAContext()
-        isBiometricsSupported =
-            context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        isBiometricsSupported = context.canEvaluatePolicy(
+            LAPolicy.deviceOwnerAuthenticationWithBiometrics,
+            error: nil)
         if !isBiometricsSupported {
             Settings.current.isBiometricAppLockEnabled = false
         }
+        
+        // context.biometryType is set only after a call to canEvaluatePolicy()
+        let biometryTypeName = context.biometryType.name ?? "Touch ID/Face ID"
+        allowBiometricsLabel.text = NSLocalizedString(
+            "Allow \(biometryTypeName)",
+            comment: "Settings: whether AppLock is allowed to use Touch ID/Face ID.")
+        biometricsIcon.image = context.biometryType.icon
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

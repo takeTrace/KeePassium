@@ -16,6 +16,7 @@
 
 import UIKit
 import KeePassiumLib
+import LocalAuthentication
 
 class SettingsVC: UITableViewController, Refreshable {
     @IBOutlet weak var startWithSearchSwitch: UISwitch!
@@ -51,6 +52,19 @@ class SettingsVC: UITableViewController, Refreshable {
         clearsSelectionOnViewWillAppear = true
         settingsNotifications = SettingsNotifications(observer: self)
         settingsNotifications.startObserving()
+        
+        let appLockCellTitle: String
+        let biometryType = LAContext.getBiometryType()
+        if let biometryTypeName = biometryType.name {
+            appLockCellTitle = NSLocalizedString(
+                "App Lock & \(biometryTypeName)",
+                comment: "Settings section about app passcode protection and biometrics. biometryMethodName will be either 'Touch ID' or 'Face ID'.")
+        } else {
+            appLockCellTitle = NSLocalizedString(
+                "App Lock",
+                comment: "Settings section about app passcode protection")
+        }
+        appLockCell.textLabel?.text = appLockCellTitle
     }
     
     override func viewWillAppear(_ animated: Bool) {
