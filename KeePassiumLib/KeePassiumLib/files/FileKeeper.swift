@@ -276,7 +276,7 @@ public class FileKeeper {
     /// Stores the `url` to be added (opened or imported) as a file at some later point.
     public func prepareToAddFile(url: URL, mode: OpenMode) {
         Diag.debug("Preparing to add file [mode: \(mode)]")
-        self.urlToOpen = url
+        self.urlToOpen = url.resolvingSymlinksInPath()
         self.openMode = mode
         FileKeeperNotifier.notifyPendingFileOperation()
     }
@@ -503,7 +503,6 @@ public class FileKeeper {
         error errorHandler: ((FileKeeperError)->Void)?)
     {
         let docDirURL = getDirectory(for: .internalDocuments)!
-        let inboxDirURL = getDirectory(for: .internalInbox)!
         let fileName = sourceURL.lastPathComponent
         let targetURL = docDirURL.appendingPathComponent(fileName)
         let sourceDirs = sourceURL.deletingLastPathComponent() // without file name
@@ -514,60 +513,7 @@ public class FileKeeper {
             return
         }
         
-        if sourceDirs.path == inboxDirURL.path {
-            importInboxFile(
-                from: sourceURL,
-                to: targetURL,
-                success: successHandler,
-                error: errorHandler)
-        } else {
-            importExternalFile(
-                from: sourceURL,
-                to: targetURL,
-                success: successHandler,
-                error: errorHandler)
-        }
-    }
-    
-    /// Moves a file from Documents/Inbox to Documents.
-    /// Parameters are not checked.
-    private func importInboxFile(
-        from sourceURL: URL,
-        to targetURL: URL,
-        success successHandler: ((URL) -> Void)?,
-        error errorHandler: ((FileKeeperError)->Void)?)
-    {
-        Diag.debug("Will import file from Inbox")
-        let movedURL: URL?
-        do {
-            defer { clearInbox() }
-            movedURL = try FileManager.default.replaceItemAt(targetURL, withItemAt: sourceURL)
-        } catch {
-            Diag.error("Failed to import [reason: \(error.localizedDescription)]")
-            let importError = FileKeeperError.importError(reason: error.localizedDescription)
-            errorHandler?(importError)
-            return
-        }
-        
-        guard let finalURL = movedURL else {
-            Diag.error("Failed to replace file. Final URL is nil.")
-            let importError =
-                FileKeeperError.importError(reason: "Failed to replace file. Final URL is nil.")
-            errorHandler?(importError)
-            return
-        }
-        successHandler?(finalURL)
-    }
-    
-    /// Copies an external file to Documents.
-    /// Parameters are not checked.
-    private func importExternalFile(
-        from sourceURL: URL,
-        to targetURL: URL,
-        success successHandler: ((URL) -> Void)?,
-        error errorHandler: ((FileKeeperError)->Void)?)
-    {
-        Diag.debug("Will import external file")
+        Diag.debug("Will import a file")
         let doc = FileDocument(fileURL: sourceURL)
         doc.open(successHandler: {
             do {
@@ -579,10 +525,12 @@ public class FileKeeper {
                 let importError = FileKeeperError.importError(reason: error.localizedDescription)
                 errorHandler?(importError)
             }
+            self.clearInbox()
         }, errorHandler: { error in
             Diag.error("Failed to import external file [message: \(error.localizedDescription)]")
             let importError = FileKeeperError.importError(reason: error.localizedDescription)
             errorHandler?(importError)
+            self.clearInbox()
         })
     }
     
