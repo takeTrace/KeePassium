@@ -67,9 +67,9 @@ public class DatabaseManager {
         Diag.debug("Will close database")
 
         // Clear the key synchronously, otherwise auto-unlock might be racing with the closing.
-        if clearStoredKey {
-            try? Keychain.shared.removeDatabaseKey(databaseRef: self.databaseRef)
-            // throws KeychainError, ignored
+        if clearStoredKey, let urlRef = databaseRef {
+            try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef)
+                // throws KeychainError, ignored
         }
 
         serialDispatchQueue.async {

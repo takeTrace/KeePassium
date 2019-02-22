@@ -73,11 +73,16 @@ public class Keychain {
         if status == errSecItemNotFound {
             return nil
         }
-        guard status == noErr else { throw KeychainError.generic(code: Int(status)) }
+        guard status == noErr else {
+            Diag.error("Keychain error [code: \(Int(status))]")
+            throw KeychainError.generic(code: Int(status))
+        }
         
         guard let item = queryResult as? [String: AnyObject],
-            let data = item[kSecValueData as String] as? Data else {
-                throw KeychainError.unexpectedFormat
+              let data = item[kSecValueData as String] as? Data else
+        {
+            Diag.error("Keychain error: unexpected format")
+            throw KeychainError.unexpectedFormat
         }
         return data
     }
@@ -90,6 +95,7 @@ public class Keychain {
             let attrsToUpdate = [kSecValueData as String : data as AnyObject?]
             let status = SecItemUpdate(query as CFDictionary, attrsToUpdate as CFDictionary)
             if status != noErr {
+                Diag.error("Keychain error [code: \(Int(status))]")
                 throw KeychainError.generic(code: Int(status))
             }
         } else {
@@ -97,6 +103,7 @@ public class Keychain {
             newItem[kSecValueData as String] = data as AnyObject?
             let status = SecItemAdd(newItem as CFDictionary, nil)
             if status != noErr {
+                Diag.error("Keychain error [code: \(Int(status))]")
                 throw KeychainError.generic(code: Int(status))
             }
         }
@@ -109,6 +116,7 @@ public class Keychain {
         let query = makeQuery(service: service, account: account)
         let status = SecItemDelete(query as CFDictionary)
         if status != noErr && status != errSecItemNotFound {
+            Diag.error("Keychain error [code: \(Int(status))]")
             throw KeychainError.generic(code: Int(status))
         }
     }
@@ -186,16 +194,18 @@ public class Keychain {
     }
 
     /// Removes associated keys for the given database
-    /// (or all the associations if `databaseRef` is `nil`).
     /// - Throws: KeychainError
-    public func removeDatabaseKey(databaseRef: URLReference?) throws {
-        if let databaseRef = databaseRef {
-            guard !databaseRef.info.hasError else { return }
-            // let account = databaseRef.hash.asHexString
-            let account = databaseRef.info.fileName
-            try remove(service: .databaseKeys, account: account)
-        } else {
-            try remove(service: .databaseKeys, account: nil)
-        }
+    public func removeDatabaseKey(databaseRef: URLReference) throws {
+        guard !databaseRef.info.hasError else { return }
+        // let account = databaseRef.hash.asHexString
+        let account = databaseRef.info.fileName
+        try remove(service: .databaseKeys, account: account)
+    }
+    
+    /// Removes all the associated keys for all databases.
+    ///
+    /// - Throws: KeychainError
+    public func removeAllDatabaseKeys() throws {
+        try remove(service: .databaseKeys, account: nil)
     }
 }
