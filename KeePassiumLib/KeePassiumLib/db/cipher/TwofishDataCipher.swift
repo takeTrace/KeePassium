@@ -48,7 +48,7 @@ final class TwofishDataCipher: DataCipher {
         
         progress.localizedDescription = NSLocalizedString("Encrypting", comment: "Status message")
         let twofish = Twofish(key: key, iv: iv)
-        var dataClone = data.clone() //FIXME: cmon, making a copy is just ridiculous
+        let dataClone = data.clone() //TODO: copying is redundant here
         try twofish.encrypt(data: dataClone, progress: progress)
             // throws CryptoError.twofishError, ProgressInterruption
         return dataClone
@@ -66,7 +66,7 @@ final class TwofishDataCipher: DataCipher {
         progress.localizedDescription = NSLocalizedString("Decrypting", comment: "Status message")
         
         let twofish = Twofish(key: key, iv: iv) 
-        var dataClone = encData.clone() //FIXME: cmon, making a copy is just ridiculous
+        let dataClone = encData.clone() //TODO: copying is redundant here
         try twofish.decrypt(data: dataClone, progress: progress)
             // throws CryptoError.twofishError, ProgressInterruption
         return dataClone
