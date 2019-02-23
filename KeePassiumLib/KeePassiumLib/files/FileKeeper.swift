@@ -276,7 +276,10 @@ public class FileKeeper {
     /// Stores the `url` to be added (opened or imported) as a file at some later point.
     public func prepareToAddFile(url: URL, mode: OpenMode) {
         Diag.debug("Preparing to add file [mode: \(mode)]")
-        self.urlToOpen = url.resolvingSymlinksInPath()
+        let origURL = url
+        let actualURL = origURL.resolvingSymlinksInPath()
+        print("\n originURL: \(origURL) \n actualURL: \(actualURL) \n")
+        self.urlToOpen = origURL
         self.openMode = mode
         FileKeeperNotifier.notifyPendingFileOperation()
     }
