@@ -48,7 +48,6 @@ class EntryFinderVC: UITableViewController {
     
     weak var database: Database?
     weak var delegate: EntryFinderDelegate?
-    weak var coordinator: MainCoordinator?
     var databaseName: String? {
         didSet{ refreshDatabaseName() }
     }

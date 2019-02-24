@@ -228,7 +228,6 @@ class MainCoordinator: NSObject, Coordinator {
         let databaseName = URL(string: fileName)?.deletingPathExtension().absoluteString ?? fileName
         
         let entriesVC = EntryFinderVC.instantiateFromStoryboard()
-        entriesVC.coordinator = self
         entriesVC.delegate = self
         entriesVC.database = database
         entriesVC.databaseName = databaseName
