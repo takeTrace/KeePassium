@@ -21,8 +21,8 @@ public class Group2: Group {
     public var isExpanded: Bool
     public var customIconUUID: UUID
     public var defaultAutoTypeSequence: String
-    public var enableAutoType: Bool? // It can be True/False/null in XML.
-    public var enableSearching: Bool? // Same here.
+    public var isAutoTypeEnabled: Bool? // It can be True/False/null in XML.
+    public var isSearchingEnabled: Bool? // Same here.
     public var lastTopVisibleEntryUUID: UUID
     public var usageCount: UInt32
     public var locationChangedTime: Date
@@ -32,8 +32,8 @@ public class Group2: Group {
         isExpanded = true
         customIconUUID = UUID.ZERO
         defaultAutoTypeSequence = ""
-        enableAutoType = nil
-        enableSearching = nil
+        isAutoTypeEnabled = nil
+        isSearchingEnabled = nil
         lastTopVisibleEntryUUID = UUID.ZERO
         usageCount = 0
         locationChangedTime = Date.now
@@ -49,8 +49,8 @@ public class Group2: Group {
         isExpanded = true
         customIconUUID.erase()
         defaultAutoTypeSequence.erase()
-        enableAutoType = nil
-        enableSearching = nil
+        isAutoTypeEnabled = nil
+        isSearchingEnabled = nil
         lastTopVisibleEntryUUID.erase()
         usageCount = 0
         locationChangedTime = Date.now
@@ -73,8 +73,8 @@ public class Group2: Group {
         target.isExpanded = isExpanded
         target.customIconUUID = customIconUUID
         target.defaultAutoTypeSequence = defaultAutoTypeSequence
-        target.enableAutoType = enableAutoType
-        target.enableSearching = enableSearching
+        target.isAutoTypeEnabled = isAutoTypeEnabled
+        target.isSearchingEnabled = isSearchingEnabled
         target.lastTopVisibleEntryUUID = lastTopVisibleEntryUUID
         target.usageCount = usageCount
         target.locationChangedTime = locationChangedTime
@@ -208,9 +208,9 @@ public class Group2: Group {
             case Xml2.defaultAutoTypeSequence:
                 self.defaultAutoTypeSequence = tag.value ?? ""
             case Xml2.enableAutoType:
-                self.enableAutoType = Bool(optString: tag.value) // value can be "True"/"False"/"null"
+                self.isAutoTypeEnabled = Bool(optString: tag.value) // value can be "True"/"False"/"null"
             case Xml2.enableSearching:
-                self.enableSearching = Bool(optString: tag.value) // value can be "True"/"False"/"null"
+                self.isSearchingEnabled = Bool(optString: tag.value) // value can be "True"/"False"/"null"
             case Xml2.lastTopVisibleEntry:
                 self.lastTopVisibleEntryUUID = UUID(base64Encoded: tag.value) ?? UUID.ZERO
             case Xml2.customData:
@@ -344,21 +344,22 @@ public class Group2: Group {
             name: Xml2.defaultAutoTypeSequence,
             value: defaultAutoTypeSequence)
         
-        if enableAutoType == nil {
-            xmlGroup.addChild(name: Xml2.enableAutoType, value: Xml2.null)
-        } else {
+        if let isAutoTypeEnabled = self.isAutoTypeEnabled {
             xmlGroup.addChild(
                 name: Xml2.enableAutoType,
-                value: enableAutoType! ? Xml2._true : Xml2._false)
+                value: isAutoTypeEnabled ? Xml2._true : Xml2._false)
+        } else {
+            xmlGroup.addChild(name: Xml2.enableAutoType, value: Xml2.null)
         }
         
-        if enableSearching == nil {
-            xmlGroup.addChild(name: Xml2.enableSearching, value: Xml2.null)
-        } else {
+        if let isSearchingEnabled = self.isSearchingEnabled {
             xmlGroup.addChild(
                 name: Xml2.enableSearching,
-                value: enableSearching! ? Xml2._true : Xml2._false)
+                value: isSearchingEnabled ? Xml2._true : Xml2._false)
+        } else {
+            xmlGroup.addChild(name: Xml2.enableSearching, value: Xml2.null)
         }
+
         xmlGroup.addChild(
             name: Xml2.lastTopVisibleEntry,
             value: lastTopVisibleEntryUUID.base64EncodedString())
