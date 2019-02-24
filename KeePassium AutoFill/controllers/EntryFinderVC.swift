@@ -56,7 +56,7 @@ class EntryFinderVC: UITableViewController {
     }
     
     private var searchHelper = SearchHelper()
-    private var searchResults = [SearchResult]()
+    private var searchResults = SearchResults(exactMatch: [], partialMatch: [])
     private var searchController: UISearchController!
 
     override func viewDidLoad() {
@@ -90,8 +90,11 @@ class EntryFinderVC: UITableViewController {
         guard isViewLoaded, let database = database else { return }
         
         // If we have serviceIdentifiers - use them. Otherwise, activate manual search.
-        let automaticResults = searchHelper.find(database: database, serviceIdentifiers: serviceIdentifiers)
-        if automaticResults.count > 0 {
+        let automaticResults = searchHelper.find(
+            database: database,
+            serviceIdentifiers: serviceIdentifiers
+        )
+        if !automaticResults.isEmpty {
             searchResults = automaticResults
             tableView.reloadData()
             return
@@ -114,19 +117,32 @@ class EntryFinderVC: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         if searchResults.isEmpty {
-            return 1 // for "Nothing found"
-        } else {
-            return searchResults.count
+            return 1 // for "Nothing found" cell
         }
+        
+        var nSections = searchResults.exactMatch.count
+        let hasPartialResults = !searchResults.partialMatch.isEmpty
+        if hasPartialResults {
+            nSections += searchResults.partialMatch.count + 1 // +1 is a separator
+        }
+        return nSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchResults.isEmpty {
-            return 1 // for "Nothing found"
+            return (section == 0) ? 1 : 0 // "Nothing found" cell
+        }
+        let nExactResults = searchResults.exactMatch.count
+        if section < nExactResults {
+            let iExactResult = section
+            return searchResults.exactMatch[iExactResult].entries.count
+        } else if section == nExactResults {
+            // separator
+            return 0
         } else {
-            return searchResults[section].entries.count
+            let iPartialResult = section - nExactResults - 1
+            return searchResults.partialMatch[iPartialResult].entries.count
         }
     }
     
@@ -135,11 +151,28 @@ class EntryFinderVC: UITableViewController {
         titleForHeaderInSection section: Int
         ) -> String?
     {
-        if searchResults.isEmpty{
+        guard !searchResults.isEmpty else { return nil }
+
+        let nExactResults = searchResults.exactMatch.count
+        if section < nExactResults {
+            let iExactResult = section
+            return searchResults.exactMatch[iExactResult].group.name
+        } else if section == nExactResults {
+            // separator
             return nil
         } else {
-            return searchResults[section].group.name
+            let iPartialResult = section - nExactResults - 1
+            return searchResults.partialMatch[iPartialResult].group.name
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let hasPartialResults = searchResults.partialMatch.count > 0
+        let nExactResults = searchResults.exactMatch.count
+        if hasPartialResults && section == nExactResults {
+            return separatorView
+        }
+        return nil
     }
     
     override func tableView(
@@ -147,19 +180,30 @@ class EntryFinderVC: UITableViewController {
         cellForRowAt indexPath: IndexPath
         ) -> UITableViewCell
     {
-        guard searchResults.count > 0 else {
+        if searchResults.isEmpty {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: CellID.nothingFound,
                 for: indexPath)
             return cell
         }
-        
+
         let cell = tableView.dequeueReusableCell(
             withIdentifier: CellID.entry,
             for: indexPath)
             as! EntryFinderCell
-        
-        cell.entry = searchResults[indexPath.section].entries[indexPath.row]
+
+        let section = indexPath.section
+        let nExactResults = searchResults.exactMatch.count
+        if section < nExactResults {
+            let iExactResult = section
+            cell.entry = searchResults.exactMatch[iExactResult].entries[indexPath.row].entry
+        } else if section == nExactResults {
+            // separator
+            assertionFailure("Should not be here")
+        } else {
+            let iPartialResult = section - nExactResults - 1
+            cell.entry = searchResults.partialMatch[iPartialResult].entries[indexPath.row].entry
+        }
         return cell
     }
     
@@ -167,9 +211,20 @@ class EntryFinderVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Watchdog.shared.restart()
-        guard searchResults.count > 0 else { return }
-        let selectedEntry = searchResults[indexPath.section].entries[indexPath.row]
-        delegate?.entryFinder(self, didSelectEntry: selectedEntry)
+        let section = indexPath.section
+        let nExactResults = searchResults.exactMatch.count
+        if section < nExactResults {
+            let iExactResult = section
+            let selectedEntry = searchResults.exactMatch[iExactResult].entries[indexPath.row].entry
+            delegate?.entryFinder(self, didSelectEntry: selectedEntry)
+        } else if section == nExactResults {
+            // separator
+            assertionFailure("Should not be here")
+        } else {
+            let iPartialResult = section - nExactResults - 1
+            let selectedEntry = searchResults.partialMatch[iPartialResult].entries[indexPath.row].entry
+            delegate?.entryFinder(self, didSelectEntry: selectedEntry)
+        }
     }
     
     @IBAction func didPressLockDatabase(_ sender: Any) {
@@ -191,6 +246,7 @@ extension EntryFinderVC: UISearchResultsUpdating {
 
     private func sortSearchResults() {
         let groupSortOrder = Settings.current.groupSortOrder
-        searchResults.sort { return groupSortOrder.compare($0.group, $1.group) }
+        searchResults.exactMatch.sort { return groupSortOrder.compare($0.group, $1.group) }
+        searchResults.partialMatch.sort { return groupSortOrder.compare($0.group, $1.group) }
     }
 }
