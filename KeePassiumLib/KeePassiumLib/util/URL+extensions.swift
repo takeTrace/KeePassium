@@ -18,6 +18,18 @@ import Foundation
 
 public extension URL {
     
+    /// Second-level domain name, if any.
+    /// (For example, for "auth.private.example.com" returns "example")
+    /// Will not work with IP addresses (e.g. "127.0.0.1" -> "0")
+    public var domain2: String? {
+        guard let names = host?.split(separator: ".") else { return nil }
+        let nameCount = names.count
+        if nameCount >= 2 {
+            return String(names[nameCount - 2])
+        }
+        return nil
+    }
+    
     /// Last modiifcation date of a file URL.
     public var fileModificationDate: Date? {
         guard let attr = try? FileManager.default
