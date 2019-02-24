@@ -6,6 +6,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -80,8 +81,49 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="EjY-Ch-YkM"/>
                     </toolbarItems>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="separatorView" destination="sx0-Sw-ZEC" id="8wD-mr-bhz"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rG2-CG-hh9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view opaque="NO" contentMode="scaleToFill" id="sx0-Sw-ZEC" userLabel="SeparatorView">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Related Entries" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yLY-eZ-iAh">
+                            <rect key="frame" x="65.5" y="54.5" width="109" height="19.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                            <color key="textColor" name="AuxiliaryText"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g5e-BQ-NJo">
+                            <rect key="frame" x="8" y="63.5" width="49.5" height="1"/>
+                            <color key="backgroundColor" name="AuxiliaryText"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="3TV-2Y-3Ug"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vuL-34-hcw">
+                            <rect key="frame" x="182.5" y="63.5" width="49.5" height="1"/>
+                            <color key="backgroundColor" name="AuxiliaryText"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="197-PD-EOY"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="vuL-34-hcw" firstAttribute="centerY" secondItem="sx0-Sw-ZEC" secondAttribute="centerY" id="6u8-XS-dd1"/>
+                        <constraint firstItem="yLY-eZ-iAh" firstAttribute="centerX" secondItem="sx0-Sw-ZEC" secondAttribute="centerX" id="NZ5-R4-zyH"/>
+                        <constraint firstItem="MkU-Zb-Trn" firstAttribute="trailing" secondItem="vuL-34-hcw" secondAttribute="trailing" constant="8" id="Oel-d2-DId"/>
+                        <constraint firstItem="yLY-eZ-iAh" firstAttribute="centerY" secondItem="sx0-Sw-ZEC" secondAttribute="centerY" id="dxC-VY-rjd"/>
+                        <constraint firstItem="yLY-eZ-iAh" firstAttribute="leading" secondItem="g5e-BQ-NJo" secondAttribute="trailing" constant="8" id="lNO-zz-TMv"/>
+                        <constraint firstItem="g5e-BQ-NJo" firstAttribute="leading" secondItem="MkU-Zb-Trn" secondAttribute="leading" constant="8" id="mlf-hb-ngB"/>
+                        <constraint firstItem="g5e-BQ-NJo" firstAttribute="centerY" secondItem="sx0-Sw-ZEC" secondAttribute="centerY" id="tPm-Cd-k4e"/>
+                        <constraint firstItem="vuL-34-hcw" firstAttribute="leading" secondItem="yLY-eZ-iAh" secondAttribute="trailing" constant="8" id="tsx-Mi-YNZ"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="MkU-Zb-Trn"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="-190" y="207"/>
         </scene>
@@ -89,14 +131,14 @@
     <resources>
         <image name="db-icons/kpbIcon00" width="29" height="29"/>
         <image name="lock-database-toolbar" width="25" height="25"/>
+        <namedColor name="AuxiliaryText">
+            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
         <namedColor name="IconTint">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="PrimaryText">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </namedColor>
-        <namedColor name="AuxiliaryText">
-            <color white="0.46666666666666667" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
     </resources>
 </document>

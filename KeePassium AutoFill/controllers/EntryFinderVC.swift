@@ -44,7 +44,8 @@ class EntryFinderVC: UITableViewController {
         static let entry = EntryFinderCell.storyboardID
         static let nothingFound = "NothingFoundCell"
     }
-
+    @IBOutlet var separatorView: UIView!
+    
     weak var database: Database?
     weak var delegate: EntryFinderDelegate?
     weak var coordinator: MainCoordinator?
