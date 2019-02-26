@@ -271,6 +271,8 @@ open class ViewGroupVC: UITableViewController, Refreshable {
                 as! GroupViewListCell
             if let _group = groupsSorted[indexPath.row].value {
                 groupCell.titleLabel?.text = _group.name
+                let subitemCount = _group.groups.count + _group.entries.count
+                groupCell.subtitleLabel?.text = "\(subitemCount)"
                 groupCell.iconView?.image = UIImage.kpIcon(forGroup: _group)
             }
             return groupCell
