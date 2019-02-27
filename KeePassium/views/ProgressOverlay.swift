@@ -19,7 +19,11 @@ import KeePassiumLib
 
 @IBDesignable
 class ProgressOverlay: UIView {
-    public var title: String? = nil //TODO
+    /// Text to show in status label
+    public var title: String? { //TODO
+        didSet { statusLabel.text = title }
+    }
+    
     public var isCancellable: Bool {
         get {
             return cancelButton.isEnabled
@@ -140,7 +144,6 @@ class ProgressOverlay: UIView {
     }
     
     internal func update(with progress: ProgressEx) {
-        statusLabel.text = title
 //        statusLabel.text = progress.localizedDescription + "\n" + progress.localizedAdditionalDescription
         percentLabel.text = String(format: "%.0f%%", 100.0 * progress.fractionCompleted)
         progressView.setProgress(Float(progress.fractionCompleted), animated: true)
