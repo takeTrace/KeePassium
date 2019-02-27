@@ -413,6 +413,27 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         return [deleteAction, editAction]
     }
     
+    // MARK: - Item operation constraints
+    
+    /// True if can create subgroups in the current group.
+    private func canCreateGroupHere() -> Bool {
+        guard let group = group else { return false }
+        
+        return !group.isDeleted
+    }
+    
+    /// True if can create entries in the current group.
+    private func canCreateEntryHere() -> Bool {
+        guard let group = group else { return false }
+        guard !group.isDeleted else { return false }
+        
+        if let group1 = group as? Group1 {
+            // Cannot create entries in KP1 root group
+            return !group1.isRoot
+        }
+        return true
+    }
+
     // MARK: - Action handlers
 
     @objc func onCreateNewItemAction(sender: UIBarButtonItem) {
@@ -422,11 +443,15 @@ open class ViewGroupVC: UITableViewController, Refreshable {
             [weak self] _ in
             self?.onCreateGroupAction()
         }
+        createGroupAction.isEnabled = canCreateGroupHere()
+        
         let createEntryAction = UIAlertAction(title: LString.actionCreateEntry, style: .default)
         {
             [weak self] _ in
             self?.onCreateEntryAction()
         }
+        createEntryAction.isEnabled = canCreateEntryHere()
+        
         let cancelAction = UIAlertAction(title: LString.actionCancel, style: .cancel, handler: nil)
         
         addItemSheet.addAction(createGroupAction)
