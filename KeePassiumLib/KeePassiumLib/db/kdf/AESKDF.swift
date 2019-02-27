@@ -103,7 +103,6 @@ class AESKDF: KeyDerivationFunction {
                             .fromOpaque(progressPtr)
                             .takeUnretainedValue()
                         progress.completedUnitCount = Int64(round)
-                        print("AESKDF round: \(round)")
                         let isShouldStop: Int32 = progress.isCancelled ? 1 : 0
                         return isShouldStop
                     },
