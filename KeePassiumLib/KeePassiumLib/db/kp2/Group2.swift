@@ -219,15 +219,16 @@ public class Group2: Group {
                 Diag.verbose("Custom data loaded OK")
             case Xml2.group:
                 let subGroup = Group2(database: database)
+                // To propagate isDeleted recursively, it must be set before loading the subgroup.
+                subGroup.isDeleted = self.isDeleted
                 try subGroup.load(xml: tag, streamCipher: streamCipher) // throws ProgressInterruption
                 self.add(group: subGroup)
-                subGroup.isDeleted = self.isDeleted // propagate the deleted flag recursively
                 Diag.verbose("Subgroup loaded OK")
             case Xml2.entry:
                 let entry = Entry2(database: database)
                 try entry.load(xml: tag, streamCipher: streamCipher) // throws ProgressInterruption
+                entry.isDeleted = self.isDeleted
                 self.add(entry: entry)
-                entry.isDeleted = self.isDeleted // propagate the deleted flag recursively
                 Diag.verbose("Entry loaded OK")
             default:
                 Diag.error("Unexpected XML tag in Group: \(tag.name)")
