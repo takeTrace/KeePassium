@@ -194,7 +194,12 @@ public class FileKeeper {
         Diag.debug("Will trash local file [fileType: \(fileType)]")
         do {
             let url = try urlRef.resolve()
-            try FileManager.default.trashItem(at: url, resultingItemURL: nil)
+            do {
+                try FileManager.default.trashItem(at: url, resultingItemURL: nil)
+            } catch {
+                Diag.warning("Failed to trash file, will delete instead [message: '\(error.localizedDescription)']")
+                try FileManager.default.removeItem(at: url)
+            }
             FileKeeperNotifier.notifyFileRemoved(urlRef: urlRef, fileType: fileType)
             Diag.info("Local file moved to trash")
         } catch {
