@@ -185,6 +185,8 @@ public class Database2: Database {
             // parse XML
             try load(xmlData: xmlData) // throws FormatError.parsingError, ProgressInterruption
             
+            propagateDeletedStatus()
+            
             // ensure there are no missing or redundant (unreferenced) binaries
             try checkAttachmentsIntegrity() // throws FormatError.attachmentError
             
@@ -437,6 +439,7 @@ public class Database2: Database {
                     throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: "KeePassFile/*")
                 }
             }
+            
             // AEXML parsing does not report progress, so make it one-step for now
             progress.completedUnitCount += ProgressSteps.parsing
             
@@ -482,6 +485,17 @@ public class Database2: Database {
             default:
                 throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: "DeletedObjects/*")
             }
+        }
+    }
+    
+    /// Sets `isDeleted` property on all siblings of Backup group, if any.
+    private func propagateDeletedStatus() {
+        if let backupGroup = getBackupGroup(createIfMissing: false) {
+            var deletedGroups = [Group2]() as [Group]
+            var deletedEntries = [Entry2]() as [Entry]
+            backupGroup.collectAllChildren(groups: &deletedGroups, entries: &deletedEntries)
+            deletedGroups.forEach { $0.isDeleted = true }
+            deletedEntries.forEach { $0.isDeleted = true }
         }
     }
     
