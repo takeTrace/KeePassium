@@ -181,6 +181,7 @@ public class Group: Eraseable {
 
         let originalParentGroup: Group? = entry.parent
         entry.parent = self
+        entry.isDeleted = self.isDeleted
         entries.append(entry)
         isChildrenModified = true
         originalParentGroup?.entries.remove(entry)
