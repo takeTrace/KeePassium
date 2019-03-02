@@ -59,12 +59,6 @@ public class Attachment2: Attachment {
                         tag: "Entry/Binary/Value/Ref",
                         value: refString)
                 }
-                if binaryID >= database.binaries.count {
-                    Diag.error("BinaryID value is out of range [value: \(binaryID), max: \(database.binaries.count)]")
-                    throw Xml2.ParsingError.malformedValue(
-                        tag: "Entry/Binary/Value/Ref/Pool",
-                        value: nil)
-                }
                 binary = database.binaries[binaryID]
             default:
                 Diag.error("Unexpected XML tag in Entry/Binary: \(tag.name)")

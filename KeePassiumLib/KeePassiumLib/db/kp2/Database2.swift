@@ -34,6 +34,8 @@ public class Database2: Database {
         case negativeBlockSize(blockIndex: Int)
         /// Problem with internal(decrypted) data structure
         case parsingError(reason: String)
+        /// A binary attachment that is never referenced or is missing.
+        case attachmentError(reason: String)
         /// Problem while reading hashed blocks stream
         case blockIDMismatch
         case blockHashMismatch(blockIndex: Int) // for v3
@@ -48,6 +50,8 @@ public class Database2: Database {
                 return NSLocalizedString("Corrupted database file (negative block #\(blockIndex) size)", comment: "Error message")
             case .parsingError(let reason):
                 return NSLocalizedString("Cannot parse database. \(reason)", comment: "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).")
+            case .attachmentError(let reason):
+                return NSLocalizedString("Cannot process one of the attachments. \(reason)", comment: "Error message: problem with a file attached to an entry.")
             case .blockIDMismatch:
                 return NSLocalizedString("Unexpected block ID.", comment: "Error message: wrong ID of a data block")
             case .blockHashMismatch(let blockIndex):
@@ -80,7 +84,7 @@ public class Database2: Database {
     
     private(set) var header: Header2!
     private(set) var meta: Meta2!
-    public var binaries: ContiguousArray<Binary2> = []
+    public var binaries: [Binary2.ID: Binary2] = [:]
     public var customIcons: [UUID: CustomIcon2] { return meta.customIcons }
     private var cipherKey = SecureByteArray()
     private var hmacKey = ByteArray()
@@ -180,6 +184,10 @@ public class Database2: Database {
             
             // parse XML
             try load(xmlData: xmlData) // throws FormatError.parsingError, ProgressInterruption
+            
+            // ensure there are no missing or redundant (unreferenced) binaries
+            try checkAttachmentsIntegrity() // throws FormatError.attachmentError
+            
             Diag.debug("Content loaded OK")
             Diag.verbose("== DB2 progress CP5: \(progress.completedUnitCount)")
         } catch let error as Header2.HeaderError {
@@ -477,6 +485,45 @@ public class Database2: Database {
         }
     }
     
+    /// Checks if any entries refer to non-existent binaries,
+    /// or any binaries not referenced from entries.
+    ///
+    /// - Throws: `FormatError.attachmentError`
+    func checkAttachmentsIntegrity() throws {
+        let knownIDs = Set(binaries.keys) // BinaryID of items in binary pool
+        
+        var usedIDs = Set<Binary2.ID>() // BinaryID referenced by entries
+        var allGroups = [Group]()
+        var allEntries = [Entry]()
+        root?.collectAllChildren(groups: &allGroups, entries: &allEntries)
+        allEntries.forEach { (entry) in
+            let entry2 = entry as! Entry2
+            usedIDs.formUnion(entry2.getAllAttachmentIDs(includeHistory: true))
+        }
+        
+        if knownIDs == usedIDs {
+            Diag.debug("Attachments integrity OK")
+            return
+        }
+        
+        if usedIDs.isStrictSubset(of: knownIDs) {
+            // some binaries are not referenced
+            Diag.warning("Some binary attachments are not referenced from any entry")
+            throw FormatError.attachmentError(reason:
+                NSLocalizedString(
+                    "Some attachments are not referenced from any entry",
+                    comment: "Error message: there is an orphaned file in database's binary pool"))
+        }
+        if knownIDs.isStrictSubset(of: usedIDs) {
+            // there are references to non-existent binaries
+            Diag.warning("Some entries refer to non-existent attachments")
+            throw FormatError.attachmentError(reason:
+                NSLocalizedString(
+                    "Some entries refer to non-existent attachments",
+                    comment: "Error message: entry's attachment does not exist in database's binary pool"))
+        }
+    }
+    
     /// Updates `cipherKey` field by transforming the given `compositeKey`.
     /// - Throws: CryptoError, ProgressInterruption
     func deriveMasterKey(compositeKey: SecureByteArray, cipher: DataCipher) throws {
@@ -523,56 +570,49 @@ public class Database2: Database {
     }
     
     
-    /// Updates the list of binaries by traversing all the entries and their histories.
-    /// Previously stored binaries are cleared.
-    func updateBinaries(root: Group2) {
+    /// Rebuilds the binary pool from attachments of individual entries (including their histories).
+    private func updateBinaries(root: Group2) {
         Diag.verbose("Updating all binaries")
         var allGroups = [Group2]() as [Group]
         var allEntries = [Entry2]() as [Entry]
         root.collectAllChildren(groups: &allGroups, entries: &allEntries)
-        
+
         binaries.removeAll()
         for entry in allEntries {
             updateBinaries(entry: entry as! Entry2)
         }
     }
-    
+
     /// Adds entry's attachments to the binary pool and updates attachment refs accordingly.
     /// Also looks into entry's history.
-    func updateBinaries(entry: Entry2) {
+    private func updateBinaries(entry: Entry2) {
         // Process previous versions of the entry, if any
         for histEntry in entry.history {
             updateBinaries(entry: histEntry)
         }
         // Process the entry itself
         for att in entry.attachments {
-            // is the attachment already in the binary pool?
-            var binary = findBinary(data: att.data, isCompressed: att.isCompressed)
-            if binary == nil {
-                let nextID = binaries.count
-                // create new item in the binary pool
-                binary = Binary2(
-                    id: nextID,
+            // maybe the attachment is already in the binary pool?
+            let foundBinary = binaries.values.first(where: { (binary) in
+                return (binary.isCompressed == att.isCompressed) && (binary.data == att.data)
+            })
+            
+            if let binary = foundBinary {
+                // the attachment is already in binary pool, just update the ID
+                att.id = binary.id
+            } else {
+                // add the attachment to the binary pool
+                let newBinaryID = binaries.count
+                let newBinary = Binary2(
+                    id: newBinaryID,
                     data: att.data,
                     isCompressed: att.isCompressed,
-                    isProtected: false) //TODO: should get isProtected value from somewhere...
-                binaries.append(binary!)
-            }
-            att.id = binary!.id
-        }
-    }
-    
-    /// Finds the binary with given data/compression flag within the binary pool.
-    /// - Returns: the found `Binary2`, or `nil` if nothing found.
-    func findBinary(data: ByteArray, isCompressed: Bool) -> Binary2? {
-        for binary in binaries {
-            if (binary.isCompressed == isCompressed) && (binary.data == data) {
-                return binary
+                    isProtected: true)
+                binaries[newBinary.id] = newBinary
+                att.id = newBinaryID
             }
         }
-        return nil
     }
-    
     
     /// Encrypts the DB and returns the resulting Data.
     ///
@@ -599,7 +639,9 @@ public class Database2: Database {
         }
 
         // Prepare DB content
-        updateBinaries(root: root! as! Group2) // rebuild binary pool from attachments
+        
+        // rebuild binary pool from attachments, in case anything was added/removed
+        updateBinaries(root: root! as! Group2)
         Diag.verbose("Binaries updated OK")
         
         let outStream = ByteArray.makeOutputStream()

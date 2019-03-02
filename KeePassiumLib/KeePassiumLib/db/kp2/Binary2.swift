@@ -19,7 +19,9 @@ import Foundation
 
 /// Binary data stored in DB metadata
 public class Binary2: Eraseable {
-    private(set) var id: Int
+    public typealias ID = Int
+
+    private(set) var id: Binary2.ID
     private(set) var data: ByteArray
     private(set) var isCompressed: Bool
     private(set) var isProtected: Bool
@@ -28,14 +30,14 @@ public class Binary2: Eraseable {
         return isProtected ? 1 : 0
     }
     
-    init(id: Int, data: ByteArray, isCompressed: Bool, isProtected: Bool=false) {
+    init(id: Binary2.ID, data: ByteArray, isCompressed: Bool, isProtected: Bool) {
         self.id = id
         self.data = data.clone()
         self.isCompressed = isCompressed
         self.isProtected = isProtected
     }
     convenience init() {
-        self.init(id: -1, data: ByteArray(), isCompressed: false)
+        self.init(id: -1, data: ByteArray(), isCompressed: false, isProtected: false)
     }
     deinit {
         erase()

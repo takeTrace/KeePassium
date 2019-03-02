@@ -301,7 +301,15 @@ final class Meta2: Eraseable {
                 let binary = Binary2()
                 try binary.load(xml: tag, streamCipher: streamCipher)
                     // throws Xml2.ParsingError, ProgressInterruption
-                database.binaries.append(binary)
+                
+                // quick sanity check
+                if let conflictingBinary = database.binaries[binary.id] {
+                    Diag.error("Multiple Meta/Binary items with the same ID: \(conflictingBinary.id)")
+                    throw Xml2.ParsingError.malformedValue(
+                        tag: tag.name,
+                        value: String(conflictingBinary.id))
+                }
+                database.binaries[binary.id] = binary
                 Diag.verbose("Binary loaded OK")
             default:
                 Diag.error("Unexpected XML tag in Meta/Binaries: \(tag.name)")
@@ -451,7 +459,8 @@ final class Meta2: Eraseable {
         } else {
             Diag.verbose("Generating XML: meta binaries")
             let xmlBinaries = AEXMLElement(name: Xml2.binaries)
-            for binary in database.binaries {
+            for binaryID in database.binaries.keys.sorted() {
+                let binary = database.binaries[binaryID]!
                 xmlBinaries.addChild(try binary.toXml(streamCipher: streamCipher))
                     // throws ProgressInterruption
             }

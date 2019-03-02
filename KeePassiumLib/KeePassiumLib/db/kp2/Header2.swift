@@ -537,13 +537,13 @@ final class Header2: Eraseable {
                 Diag.verbose("\(fieldID.name) read OK")
             case .binary:
                 let isProtected = (fieldData[0] & 0x01 != 0)
-                let nextID = database.binaries.count
+                let newBinaryID = database.binaries.count
                 let binary = Binary2(
-                    id: nextID,
+                    id: newBinaryID,
                     data: fieldData.suffix(from: 1),
                     isCompressed: false,
                     isProtected: isProtected)
-                database.binaries.append(binary)
+                database.binaries[newBinaryID] = binary
                 Diag.verbose("\(fieldID.name) read OK [size: \(fieldData.count) bytes]")
             case .end:
                 initStreamCipher()
@@ -661,8 +661,10 @@ final class Header2: Eraseable {
         stream.write(data: protectedStreamKey!)
         print("  streamCipherKey: \(protectedStreamKey!.asHexString)")
         
-        for binary in database.binaries {
+        // Inner header binaries should be ordered (since their order is their ID)
+        for binaryID in database.binaries.keys.sorted() {
             Diag.verbose("Writing a binary")
+            let binary = database.binaries[binaryID]! // guaranteed to exist
             stream.write(value: InnerFieldID.binary.rawValue) // fieldID: UInt8
             stream.write(value: UInt32(1 + binary.data.count)) // (+1 for flag) fieldSize: UInt32,
             stream.write(value: UInt8(binary.flags))
