@@ -548,6 +548,14 @@ final class Header2: Eraseable {
             case .end:
                 initStreamCipher()
                 Diag.verbose("Stream cipher init OK")
+                // now we can decrypt protected binaries
+                for binaryID in database.binaries.keys.sorted() {
+                    let binary = database.binaries[binaryID]! // guaranteed to exist
+                    if binary.isProtected {
+                        try binary.decrypt(streamCipher: streamCipher, progress: nil)
+                            // throws ProgressInterruption
+                    }
+                }
                 Diag.verbose("Inner header read OK [size: \(size) bytes]")
                 return size
             }
