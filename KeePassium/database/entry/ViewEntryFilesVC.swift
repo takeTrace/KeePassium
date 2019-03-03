@@ -121,7 +121,9 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
         do {
             exportFileURL = try TemporaryFileURL(fileName: fileName)
                 // throws some FileManager error
-            try att.data.asData.write(to: exportFileURL!.url, options: [.completeFileProtection])
+            let uncompressedBytes = att.isCompressed ? try att.data.gunzipped() : att.data
+                // throws `GzipError`
+            try uncompressedBytes.write(to: exportFileURL!.url, options: [.completeFileProtection])
             exportController.url = exportFileURL!.url
             if let icon = exportController.icons.first {
                 sourceCell.imageView?.image = icon
