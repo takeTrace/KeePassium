@@ -121,6 +121,9 @@ class EditEntryVC: UITableViewController, Refreshable {
     
     func rememberOriginalState() {
         guard let entry = entry else { fatalError() }
+        if mode == .edit {
+            entry.backupState() //FIXME: creates redundant backups if editing is cancelled
+        }
         originalEntry = entry.clone()
     }
     
@@ -336,7 +339,6 @@ class EditEntryVC: UITableViewController, Refreshable {
     func applyChangesAndSaveDatabase() {
         guard let entry = entry else { return }
         entry.modified()
-        entry.backupState()
         view.endEditing(true)
         databaseManagerNotifications.startObserving()
         DatabaseManager.shared.startSavingDatabase()
