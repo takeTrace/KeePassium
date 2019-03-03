@@ -22,6 +22,8 @@ public class Binary2: Eraseable {
     public typealias ID = Int
 
     private(set) var id: Binary2.ID
+    // `data` must always be decrypted (`isProtected` is applied on read/write operations),
+    // but can be compressed (`isCompressed` is applied only on export operations)
     private(set) var data: ByteArray
     private(set) var isCompressed: Bool
     private(set) var isProtected: Bool
@@ -30,6 +32,12 @@ public class Binary2: Eraseable {
         return isProtected ? 1 : 0
     }
     
+    /// - Parameters:
+    ///   - id: ID in binary pool
+    ///   - data: *decrypted* but possibly compressed data.
+    ///         Alternatively, can be decrypted after initialization, using `decrypt`.
+    ///   - isCompressed: `true` iff `data` is compressed
+    ///   - isProtected: `true` iff `data` should be encrypted/decrypted in read/write operations
     init(id: Binary2.ID, data: ByteArray, isCompressed: Bool, isProtected: Bool) {
         self.id = id
         self.data = data.clone()
@@ -102,5 +110,17 @@ public class Binary2: Eraseable {
             name: Xml2.binary,
             value: value.base64EncodedString(),
             attributes: attributes)
+    }
+    
+    
+    /// Decrypts `data` in place with the given stream cipher.
+    ///
+    /// - Parameter streamCipher: cipher to use
+    /// - Parameter progress: used to report operation progress, can be `nil`
+    /// - Throws: `ProgressInterruption`
+    func decrypt(streamCipher: StreamCipher, progress: ProgressEx?) throws {
+        assert(isProtected)
+        data = try streamCipher.decrypt(data: self.data, progress: progress)
+            // throws ProgressInterruption
     }
 }

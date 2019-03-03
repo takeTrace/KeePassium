@@ -540,7 +540,7 @@ final class Header2: Eraseable {
                 let newBinaryID = database.binaries.count
                 let binary = Binary2(
                     id: newBinaryID,
-                    data: fieldData.suffix(from: 1),
+                    data: fieldData.suffix(from: 1), // to decrypted in .end
                     isCompressed: false,
                     isProtected: isProtected)
                 database.binaries[newBinaryID] = binary

@@ -315,9 +315,12 @@ public class ByteArray: Eraseable {
         return ByteArray.OutputStream()
     }
     
+    /// - Throws: `GzipError`
     public func gunzipped() throws -> ByteArray {
         return try ByteArray(data: Data(bytes: self.bytes).gunzipped())
     }
+
+    /// - Throws: `GzipError`
     public func gzipped() throws -> ByteArray {
         return try ByteArray(data: Data(bytes: self.bytes).gzipped(level: .bestCompression))
     }
