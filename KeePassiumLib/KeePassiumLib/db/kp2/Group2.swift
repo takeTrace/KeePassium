@@ -116,55 +116,6 @@ public class Group2: Group {
         super.accessed()
         usageCount += 1
     }
-    
-    /// Moves the group's whole branch to Backup/Recycle Bin group.
-    /// If Backup is not available (disabled in DB setting), removes the group permanently.
-    /// - Returns: true if successful, false otherwise.
-    override public func moveToBackup() -> Bool {
-        let db = self.database as! Database2
-        
-        guard let parentGroup = self.parent else {
-            Diag.warning("moveToBackup failed: no parent group")
-            return false
-        }
-        
-        var allGroupsRecursive: Array<Group> = [Group2]()
-        var allEntriesRecursive: Array<Entry> = [Entry2]()
-        collectAllChildren(groups: &allGroupsRecursive, entries: &allEntriesRecursive)
-        
-        if let backupGroup = db.getBackupGroup(createIfMissing: true) {
-            parentGroup.remove(group: self)
-            backupGroup.add(group: self)
-            accessed()
-            locationChangedTime = Date.now
-            
-            // Flag the group and all its siblings deleted (siblings' timestamps remain unchanged).
-            self.isDeleted = true
-            for group in allGroupsRecursive {
-                group.isDeleted = true
-            }
-            for entry in allEntriesRecursive {
-                entry.isDeleted = true
-            }
-        } else {
-            // Backup group has been disabled for this DB.
-            // So we delete the group and all its children permanently,
-            // but mention them in the DeletedObjects list to facilitate synchronization.
-            Diag.debug("Backup group disabled, removing the group permanently.")
-            db.addDeletedObject(uuid: self.uuid)
-            for group in allGroupsRecursive {
-                db.addDeletedObject(uuid: group.uuid)
-            }
-            for entry in allEntriesRecursive {
-                db.addDeletedObject(uuid: entry.uuid)
-            }
-            deleteWithoutBackup() // also detaches all children
-        }
-        allGroupsRecursive.removeAll() //erase()
-        allEntriesRecursive.removeAll() //erase()
-        Diag.debug("moveToBackup OK")
-        return true
-    }
 
     /// Loads group properties from the <Group> XML element
     /// - Throws: `Xml2.ParsingError`, `ProgressInterruption`

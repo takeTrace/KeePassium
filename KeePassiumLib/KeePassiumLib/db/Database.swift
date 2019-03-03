@@ -178,5 +178,15 @@ open class Database: Eraseable {
         root?.filterEntries(query: query, result: &result)
         return result.count
     }
+    
+    /// Deletes given `group` (to Backup group, when appropriate; otherwise permanently).
+    public func delete(group: Group) {
+        fatalError("Pure virtual method")
+    }
+    
+    /// Deletes given `entry` (or moves it to the Backup group, when possible).
+    public func delete(entry: Entry) {
+        fatalError("Pure virtual method")
+    }
 }
 

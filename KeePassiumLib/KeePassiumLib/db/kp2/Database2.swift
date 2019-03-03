@@ -919,4 +919,76 @@ public class Database2: Database {
             entry.lastAccessTime = time
         }
     }
+    
+    // MARK: - Group/entry management routines
+    
+    /// Deletes the given `group` with its whole branch.
+    /// If possible, moves `group` to RecycleBin, otherwise removes permanently.
+    ///
+    /// - Parameters:
+    ///   - group: the group to move
+    /// - Returns: true iff successful.
+    override public func delete(group: Group) {
+        guard let group = group as? Group2 else { fatalError() }
+        guard let parentGroup = group.parent else {
+            Diag.warning("Cannot delete group: no parent group")
+            return
+        }
+        
+        var subGroups = [Group]()
+        var subEntries = [Entry]()
+        group.collectAllChildren(groups: &subGroups, entries: &subEntries)
+        
+        let moveOnly = !group.isDeleted && meta.isRecycleBinEnabled
+        if moveOnly, let backupGroup = getBackupGroup(createIfMissing: meta.isRecycleBinEnabled) {
+            Diag.debug("Moving group to RecycleBin")
+            parentGroup.remove(group: group)
+            backupGroup.add(group: group)
+            group.accessed()
+            group.locationChangedTime = Date.now
+            
+            // Flag the group and all its siblings deleted (siblings' timestamps remain unchanged).
+            group.isDeleted = true
+            subGroups.forEach { $0.isDeleted = true }
+            subEntries.forEach { $0.isDeleted = true }
+        } else {
+            // Delete the group and all its children permanently,
+            // but mention them in the DeletedObjects list to facilitate synchronization.
+            Diag.debug("Removing the group permanently.")
+            addDeletedObject(uuid: group.uuid)
+            subGroups.forEach { addDeletedObject(uuid: $0.uuid) }
+            subEntries.forEach { addDeletedObject(uuid: $0.uuid) }
+            parentGroup.remove(group: group)
+        }
+        Diag.debug("Delete group OK")
+    }
+    
+    /// Deletes given `entry` (or moves it to the Backup group, when possible).
+    override public func delete(entry: Entry) {
+        guard let parentGroup = entry.parent else {
+            Diag.warning("Cannot delete entry: no parent group")
+            return
+        }
+        
+        if entry.isDeleted {
+            // already in Backup, so delete permanently
+            addDeletedObject(uuid: entry.uuid)
+            parentGroup.remove(entry: entry)
+            return
+        }
+        
+        if meta.isRecycleBinEnabled,
+            let backupGroup = getBackupGroup(createIfMissing: meta.isRecycleBinEnabled)
+        {
+            entry.accessed()
+            backupGroup.moveEntry(entry: entry)
+        } else {
+            // Backup is disabled, so we delete the entry permanently
+            // and mention it in DeletedObjects to facilitate synchronization.
+            Diag.debug("Backup disabled, removing permanently.")
+            addDeletedObject(uuid: entry.uuid)
+            parentGroup.remove(entry: entry)
+        }
+        Diag.debug("Delete entry OK")
+    }
 }

@@ -336,7 +336,7 @@ class EditEntryVC: UITableViewController, Refreshable {
     func applyChangesAndSaveDatabase() {
         guard let entry = entry else { return }
         entry.modified()
-        _ = entry.backupState()
+        entry.backupState()
         view.endEditing(true)
         databaseManagerNotifications.startObserving()
         DatabaseManager.shared.startSavingDatabase()

@@ -131,19 +131,6 @@ public class Group: Eraseable {
         }
     }
     
-    /// Removes the group from the parent group, if any; does NOT make a copy in Backup/Recycle Bin group.
-    public func deleteWithoutBackup() {
-        parent?.remove(group: self)
-    }
-    
-    /// Moves the group and all of its children to Backup/Recycle Bin group.
-    /// Exact behavior is DB version specific.
-    /// Pure abstract method, must be overriden.
-    /// - Returns: true if successful, false otherwise.
-    public func moveToBackup() -> Bool {
-        fatalError("Pure virtual method")
-    }
-    
     public func add(group: Group) {
         group.parent = self
         groups.append(group)
@@ -161,6 +148,7 @@ public class Group: Eraseable {
     
     public func add(entry: Entry) {
         entry.parent = self
+        entry.isDeleted = self.isDeleted
         entries.append(entry)
         isChildrenModified = true
     }
@@ -176,18 +164,11 @@ public class Group: Eraseable {
 
     /// Moves entry from its parent group to this one.
     public func moveEntry(entry: Entry) {
-        // Ok, we need to add the entry to this group and remove it from the original one,
-        // making sure that no updates are emitted while in intermediate state.
-
-        let originalParentGroup: Group? = entry.parent
-        entry.parent = self
-        entry.isDeleted = self.isDeleted
-        entries.append(entry)
-        isChildrenModified = true
-        originalParentGroup?.entries.remove(entry)
-        originalParentGroup?.isChildrenModified = true
+        if let oldParent = entry.parent {
+            oldParent.remove(entry: entry)
+        }
+        self.add(entry: entry)
     }
-
 
     /// Finds (sub)group with the given UUID (searching the full tree).
     /// - Returns: the first subgroup with the given UUID, or nil if none found.

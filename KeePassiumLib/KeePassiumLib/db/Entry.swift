@@ -251,16 +251,7 @@ public class Entry: Eraseable {
     /// Makes a backup copy of the current values/state of the entry.
     /// Actual behavior is DB version specific.
     /// (A pure virtual method, must be overriden)
-    /// - Returns: true if successful, false otherwise.
-    public func backupState() -> Bool {
-        fatalError("Pure virtual method")
-    }
-    
-    /// Moves the entry to the Backup/Recycle Bin group.
-    /// Actual behavior is DB version specific.
-    /// (A pure virtual method, must be overriden)
-    /// - Returns: true if successful, false otherwise.
-    public func moveToBackup() -> Bool {
+    public func backupState() {
         fatalError("Pure virtual method")
     }
     

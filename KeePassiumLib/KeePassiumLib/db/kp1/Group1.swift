@@ -114,52 +114,7 @@ public class Group1: Group {
         // there is no suitable groupId, so just reset it to simplify debug
         (entry as! Entry1).groupID = -1
     }
-    override public func moveEntry(entry: Entry) {
-        super.moveEntry(entry: entry)
-        (entry as! Entry1).groupID = self.id
-    }
     
-    /// Moves the group and all of its children to Backup group,
-    /// subgroups are deleted.
-    /// - Returns: true if successful, false otherwise.
-    override public func moveToBackup() -> Bool {
-        guard let database = database else {
-            Diag.warning("Database is nil")
-            assertionFailure("Database is nil")
-            return false
-        }
-        guard let parentGroup = self.parent else {
-            Diag.warning("Failed to get parent group")
-            return false
-        }
-        
-        // Ensure backup group exists
-        guard let _ = database.getBackupGroup(createIfMissing: true) else {
-            Diag.warning("Failed to create backup group")
-            return false
-        }
-        
-        // detach this branch from the parent group
-        parentGroup.remove(group: self)
-        
-        // flag the group and all its children deleted
-        isDeleted = true
-        var childGroups = [Group]()
-        var childEntries = [Entry]()
-        collectAllChildren(groups: &childGroups, entries: &childEntries)
-        // kp1 does not backup subgroups, so move only entries
-        for entry in childEntries {
-            if !entry.moveToBackup() {
-                Diag.warning("Failed on child entry")
-                return false
-            }
-        }
-        Eraser.erase(&childGroups)
-        Eraser.erase(&childEntries)
-        Diag.debug("moveToBackup OK")
-        return true
-    }
-
     /// Creates an entry in this group.
     /// - Returns: created entry
     override public func createEntry() -> Entry {

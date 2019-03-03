@@ -386,36 +386,12 @@ public class Entry2: Entry {
     /// (For KP2, adds the current state to entry's history)
     ///
     /// - Returns: true if successful, false otherwise.
-    override public func backupState() -> Bool {
+    override public func backupState() {
         // In KP2, historical items preserve the same UUID (unlike KP1)
         let entryClone = self.clone() as! Entry2
         entryClone.clearHistory()
         addToHistory(entry: entryClone)
         maintainHistorySize()
-        return true
-    }
-
-    /// Moves the entry to the Recycle Bin group
-    /// (or to DeletedObjects list, if backup is disabled)
-    ///
-    /// - Returns: true if successful, false otherwise.
-    override public func moveToBackup() -> Bool {
-        let db = self.database as! Database2
-
-        if let backupGroup = db.getBackupGroup(createIfMissing: true) {
-            backupGroup.moveEntry(entry: self)
-            accessed()
-            isDeleted = true
-        } else {
-            // Backup has been disabled for this DB.
-            // So we delete the entry permanently and mention it
-            // in DeletedObjects to facilitate synchronization.
-            Diag.info("Backup group disabled, removing the entry permanently.")
-            db.addDeletedObject(uuid: self.uuid)
-            deleteWithoutBackup()
-        }
-        Diag.verbose("moveToBackup OK")
-        return true
     }
 
     /// Updates last access timestamp to current time and increases usage counter.
@@ -434,9 +410,7 @@ public class Entry2: Entry {
             return false
         }
         modified()
-        if !backupState() {
-            return false
-        }
+        backupState()
         addAttachment(attachment: newAtt)
         return true
     }

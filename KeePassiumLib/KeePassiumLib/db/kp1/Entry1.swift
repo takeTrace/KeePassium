@@ -332,35 +332,14 @@ public class Entry1: Entry {
     
     /// Makes a backup copy of the current values/state of the entry.
     /// For KP1 means copying the whole entry to the Backup group.
-    /// - Returns: true if successful, false otherwise.
-    override public func backupState() -> Bool {
+    override public func backupState() {
         let copy = self.clone()
 
         // Backup copies must have unique IDs, so make one
         copy.uuid = UUID()
-        return copy.moveToBackup()
+        database?.delete(entry: copy) // moves copy to Backup group
     }
     
-    /// Moves the entry to the Backup group.
-    /// - Returns: true if successful, false otherwise.
-    override public func moveToBackup() -> Bool {
-        guard let database = database else {
-            assertionFailure("Database is nil")
-            Diag.warning("Database is nil")
-            return false
-        }
-        
-        guard let backupGroup = database.getBackupGroup(createIfMissing: true) else {
-            Diag.warning("Failed to get or create backup group")
-            return false
-        }
-        backupGroup.moveEntry(entry: self)
-        self.accessed()
-        self.isDeleted = true
-        Diag.info("moveToBackup OK");
-        return true;
-    }
-
     /// Returns entry's only attachment, if any.
     internal func getAttachment() -> Attachment? {
         return attachments.first
@@ -386,10 +365,7 @@ public class Entry1: Entry {
         }
         
         self.modified()
-        guard self.backupState() else {
-            Diag.warning("Failed to backup state")
-            return false
-        }
+        self.backupState()
         attachments.removeAll()
         addAttachment(attachment: att)
         return true

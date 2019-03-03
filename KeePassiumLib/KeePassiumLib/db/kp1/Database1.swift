@@ -392,4 +392,53 @@ public class Database1: Database {
                 iv: header.initialVector) // throws CryptoError, ProgressInterruption
         }
     }
+    
+    // MARK: - Group/entry management routines
+    
+    /// Deletes given `group` (to Backup group, when appropriate; otherwise permanently).
+    override public func delete(group: Group) {
+        guard let group = group as? Group1 else { fatalError() }
+        guard let parentGroup = group.parent else {
+            Diag.warning("Cannot delete group: no parent group")
+            return
+        }
+        
+        // Ensure backup group exists
+        guard let backupGroup = getBackupGroup(createIfMissing: true) else {
+            Diag.warning("Cannot delete group: no backup group")
+            return
+        }
+        
+        // detach this branch from the parent group
+        parentGroup.remove(group: group)
+        
+        var subGroups = [Group]()
+        var subEntries = [Entry]()
+        group.collectAllChildren(groups: &subGroups, entries: &subEntries)
+        
+        // kp1 does not backup subgroups, so move only entries
+        subEntries.forEach { (entry) in
+            backupGroup.moveEntry(entry: entry)
+            entry.accessed()
+        }
+        Diag.debug("Delete group OK")
+    }
+    
+    /// Deletes given `entry` (or moves it to the Backup group, when possible).
+    override public func delete(entry: Entry) {
+        if entry.isDeleted {
+            // already in Backup, so delete permanently
+            entry.parent?.remove(entry: entry)
+            return
+        }
+        
+        guard let backupGroup = getBackupGroup(createIfMissing: true) else {
+            Diag.warning("Failed to get or create backup group")
+            return
+        }
+        
+        entry.accessed()
+        backupGroup.moveEntry(entry: entry)
+        Diag.info("Delete entry OK")
+    }
 }
