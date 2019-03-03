@@ -53,10 +53,15 @@ public class Attachment: Eraseable {
         erase()
     }
     
-    /// Creates a clone of the given instance
-    /// Pure virtual mehtod, must be overriden.
+    /// Creates a clone of this instance
     internal func clone() -> Attachment {
-        fatalError("Pure virtual method")
+        return Attachment(
+            database: self.database,
+            id: self.id,
+            name: self.name,
+            isCompressed: self.isCompressed,
+            data: self.data
+        )
     }
     
     public func erase() {
