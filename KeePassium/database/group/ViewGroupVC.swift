@@ -409,8 +409,15 @@ open class ViewGroupVC: UITableViewController, Refreshable {
             self.onDeleteItemAction(at: indexPath)
         }
         deleteAction.backgroundColor = UIColor.destructiveTint
-        
-        return [deleteAction, editAction]
+     
+        // items in RecycleBin can be deleted (permanently), but cannot be edited
+        var allowedActions = [deleteAction]
+        if let entry = getEntry(at: indexPath) {
+            if !entry.isDeleted { allowedActions.append(editAction) }
+        } else if let group = getGroup(at: indexPath) {
+            if !group.isDeleted { allowedActions.append(editAction) }
+        }
+        return allowedActions
     }
     
     // MARK: - Item operation constraints
@@ -520,11 +527,12 @@ open class ViewGroupVC: UITableViewController, Refreshable {
             confirmationAlert.title = targetGroup.name
             let deleteAction = UIAlertAction(title: LString.actionDelete, style: .destructive)
             {
-                [unowned self] _ in
+                [weak self] _ in
+                guard let database = targetGroup.database else { return }
                 targetGroup.accessed()
                 targetGroup.modified()
-                _ = targetGroup.moveToBackup() // if there is no Backup group, deletes forever
-                self.saveDatabase()
+                database.delete(group: targetGroup)
+                self?.saveDatabase()
             }
             confirmationAlert.addAction(deleteAction)
             present(confirmationAlert, animated: true, completion: nil)
@@ -536,14 +544,15 @@ open class ViewGroupVC: UITableViewController, Refreshable {
             confirmationAlert.title = targetEntry.title
             let deleteAction = UIAlertAction(title: LString.actionDelete, style: .destructive)
             {
-                [unowned self] _ in
+                [weak self] _ in
+                guard let database = targetEntry.database else { return }
                 targetEntry.accessed()
                 targetEntry.modified()
-                _ = targetEntry.moveToBackup()
-                if isDeletingShownEntry && !(self.splitViewController?.isCollapsed ?? true) {
-                    self.handleItemSelection(indexPath: nil) // hide deleted entry from viewer
+                database.delete(entry: targetEntry)
+                if isDeletingShownEntry && !(self?.splitViewController?.isCollapsed ?? true) {
+                    self?.handleItemSelection(indexPath: nil) // hide deleted entry from viewer
                 }
-                self.saveDatabase()
+                self?.saveDatabase()
             }
             confirmationAlert.addAction(deleteAction)
             present(confirmationAlert, animated: true, completion: nil)

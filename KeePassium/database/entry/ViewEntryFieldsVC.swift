@@ -183,6 +183,7 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        editButton.isEnabled = !(entry?.isDeleted ?? true)
         navigationItem.rightBarButtonItem = isHistoryMode ? nil : editButton
         entryChangeNotifications.startObserving()
         refresh()
