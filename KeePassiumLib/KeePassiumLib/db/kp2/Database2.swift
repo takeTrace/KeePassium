@@ -619,9 +619,9 @@ public class Database2: Database {
                 let newBinaryID = binaries.count
                 let newBinary = Binary2(
                     id: newBinaryID,
-                    data: att.data, // is decrypted
+                    data: att.data,
                     isCompressed: att.isCompressed,
-                    isProtected: false)
+                    isProtected: true)
                 binaries[newBinary.id] = newBinary
                 att.id = newBinaryID
             }
