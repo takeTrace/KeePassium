@@ -44,9 +44,7 @@ public class Binary2: Eraseable {
         self.isCompressed = isCompressed
         self.isProtected = isProtected
     }
-    convenience init() {
-        self.init(id: -1, data: ByteArray(), isCompressed: false, isProtected: false)
-    }
+    
     deinit {
         erase()
     }
@@ -59,10 +57,10 @@ public class Binary2: Eraseable {
     }
     
     /// - Throws: `Xml2.ParsingError`, `ProgressInterruption`
-    func load(xml: AEXMLElement, streamCipher: StreamCipher) throws {
+    static func load(xml: AEXMLElement, streamCipher: StreamCipher) throws -> Binary2 {
         assert(xml.name == Xml2.binary)
         Diag.verbose("Loading XML: binary")
-        erase()
+        
         let idString = xml.attributes[Xml2.id]
         guard let id = Int(idString) else {
             Diag.error("Cannot parse Meta/Binary/ID as Int")
@@ -84,10 +82,7 @@ public class Binary2: Eraseable {
             data = try streamCipher.decrypt(data: data, progress: nil) // throws ProgressInterruption
         }
         
-        self.id = id
-        self.isCompressed = isCompressed
-        self.isProtected = isProtected
-        self.data = data
+        return Binary2(id: id, data: data, isCompressed: isCompressed, isProtected: isProtected)
     }
     
     /// Throws: `ProgressInterruption`

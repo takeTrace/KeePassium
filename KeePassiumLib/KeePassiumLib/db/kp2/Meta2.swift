@@ -298,8 +298,7 @@ final class Meta2: Eraseable {
         for tag in xml.children {
             switch tag.name {
             case Xml2.binary:
-                let binary = Binary2()
-                try binary.load(xml: tag, streamCipher: streamCipher)
+                let binary = try Binary2.load(xml: tag, streamCipher: streamCipher)
                     // throws Xml2.ParsingError, ProgressInterruption
                 
                 // quick sanity check
