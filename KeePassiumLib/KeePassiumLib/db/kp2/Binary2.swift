@@ -106,16 +106,4 @@ public class Binary2: Eraseable {
             value: value.base64EncodedString(),
             attributes: attributes)
     }
-    
-    
-    /// Decrypts `data` in place with the given stream cipher.
-    ///
-    /// - Parameter streamCipher: cipher to use
-    /// - Parameter progress: used to report operation progress, can be `nil`
-    /// - Throws: `ProgressInterruption`
-    func decrypt(streamCipher: StreamCipher, progress: ProgressEx?) throws {
-        assert(isProtected)
-        data = try streamCipher.decrypt(data: self.data, progress: progress)
-            // throws ProgressInterruption
-    }
 }

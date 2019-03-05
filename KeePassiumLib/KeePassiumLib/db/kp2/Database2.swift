@@ -591,40 +591,67 @@ public class Database2: Database {
         var allEntries = [Entry2]() as [Entry]
         root.collectAllChildren(groups: &allGroups, entries: &allEntries)
 
-        binaries.removeAll()
+        // Make a content-keyed lookup dict for faster search
+        var oldBinaryPoolInverse = [ByteArray : Binary2]()
+        binaries.values.forEach { oldBinaryPoolInverse[$0.data] = $0 }
+        
+        var newBinaryPoolInverse = [ByteArray: Binary2]()
         for entry in allEntries {
-            updateBinaries(entry: entry as! Entry2)
+            updateBinaries(
+                entry: entry as! Entry2,
+                oldPoolInverse: oldBinaryPoolInverse,
+                newPoolInverse: &newBinaryPoolInverse)
         }
+        // Rebuild the normal [ID: Binary2] dict
+        binaries.removeAll()
+        newBinaryPoolInverse.values.forEach { binaries[$0.id] = $0 }
     }
 
     /// Adds entry's attachments to the binary pool and updates attachment refs accordingly.
     /// Also looks into entry's history.
-    private func updateBinaries(entry: Entry2) {
+    private func updateBinaries(
+        entry: Entry2,
+        oldPoolInverse: [ByteArray: Binary2],
+        newPoolInverse: inout [ByteArray: Binary2])
+    {
         // Process previous versions of the entry, if any
         for histEntry in entry.history {
-            updateBinaries(entry: histEntry)
+            updateBinaries(
+                entry: histEntry,
+                oldPoolInverse: oldPoolInverse,
+                newPoolInverse: &newPoolInverse
+            )
         }
+        
         // Process the entry itself
         for att in entry.attachments {
-            // maybe the attachment is already in the binary pool?
-            let foundBinary = binaries.values.first(where: { (binary) in
-                return (binary.isCompressed == att.isCompressed) && (binary.data == att.data)
-            })
+            if let binaryInNewPool = newPoolInverse[att.data] {
+                // the attachment is already in new binary pool, just update the ID
+                att.id = binaryInNewPool.id
+                continue
+            }
             
-            if let binary = foundBinary {
-                // the attachment is already in binary pool, just update the ID
-                att.id = binary.id
+            let newID = newPoolInverse.count
+            let newBinary: Binary2
+            if let binaryInOldPool = oldPoolInverse[att.data] {
+                // this is an old attachment, to be inserted under a new ID
+                newBinary = Binary2(
+                    id: newID,
+                    data: binaryInOldPool.data,
+                    isCompressed: binaryInOldPool.isCompressed,
+                    isProtected: binaryInOldPool.isProtected
+                )
             } else {
-                // add the attachment to the binary pool
-                let newBinaryID = binaries.count
-                let newBinary = Binary2(
-                    id: newBinaryID,
+                // newly added attachment, was not in any pools
+                newBinary = Binary2(
+                    id: newID,
                     data: att.data,
                     isCompressed: att.isCompressed,
-                    isProtected: true)
-                binaries[newBinary.id] = newBinary
-                att.id = newBinaryID
+                    isProtected: true
+                )
             }
+            newPoolInverse[newBinary.data] = newBinary
+            att.id = newID
         }
     }
     
