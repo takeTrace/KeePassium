@@ -176,8 +176,8 @@ public class ByteArray: Eraseable {
         let data = try Data(contentsOf: url)
         self.init(data: data)
     }
-    convenience public init?(utf8String: String) {
-        guard let data = utf8String.data(using: .utf8) else { return nil }
+    convenience public init(utf8String: String) {
+        let data = utf8String.data(using: .utf8)! // will always succeed
         self.init(data: data)
     }
     convenience public init?(base64Encoded: String?) {

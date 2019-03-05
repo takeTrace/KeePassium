@@ -695,7 +695,8 @@ public class Database2: Database {
         // prepare XML content
         meta.headerHash = header.hash
         // (NB: Preserve formatting, use .xml! xmlCompact corrupts multi-line Notes)
-        let xmlData = ByteArray(utf8String: try self.toXml().xml)! // throws ProgressInterruption
+        let xmlString = try self.toXml().xml // throws ProgressInterruption
+        let xmlData = ByteArray(utf8String: xmlString)
         Diag.debug("XML generation OK")
 
         switch formatVersion {

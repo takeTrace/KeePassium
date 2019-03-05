@@ -292,7 +292,7 @@ public class Group1: Group {
         }
 
         writeField(fieldID: .groupID, data: self.id.data)
-        writeField(fieldID: .name, data: ByteArray(utf8String: self.name)!, addTrailingZero: true)
+        writeField(fieldID: .name, data: ByteArray(utf8String: self.name), addTrailingZero: true)
         writeField(fieldID: .creationTime, data: self.creationTime.asKP1Bytes())
         writeField(fieldID: .lastModifiedTime, data: self.lastModificationTime.asKP1Bytes())
         writeField(fieldID: .lastAccessTime, data: self.lastAccessTime.asKP1Bytes())

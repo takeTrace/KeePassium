@@ -94,8 +94,8 @@ public class VarDict: Eraseable {
         init(value: Int64) {
             self.init(type: .Int64, data: value.data)
         }
-        init?(value: String) {
-            guard let strData = ByteArray(utf8String: value) else { return nil }
+        init(value: String) {
+            let strData = ByteArray(utf8String: value)
             self.init(type: .String, data: strData)
         }
         init(value: ByteArray) {
@@ -209,7 +209,7 @@ public class VarDict: Eraseable {
         for key in orderedKeys {
             let typedValue = dict[key]!
             stream.write(value: typedValue.type.rawValue)
-            guard let keyData = ByteArray(utf8String: key) else { return false }
+            let keyData = ByteArray(utf8String: key)
             stream.write(value: Int32(keyData.count))
             stream.write(data: keyData)
             stream.write(value: Int32(typedValue.count))

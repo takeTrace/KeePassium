@@ -115,7 +115,7 @@ public class EntryField2: EntryField {
         let xmlField = AEXMLElement(name: Xml2.string)
         xmlField.addChild(name: Xml2.key, value: name)
         if isProtected {
-            let openData = ByteArray(utf8String: value)!
+            let openData = ByteArray(utf8String: value)
             Diag.verbose("Encrypting field value")
             let encData = try streamCipher.encrypt(data: openData, progress: nil)
                 // throws ProgressInterruption

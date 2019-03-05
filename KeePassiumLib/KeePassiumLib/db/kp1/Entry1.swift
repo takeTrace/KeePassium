@@ -288,18 +288,19 @@ public class Entry1: Entry {
         writeField(fieldID: .uuid, data: uuid.data)
         writeField(fieldID: .groupID, data: groupID.data)
         writeField(fieldID: .iconID, data: iconID.rawValue.data)
-        writeField(fieldID: .title, data: ByteArray(utf8String: title)!, addTrailingZero: true)
-        writeField(fieldID: .url, data: ByteArray(utf8String: url)!, addTrailingZero: true)
-        writeField(fieldID: .username, data: ByteArray(utf8String: userName)!, addTrailingZero: true)
-        writeField(fieldID: .password, data: ByteArray(utf8String: password)!, addTrailingZero: true)
-        writeField(fieldID: .notes, data: ByteArray(utf8String: notes)!, addTrailingZero: true)
+        writeField(fieldID: .title, data: ByteArray(utf8String: title), addTrailingZero: true)
+        writeField(fieldID: .url, data: ByteArray(utf8String: url), addTrailingZero: true)
+        writeField(fieldID: .username, data: ByteArray(utf8String: userName), addTrailingZero: true)
+        writeField(fieldID: .password, data: ByteArray(utf8String: password), addTrailingZero: true)
+        writeField(fieldID: .notes, data: ByteArray(utf8String: notes), addTrailingZero: true)
         writeField(fieldID: .creationTime, data: creationTime.asKP1Bytes())
         writeField(fieldID: .lastModifiedTime, data: lastModificationTime.asKP1Bytes())
         writeField(fieldID: .lastAccessTime, data: lastAccessTime.asKP1Bytes())
         writeField(fieldID: .expirationTime, data: expiryTime.asKP1Bytes())
         
         if let att = getAttachment() {
-            writeField(fieldID: .binaryDesc, data: ByteArray(utf8String: att.name)!, addTrailingZero: true)
+            let binaryDesc = ByteArray(utf8String: att.name)
+            writeField(fieldID: .binaryDesc, data: binaryDesc, addTrailingZero: true)
             writeField(fieldID: .binaryData, data: att.data)
         } else {
             //KP1 saves empty fields even if there is no attachment.
