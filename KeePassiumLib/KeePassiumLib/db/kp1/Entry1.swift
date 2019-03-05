@@ -304,7 +304,7 @@ public class Entry1: Entry {
         } else {
             //KP1 saves empty fields even if there is no attachment.
             let emptyData = ByteArray()
-            writeField(fieldID: .binaryDesc, data: emptyData)
+            writeField(fieldID: .binaryDesc, data: emptyData, addTrailingZero: true)
             writeField(fieldID: .binaryData, data: emptyData)
         }
         writeField(fieldID: .end, data: ByteArray())
