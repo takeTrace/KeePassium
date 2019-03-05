@@ -540,9 +540,9 @@ final class Header2: Eraseable {
                 let newBinaryID = database.binaries.count
                 let binary = Binary2(
                     id: newBinaryID,
-                    data: fieldData.suffix(from: 1), // to decrypted in .end
+                    data: fieldData.suffix(from: 1), // fieldData is in plain text
                     isCompressed: false,
-                    isProtected: isProtected)
+                    isProtected: isProtected) // just a recommendation, not a call for decryption
                 database.binaries[newBinaryID] = binary
                 Diag.verbose("\(fieldID.name) read OK [size: \(fieldData.count) bytes]")
             case .end:
@@ -668,16 +668,8 @@ final class Header2: Eraseable {
             stream.write(value: InnerFieldID.binary.rawValue) // fieldID: UInt8
             stream.write(value: UInt32(1 + binary.data.count)) // (+1 for flag) fieldSize: UInt32,
             stream.write(value: UInt8(binary.flags))
-            if binary.isProtected {
-                // Binaries are decrypted on load, so protect them before saving, if necessary
-                let encData = try streamCipher.encrypt(data: binary.data, progress: nil)
-                    // throws ProgressInterruption
-                stream.write(data: encData)
-                print("  binary: \(encData.count + 1) bytes")
-            } else {
-                stream.write(data: binary.data)
-                print("  binary: \(binary.data.count + 1) bytes")
-            }
+            stream.write(data: binary.data) // in plain text; protected flag is just a recommendation
+            print("  binary: \(binary.data.count + 1) bytes")
         }
         stream.write(value: InnerFieldID.end.rawValue) // terminator fieldID: UInt8
         stream.write(value: UInt32(0)) // terminator fieldSize: UInt32

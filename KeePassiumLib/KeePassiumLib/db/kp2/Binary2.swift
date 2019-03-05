@@ -21,12 +21,22 @@ import Foundation
 public class Binary2: Eraseable {
     public typealias ID = Int
 
+    /// The ID is used to refer to binaries from entries.
     private(set) var id: Binary2.ID
-    // `data` must always be decrypted (`isProtected` is applied on read/write operations),
-    // but can be compressed (`isCompressed` is applied only on export operations)
+    
+    /// `data` must always be decrypted (`isProtected` is only a recommendation),
+    /// but can be compressed (`isCompressed` is applied only on export operations)
     private(set) var data: ByteArray
+    
+    /// True iff the `data` is gzipped
     private(set) var isCompressed: Bool
+    
+    /// True iff the binary is labelled as protected.
+    /// Some apps use it to encrypt `data` while it is in memory (e.g. KeePass 2)
+    /// others ignore it for performance reasons (e.g. KeePassDroid)
+    /// Like other mobile apps, KeePassium does not enforce memory protection.
     private(set) var isProtected: Bool
+    
     /// KP2 v4 inner header flags
     public var flags: UInt8 {
         return isProtected ? 1 : 0
@@ -78,6 +88,7 @@ public class Binary2: Eraseable {
         // Note: data can actually be empty
         
         if isProtected {
+            // `data` is stored in plain text, so decrypt it
             Diag.verbose("Decrypting binary")
             data = try streamCipher.decrypt(data: data, progress: nil) // throws ProgressInterruption
         }
