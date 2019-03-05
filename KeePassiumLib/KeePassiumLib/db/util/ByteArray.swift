@@ -118,11 +118,26 @@ public class ByteArray: Eraseable {
     
     // MARK: ByteArray
     fileprivate var bytes: [UInt8]
-    
+    fileprivate var sha256cache: ByteArray?
+    fileprivate var sha512cache: ByteArray?
+
     public var isEmpty: Bool { return bytes.isEmpty }
     public var count: Int { return bytes.count }
-    public var sha256: ByteArray { return CryptoManager.sha256(of: self) }
-    public var sha512: ByteArray { return CryptoManager.sha512(of: self) }
+    
+    public var sha256: ByteArray {
+        if sha256cache == nil {
+            sha256cache = CryptoManager.sha256(of: self)
+        }
+        return sha256cache!
+    }
+    
+    public var sha512: ByteArray {
+        if sha512cache == nil {
+            sha512cache = CryptoManager.sha512(of: self)
+        }
+        return sha512cache!
+    }
+    
     public var asData: Data { return Data(bytes: self.bytes) }
     
     subscript (index: Int) -> UInt8 {
@@ -212,6 +227,11 @@ public class ByteArray: Eraseable {
         erase()
     }
     
+    fileprivate func invalidateHashCache() {
+        sha256cache = nil
+        sha512cache = nil
+    }
+    
     /// Returns a deep copy of this ByteArray
     public func clone() -> ByteArray {
         return ByteArray(bytes: self.bytes)
@@ -224,8 +244,8 @@ public class ByteArray: Eraseable {
         for i in 0..<count {
             bytes[i] = 0
         }
+        invalidateHashCache()
     }
-    
     
     /// Returns data contents as hex string. (From https://stackoverflow.com/a/40089462)
     public var asHexString: String {
@@ -258,6 +278,7 @@ public class ByteArray: Eraseable {
             bytes[i] = 0
         }
         bytes.removeLast(bytes.count - newCount)
+        invalidateHashCache()
     }
     
     /// Concatenates given arrays into one
@@ -276,12 +297,15 @@ public class ByteArray: Eraseable {
     
     public func append(_ value: UInt8) {
         bytes.append(value)
+        invalidateHashCache()
     }
     public func append(bytes: Array<UInt8>) {
         self.bytes.append(contentsOf: bytes)
+        invalidateHashCache()
     }
     public func append(_ another: ByteArray) {
         self.bytes.append(contentsOf: another.bytes)
+        invalidateHashCache()
     }
     
     public func write(to url: URL, options: Data.WritingOptions) throws {
@@ -339,6 +363,12 @@ public class ByteArray: Eraseable {
 extension ByteArray: Equatable {
     public static func ==(lhs: ByteArray, rhs: ByteArray) -> Bool {
         return lhs.bytes == rhs.bytes
+    }
+}
+
+extension ByteArray: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(bytes)
     }
 }
 
