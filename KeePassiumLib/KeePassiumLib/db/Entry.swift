@@ -69,6 +69,8 @@ public class Entry: Eraseable {
 
     public var fields: [EntryField]
     public var isSupportsExtraFields: Bool { get { return false } }
+    public var isSupportsMultipleAttachments: Bool { return false }
+
     public var title: String    {
         get{ return getField(with: EntryField.title)?.value ?? "" }
         set { setField(name: EntryField.title, value: newValue) }

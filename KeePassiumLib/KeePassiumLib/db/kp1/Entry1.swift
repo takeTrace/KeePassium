@@ -48,6 +48,8 @@ public class Entry1: Entry {
     
     // MARK: Entry1 stuff
     
+    override public var isSupportsMultipleAttachments: Bool { return false }
+    
     //TODO: test if this (get/set) works correctly
     override public var canExpire: Bool {
         get { return expiryTime == Date.kp1Never }

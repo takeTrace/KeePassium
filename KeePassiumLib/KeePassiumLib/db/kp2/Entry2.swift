@@ -265,6 +265,9 @@ public class Entry2: Entry {
     
     override public var isSupportsExtraFields: Bool { return true }
     
+    override public var isSupportsMultipleAttachments: Bool { return true }
+    
+    
     //MARK: Entry2 properties
     public var customIconUUID: UUID
     public var autoType: AutoType
