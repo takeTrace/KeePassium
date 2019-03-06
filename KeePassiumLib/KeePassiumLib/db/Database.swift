@@ -188,5 +188,15 @@ open class Database: Eraseable {
     public func delete(entry: Entry) {
         fatalError("Pure virtual method")
     }
+
+    /// Creates an attachment suitable for this database's entries.
+    ///
+    /// - Parameters:
+    ///   - name: attachment name (name of the original file)
+    ///   - data: uncompressed content
+    /// - Returns: version-appropriate instance of `Attachment`, possibly with compressed data.
+    public func makeAttachment(name: String, data: ByteArray) -> Attachment {
+        fatalError("Pure virtual method")
+    }
 }
 

@@ -400,29 +400,15 @@ public class Entry2: Entry {
         usageCount += 1
     }
     
-    /// Loads the file and attaches it to the entry.
-    /// Makes a backup of the initial entry state.
-    /// - Returns: true if successful, false otherwise.
-    override public func attachFile(filePath: String) -> Bool {
-        guard let newAtt =
-            Attachment2.createFromFile(filePath: filePath, allowCompression: true) else
-        {
-            return false
-        }
-        modified()
-        backupState()
-        addAttachment(attachment: newAtt)
-        return true
-    }
-    
-    
     /// Checks all attachments of this entry (possibly including historical versions),
     /// and returns a set of corresponding IDs.
     internal func getAllAttachmentIDs(includeHistory: Bool) -> Set<Binary2.ID> {
-        var binaryIDs = attachments.map { $0.id }
+        let attachments2 = attachments as! [Attachment2]
+        var binaryIDs = attachments2.map { $0.id }
         if includeHistory {
-            history.forEach { (entry) in
-                let historyAttachmentIDs = entry.attachments.map { $0.id }
+            history.forEach { (historyEntry) in
+                let historyAttachments = historyEntry.attachments as! [Attachment2]
+                let historyAttachmentIDs = historyAttachments.map { $0.id }
                 binaryIDs.append(contentsOf: historyAttachmentIDs)
             }
         }
@@ -486,7 +472,7 @@ public class Entry2: Entry {
                     database: database as! Database2,
                     streamCipher: streamCipher)
                     // throws Xml2.ParsingError, ProgressInterruption
-                addAttachment(attachment: att)
+                attachments.append(att)
                 Diag.verbose("Entry attachment loaded OK")
             case Xml2.times:
                 try loadTimes(xml: tag)

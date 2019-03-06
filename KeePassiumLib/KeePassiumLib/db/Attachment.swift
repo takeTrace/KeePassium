@@ -18,8 +18,6 @@ import Foundation
 
 /// A file attached to an entry
 public class Attachment: Eraseable {
-    weak var database: Database?
-    public internal(set) var id: Int
     public var name: String
     public internal(set) var isCompressed: Bool
     public internal(set) var data: ByteArray {
@@ -41,9 +39,7 @@ public class Attachment: Eraseable {
         return uncompressedSize
     }
     
-    internal init(database: Database?, id: Int, name: String, isCompressed: Bool, data: ByteArray) {
-        self.database = database
-        self.id = id
+    public init(name: String, isCompressed: Bool, data: ByteArray) {
         self.name = name
         self.isCompressed = isCompressed
         self.data = data.clone()
@@ -54,10 +50,8 @@ public class Attachment: Eraseable {
     }
     
     /// Creates a clone of this instance
-    internal func clone() -> Attachment {
+    public func clone() -> Attachment {
         return Attachment(
-            database: self.database,
-            id: self.id,
             name: self.name,
             isCompressed: self.isCompressed,
             data: self.data
@@ -65,21 +59,9 @@ public class Attachment: Eraseable {
     }
     
     public func erase() {
-        id = 0
         name.erase()
         isCompressed = false
         data.erase()
         uncompressedSize = -1
-    }
-    
-    /// Loads the given file and returns the corresponding `Attachment` instance.
-    /// - Parameter filePath: path to the file to attach
-    /// - Parameter allowCompression: whether to try to compress the attachment
-    /// (KP1 databases must set this to false)
-    /// - Returns: true if successful, false otherwise.
-    public static func createFromFile(filePath: String, allowCompression: Bool) -> Attachment? {
-        //TODO implement this
-        assertionFailure("implement this")
-        return nil
     }
 }

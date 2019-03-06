@@ -203,21 +203,6 @@ public class Entry: Eraseable {
         }
     }
 
-
-    /// Loads the given file and attaches it to the entry.
-    /// Makes a backup of the initial entry state.
-    /// Returns true if successful, false in case of any error.
-    ///
-    /// (A pure virtual method, must be overriden)
-    public func attachFile(filePath: String) -> Bool {
-        fatalError("Pure virtual method")
-    }
-    
-    /// Adds an attachment
-    public func addAttachment(attachment: Attachment) {
-        attachments.append(attachment)
-    }
-    
     /// Returns a new entry instance with the same property values.
     /// (A pure virtual method, must be overriden)
     public func clone() -> Entry {

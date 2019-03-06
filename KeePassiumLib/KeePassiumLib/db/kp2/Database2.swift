@@ -625,9 +625,10 @@ public class Database2: Database {
         
         // Process the entry itself
         for att in entry.attachments {
+            let att2 = att as! Attachment2
             if let binaryInNewPool = newPoolInverse[att.data] {
                 // the attachment is already in new binary pool, just update the ID
-                att.id = binaryInNewPool.id
+                att2.id = binaryInNewPool.id
                 continue
             }
             
@@ -651,7 +652,7 @@ public class Database2: Database {
                 )
             }
             newPoolInverse[newBinary.data] = newBinary
-            att.id = newID
+            att2.id = newID
         }
     }
     
@@ -1018,5 +1019,27 @@ public class Database2: Database {
             parentGroup.remove(entry: entry)
         }
         Diag.debug("Delete entry OK")
+    }
+    
+    /// Creates an attachment suitable for this database's entries.
+    ///
+    /// - Parameters:
+    ///   - name: attachment name (name of the original file)
+    ///   - data: uncompressed content
+    /// - Returns: version-appropriate instance of `Attachment`, possibly with compressed data.
+    override public func makeAttachment(name: String, data: ByteArray) -> Attachment {
+        let attemptCompression = header.isCompressed
+        
+        if attemptCompression {
+            do {
+                let compressedData = try data.gzipped()
+                return Attachment2(name: name, isCompressed: true, data: compressedData)
+            } catch {
+                Diag.warning("Failed to compress attachment data [message: \(error.localizedDescription)]")
+                //just log and fallback uncompressed attachment
+            }
+        }
+
+        return Attachment2(name: name, isCompressed: false, data: data)
     }
 }

@@ -19,15 +19,21 @@ import Foundation
 
 /// Attachment of a KP2 entry
 public class Attachment2: Attachment {
-    
-    override init(database: Database?, id: Int, name: String, isCompressed: Bool, data: ByteArray) {
-        super.init(database: database, id: id, name: name, isCompressed: isCompressed, data: data)
+    /// Reference to binary pool, is updated externally before saving.
+    public var id: Int
+
+    public convenience override init(name: String, isCompressed: Bool, data: ByteArray) {
+        self.init(id: -1, name: name, isCompressed: isCompressed, data: data)
+    }
+
+    public init(id: Int, name: String, isCompressed: Bool, data: ByteArray) {
+        self.id = id
+        super.init(name: name, isCompressed: isCompressed, data: data)
     }
     
     /// Creates a clone of the given instance
-    override func clone() -> Attachment {
+    override public func clone() -> Attachment {
         return Attachment2(
-            database: self.database,
             id: self.id,
             name: self.name,
             isCompressed: self.isCompressed,
@@ -74,7 +80,6 @@ public class Attachment2: Attachment {
             throw Xml2.ParsingError.malformedValue(tag: "Entry/Binary/Value", value: nil)
         }
         return Attachment2(
-            database: database,
             id: binary!.id,
             name: name!,
             isCompressed: binary!.isCompressed,

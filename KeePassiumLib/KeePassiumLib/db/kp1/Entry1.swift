@@ -256,12 +256,10 @@ public class Entry1: Entry {
                 }
                 if binaryDesc.isNotEmpty {
                     let att = Attachment(
-                        database: self.database,
-                        id: 0,
                         name: binaryDesc,
                         isCompressed: false,
                         data: binaryData)
-                    addAttachment(attachment: att)
+                    attachments.append(att)
                 }
                 return
             } // switch
@@ -344,31 +342,5 @@ public class Entry1: Entry {
     /// Returns entry's only attachment, if any.
     internal func getAttachment() -> Attachment? {
         return attachments.first
-    }
-    
-    /// Adds the `attachment` to the entry, if there is no attachment yet.
-    /// If there is already one, does nothing.
-    override public func addAttachment(attachment: Attachment) {
-        if self.attachments.isEmpty {
-            super.addAttachment(attachment: attachment)
-        }
-    }
-    
-    /// Loads the given file and attaches it to the entry.
-    /// Makes a backup of the initial entry state.
-    /// Replaces the existing attachment, if any.
-    /// Returns true if successful, false in case of any error.
-    override public func attachFile(filePath: String) -> Bool {
-        // Compressed attachments are not supported in V3
-        guard let att = Attachment.createFromFile(filePath: filePath, allowCompression: false) else {
-            Diag.warning("Failed to create attachment")
-            return false
-        }
-        
-        self.modified()
-        self.backupState()
-        attachments.removeAll()
-        addAttachment(attachment: att)
-        return true
-    }
+    }    
 }

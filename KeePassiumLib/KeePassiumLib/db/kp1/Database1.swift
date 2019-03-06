@@ -441,4 +441,14 @@ public class Database1: Database {
         backupGroup.moveEntry(entry: entry)
         Diag.info("Delete entry OK")
     }
+    
+    /// Creates an attachment suitable for this database's entries.
+    ///
+    /// - Parameters:
+    ///   - name: attachment name (name of the original file)
+    ///   - data: uncompressed content
+    /// - Returns: version-appropriate instance of `Attachment`, possibly with compressed data.
+    override public func makeAttachment(name: String, data: ByteArray) -> Attachment {
+        return Attachment(name: name, isCompressed: false, data: data)
+    }
 }
