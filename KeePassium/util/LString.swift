@@ -25,6 +25,7 @@ internal enum LString {
     public static let actionDismiss = NSLocalizedString("Dismiss", comment: "Action/button to close an error message.")
     public static let actionDiscard = NSLocalizedString("Discard", comment: "Action/button to discard any unsaved changes")
     public static let actionDelete = NSLocalizedString("Delete", comment: "Action/button to delete an item (destroys the item/file)")
+    public static let actionReplace = NSLocalizedString("Replace", comment: "Action/button to replace an item with another one")
     public static let actionEdit = NSLocalizedString("Edit", comment: "Action/button to edit an item")
     public static let actionRename = NSLocalizedString("Rename", comment: "Action/button to rename an item (such as database)")
     public static let actionDone = NSLocalizedString("Done", comment: "Action/button to finish (editing) and keep changes")

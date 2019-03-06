@@ -28,7 +28,6 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     private var editButton: UIBarButtonItem!
     private var isHistoryMode = false
     private var canAddFiles: Bool { return !isHistoryMode }
-    private var isModified = false // true iff there are unsaved changes
     private var databaseManagerNotifications: DatabaseManagerNotifications!
 
     static func make(with entry: Entry?, historyMode: Bool) -> ViewEntryFilesVC {
@@ -187,11 +186,7 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     // MARK: - Actions
     
     @objc func didPressEdit() {
-        let willBeEditing = !tableView.isEditing
-        tableView.setEditing(willBeEditing, animated: true)
-        if isEditing && isModified {
-            applyChangesAndSaveDatabase()
-        }
+        tableView.setEditing(!tableView.isEditing, animated: true)
     }
     
     // MARK: - Attachment management routines
@@ -242,66 +237,192 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     }
     
     private func didPressAddAttachment() {
-        //TODO
-        print("did press Add Attachment")
+        guard let entry = entry else { return }
+        
+        let capacityOK = entry.isSupportsMultipleAttachments || entry.attachments.isEmpty
+        if capacityOK {
+            // no limits on attachments, can just add one
+            addAttachment()
+            return
+        }
+        
+        // Ask permission to replace the existing attachment
+        let replacementAlert = UIAlertController(
+            title: NSLocalizedString("Replace existing attachment?", comment: "Confirmation message to replace an existing entry attachment with a new one."),
+            message: NSLocalizedString("This database supports only one attachment per entry, and there is already one. ", comment: "Explanation for replacing the only attachment of KeePass1 entry"),
+            preferredStyle: .alert)
+        let cancelAction = UIAlertAction(
+            title: LString.actionCancel,
+            style: .cancel,
+            handler: nil)
+        let replaceAction = UIAlertAction(
+            title: LString.actionReplace,
+            style: .destructive,
+            handler: { [weak self] _ in
+                Diag.debug("Will replace an existing attachment")
+                self?.addAttachment()
+            }
+        )
+        replacementAlert.addAction(cancelAction)
+        replacementAlert.addAction(replaceAction)
+        present(replacementAlert, animated: true, completion: nil)
     }
     
     private func didPressRenameAttachment(at indexPath: IndexPath) {
-        guard let entry = entry else { return }
         print("did press Rename Attachment")
+        //TODO
     }
     
     private func didPressDeleteAttachment(at indexPath: IndexPath) {
         guard let entry = entry else { return }
-        print("did press Delete Attachment")
         // already confirmed by two taps in UI
+        entry.backupState()
+        entry.modified()
         entry.attachments.remove(at: indexPath.row)
-        isModified = true
+        Diag.info("Attachment deleted OK")
+        
         tableView.deleteRows(at: [indexPath], with: .automatic)
+        applyChangesAndSaveDatabase()
     }
     
+    // MARK: - Attachment management
+    
+    /// Shows document picker to add an attachment (or replace KP1's existing one).
+    private func addAttachment() {
+        // once we are here, the user has confirmed replacing of the eventual KP1 attachment.
+        let picker = UIDocumentPickerViewController(
+            documentTypes: FileType.publicDataUTIs,
+            in: .import)
+        picker.modalPresentationStyle = .formSheet
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
+    }
+
     // MARK: - Database saving routines
     
-    var progressOverlay: ProgressOverlay?
     private func applyChangesAndSaveDatabase() {
         guard let entry = entry else { return }
         entry.modified()
         databaseManagerNotifications.startObserving()
         DatabaseManager.shared.startSavingDatabase()
     }
+
+    private var savingOverlay: ProgressOverlay?
     
     private func showSavingOverlay() {
-        //TODO
+        //FIXME: does not disable master VC on iPad
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        savingOverlay = ProgressOverlay.addTo(
+            view,
+            title: LString.databaseStatusSaving,
+            animated: true)
+        savingOverlay?.isCancellable = true
     }
     
     private func hideSavingOverlay() {
-        //TODO
+        guard savingOverlay != nil else { return }
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        savingOverlay?.dismiss(animated: true)
+        {
+            [weak self] (finished) in
+            guard let _self = self else { return }
+            _self.savingOverlay?.removeFromSuperview()
+            _self.savingOverlay = nil
+        }
     }
 }
 
+// MARK: - DatabaseManagerObserver
 extension ViewEntryFilesVC: DatabaseManagerObserver {
     
     func databaseManager(willSaveDatabase urlRef: URLReference) {
-        progressOverlay = ProgressOverlay.addTo(
-            self.view,
-            title: LString.databaseStatusSaving,
-            animated: true
-        )
+        showSavingOverlay()
     }
+    
     func databaseManager(progressDidChange progress: ProgressEx) {
-        //TODO
+        savingOverlay?.update(with: progress)
     }
-    func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
-        //TODO
-    }
-    func databaseManager(database urlRef: URLReference, savingError message: String, reason: String?) {
-        //TODO
-    }
+    
     func databaseManager(didSaveDatabase urlRef: URLReference) {
-        //TODO
+        databaseManagerNotifications.stopObserving()
+        hideSavingOverlay()
+        if let entry = entry {
+            EntryChangeNotifications.post(entryDidChange: entry)
+        }
+    }
+    
+    func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
+        databaseManagerNotifications.stopObserving()
+        hideSavingOverlay()
+    }
+
+    func databaseManager(
+        database urlRef: URLReference,
+        savingError message: String,
+        reason: String?)
+    {
+        databaseManagerNotifications.stopObserving()
+        hideSavingOverlay()
+        
+        let errorAlert = UIAlertController.make(
+            title: message,
+            message: reason,
+            cancelButtonTitle: LString.actionDismiss)
+        let showDetailsAction = UIAlertAction(title: LString.actionShowDetails, style: .default)
+        {
+            [weak self] _ in
+            let diagnosticsVC = ViewDiagnosticsVC.instantiateFromStoryboard()
+            self?.present(diagnosticsVC, animated: true, completion: nil)
+        }
+        errorAlert.addAction(showDetailsAction)
+        present(errorAlert, animated: true, completion: nil)
     }
 }
 
+// MARK: - UIDocumentPickerDelegate
+extension ViewEntryFilesVC: UIDocumentPickerDelegate {
+    func documentPicker(
+        _ controller: UIDocumentPickerViewController,
+        didPickDocumentsAt urls: [URL])
+    {
+        guard let url = urls.first else { return }
+        let doc = FileDocument(fileURL: url)
+        doc.open(
+            successHandler: { [weak self] in
+                self?.addAttachment(name: url.lastPathComponent, data: doc.data)
+            },
+            errorHandler: { [weak self] (error) in
+                Diag.error("Failed to open source file [message: \(error.localizedDescription)]")
+                let alert = UIAlertController.make(
+                    title: LString.titleError,
+                    message: error.localizedDescription,
+                    cancelButtonTitle: LString.actionDismiss)
+                self?.present(alert, animated: true, completion: nil)
+            }
+        )
+    }
+
+    private func addAttachment(name: String, data: ByteArray) {
+        guard let entry = entry, let database = entry.database else { return }
+        entry.backupState()
+        entry.modified()
+
+        let newAttachment = database.makeAttachment(name: name, data: data)
+        if !entry.isSupportsMultipleAttachments {
+            // already allowed by the user
+            entry.attachments.removeAll()
+        }
+        entry.attachments.append(newAttachment)
+        Diag.info("Attachment added OK")
+
+        refresh()
+        EntryChangeNotifications.post(entryDidChange: entry)
+        
+        applyChangesAndSaveDatabase()
+    }
+}
+
+// MARK: - UIDocumentInteractionControllerDelegate
 extension ViewEntryFilesVC: UIDocumentInteractionControllerDelegate {
     func documentInteractionControllerViewControllerForPreview(
         _ controller: UIDocumentInteractionController
