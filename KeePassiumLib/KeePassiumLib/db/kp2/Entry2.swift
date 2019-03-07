@@ -403,21 +403,6 @@ public class Entry2: Entry {
         usageCount += 1
     }
     
-    /// Checks all attachments of this entry (possibly including historical versions),
-    /// and returns a set of corresponding IDs.
-    internal func getAllAttachmentIDs(includeHistory: Bool) -> Set<Binary2.ID> {
-        let attachments2 = attachments as! [Attachment2]
-        var binaryIDs = attachments2.map { $0.id }
-        if includeHistory {
-            history.forEach { (historyEntry) in
-                let historyAttachments = historyEntry.attachments as! [Attachment2]
-                let historyAttachmentIDs = historyAttachments.map { $0.id }
-                binaryIDs.append(contentsOf: historyAttachmentIDs)
-            }
-        }
-        return Set(binaryIDs)
-    }
-    
     /// Search helper
     override public func matches(query: SearchQuery) -> Bool {
         if super.matches(query: query) {

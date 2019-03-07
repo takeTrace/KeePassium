@@ -499,45 +499,6 @@ public class Database2: Database {
         }
     }
     
-    /// Checks if any entries refer to non-existent binaries,
-    /// or any binaries not referenced from entries.
-    ///
-    /// - Throws: `FormatError.attachmentError`
-    func checkAttachmentsIntegrity() throws {
-        let knownIDs = Set(binaries.keys) // BinaryID of items in binary pool
-        
-        var usedIDs = Set<Binary2.ID>() // BinaryID referenced by entries
-        var allGroups = [Group]()
-        var allEntries = [Entry]()
-        root?.collectAllChildren(groups: &allGroups, entries: &allEntries)
-        allEntries.forEach { (entry) in
-            let entry2 = entry as! Entry2
-            usedIDs.formUnion(entry2.getAllAttachmentIDs(includeHistory: true))
-        }
-        
-        if knownIDs == usedIDs {
-            Diag.debug("Attachments integrity OK")
-            return
-        }
-        
-        if usedIDs.isStrictSubset(of: knownIDs) {
-            // some binaries are not referenced
-            Diag.warning("Some binary attachments are not referenced from any entry")
-            throw FormatError.attachmentError(reason:
-                NSLocalizedString(
-                    "Some attachments are not referenced from any entry",
-                    comment: "Error message: there is an orphaned file in database's binary pool"))
-        }
-        if knownIDs.isStrictSubset(of: usedIDs) {
-            // there are references to non-existent binaries
-            Diag.warning("Some entries refer to non-existent attachments")
-            throw FormatError.attachmentError(reason:
-                NSLocalizedString(
-                    "Some entries refer to non-existent attachments",
-                    comment: "Error message: entry's attachment does not exist in database's binary pool"))
-        }
-    }
-    
     /// Updates `cipherKey` field by transforming the given `compositeKey`.
     /// - Throws: CryptoError, ProgressInterruption
     func deriveMasterKey(compositeKey: SecureByteArray, cipher: DataCipher) throws {
@@ -581,6 +542,88 @@ public class Database2: Database {
         }
         Diag.verbose("RecycleBin group not found nor created.")
         return nil
+    }
+    
+    // MARK: - Attachment integrity check
+    
+    /// Checks if any entries refer to non-existent binaries,
+    /// or any binaries not referenced from entries.
+    func checkAttachmentsIntegrity(warnings: DatabaseLoadingWarnings) {
+        /// Helper function. Adds attachmentID-to-attachmentName pairs to `nameByID` dict,
+        /// for the given entry and its historical versions.
+        func mapAttachmentNamesByID(of entry: Entry2, nameByID: inout [Binary2.ID: String]) {
+            (entry.attachments as! [Attachment2]).forEach { (attachment) in
+                nameByID[attachment.id] = attachment.name
+            }
+            entry.history.forEach { (historyEntry) in
+                mapAttachmentNamesByID(of: historyEntry, nameByID: &nameByID)
+            }
+        }
+        
+        /// Helper function. Checks all attachments of the entry (including its historical versions),
+        /// and includes their IDs to the `ids` set.
+        func insertAllAttachmentIDs(of entry: Entry2, into ids: inout Set<Binary2.ID>) {
+            let attachments2 = entry.attachments as! [Attachment2]
+            ids.formUnion(attachments2.map { $0.id })
+            entry.history.forEach { (historyEntry) in
+                insertAllAttachmentIDs(of: historyEntry, into: &ids)
+            }
+        }
+        
+        var allGroups = [Group]()
+        var allEntries = [Entry]()
+        root?.collectAllChildren(groups: &allGroups, entries: &allEntries)
+        
+        var usedIDs = Set<Binary2.ID>() // BinaryID referenced by entries
+        allEntries.forEach { (entry) in
+            insertAllAttachmentIDs(of: entry as! Entry2, into: &usedIDs)
+        }
+        let knownIDs = Set(binaries.keys) // BinaryID of items in binary pool
+        
+        if knownIDs == usedIDs {
+            Diag.debug("Attachments integrity OK")
+            return
+        }
+        
+        let unusedBinaries = knownIDs.subtracting(usedIDs)
+        let missingBinaries = usedIDs.subtracting(knownIDs)
+        
+        if unusedBinaries.count > 0 {
+            // some binaries are not referenced
+            let lastUsedAppName = warnings.databaseGenerator ?? ""
+            let warningMessage = NSLocalizedString("The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (\(lastUsedAppName)). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.", comment: "A warning about unused attachments after loading the database.")
+            warnings.messages.append(warningMessage)
+            
+            let unusedIDs = unusedBinaries
+                .map { String($0) }
+                .joined(separator: ", ")
+            Diag.warning("Some binaries are not referenced from any entry [IDs: \(unusedIDs)]")
+            // no return, continue with the other check
+        }
+        
+        if missingBinaries.count > 0 {
+            // there are references to non-existent binaries
+            
+            // Let's collect the names of the missing attachments.
+            var attachmentNameByID = [Binary2.ID: String]()
+            allEntries.forEach { (entry) in
+                mapAttachmentNamesByID(of: entry as! Entry2, nameByID: &attachmentNameByID)
+            }
+            let attachmentNames = missingBinaries
+                .compactMap { attachmentNameByID[$0] } // get names
+                .map { "\"\($0)\"" } // add surrounding quotes
+                .joined(separator: "\n ") // merge into a string
+            
+            let lastUsedAppName = warnings.databaseGenerator ?? ""
+            let warningMessage = NSLocalizedString("Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (\(lastUsedAppName)). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: \(attachmentNames)", comment: "A warning about missing attachments after loading the database.")
+            warnings.messages.append(warningMessage)
+
+            // may not log attachment names, but IDs are generic enough
+            let missingIDs = missingBinaries
+                .map { String($0) }
+                .joined(separator: ", ")
+            Diag.warning("Some entries refer to non-existent binaries [IDs: \(missingIDs)]")
+        }
     }
     
     
