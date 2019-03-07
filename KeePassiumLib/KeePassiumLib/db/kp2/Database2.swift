@@ -626,7 +626,9 @@ public class Database2: Database {
         // Process the entry itself
         for att in entry.attachments {
             let att2 = att as! Attachment2
-            if let binaryInNewPool = newPoolInverse[att.data] {
+            if let binaryInNewPool = newPoolInverse[att2.data],
+                binaryInNewPool.isCompressed == att2.isCompressed
+            {
                 // the attachment is already in new binary pool, just update the ID
                 att2.id = binaryInNewPool.id
                 continue
@@ -634,7 +636,9 @@ public class Database2: Database {
             
             let newID = newPoolInverse.count
             let newBinary: Binary2
-            if let binaryInOldPool = oldPoolInverse[att.data] {
+            if let binaryInOldPool = oldPoolInverse[att2.data],
+                binaryInOldPool.isCompressed == att2.isCompressed
+            {
                 // this is an old attachment, to be inserted under a new ID
                 newBinary = Binary2(
                     id: newID,
@@ -646,8 +650,8 @@ public class Database2: Database {
                 // newly added attachment, was not in any pools
                 newBinary = Binary2(
                     id: newID,
-                    data: att.data,
-                    isCompressed: att.isCompressed,
+                    data: att2.data,
+                    isCompressed: att2.isCompressed,
                     isProtected: true
                 )
             }
