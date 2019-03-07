@@ -774,13 +774,13 @@ public class Database2: Database {
         let contentStream = ByteArray.makeOutputStream()
         contentStream.open()
         defer { contentStream.close() }
-        
-        try header.writeInner(to: contentStream) // throws ProgressInterruption
-        Diag.verbose("Header written OK")
-        contentStream.write(data: xmlData)
-        let contentData = contentStream.data!
 
         do {
+            try header.writeInner(to: contentStream) // throws `ProgressInterruption`, `HeaderError`
+            Diag.verbose("Header written OK")
+            contentStream.write(data: xmlData)
+            let contentData = contentStream.data!
+
             // compress
             var dataToEncrypt = contentData
             if header.isCompressed {
@@ -805,6 +805,9 @@ public class Database2: Database {
             // split to blocks and write them
             try writeAsBlocksV4(to: outStream, data: encData) // throws ProgressInterruption
             Diag.verbose("Blocks written OK")
+        } catch let error as Header2.HeaderError {
+            Diag.error("Header error [message: \(error.localizedDescription)]")
+            throw DatabaseError.saveError(reason: error.localizedDescription)
         } catch let error as GzipError {
             Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
             let errMsg = NSLocalizedString("Data compression error: \(error.localizedDescription)", comment: "Error message")
@@ -1083,7 +1086,7 @@ public class Database2: Database {
                 return Attachment2(name: name, isCompressed: true, data: compressedData)
             } catch {
                 Diag.warning("Failed to compress attachment data [message: \(error.localizedDescription)]")
-                //just log and fallback uncompressed attachment
+                //just log and fallback to uncompressed attachment
             }
         }
 

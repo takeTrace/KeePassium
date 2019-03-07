@@ -32,6 +32,7 @@ final class Header2: Eraseable {
         case unsupportedStreamCipher(id: UInt32)
         case unsupportedKDF(uuid: UUID)
         case unknownCompressionAlgorithm
+        case binaryUncompressionError(reason: String)
         case hashMismatch // header's hash does not match its after-header copy
         case hmacMismatch // header's HMAC does not match its after-header copy
         case corruptedField(fieldName: String)
@@ -51,6 +52,8 @@ final class Header2: Eraseable {
                 return NSLocalizedString("Unsupported KDF: \(uuid.uuidString)", comment: "Error message")
             case .unknownCompressionAlgorithm:
                 return NSLocalizedString("Unknown compression algorithm.", comment: "Error message when opening a database")
+            case .binaryUncompressionError(let reason):
+                return NSLocalizedString("Failed to uncompress attachment data: \(reason)", comment: "Error message when saving a database")
             case .corruptedField(let fieldName):
                 return NSLocalizedString("Header field \(fieldName) is corrupted.", comment: "Error message, with the name of problematic field")
             case .hashMismatch:
@@ -646,7 +649,7 @@ final class Header2: Eraseable {
     }
     
     /// Writes KP2 v4 inner header
-    /// Throws: ProgressInterruption
+    /// Throws: ProgressInterruption, HeaderError.binaryUncompressionError
     func writeInner(to stream: ByteArray.OutputStream) throws {
         assert(formatVersion == .v4)
         assert(protectedStreamKey != nil)
@@ -665,11 +668,23 @@ final class Header2: Eraseable {
         for binaryID in database.binaries.keys.sorted() {
             Diag.verbose("Writing a binary")
             let binary = database.binaries[binaryID]! // guaranteed to exist
+            
+            let data: ByteArray
+            if binary.isCompressed {
+                do {
+                    data = try binary.data.gunzipped() // throws `GzipError`
+                } catch {
+                    Diag.error("Failed to uncompress attachment data [message: \(error.localizedDescription)]")
+                    throw HeaderError.binaryUncompressionError(reason: error.localizedDescription)
+                }
+            } else {
+                data = binary.data
+            }
             stream.write(value: InnerFieldID.binary.rawValue) // fieldID: UInt8
-            stream.write(value: UInt32(1 + binary.data.count)) // (+1 for flag) fieldSize: UInt32,
+            stream.write(value: UInt32(1 + data.count)) // (+1 for flag) fieldSize: UInt32,
             stream.write(value: UInt8(binary.flags))
-            stream.write(data: binary.data) // in plain text; protected flag is just a recommendation
-            print("  binary: \(binary.data.count + 1) bytes")
+            stream.write(data: data) // in plain text; protected flag is just a recommendation
+            print("  binary: \(data.count + 1) bytes")
         }
         stream.write(value: InnerFieldID.end.rawValue) // terminator fieldID: UInt8
         stream.write(value: UInt32(0)) // terminator fieldSize: UInt32
