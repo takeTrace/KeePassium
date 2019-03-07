@@ -29,7 +29,8 @@ class ViewEntryVC: UIViewController, Refreshable {
     private weak var entry: Entry?
     private var isHistoryMode = false
     private var entryChangeNotifications: EntryChangeNotifications!
-    
+    private var progressOverlay: ProgressOverlay?
+
     /// Instantiates `ViewEntryVC` in normal or history-viewing mode.
     static func make(with entry: Entry, historyMode: Bool = false) -> UIViewController {
         let viewEntryVC = ViewEntryVC.instantiateFromStoryboard()
@@ -48,8 +49,11 @@ class ViewEntryVC: UIViewController, Refreshable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        pagesVC = ViewEntryPagesVC.make(with: entry!, historyMode: isHistoryMode)
+        guard let entry = entry else { return }
+        pagesVC = ViewEntryPagesVC.make(
+            with: entry,
+            historyMode: isHistoryMode,
+            progressViewHost: self)
         pagesVC.delegate = self
         addChild(pagesVC)
         pagesVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -127,6 +131,44 @@ extension ViewEntryVC: UIPageViewControllerDelegate {
             pageSelector.selectedSegmentIndex = pagesVC.currentPageIndex
             navigationItem.rightBarButtonItem =
                 pagesVC?.viewControllers?.first?.navigationItem.rightBarButtonItem
+        }
+    }
+}
+
+// MARK: - ProgressViewHost
+
+extension ViewEntryVC: ProgressViewHost {
+    func showProgressView(title: String, allowCancelling: Bool) {
+        //FIXME: should disable master VC on iPad
+        if progressOverlay != nil {
+            // something is already shown, just update it
+            progressOverlay?.title = title
+            progressOverlay?.isCancellable = allowCancelling
+            return
+        }
+        
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        progressOverlay = ProgressOverlay.addTo(
+            view,
+            title: title,
+            animated: true)
+        progressOverlay?.isCancellable = allowCancelling
+    }
+    
+    func updateProgressView(with progress: ProgressEx) {
+        progressOverlay?.update(with: progress)
+    }
+    
+    func hideProgressView() {
+        guard progressOverlay != nil else { return }
+        navigationItem.hidesBackButton = false
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        progressOverlay?.dismiss(animated: true) {
+            [weak self] (finished) in
+            guard let _self = self else { return }
+            _self.progressOverlay?.removeFromSuperview()
+            _self.progressOverlay = nil
         }
     }
 }

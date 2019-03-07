@@ -29,11 +29,17 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     private var isHistoryMode = false
     private var canAddFiles: Bool { return !isHistoryMode }
     private var databaseManagerNotifications: DatabaseManagerNotifications!
+    private var progressViewHost: ProgressViewHost?
 
-    static func make(with entry: Entry?, historyMode: Bool) -> ViewEntryFilesVC {
+    static func make(
+        with entry: Entry?,
+        historyMode: Bool,
+        progressViewHost: ProgressViewHost?
+    ) -> ViewEntryFilesVC {
         let viewEntryFilesVC = ViewEntryFilesVC.instantiateFromStoryboard()
         viewEntryFilesVC.entry = entry
         viewEntryFilesVC.isHistoryMode = historyMode
+        viewEntryFilesVC.progressViewHost = progressViewHost
         return viewEntryFilesVC
     }
     
@@ -281,7 +287,12 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
         entry.attachments.remove(at: indexPath.row)
         Diag.info("Attachment deleted OK")
         
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+        if entry.attachments.isEmpty {
+            //replace deleted file with a "Nothing here" cell
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else {
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
         applyChangesAndSaveDatabase()
     }
     
@@ -306,46 +317,24 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
         databaseManagerNotifications.startObserving()
         DatabaseManager.shared.startSavingDatabase()
     }
-
-    private var savingOverlay: ProgressOverlay?
-    
-    private func showSavingOverlay() {
-        //FIXME: does not disable master VC on iPad
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        savingOverlay = ProgressOverlay.addTo(
-            view,
-            title: LString.databaseStatusSaving,
-            animated: true)
-        savingOverlay?.isCancellable = true
-    }
-    
-    private func hideSavingOverlay() {
-        guard savingOverlay != nil else { return }
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        savingOverlay?.dismiss(animated: true)
-        {
-            [weak self] (finished) in
-            guard let _self = self else { return }
-            _self.savingOverlay?.removeFromSuperview()
-            _self.savingOverlay = nil
-        }
-    }
 }
 
 // MARK: - DatabaseManagerObserver
 extension ViewEntryFilesVC: DatabaseManagerObserver {
     
     func databaseManager(willSaveDatabase urlRef: URLReference) {
-        showSavingOverlay()
+        progressViewHost?.showProgressView(
+            title: LString.databaseStatusSaving,
+            allowCancelling: true)
     }
     
     func databaseManager(progressDidChange progress: ProgressEx) {
-        savingOverlay?.update(with: progress)
+        progressViewHost?.updateProgressView(with: progress)
     }
     
     func databaseManager(didSaveDatabase urlRef: URLReference) {
         databaseManagerNotifications.stopObserving()
-        hideSavingOverlay()
+        progressViewHost?.hideProgressView()
         if let entry = entry {
             EntryChangeNotifications.post(entryDidChange: entry)
         }
@@ -353,7 +342,7 @@ extension ViewEntryFilesVC: DatabaseManagerObserver {
     
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         databaseManagerNotifications.stopObserving()
-        hideSavingOverlay()
+        progressViewHost?.hideProgressView()
     }
 
     func databaseManager(
@@ -362,7 +351,7 @@ extension ViewEntryFilesVC: DatabaseManagerObserver {
         reason: String?)
     {
         databaseManagerNotifications.stopObserving()
-        hideSavingOverlay()
+        progressViewHost?.hideProgressView()
         
         let errorAlert = UIAlertController.make(
             title: message,
@@ -386,13 +375,21 @@ extension ViewEntryFilesVC: UIDocumentPickerDelegate {
         didPickDocumentsAt urls: [URL])
     {
         guard let url = urls.first else { return }
+        
+        // show progress early to avoid staring at an empty screen, in case loading is slow.
+        progressViewHost?.showProgressView(
+            title: NSLocalizedString("Loading attachment file", comment: "Status message: loading file to be attached to an entry"),
+            allowCancelling: false)
+        
         let doc = FileDocument(fileURL: url)
         doc.open(
             successHandler: { [weak self] in
+                // Keeping the progress view shown, will need it for DB saving
                 self?.addAttachment(name: url.lastPathComponent, data: doc.data)
             },
             errorHandler: { [weak self] (error) in
                 Diag.error("Failed to open source file [message: \(error.localizedDescription)]")
+                self?.progressViewHost?.hideProgressView() // won't need it anymore
                 let alert = UIAlertController.make(
                     title: LString.titleError,
                     message: error.localizedDescription,
@@ -415,7 +412,7 @@ extension ViewEntryFilesVC: UIDocumentPickerDelegate {
         entry.attachments.append(newAttachment)
         Diag.info("Attachment added OK")
 
-        refresh()
+        tableView.reloadSections([0], with: .automatic) // animated refresh
         EntryChangeNotifications.post(entryDidChange: entry)
         
         applyChangesAndSaveDatabase()

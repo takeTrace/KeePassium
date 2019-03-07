@@ -22,11 +22,17 @@ class ViewEntryPagesVC: UIPageViewController {
     private var pages = [UIViewController]()
     private weak var entry: Entry?
     private var isHistoryMode = false
+    private weak var progressViewHost: ProgressViewHost?
     
-    internal static func make(with entry: Entry, historyMode: Bool = false) -> ViewEntryPagesVC {
+    internal static func make(
+        with entry: Entry,
+        historyMode: Bool = false,
+        progressViewHost: ProgressViewHost?
+    ) -> ViewEntryPagesVC {
         let vc = ViewEntryPagesVC.instantiateFromStoryboard()
         vc.entry = entry
         vc.isHistoryMode = historyMode
+        vc.progressViewHost = progressViewHost
         return vc
     }
     
@@ -34,7 +40,10 @@ class ViewEntryPagesVC: UIPageViewController {
         super.viewDidLoad()
         dataSource = self
         pages.append(ViewEntryFieldsVC.make(with: entry, historyMode: isHistoryMode))
-        pages.append(ViewEntryFilesVC.make(with: entry, historyMode: isHistoryMode))
+        pages.append(ViewEntryFilesVC.make(
+            with: entry,
+            historyMode: isHistoryMode,
+            progressViewHost: progressViewHost))
         pages.append(ViewEntryHistoryVC.make(with: entry, historyMode: isHistoryMode))
         setViewControllers([pages.first!], direction: .forward, animated: true, completion: nil)
     }
