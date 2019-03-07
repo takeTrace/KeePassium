@@ -181,7 +181,11 @@ final class Meta2: Eraseable {
     }
     
     /// - Throws: Xml2.ParsingError, ProgressInterruption
-    func load(xml: AEXMLElement, streamCipher: StreamCipher) throws  {
+    func load(
+        xml: AEXMLElement,
+        streamCipher: StreamCipher,
+        warnings: DatabaseLoadingWarnings
+    ) throws {
         assert(xml.name == Xml2.meta)
         Diag.verbose("Loading XML: meta")
         erase()
@@ -191,6 +195,7 @@ final class Meta2: Eraseable {
             switch tag.name {
             case Xml2.generator:
                 self.generator = tag.value ?? ""
+                warnings.databaseGenerator = tag.value // can be nil
                 Diag.info("Database was last edited by: \(generator)")
             case Xml2.settingsChanged: // v4 only
                 guard formatVersion == .v4 else {

@@ -65,6 +65,20 @@ public struct SearchQuery {
     }
 }
 
+public class DatabaseLoadingWarnings {
+    /// Name of the app that has written the database file
+    public internal(set) var databaseGenerator: String?
+    /// Human-readable warning messages, if any
+    public internal(set) var messages: [String]
+    
+    public var isEmpty: Bool { return messages.isEmpty }
+    
+    internal init() {
+        databaseGenerator = nil
+        messages = []
+    }
+}
+
 public protocol DatabaseProgressDelegate {
     func databaseProgressChanged(percent: Int)
 }
@@ -118,10 +132,18 @@ open class Database: Eraseable {
     
     /// Tries to decrypt the given DB with the given composite master key.
     ///
-    /// (Pure virtual method, must be overriden)
-    ///
+    /// - Parameters:
+    ///   - dbFileData: content of the database file
+    ///   - compositeKey: pre-built composite key
+    ///   - warnings: will contain messages about database issues, that are not-blocking
+    ///               (loading can continue), but might lead to loss of data.
+    ///               For example, orphaned attachments in KP2 binary pool.
     /// - Throws: `DatabaseError`, `ProgressInterruption`
-    public func load(dbFileData: ByteArray, compositeKey: SecureByteArray) throws {
+    public func load(
+        dbFileData: ByteArray,
+        compositeKey: SecureByteArray,
+        warnings: DatabaseLoadingWarnings
+    ) throws {
         fatalError("Pure virtual method")
     }
     

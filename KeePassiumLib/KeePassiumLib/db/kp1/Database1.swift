@@ -134,7 +134,11 @@ public class Database1: Database {
     
     /// Decrypts DB data using the given compositeKey.
     /// - Throws: `DatabaseError.loadError`, `DatabaseError.invalidKey`, `ProgressInterruption`
-    override public func load(dbFileData: ByteArray, compositeKey: SecureByteArray) throws {
+    override public func load(
+        dbFileData: ByteArray,
+        compositeKey: SecureByteArray,
+        warnings: DatabaseLoadingWarnings
+    ) throws {
         Diag.info("Loading KP1 database")
         progress.completedUnitCount = 0
         progress.totalUnitCount = ProgressSteps.all

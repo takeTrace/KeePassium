@@ -26,7 +26,10 @@ public protocol DatabaseManagerObserver: class {
     /// Called before DB unlocking begins.
     func databaseManager(willLoadDatabase urlRef: URLReference)
     /// Called once the DB has been successfully loaded.
-    func databaseManager(didLoadDatabase urlRef: URLReference)
+    /// `warnings` may contain some important notifications
+    /// related to non-blocking issues with the database
+    /// (such as orphaned attachments).
+    func databaseManager(didLoadDatabase urlRef: URLReference, warnings: DatabaseLoadingWarnings)
     /// Error while loading or decrypting the DB.
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?)
     /// Password/key are invalid (something missing or decrypted checksum mismatch).
@@ -53,7 +56,7 @@ public extension DatabaseManagerObserver {
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {}
     func databaseManager(progressDidChange progress: ProgressEx) {}
     func databaseManager(willLoadDatabase urlRef: URLReference) {}
-    func databaseManager(didLoadDatabase urlRef: URLReference) {}
+    func databaseManager(didLoadDatabase urlRef: URLReference, warnings: DatabaseLoadingWarnings) {}
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?) {}
     func databaseManager(database urlRef: URLReference, invalidMasterKey message: String) {}
     func databaseManager(willSaveDatabase urlRef: URLReference) {}
@@ -152,8 +155,15 @@ public class DatabaseManagerNotifications {
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'didLoadDatabase': URL ref is missing")
         }
+        
+        guard let warnings = userInfo[DatabaseManager.Notifications.userInfoWarningsKey]
+            as? DatabaseLoadingWarnings else
+        {
+            fatalError("DBM notification 'didLoadDatabase': warnings array is missing")
+        }
+        
         DispatchQueue.main.async {
-            self.observer?.databaseManager(didLoadDatabase: urlRef)
+            self.observer?.databaseManager(didLoadDatabase: urlRef, warnings: warnings)
         }
     }
     

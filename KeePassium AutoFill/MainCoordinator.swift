@@ -331,8 +331,12 @@ extension MainCoordinator: DatabaseManagerObserver {
         databaseUnlockerVC.showErrorMessage(text: errorText)
     }
     
-    func databaseManager(didLoadDatabase urlRef: URLReference) {
+    func databaseManager(didLoadDatabase urlRef: URLReference, warnings: DatabaseLoadingWarnings) {
         // not hiding progress overlay, for nicer transition
+        
+        // AutoFill is read-only
+        // => there is no risk of deleting anything problematic on save
+        // => there is no need to show loading warnings.
         
         if Settings.current.isRememberDatabaseKey {
             do {

@@ -34,8 +34,6 @@ public class Database2: Database {
         case negativeBlockSize(blockIndex: Int)
         /// Problem with internal(decrypted) data structure
         case parsingError(reason: String)
-        /// A binary attachment that is never referenced or is missing.
-        case attachmentError(reason: String)
         /// Problem while reading hashed blocks stream
         case blockIDMismatch
         case blockHashMismatch(blockIndex: Int) // for v3
@@ -50,8 +48,6 @@ public class Database2: Database {
                 return NSLocalizedString("Corrupted database file (negative block #\(blockIndex) size)", comment: "Error message")
             case .parsingError(let reason):
                 return NSLocalizedString("Cannot parse database. \(reason)", comment: "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).")
-            case .attachmentError(let reason):
-                return NSLocalizedString("Cannot process one of the attachments. \(reason)", comment: "Error message: problem with a file attached to an entry.")
             case .blockIDMismatch:
                 return NSLocalizedString("Unexpected block ID.", comment: "Error message: wrong ID of a data block")
             case .blockHashMismatch(let blockIndex):
@@ -125,7 +121,11 @@ public class Database2: Database {
     
     /// Decrypts DB data using the given compositeKey.
     /// - Throws: DatabaseError.loadError, DatabaseError.invalidKey, ProgressInterruption
-    override public func load(dbFileData: ByteArray, compositeKey: SecureByteArray) throws {
+    override public func load(
+        dbFileData: ByteArray,
+        compositeKey: SecureByteArray,
+        warnings: DatabaseLoadingWarnings
+    ) throws {
         Diag.info("Loading KP2 database")
         progress.completedUnitCount = 0
         progress.totalUnitCount = ProgressSteps.all
@@ -183,12 +183,12 @@ public class Database2: Database {
             }
             
             // parse XML
-            try load(xmlData: xmlData) // throws FormatError.parsingError, ProgressInterruption
+            try load(xmlData: xmlData, warnings: warnings) // throws FormatError.parsingError, ProgressInterruption
             
             propagateDeletedStatus()
             
-            // ensure there are no missing or redundant (unreferenced) binaries
-            try checkAttachmentsIntegrity() // throws FormatError.attachmentError
+            // check if there are any missing or redundant (unreferenced) binaries
+            checkAttachmentsIntegrity(warnings: warnings)
             
             Diag.debug("Content loaded OK")
             Diag.verbose("== DB2 progress CP5: \(progress.completedUnitCount)")
@@ -400,7 +400,7 @@ public class Database2: Database {
 
     /// Parses kp2 database XML content.
     /// - Throws: FormatError.parsingError, ProgressInterruption
-    func load(xmlData: ByteArray) throws {
+    func load(xmlData: ByteArray, warnings: DatabaseLoadingWarnings) throws {
         var parsingOptions = AEXMLOptions()
         parsingOptions.documentHeader.standalone = "yes"
         parsingOptions.parserSettings.shouldTrimWhitespace = false
@@ -422,7 +422,7 @@ public class Database2: Database {
             for tag in xmlDoc.root.children {
                 switch tag.name {
                 case Xml2.meta:
-                    try meta.load(xml: tag, streamCipher: header.streamCipher)
+                    try meta.load(xml: tag, streamCipher: header.streamCipher, warnings: warnings)
                         // throws Xml2.ParsingError, ProgressInterruption
                     
                     // In v3, meta contains a ground-truth copy of header hash, make sure they match.

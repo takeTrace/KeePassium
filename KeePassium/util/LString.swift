@@ -34,6 +34,7 @@ internal enum LString {
     public static let actionDeleteFile = NSLocalizedString("Delete", comment: "Action/button to delete a file")
     public static let actionRemoveFile = NSLocalizedString("Remove", comment: "Action/button to remove file from the app (the file remains, but the app forgets about it)")
     public static let actionUnlock = NSLocalizedString("Unlock", comment: "Action/button to unlock the App Lock with passcode")
+    public static let actionContactUs = NSLocalizedString("Contact Us", comment: "Action/button to write an email to support")
     
 
     // Error/warning messages

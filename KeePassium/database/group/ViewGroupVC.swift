@@ -74,14 +74,17 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         return searchController.isActive && (searchController.searchBar.text?.isNotEmpty ?? false)
     }
     
+    private var loadingWarnings: DatabaseLoadingWarnings?
+    
     private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var groupChangeNotifications: GroupChangeNotifications!
     private var entryChangeNotifications: EntryChangeNotifications!
     private var settingsNotifications: SettingsNotifications!
 
-    static func make(group: Group?) -> ViewGroupVC {
+    static func make(group: Group?, loadingWarnings: DatabaseLoadingWarnings?=nil) -> ViewGroupVC {
         let viewGroupVC = ViewGroupVC.instantiateFromStoryboard()
         viewGroupVC.group = group
+        viewGroupVC.loadingWarnings = loadingWarnings
         return viewGroupVC
     }
     
@@ -124,6 +127,11 @@ open class ViewGroupVC: UITableViewController, Refreshable {
                 self.searchController.searchBar.becomeFirstResponder()
             }
         }
+        
+        if let warnings = loadingWarnings, !warnings.isEmpty {
+            showLoadingWarnings(warnings)
+            loadingWarnings = nil // won't need it anymore
+        }
     }
     
     open override func didMove(toParent parent: UIViewController?) {
@@ -139,13 +147,49 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         super.didMove(toParent: parent)
     }
 
-
     override open func viewDidDisappear(_ animated: Bool) {
         settingsNotifications.stopObserving()
         groupChangeNotifications.stopObserving()
         entryChangeNotifications.stopObserving()
         
         super.viewDidDisappear(animated)
+    }
+    
+    private func showLoadingWarnings(_ warnings: DatabaseLoadingWarnings) {
+        guard !warnings.isEmpty else { return }
+        
+        let lastUsedAppName = warnings.databaseGenerator ?? ""
+        let footerLine = NSLocalizedString("Database was last edited by: \(lastUsedAppName)", comment: "Provides the name of the app that was last to write/create the database file.")
+        let message = warnings.messages.joined(separator: "\n\n") + "\n\n" + footerLine
+        
+        let alert = UIAlertController(
+            title: NSLocalizedString("Your database is ready, but there was an issue.", comment: "Title of a warning message"),
+            message: message,
+            preferredStyle: .alert)
+        let continueAction = UIAlertAction(
+            title: NSLocalizedString("Ignore and Continue", comment: "Action: ignore warnings and proceed to work with the database"),
+            style: .destructive,
+            handler: nil)
+        let contactUsAction = UIAlertAction(
+            title: LString.actionContactUs,
+            style: .default,
+            handler: { (action) in
+                SupportEmailComposer.show(includeDiagnostics: true, completion: { (isSent) in
+                    alert.dismiss(animated: false, completion: nil)
+                })
+            }
+        )
+        let lockDatabaseAction = UIAlertAction(
+            title: NSLocalizedString("Close Database", comment: "Action: lock database"),
+            style: .cancel,
+            handler: { (action) in
+                DatabaseManager.shared.closeDatabase(clearStoredKey: true)
+            }
+        )
+        alert.addAction(continueAction)
+        alert.addAction(lockDatabaseAction)
+        alert.addAction(contactUsAction)
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Searching

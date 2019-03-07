@@ -327,6 +327,7 @@ public class DatabaseManager {
         static let userInfoURLRefKey = "urlRef"
         static let userInfoErrorMessageKey = "errorMessage"
         static let userInfoErrorReasonKey = "errorReason"
+        static let userInfoWarningsKey = "warningMessages"
     }
     
     fileprivate func notifyDatabaseWillLoad(database urlRef: URLReference) {
@@ -336,11 +337,18 @@ public class DatabaseManager {
             userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
     
-    fileprivate func notifyDatabaseDidLoad(database urlRef: URLReference) {
+    fileprivate func notifyDatabaseDidLoad(
+        database urlRef: URLReference,
+        warnings: DatabaseLoadingWarnings
+    ) {
         NotificationCenter.default.post(
             name: Notifications.didLoadDatabase,
             object: self,
-            userInfo: [Notifications.userInfoURLRefKey: urlRef])
+            userInfo: [
+                Notifications.userInfoURLRefKey: urlRef,
+                Notifications.userInfoWarningsKey: warnings
+            ]
+        )
     }
     
     fileprivate func notifyDatabaseLoadError(
@@ -465,6 +473,8 @@ fileprivate class DatabaseLoader {
     private let keyFileRef: URLReference?
     private let progress: ProgressEx
     private unowned var notifier: DatabaseManager
+    /// Warning messages related to DB loading, that should be shown to the user.
+    private let warnings: DatabaseLoadingWarnings
     private let completion: ((DatabaseDocument, URLReference) -> Void)
     
     init(
@@ -481,6 +491,7 @@ fileprivate class DatabaseLoader {
         self.keyFileRef = keyFileRef
         self.progress = progress
         self.completion = completion
+        self.warnings = DatabaseLoadingWarnings()
         self.notifier = DatabaseManager.shared
     }
     
@@ -650,12 +661,16 @@ fileprivate class DatabaseLoader {
         do {
             progress.addChild(db.initProgress(), withPendingUnitCount: ProgressSteps.decryptDatabase)
             Diag.info("Loading database")
-            try db.load(dbFileData: dbDoc.encryptedData, compositeKey: compositeKey)
+            try db.load(
+                dbFileData: dbDoc.encryptedData,
+                compositeKey: compositeKey,
+                warnings: warnings
+            )
                 // throws DatabaseError, ProgressInterruption
             Diag.info("Database loaded OK")
             progress.localizedDescription = NSLocalizedString("Done", comment: "Status message: operation completed")
             completion(dbDoc, dbRef)
-            notifier.notifyDatabaseDidLoad(database: dbRef)
+            notifier.notifyDatabaseDidLoad(database: dbRef, warnings: warnings)
             endBackgroundTask()
         } catch let error as DatabaseError {
             // first, clean up

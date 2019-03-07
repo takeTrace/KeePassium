@@ -313,12 +313,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     }
     
     /// Called when the DB is successfully loaded, shows it in ViewGroupVC
-    func showDatabaseRoot() {
+    func showDatabaseRoot(loadingWarnings: DatabaseLoadingWarnings) {
         guard let database = DatabaseManager.shared.database else {
             assertionFailure()
             return
         }
-        let viewGroupVC = ViewGroupVC.make(group: database.root)
+        let viewGroupVC = ViewGroupVC.make(group: database.root, loadingWarnings: loadingWarnings)
         guard let leftNavController =
             splitViewController?.viewControllers.first as? UINavigationController else
         {
@@ -414,7 +414,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
         showErrorMessage(message)
     }
     
-    func databaseManager(didLoadDatabase urlRef: URLReference) {
+    func databaseManager(didLoadDatabase urlRef: URLReference, warnings: DatabaseLoadingWarnings) {
         databaseManagerNotifications.stopObserving()
         hideProgressOverlay()
         
@@ -431,7 +431,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
                 present(errorAlert, animated: true, completion: nil)
             }
         }
-        showDatabaseRoot()
+        showDatabaseRoot(loadingWarnings: warnings)
     }
 
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?) {
