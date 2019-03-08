@@ -335,6 +335,7 @@ final class Meta2: Eraseable {
         backupGroup.name = NSLocalizedString("Recycle Bin", comment: "Name of a group which contains deleted entries")
         backupGroup.iconID = IconID.trashBin
         backupGroup.isDeleted = true
+        backupGroup.isAutoTypeEnabled = false
         backupGroup.isSearchingEnabled = false
 
         self.recycleBinGroupUUID = backupGroup.uuid
