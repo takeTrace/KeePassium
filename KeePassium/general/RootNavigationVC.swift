@@ -69,9 +69,10 @@ class RootNavigationVC: UINavigationController, UINavigationControllerDelegate {
 
         guard let targetVC = popToVC else { return }
         
-        if !(splitViewController!.isCollapsed) {
+        guard let splitVC = splitViewController else { fatalError() }
+        if !splitVC.isCollapsed {
             // Cover the right pane during the transition.
-            splitViewController?.showDetailViewController(PlaceholderVC.make(), sender: self)
+            splitVC.showDetailViewController(PlaceholderVC.make(), sender: self)
         }
         
         // Now that we know what to dismiss and what to pop, do that in sequence.

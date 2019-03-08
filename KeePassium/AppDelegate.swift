@@ -94,15 +94,16 @@ extension AppDelegate: WatchdogDelegate {
     private func showAppCoverScreen()  {
         guard appCoverWindow == nil else { return }
         
-        appCoverWindow = UIWindow(frame: UIScreen.main.bounds)
-        appCoverWindow!.screen = UIScreen.main
-        appCoverWindow!.windowLevel = UIWindow.Level.alert
+        let _appCoverWindow = UIWindow(frame: UIScreen.main.bounds)
+        _appCoverWindow.screen = UIScreen.main
+        _appCoverWindow.windowLevel = UIWindow.Level.alert
         let coverVC = AppCoverVC.make()
         
         UIView.performWithoutAnimation {
-            appCoverWindow!.rootViewController = coverVC
-            appCoverWindow!.makeKeyAndVisible()
+            _appCoverWindow.rootViewController = coverVC
+            _appCoverWindow.makeKeyAndVisible()
         }
+        self.appCoverWindow = _appCoverWindow
         print("App cover shown")
         
         coverVC.view.snapshotView(afterScreenUpdates: true)
@@ -143,13 +144,15 @@ extension AppDelegate: WatchdogDelegate {
         passcodeInputVC.mode = .verification
         passcodeInputVC.isCancelAllowed = false // for the main app
         passcodeInputVC.isBiometricsAllowed = canUseBiometrics
-        appLockWindow = UIWindow(frame: UIScreen.main.bounds)
-        appLockWindow!.screen = UIScreen.main
-        appLockWindow!.windowLevel = UIWindow.Level.alert
+        
+        let _appLockWindow = UIWindow(frame: UIScreen.main.bounds)
+        _appLockWindow.screen = UIScreen.main
+        _appLockWindow.windowLevel = UIWindow.Level.alert
         UIView.performWithoutAnimation {
-            appLockWindow!.rootViewController = passcodeInputVC
-            appLockWindow!.makeKeyAndVisible()
+            _appLockWindow.rootViewController = passcodeInputVC
+            _appLockWindow.makeKeyAndVisible()
         }
+        self.appLockWindow = _appLockWindow
         print("passcode request shown")
     }
     

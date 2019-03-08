@@ -28,7 +28,11 @@ extension UUID {
     // Returns a byte-array representation of this UUID
     internal var data: ByteArray {
         var bytes = Array<UInt8>(repeating: 0, count: UUID.byteWidth)
-        NSUUID(uuidString: self.uuidString)!.getBytes(&bytes)
+        guard let nsuuid = NSUUID(uuidString: self.uuidString) else {
+            // should not fail, since uuidString must always be well-formed
+            fatalError()
+        }
+        nsuuid.getBytes(&bytes)
         return ByteArray(bytes: bytes)
     }
 

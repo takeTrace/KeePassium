@@ -473,24 +473,26 @@ extension MainCoordinator: WatchdogDelegate {
     func showAppLock(_ sender: Watchdog) {
         guard !isAppLockVisible else { return }
         let shouldUseBiometrics = isBiometricAuthAvailable()
-        passcodeInputController = PasscodeInputVC.instantiateFromStoryboard()
-        passcodeInputController!.delegate = self
-        passcodeInputController!.mode = .verification
-        passcodeInputController!.isCancelAllowed = true
-        passcodeInputController!.isBiometricsAllowed = shouldUseBiometrics
-        passcodeInputController!.modalTransitionStyle = .crossDissolve
+        
+        let passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
+        passcodeInputVC.delegate = self
+        passcodeInputVC.mode = .verification
+        passcodeInputVC.isCancelAllowed = true
+        passcodeInputVC.isBiometricsAllowed = shouldUseBiometrics
+        passcodeInputVC.modalTransitionStyle = .crossDissolve
         // Auto-appearing keyboard messes up the biometrics UI,
         // so don't show the keyboard if there will be biometrics.
-        passcodeInputController!.shouldActivateKeyboard = !shouldUseBiometrics
+        passcodeInputVC.shouldActivateKeyboard = !shouldUseBiometrics
         
         pageController.setViewControllers(
-            [passcodeInputController!],
+            [passcodeInputVC],
             direction: .reverse,
             animated: true,
             completion: { [weak self] (finished) in
                 self?.showBiometricAuth()
             }
         )
+        self.passcodeInputController = passcodeInputVC
         isPasscodeInputShown = true
     }
     

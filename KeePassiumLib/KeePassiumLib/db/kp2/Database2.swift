@@ -527,16 +527,23 @@ public class Database2: Database {
             return nil
         }
 
+        guard let root = root else {
+            Diag.warning("Tried to get RecycleBin group without the root one")
+            assertionFailure()
+            return nil
+        }
+        
         if meta.recycleBinGroupUUID != UUID.ZERO {
-            if let backupGroup = root!.findGroup(byUUID: meta.recycleBinGroupUUID) {
+            if let backupGroup = root.findGroup(byUUID: meta.recycleBinGroupUUID) {
                 Diag.verbose("RecycleBin group found")
                 return backupGroup
             }
         }
+        
         if createIfMissing {
             // no such group - create one
             let backupGroup = meta.createRecycleBinGroup()
-            root!.add(group: backupGroup)
+            root.add(group: backupGroup)
             Diag.verbose("RecycleBin group created")
             return backupGroup
         }

@@ -53,15 +53,13 @@ public class Attachment2: Attachment {
         Diag.verbose("Loading XML: entry attachment")
         var name: String?
         var binary: Binary2?
-        var binaryID: Int?
         for tag in xml.children {
             switch tag.name {
             case Xml2.key:
                 name = tag.value
             case Xml2.value:
                 let refString = tag.attributes[Xml2.ref]
-                binaryID = Int(refString)
-                guard let binaryID = binaryID else {
+                guard let binaryID = Int(refString) else {
                     Diag.error("Cannot parse Entry/Binary/Value/Ref as Int")
                     throw Xml2.ParsingError.malformedValue(
                         tag: "Entry/Binary/Value/Ref",
@@ -89,19 +87,19 @@ public class Attachment2: Attachment {
                 throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: "Entry/Binary/*")
             }
         }
-        guard name != nil else {
+        guard let _name = name else {
             Diag.error("Missing Entry/Binary/Name")
             throw Xml2.ParsingError.malformedValue(tag: "Entry/Binary/Name", value: nil)
         }
-        guard binaryID != nil else {
-            Diag.error("Missing Entry/Binary/Value/Ref")
+        guard let _binary = binary else {
+            Diag.error("Missing Entry/Binary/Value")
             throw Xml2.ParsingError.malformedValue(tag: "Entry/Binary/Value/Ref", value: nil)
         }
         return Attachment2(
-            id: binary!.id,
-            name: name!,
-            isCompressed: binary!.isCompressed,
-            data: binary!.data)
+            id: _binary.id,
+            name: _name,
+            isCompressed: _binary.isCompressed,
+            data: _binary.data)
     }
     
     internal func toXml() -> AEXMLElement {

@@ -75,8 +75,7 @@ public class FileKeeper {
     }
 
     private init() {
-        docDirURL = FileManager.default.urls(
-            for: .documentDirectory, in: .userDomainMask).first!
+        docDirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 
         print("\nDoc dir: \(docDirURL)\n")
         
@@ -116,8 +115,11 @@ public class FileKeeper {
     public func getLocation(for filePath: URL) -> URLReference.Location {
         let filePath = filePath.standardizedFileURL.deletingLastPathComponent().path
         for candidateLocation in URLReference.Location.allInternal {
-            let dirPath = getDirectory(for: candidateLocation)!.path
-            if filePath == dirPath {
+            guard let dirPath = getDirectory(for: candidateLocation) else {
+                assertionFailure()
+                continue
+            }
+            if filePath == dirPath.path {
                 return candidateLocation
             }
         }

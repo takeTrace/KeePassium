@@ -85,7 +85,13 @@ public class Database1: Database {
     func createNewGroupID() -> Group1ID {
         var groups = Array<Group>()
         var entries = Array<Entry>()
-        root!.collectAllChildren(groups: &groups, entries: &entries)
+        if let root = root {
+            root.collectAllChildren(groups: &groups, entries: &entries)
+        } else {
+            Diag.warning("Creating a new Group1ID for an empty database")
+            assertionFailure("Creating new Group1ID for an empty database")
+            // and continue with groups and entries empty
+        }
         
         var takenIDs = ContiguousArray<Int32>()
         takenIDs.reserveCapacity(groups.count)
@@ -108,13 +114,19 @@ public class Database1: Database {
     /// Returns the Backup group of this database
     /// (or creates one, if `createIfMissing` is true).
     override public func getBackupGroup(createIfMissing: Bool) -> Group? {
-        assert(root != nil)
+        guard let root = root else {
+            Diag.warning("Tried to get Backup group without the root one")
+            assertionFailure()
+            return nil
+        }
+        
         if backupGroup == nil && createIfMissing {
             // There's no backup group, let's make one
-            backupGroup = (root!.createGroup() as! Group1)
-            backupGroup!.name = Group1.backupGroupName
-            backupGroup!.iconID = Group1.backupGroupIconID
-            backupGroup!.isDeleted = true
+            let newBackupGroup = root.createGroup() as! Group1
+            newBackupGroup.name = Group1.backupGroupName
+            newBackupGroup.iconID = Group1.backupGroupIconID
+            newBackupGroup.isDeleted = true
+            backupGroup = newBackupGroup
         }
         return backupGroup
     }
@@ -306,13 +318,14 @@ public class Database1: Database {
         Diag.info("Saving KP1 database")
         let contentStream = ByteArray.makeOutputStream()
         contentStream.open()
+        guard let root = root else { fatalError("Tried to save without root group") }
         
         progress.completedUnitCount = 0
         progress.totalUnitCount = ProgressSteps.all
         do {
             var groups = Array<Group>()
             var entries = Array<Entry>()
-            root!.collectAllChildren(groups: &groups, entries: &entries)
+            root.collectAllChildren(groups: &groups, entries: &entries)
             Diag.info("Saving \(groups.count) groups and \(entries.count)+\(metaStreamEntries.count) entries")
             
             let packingProgress = ProgressEx()

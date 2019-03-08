@@ -119,12 +119,13 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
             }
         } else {
             // The user wants to enable App Lock, so we ask for passcode first
-            passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
-            passcodeInputVC!.delegate = self
-            passcodeInputVC!.mode = .setup
-            passcodeInputVC!.modalPresentationStyle = .formSheet
-            passcodeInputVC!.isCancelAllowed = true
-            present(passcodeInputVC!, animated: true, completion: nil)
+            let passcodeInputVC = PasscodeInputVC.instantiateFromStoryboard()
+            passcodeInputVC.delegate = self
+            passcodeInputVC.mode = .setup
+            passcodeInputVC.modalPresentationStyle = .formSheet
+            passcodeInputVC.isCancelAllowed = true
+            present(passcodeInputVC, animated: true, completion: nil)
+            self.passcodeInputVC = passcodeInputVC
         }
     }
     

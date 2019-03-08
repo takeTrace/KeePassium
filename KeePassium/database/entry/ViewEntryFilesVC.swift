@@ -198,7 +198,6 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     // MARK: - Attachment management routines
 
     fileprivate var exportController: UIDocumentInteractionController!
-    fileprivate var exportFileURL: TemporaryFileURL?
 
     private func didPressExportAttachment(_ att: Attachment, sourceCell: UITableViewCell) {
         // iOS can only share file URLs, so we save the attachment
@@ -215,12 +214,12 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
         }
         
         do {
-            exportFileURL = try TemporaryFileURL(fileName: fileName)
+            let exportFileURL = (try TemporaryFileURL(fileName: fileName)).url
                 // throws some FileManager error
             let uncompressedBytes = att.isCompressed ? try att.data.gunzipped() : att.data
                 // throws `GzipError`
-            try uncompressedBytes.write(to: exportFileURL!.url, options: [.completeFileProtection])
-            exportController.url = exportFileURL!.url
+            try uncompressedBytes.write(to: exportFileURL, options: [.completeFileProtection])
+            exportController.url = exportFileURL
             if let icon = exportController.icons.first {
                 sourceCell.imageView?.image = icon
             }

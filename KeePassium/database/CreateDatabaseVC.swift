@@ -67,9 +67,11 @@ class CreateDatabaseVC: UIViewController {
         }
         let fileName = url.absoluteString
         
+        let _templateFile: TemporaryFileURL
         do {
-            templateFile = try TemporaryFileURL(fileName: fileName)
-            try Data().write(to: templateFile!.url) //TODO write some real template instead
+            _templateFile = try TemporaryFileURL(fileName: fileName)
+            try Data().write(to: _templateFile.url) //TODO write some real template instead
+            self.templateFile = _templateFile
         } catch {
             Diag.error("Error creating temporary file [message: \(error.localizedDescription)]")
             let alert = UIAlertController.make(
@@ -79,7 +81,7 @@ class CreateDatabaseVC: UIViewController {
             return
         }
         
-        let picker = UIDocumentPickerViewController(url: templateFile!.url, in: .exportToService)
+        let picker = UIDocumentPickerViewController(url: _templateFile.url, in: .exportToService)
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
         present(picker, animated: true, completion: nil)

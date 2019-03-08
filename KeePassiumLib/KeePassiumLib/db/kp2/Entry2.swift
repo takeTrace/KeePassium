@@ -91,20 +91,20 @@ public class EntryField2: EntryField {
         // Problematic states to check:
         // - key or value (or both) is nil
         // - empty key with non-empty value
-        guard key != nil else {
+        guard let _key = key else {
             Diag.error("Missing Entry/String/Key")
             throw Xml2.ParsingError.malformedValue(tag: "Entry/String/Key", value: nil)
         }
-        guard value != nil else {
+        guard let _value = value else {
             Diag.error("Missing Entry/String/Value")
             throw Xml2.ParsingError.malformedValue(tag: "Entry/String/Value", value: nil)
         }
-        if key!.isEmpty && value!.isNotEmpty {
+        if _key.isEmpty && _value.isNotEmpty {
             Diag.error("Missing Entry/String/Key with present Value")
             throw Xml2.ParsingError.malformedValue(tag: "Entry/String/Key+Value", value: nil)
         }
-        self.name = key!
-        self.value = value!
+        self.name = _key
+        self.value = _value
         self.isProtected = isProtected
     }
     

@@ -79,9 +79,11 @@ public final class ChaCha20: StreamCipher {
             bytes[i] ^= block[posInBlock]
             posInBlock += 1
         }
-        progress?.completedUnitCount = progress!.totalUnitCount
-        if progress?.isCancelled ?? false {
-            throw ProgressInterruption.cancelledByUser()
+        if let progress = progress {
+            progress.completedUnitCount = progress.totalUnitCount
+            if progress.isCancelled {
+                throw ProgressInterruption.cancelledByUser()
+            }
         }
     }
     

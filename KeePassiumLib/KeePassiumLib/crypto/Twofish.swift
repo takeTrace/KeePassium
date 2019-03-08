@@ -77,9 +77,12 @@ public final class Twofish {
             }
         }
         Twofish_clear_key(&internalKey)
-        progress?.completedUnitCount = progress!.totalUnitCount
-        if progress?.isCancelled ?? false {
-            throw ProgressInterruption.cancelledByUser()
+        
+        if let progress = progress {
+            progress.completedUnitCount = progress.totalUnitCount
+            if progress.isCancelled {
+                throw ProgressInterruption.cancelledByUser()
+            }
         }
     }
     
@@ -119,11 +122,14 @@ public final class Twofish {
             }
         }
         Twofish_clear_key(&internalKey)
-        progress?.completedUnitCount = progress!.totalUnitCount
-        if progress?.isCancelled ?? false {
-            throw ProgressInterruption.cancelledByUser()
+
+        if let progress = progress {
+            progress.completedUnitCount = progress.totalUnitCount
+            if progress.isCancelled {
+                throw ProgressInterruption.cancelledByUser()
+            }
         }
+
         try CryptoManager.removePadding(data: data) // throws CryptoError
-        print("twofish plain \(data.prefix(32).asHexString)")
     }
 }

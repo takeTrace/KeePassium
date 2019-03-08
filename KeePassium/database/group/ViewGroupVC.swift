@@ -638,8 +638,9 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     private var savingOverlay: ProgressOverlay?
     
     private func showSavingOverlay() {
+        guard let splitVC = splitViewController else { fatalError() }
         savingOverlay = ProgressOverlay.addTo(
-            splitViewController!.view,
+            splitVC.view,
             title: LString.databaseStatusSaving,
             animated: true)
         savingOverlay?.isCancellable = false
@@ -722,8 +723,10 @@ extension ViewGroupVC: EditEntryFieldsDelegate {
             return
         }
         
+        guard let splitVC = splitViewController else { fatalError() }
+        
         // show the created/edited entry
-        if !splitViewController!.isCollapsed,
+        if !splitVC.isCollapsed,
             let entryIndex = entriesSorted.index(where: { $0.value === entry })
         {
             let indexPath = IndexPath(row: groupsSorted.count + entryIndex, section: 0)

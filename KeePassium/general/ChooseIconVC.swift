@@ -73,14 +73,14 @@ class ChooseIconVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = false
-        collectionView!.allowsSelection = true
+        collectionView.allowsSelection = true
         
         if let selectedIconID = selectedIconID {
             let selIndexPath = IndexPath(row: Int(selectedIconID.rawValue), section: 0)
-            collectionView!.selectItem(
+            collectionView.selectItem(
                 at: selIndexPath, animated: true,
                 scrollPosition: .centeredVertically)
-            collectionView!.cellForItem(at: selIndexPath)?.isHighlighted = true
+            collectionView.cellForItem(at: selIndexPath)?.isHighlighted = true
         }
     }
 

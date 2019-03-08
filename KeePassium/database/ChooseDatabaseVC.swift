@@ -78,12 +78,14 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !splitViewController!.isCollapsed {
+        guard let splitVC = splitViewController else { fatalError() }
+        if !splitVC.isCollapsed {
             navigationItem.backBarButtonItem = UIBarButtonItem(
                 image: UIImage(asset: .lockDatabaseToolbar),
                 style: .done,
                 target: nil,
-                action: nil)
+                action: nil
+            )
         }
         databaseUnlocker = nil
         updateDetailView(onlyInTwoPaneMode: true)

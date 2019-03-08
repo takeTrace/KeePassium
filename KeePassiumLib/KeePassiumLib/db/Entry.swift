@@ -262,8 +262,9 @@ public class Entry: Eraseable {
         var groupNames = Array<String>()
         var parentGroup = self.parent
         while parentGroup != nil {
-            groupNames.append(parentGroup!.name)
-            parentGroup = parentGroup!.parent
+            let parentGroupUnwrapped = parentGroup! // safe to force-unwrap
+            groupNames.append(parentGroupUnwrapped.name)
+            parentGroup = parentGroupUnwrapped.parent
         }
         return groupNames.reversed().joined(separator: "/")
     }

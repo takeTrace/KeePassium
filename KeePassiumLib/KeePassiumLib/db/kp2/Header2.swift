@@ -606,9 +606,14 @@ final class Header2: Eraseable {
             stream.write(data: fieldData)
         }
 
+        guard let transformSeedData = kdfParams.getValue(key: AESKDF.transformSeedParam)?.data
+            else { fatalError("Missing transform seed data") }
+        guard let transformRoundsData = kdfParams.getValue(key: AESKDF.transformRoundsParam)?.data
+            else { fatalError("Missing transform rounds data") }
+        
         fields[.cipherID] = self.dataCipher.uuid.data
-        fields[.transformSeed] = kdfParams.getValue(key: AESKDF.transformSeedParam)!.data
-        fields[.transformRounds] = kdfParams.getValue(key: AESKDF.transformRoundsParam)!.data
+        fields[.transformSeed] = transformSeedData
+        fields[.transformRounds] = transformRoundsData
         fields[.protectedStreamKey] = protectedStreamKey
         fields[.innerRandomStreamID] = innerStreamAlgorithm.rawValue.data
 
@@ -652,7 +657,7 @@ final class Header2: Eraseable {
     /// Throws: ProgressInterruption, HeaderError.binaryUncompressionError
     func writeInner(to stream: ByteArray.OutputStream) throws {
         assert(formatVersion == .v4)
-        assert(protectedStreamKey != nil)
+        guard let protectedStreamKey = protectedStreamKey else { fatalError() }
         
         Diag.verbose("Writing KP2v4 inner header")
         stream.write(value: InnerFieldID.innerRandomStreamID.rawValue) // fieldID: UInt8
@@ -660,9 +665,9 @@ final class Header2: Eraseable {
         stream.write(value: innerStreamAlgorithm.rawValue) // data
         
         stream.write(value: InnerFieldID.innerRandomStreamKey.rawValue) // fieldID: UInt8
-        stream.write(value: UInt32(protectedStreamKey!.count)) // fieldSize: UInt32
-        stream.write(data: protectedStreamKey!)
-        print("  streamCipherKey: \(protectedStreamKey!.asHexString)")
+        stream.write(value: UInt32(protectedStreamKey.count)) // fieldSize: UInt32
+        stream.write(data: protectedStreamKey)
+        print("  streamCipherKey: \(protectedStreamKey.asHexString)")
         
         // Inner header binaries should be ordered (since their order is their ID)
         for binaryID in database.binaries.keys.sorted() {
