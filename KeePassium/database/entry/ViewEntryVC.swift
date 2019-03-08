@@ -177,8 +177,9 @@ extension ViewEntryVC: ProgressViewHost {
         
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem?.isEnabled = false
+        let fullScreenView = splitViewController?.view // try to show over full (iPad) screen
         progressOverlay = ProgressOverlay.addTo(
-            view,
+            fullScreenView ?? self.view,
             title: title,
             animated: true)
         progressOverlay?.isCancellable = allowCancelling
