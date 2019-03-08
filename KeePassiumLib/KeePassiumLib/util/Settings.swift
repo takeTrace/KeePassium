@@ -65,22 +65,35 @@ public class Settings {
     
     public enum Keys: String {
         case settingsVersion
+        
+        // Database list
+        case filesSortOrder
+        case backupFilesVisible
+
+        // Database unlock
         case startupDatabase
+        case rememberDatabaseKey
+        case keepKeyFileAssociations
+        case keyFileAssociations
+
+        // AppLock and timeouts
         case appLockEnabled
+        case biometricAppLockEnabled
+        case lockAllDatabasesOnFailedPasscode
+        case recentUserActivityTimestamp
         case appLockTimeout
         case databaseCloseTimeout
         case clipboardTimeout
-        case entryListDetail
-        case groupSortOrder
-        case filesSortOrder
-        case keepKeyFileAssociations
-        case keyFileAssociations
+
+        // Database content
         case startWithSearch
+        case groupSortOrder
+        case entryListDetail
+
+        // Backup
         case backupDatabaseOnSave
-        case backupFilesVisible
-        case biometricAppLockEnabled
-        case rememberDatabaseKey
-        case lockAllDatabasesOnFailedPasscode
+        
+        // Password generator
         case passwordGeneratorLength
         case passwordGeneratorIncludeLowerCase
         case passwordGeneratorIncludeUpperCase
@@ -88,7 +101,6 @@ public class Settings {
         case passwordGeneratorIncludeDigits
         case passwordGeneratorIncludeLookAlike
         case passcodeKeyboardType
-        case recentUserActivityTimestamp
     }
 
     /// Notification constants
@@ -97,6 +109,8 @@ public class Settings {
         static let userInfoKey = "changedKey" // userInfo dict key - which Settings.Keys was changed
     }
 
+    // MARK: - Internal types
+    
     public enum AppLockTimeout: Int {
         public static let allValues = [
             immediately, /* after5seconds,*/ after15seconds, after30seconds,
@@ -497,6 +511,8 @@ public class Settings {
         }
     }
     
+    // MARK: - Internal
+    
     public var settingsVersion: Int {
         get {
             let storedVersion = UserDefaults.appGroupShared
@@ -512,6 +528,46 @@ public class Settings {
             }
         }
     }
+    
+    // MARK: - Database list
+    
+    /// Sort order for the file lists
+    public var filesSortOrder: FilesSortOrder {
+        get {
+            if let rawValue = UserDefaults.appGroupShared
+                .object(forKey: Keys.filesSortOrder.rawValue) as? Int,
+                let sortOrder = FilesSortOrder(rawValue: rawValue)
+            {
+                return sortOrder
+            }
+            return FilesSortOrder.noSorting
+        }
+        set {
+            let oldValue = filesSortOrder
+            UserDefaults.appGroupShared.set(newValue.rawValue, forKey: Keys.filesSortOrder.rawValue)
+            if newValue != oldValue {
+                postChangeNotification(changedKey: Keys.filesSortOrder)
+            }
+        }
+    }
+    
+    /// Whether to show backup files in file lists
+    public var isBackupFilesVisible: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.backupFilesVisible.rawValue)
+                as? Bool
+            return stored ?? false
+        }
+        set {
+            updateAndNotify(
+                oldValue: isBackupFilesVisible,
+                newValue: newValue,
+                key: .backupFilesVisible)
+        }
+    }
+    
+    // MARK: - Database unlock
     
     /// Last used/default database file to open on app launch.
     public var startupDatabase: URLReference? {
@@ -532,7 +588,23 @@ public class Settings {
             }
         }
     }
-
+    
+    /// Whether to store database's key in keychain after unlock
+    public var isRememberDatabaseKey: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.rememberDatabaseKey.rawValue)
+                as? Bool
+            return stored ?? false
+        }
+        set {
+            updateAndNotify(
+                oldValue: isRememberDatabaseKey,
+                newValue: newValue,
+                key: .rememberDatabaseKey)
+        }
+    }
+    
     /// Should we keep track of which key file is used with which database?
     public var isKeepKeyFileAssociations: Bool {
         get {
@@ -607,6 +679,8 @@ public class Settings {
         UserDefaults.appGroupShared.setValue(db2key, forKey: Keys.keyFileAssociations.rawValue)
     }
     
+    // MARK: - AppLock and other timeouts
+    
     public var isAppLockEnabled: Bool {
         get {
             let stored = UserDefaults.appGroupShared
@@ -621,11 +695,73 @@ public class Settings {
                 key: .appLockEnabled)
         }
     }
+    
+    /// Whether the user can use TouchID/FaceID to unlock the app
+    public var isBiometricAppLockEnabled: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.biometricAppLockEnabled.rawValue)
+                as? Bool
+            return stored ?? true
+        }
+        set {
+            updateAndNotify(
+                oldValue: isBiometricAppLockEnabled,
+                newValue: newValue,
+                key: .biometricAppLockEnabled)
+        }
+    }
+    
+    /// Whether to clear all database keys from keychain
+    /// after a wrong AppLock passcode has been entered.
+    public var isLockAllDatabasesOnFailedPasscode: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.lockAllDatabasesOnFailedPasscode.rawValue)
+                as? Bool
+            return stored ?? true
+        }
+        set {
+            updateAndNotify(
+                oldValue: isLockAllDatabasesOnFailedPasscode,
+                newValue: newValue,
+                key: .lockAllDatabasesOnFailedPasscode)
+        }
+    }
+    
+    /// Timestamp of most recent user activity event (touching or typing).
+    public var recentUserActivityTimestamp: Date {
+        get {
+            if let storedTimestamp = UserDefaults.appGroupShared
+                .object(forKey: Keys.recentUserActivityTimestamp.rawValue)
+                as? Date
+            {
+                return storedTimestamp
+            }
+            return Date.now
+        }
+        set {
+            if contains(key: Keys.recentUserActivityTimestamp) {
+                // We'll ignore sub-second differences, just to avoid too frequent writes.
+                // (They are probably cached, but anyway.)
+                let oldWholeSeconds = floor(recentUserActivityTimestamp.timeIntervalSinceReferenceDate)
+                let newWholeSeconds = floor(newValue.timeIntervalSinceReferenceDate)
+                if newWholeSeconds == oldWholeSeconds {
+                    return
+                }
+            }
+            UserDefaults.appGroupShared.set(
+                newValue,
+                forKey: Keys.recentUserActivityTimestamp.rawValue)
+            postChangeNotification(changedKey: Keys.recentUserActivityTimestamp)
+        }
+    }
+    
     /// Timeout for automatically locking the app, in seconds.
     public var appLockTimeout: AppLockTimeout {
         get {
             if let rawValue = UserDefaults.appGroupShared
-                    .object(forKey: Keys.appLockTimeout.rawValue) as? Int,
+                .object(forKey: Keys.appLockTimeout.rawValue) as? Int,
                 let timeout = AppLockTimeout(rawValue: rawValue)
             {
                 return timeout
@@ -683,23 +819,21 @@ public class Settings {
         }
     }
     
-    /// Which field to use for entry subtitles in ViewGroupVC
-    public var entryListDetail: EntryListDetail {
+    // MARK: - Database view
+    
+    /// Automatically show search bar after opening a database.
+    public var isStartWithSearch: Bool {
         get {
-            if let rawValue = UserDefaults.appGroupShared
-                    .object(forKey: Keys.entryListDetail.rawValue) as? Int,
-                let detail = EntryListDetail(rawValue: rawValue)
-            {
-                return detail
-            }
-            return EntryListDetail.userName
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.startWithSearch.rawValue)
+                as? Bool
+            return stored ?? false
         }
         set {
-            let oldValue = entryListDetail
-            UserDefaults.appGroupShared.set(newValue.rawValue, forKey: Keys.entryListDetail.rawValue)
-            if newValue != oldValue {
-                postChangeNotification(changedKey: Keys.entryListDetail)
-            }
+            updateAndNotify(
+                oldValue: isStartWithSearch,
+                newValue: newValue,
+                key: .startWithSearch)
         }
     }
     
@@ -723,26 +857,28 @@ public class Settings {
         }
     }
 
-    /// Sort order for the file lists
-    public var filesSortOrder: FilesSortOrder {
+    /// Which field to use for entry subtitles in ViewGroupVC
+    public var entryListDetail: EntryListDetail {
         get {
             if let rawValue = UserDefaults.appGroupShared
-                    .object(forKey: Keys.filesSortOrder.rawValue) as? Int,
-                let sortOrder = FilesSortOrder(rawValue: rawValue)
+                .object(forKey: Keys.entryListDetail.rawValue) as? Int,
+                let detail = EntryListDetail(rawValue: rawValue)
             {
-                return sortOrder
+                return detail
             }
-            return FilesSortOrder.noSorting
+            return EntryListDetail.userName
         }
         set {
-            let oldValue = filesSortOrder
-            UserDefaults.appGroupShared.set(newValue.rawValue, forKey: Keys.filesSortOrder.rawValue)
+            let oldValue = entryListDetail
+            UserDefaults.appGroupShared.set(newValue.rawValue, forKey: Keys.entryListDetail.rawValue)
             if newValue != oldValue {
-                postChangeNotification(changedKey: Keys.filesSortOrder)
+                postChangeNotification(changedKey: Keys.entryListDetail)
             }
         }
     }
-
+    
+    // MARK: - Backup
+    
     /// Whether to create a backup copy everytime database is saved.
     public var isBackupDatabaseOnSave: Bool {
         get {
@@ -758,115 +894,8 @@ public class Settings {
                 key: .backupDatabaseOnSave)
         }
     }
-    
-    /// Whether to show backup files in file lists
-    public var isBackupFilesVisible: Bool {
-        get {
-            let stored = UserDefaults.appGroupShared
-                .object(forKey: Keys.backupFilesVisible.rawValue)
-                as? Bool
-            return stored ?? false
-        }
-        set {
-            updateAndNotify(
-                oldValue: isBackupFilesVisible,
-                newValue: newValue,
-                key: .backupFilesVisible)
-        }
-    }
-    
-    /// Automatically show search bar after opening a database.
-    public var isStartWithSearch: Bool {
-        get {
-            let stored = UserDefaults.appGroupShared
-                .object(forKey: Keys.startWithSearch.rawValue)
-                as? Bool
-            return stored ?? false
-        }
-        set {
-            updateAndNotify(
-                oldValue: isStartWithSearch,
-                newValue: newValue,
-                key: .startWithSearch)
-        }
-    }
-    
-    /// Whether the user can use TouchID/FaceID to unlock the app
-    public var isBiometricAppLockEnabled: Bool {
-        get {
-            let stored = UserDefaults.appGroupShared
-                .object(forKey: Keys.biometricAppLockEnabled.rawValue)
-                as? Bool
-            return stored ?? true
-        }
-        set {
-            updateAndNotify(
-                oldValue: isBiometricAppLockEnabled,
-                newValue: newValue,
-                key: .biometricAppLockEnabled)
-        }
-    }
 
-    /// Whether to store database's key in keychain after unlock
-    public var isRememberDatabaseKey: Bool {
-        get {
-            let stored = UserDefaults.appGroupShared
-                .object(forKey: Keys.rememberDatabaseKey.rawValue)
-                as? Bool
-            return stored ?? false
-        }
-        set {
-            updateAndNotify(
-                oldValue: isRememberDatabaseKey,
-                newValue: newValue,
-                key: .rememberDatabaseKey)
-        }
-    }
-    
-    /// Whether to clear all database keys from keychain
-    /// after a wrong AppLock passcode has been entered.
-    public var isLockAllDatabasesOnFailedPasscode: Bool {
-        get {
-            let stored = UserDefaults.appGroupShared
-                .object(forKey: Keys.lockAllDatabasesOnFailedPasscode.rawValue)
-                as? Bool
-            return stored ?? true
-        }
-        set {
-            updateAndNotify(
-                oldValue: isLockAllDatabasesOnFailedPasscode,
-                newValue: newValue,
-                key: .lockAllDatabasesOnFailedPasscode)
-        }
-    }
-    
-    /// Timestamp of most recent user activity event (touching or typing).
-    public var recentUserActivityTimestamp: Date {
-        get {
-            if let storedTimestamp = UserDefaults.appGroupShared
-                .object(forKey: Keys.recentUserActivityTimestamp.rawValue)
-                as? Date
-            {
-                return storedTimestamp
-            }
-            return Date.now
-        }
-        set {
-            if contains(key: Keys.recentUserActivityTimestamp) {
-                // We'll ignore sub-second differences, just to avoid too frequent writes.
-                // (They are probably cached, but anyway.)
-                let oldWholeSeconds = floor(recentUserActivityTimestamp.timeIntervalSinceReferenceDate)
-                let newWholeSeconds = floor(newValue.timeIntervalSinceReferenceDate)
-                if newWholeSeconds == oldWholeSeconds {
-                    return
-                }
-            }
-            UserDefaults.appGroupShared.set(
-                newValue,
-                forKey: Keys.recentUserActivityTimestamp.rawValue)
-            postChangeNotification(changedKey: Keys.recentUserActivityTimestamp)
-        }
-    }
+    // MARK: - Password generator
     
     /// Password generator: length of generated passwords
     public var passwordGeneratorLength: Int {
@@ -978,6 +1007,8 @@ public class Settings {
         // nothing to do
     }
 
+    // MARK: - Helper methods
+    
     /// Updates stored value, and notifies observers if the new value is different.
     private func updateAndNotify(oldValue: Bool, newValue: Bool, key: Keys) {
         UserDefaults.appGroupShared.set(newValue, forKey: key.rawValue)
