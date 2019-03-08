@@ -77,6 +77,12 @@ class ViewEntryVC: UIViewController, Refreshable {
         refresh()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        switchTo(page: Settings.current.entryViewerPage)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         entryChangeNotifications.startObserving()
@@ -88,6 +94,7 @@ class ViewEntryVC: UIViewController, Refreshable {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
+        Settings.current.entryViewerPage = pageSelector.selectedSegmentIndex
         entryChangeNotifications.stopObserving()
         super.viewDidDisappear(animated)
     }
