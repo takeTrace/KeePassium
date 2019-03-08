@@ -24,12 +24,14 @@ class ViewEntryVC: UIViewController, Refreshable {
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
+    var pagesViewController: UIPageViewController!
     
-    private var pagesVC: ViewEntryPagesVC!
     private weak var entry: Entry?
     private var isHistoryMode = false
     private var entryChangeNotifications: EntryChangeNotifications!
     private var progressOverlay: ProgressOverlay?
+    private var pages = [UIViewController]()
+    private var currentPageIndex = 0
 
     /// Instantiates `ViewEntryVC` in normal or history-viewing mode.
     static func make(with entry: Entry, historyMode: Bool = false) -> UIViewController {
@@ -50,16 +52,26 @@ class ViewEntryVC: UIViewController, Refreshable {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let entry = entry else { return }
-        pagesVC = ViewEntryPagesVC.make(
+        
+        pages.append(ViewEntryFieldsVC.make(with: entry, historyMode: isHistoryMode))
+        pages.append(ViewEntryFilesVC.make(
             with: entry,
             historyMode: isHistoryMode,
-            progressViewHost: self)
-        pagesVC.delegate = self
-        addChild(pagesVC)
-        pagesVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        pagesVC.view.frame = containerView.bounds
-        containerView.addSubview(pagesVC.view)
-        pagesVC.didMove(toParent: self)
+            progressViewHost: self))
+        pages.append(ViewEntryHistoryVC.make(with: entry, historyMode: isHistoryMode))
+        
+        pagesViewController = UIPageViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal,
+            options: nil)
+        pagesViewController.delegate = self
+        pagesViewController.dataSource = self
+
+        addChild(pagesViewController)
+        pagesViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        pagesViewController.view.frame = containerView.bounds
+        containerView.addSubview(pagesViewController.view)
+        pagesViewController.didMove(toParent: self)
         
         entryChangeNotifications = EntryChangeNotifications(observer: self)
         refresh()
@@ -72,7 +84,7 @@ class ViewEntryVC: UIViewController, Refreshable {
         // Now, replace the decoy button set in storyboard.
         // Without a decoy, it would just appear without animation.
         navigationItem.rightBarButtonItem =
-            pagesVC?.viewControllers?.first?.navigationItem.rightBarButtonItem
+            pagesViewController.viewControllers?.first?.navigationItem.rightBarButtonItem
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -84,11 +96,32 @@ class ViewEntryVC: UIViewController, Refreshable {
         refresh()
     }
     
+    private func switchTo(page index: Int) {
+        let direction: UIPageViewController.NavigationDirection
+        if index >= currentPageIndex {
+            direction = .forward
+        } else {
+            direction = .reverse
+        }
+
+        let targetPageVC = pages[index]
+        pagesViewController.setViewControllers(
+            [targetPageVC],
+            direction: direction,
+            animated: true,
+            completion: { [weak self] (finished) in
+                guard let _self = self else { return }
+                _self.pageSelector.selectedSegmentIndex = index
+                _self.currentPageIndex = index
+                _self.navigationItem.rightBarButtonItem =
+                    targetPageVC.navigationItem.rightBarButtonItem
+            }
+        )
+        
+    }
+    
     @IBAction func didChangePage(_ sender: Any) {
-        let selIndex = pageSelector.selectedSegmentIndex
-        pagesVC.switchToPage(index: selIndex)
-        navigationItem.rightBarButtonItem =
-            pagesVC?.viewControllers?.first?.navigationItem.rightBarButtonItem
+        switchTo(page: pageSelector.selectedSegmentIndex)
     }
 
     func refresh() {
@@ -117,21 +150,6 @@ class ViewEntryVC: UIViewController, Refreshable {
 extension ViewEntryVC: EntryChangeObserver {
     func entryDidChange(entry: Entry) {
         refresh()
-    }
-}
-
-extension ViewEntryVC: UIPageViewControllerDelegate {
-    func pageViewController(
-        _ pageViewController: UIPageViewController,
-        didFinishAnimating finished: Bool,
-        previousViewControllers: [UIViewController],
-        transitionCompleted completed: Bool)
-    {
-        if finished && completed {
-            pageSelector.selectedSegmentIndex = pagesVC.currentPageIndex
-            navigationItem.rightBarButtonItem =
-                pagesVC?.viewControllers?.first?.navigationItem.rightBarButtonItem
-        }
     }
 }
 
@@ -169,6 +187,55 @@ extension ViewEntryVC: ProgressViewHost {
             guard let _self = self else { return }
             _self.progressOverlay?.removeFromSuperview()
             _self.progressOverlay = nil
+        }
+    }
+}
+
+// MARK: - UIPageViewControllerDelegate
+
+extension ViewEntryVC: UIPageViewControllerDelegate {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        didFinishAnimating finished: Bool,
+        previousViewControllers: [UIViewController],
+        transitionCompleted completed: Bool)
+    {
+        if finished && completed {
+            guard let selectedVC = pageViewController.viewControllers?.first,
+                let selectedIndex = pages.index(of: selectedVC) else { return }
+            currentPageIndex = selectedIndex
+            pageSelector.selectedSegmentIndex = selectedIndex
+            navigationItem.rightBarButtonItem = selectedVC.navigationItem.rightBarButtonItem
+        }
+    }
+}
+
+// MARK: - UIPageViewControllerDataSource
+
+extension ViewEntryVC: UIPageViewControllerDataSource {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerBefore viewController: UIViewController
+        ) -> UIViewController?
+    {
+        guard let vcIndex = pages.index(of: viewController) else { return nil }
+        if vcIndex > 0 {
+            return pages[vcIndex - 1]
+        } else {
+            return nil
+        }
+    }
+    
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerAfter viewController: UIViewController
+        ) -> UIViewController?
+    {
+        guard let vcIndex = pages.index(of: viewController) else { return nil }
+        if vcIndex < pages.count - 1 {
+            return pages[vcIndex + 1]
+        } else {
+            return nil
         }
     }
 }

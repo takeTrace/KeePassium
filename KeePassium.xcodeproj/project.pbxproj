@@ -111,8 +111,6 @@
 		75C38021217A1F0A006F74C2 /* ViewEntryFieldsVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C38020217A1F0A006F74C2 /* ViewEntryFieldsVC.storyboard */; };
 		75C38023217A1F23006F74C2 /* ViewEntryFilesVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C38022217A1F23006F74C2 /* ViewEntryFilesVC.storyboard */; };
 		75C38025217A1F3A006F74C2 /* ViewEntryHistoryVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C38024217A1F3A006F74C2 /* ViewEntryHistoryVC.storyboard */; };
-		75C38027217A2311006F74C2 /* ViewEntryPagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C38026217A2311006F74C2 /* ViewEntryPagesVC.swift */; };
-		75C38029217A241A006F74C2 /* ViewEntryPagesVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C38028217A241A006F74C2 /* ViewEntryPagesVC.storyboard */; };
 		75C3802B217A245A006F74C2 /* ViewEntryVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C3802A217A245A006F74C2 /* ViewEntryVC.storyboard */; };
 		75C3802D217A2650006F74C2 /* AppCoverVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C3802C217A2650006F74C2 /* AppCoverVC.storyboard */; };
 		75C3802F217A2676006F74C2 /* CreateDatabaseVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75C3802E217A2676006F74C2 /* CreateDatabaseVC.storyboard */; };
@@ -277,8 +275,6 @@
 		75C38020217A1F0A006F74C2 /* ViewEntryFieldsVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ViewEntryFieldsVC.storyboard; sourceTree = "<group>"; };
 		75C38022217A1F23006F74C2 /* ViewEntryFilesVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ViewEntryFilesVC.storyboard; sourceTree = "<group>"; };
 		75C38024217A1F3A006F74C2 /* ViewEntryHistoryVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ViewEntryHistoryVC.storyboard; sourceTree = "<group>"; };
-		75C38026217A2311006F74C2 /* ViewEntryPagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEntryPagesVC.swift; sourceTree = "<group>"; };
-		75C38028217A241A006F74C2 /* ViewEntryPagesVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ViewEntryPagesVC.storyboard; sourceTree = "<group>"; };
 		75C3802A217A245A006F74C2 /* ViewEntryVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ViewEntryVC.storyboard; sourceTree = "<group>"; };
 		75C3802C217A2650006F74C2 /* AppCoverVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AppCoverVC.storyboard; sourceTree = "<group>"; };
 		75C3802E217A2676006F74C2 /* CreateDatabaseVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateDatabaseVC.storyboard; sourceTree = "<group>"; };
@@ -467,8 +463,6 @@
 				75B5FB7820D6101100D402D9 /* ItemCategory.swift */,
 				75C94C5A20B4B8C2004FA29D /* ViewEntryVC.swift */,
 				75C3802A217A245A006F74C2 /* ViewEntryVC.storyboard */,
-				75C38026217A2311006F74C2 /* ViewEntryPagesVC.swift */,
-				75C38028217A241A006F74C2 /* ViewEntryPagesVC.storyboard */,
 				75B5FB7620D53EA700D402D9 /* ViewEntryFieldsVC.swift */,
 				75C38020217A1F0A006F74C2 /* ViewEntryFieldsVC.storyboard */,
 				75C94C5E20B4BAB0004FA29D /* ViewEntryFilesVC.swift */,
@@ -734,7 +728,6 @@
 				75C38039217A27A7006F74C2 /* ChooseIconVC.storyboard in Resources */,
 				75C38013217A053D006F74C2 /* SettingsAppTimeoutVC.storyboard in Resources */,
 				75C38021217A1F0A006F74C2 /* ViewEntryFieldsVC.storyboard in Resources */,
-				75C38029217A241A006F74C2 /* ViewEntryPagesVC.storyboard in Resources */,
 				75C38035217A271B006F74C2 /* ViewDiagnosticsVC.storyboard in Resources */,
 				75C3801F217A1EE1006F74C2 /* EditEntryVC.storyboard in Resources */,
 				75C3803D217A27FE006F74C2 /* ChangeMasterKeyVC.storyboard in Resources */,
@@ -828,7 +821,6 @@
 				75B5FB7B20D61BC000D402D9 /* VisibleEntryField.swift in Sources */,
 				7529EAEB211577EA0093B117 /* UITableViewCell+extension.swift in Sources */,
 				75CA919A20E90C3700B286F0 /* EntryChangeObserver+Notifier.swift in Sources */,
-				75C38027217A2311006F74C2 /* ViewEntryPagesVC.swift in Sources */,
 				75C94C6120B4BAC4004FA29D /* ViewEntryHistoryVC.swift in Sources */,
 				75802634222ED11D00F4525F /* ProgressVC.swift in Sources */,
 				754DE31220A5C4A4002ED5F9 /* ChooseKeyFileVC.swift in Sources */,
