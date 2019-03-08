@@ -79,7 +79,10 @@ class ViewEntryVC: UIViewController, Refreshable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
+        // we might have missed some changes, so force refresh
+        refresh()
+
         switchTo(page: Settings.current.entryViewerPage)
     }
     
