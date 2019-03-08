@@ -25,11 +25,12 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     }
     
     private weak var entry: Entry?
-    private var editButton: UIBarButtonItem!
+    private var editButton: UIBarButtonItem! // owned, strong ref
     private var isHistoryMode = false
     private var canAddFiles: Bool { return !isHistoryMode }
     private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var progressViewHost: ProgressViewHost?
+    private var exportController: UIDocumentInteractionController!
 
     static func make(
         with entry: Entry?,
@@ -196,8 +197,6 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     }
     
     // MARK: - Attachment management routines
-
-    fileprivate var exportController: UIDocumentInteractionController!
 
     private func didPressExportAttachment(_ att: Attachment, sourceCell: UITableViewCell) {
         // iOS can only share file URLs, so we save the attachment
@@ -424,6 +423,6 @@ extension ViewEntryFilesVC: UIDocumentInteractionControllerDelegate {
         _ controller: UIDocumentInteractionController
         ) -> UIViewController
     {
-        return navigationController!
+        return navigationController! //FIXME: potentially unsafe
     }
 }

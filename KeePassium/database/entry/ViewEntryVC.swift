@@ -24,7 +24,7 @@ class ViewEntryVC: UIViewController, Refreshable {
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    var pagesViewController: UIPageViewController!
+    var pagesViewController: UIPageViewController! // strong ref
     
     private weak var entry: Entry?
     private var isHistoryMode = false

@@ -57,7 +57,7 @@ class EntryFinderVC: UITableViewController {
     
     private var searchHelper = SearchHelper()
     private var searchResults = SearchResults(exactMatch: [], partialMatch: [])
-    private var searchController: UISearchController!
+    private var searchController: UISearchController! // owned strong ref
 
     override func viewDidLoad() {
         super.viewDidLoad()

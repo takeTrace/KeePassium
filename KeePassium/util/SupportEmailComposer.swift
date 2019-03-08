@@ -47,14 +47,14 @@ class SupportEmailComposer: NSObject {
         let subject, content: String
         if includeDiagnostics {
             subject = "\(appName) v\(appVersion) - Problem"
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
             content = LString.emailTemplateDescribeTheProblemHere +
                 "\n\n----- Diagnostic Info -----\n" +
                 "\(appName) v\(appVersion)\n" +
                 Diag.toString()
         } else {
             subject = "\(appName) v\(appVersion) - Support Request"
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
             content = ""
         }
         
@@ -79,7 +79,7 @@ class SupportEmailComposer: NSObject {
     }
     
     private func openSystemEmailComposer() {
-        let body = content.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let body = content.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
         let mailtoUrl = "mailto:\(supportEmail)?subject=\(subject)&body=\(body)"
         guard let url = URL(string: mailtoUrl) else {
             Diag.error("Failed to create mailto URL")

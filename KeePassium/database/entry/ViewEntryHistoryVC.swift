@@ -19,7 +19,7 @@ import KeePassiumLib
 
 class ViewEntryHistoryVC: UITableViewController, Refreshable {
     private weak var entry: Entry?
-    private var isHistoryMode: Bool!
+    private var isHistoryMode = false
 
     private let numberOfFixedTimestamps = 4 // expiry, creation, last modification, last access
     private enum Section: Int { // indices of table sections

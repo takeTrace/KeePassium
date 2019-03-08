@@ -94,19 +94,19 @@ public class CustomData2: Collection, Eraseable {
                     expected: xmlParentName + "/CustomData/Item/*")
             }
         }
-        guard key != nil else {
+        guard let _key = key else {
             Diag.error("Missing /CustomData/Item/Key")
             throw Xml2.ParsingError.malformedValue(
                 tag: xmlParentName + "/CustomData/Item/Key",
                 value: nil)
         }
-        guard value != nil else {
+        guard let _value = value else {
             Diag.error("Missing /CustomData/Item/Value")
             throw Xml2.ParsingError.malformedValue(
                 tag: xmlParentName + "/CustomData/Item/Value",
                 value: nil)
         }
-        dict[key!] = value!
+        dict[_key] = _value
     }
     
     

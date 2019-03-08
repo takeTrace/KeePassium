@@ -44,7 +44,7 @@ enum ImageAsset: String {
 
 extension UIImage {
     convenience init(asset: ImageAsset) {
-        self.init(named: asset.rawValue)!
+        self.init(named: asset.rawValue)! // FIXME: potentially unsafe
     }
     
     /// Returns standard icon image by its ID.

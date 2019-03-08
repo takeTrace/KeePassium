@@ -18,6 +18,13 @@ import UIKit
 
 /// Generic document to access external files.
 public class FileDocument: UIDocument {
+    public enum InternalError: LocalizedError {
+        case generic
+        public var errorDescription: String? {
+            return NSLocalizedString("Unexpected file error, please contact us.", comment: "A very generic error message")
+        }
+    }
+    
     public var data = ByteArray()
     public private(set) var error: Error?
     public var hasError: Bool { return error != nil }
@@ -28,7 +35,14 @@ public class FileDocument: UIDocument {
                 self.error = nil
                 successHandler()
             } else {
-                errorHandler(self.error!)
+                guard let error = self.error else {
+                    // This should not happen, but might. So we'll gracefully throw
+                    // a generic error instead of crashing on force-unwrap.
+                    assertionFailure()
+                    errorHandler(FileDocument.InternalError.generic)
+                    return
+                }
+                errorHandler(error)
             }
         })
     }

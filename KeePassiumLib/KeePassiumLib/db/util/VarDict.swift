@@ -207,7 +207,7 @@ public class VarDict: Eraseable {
     func write(to stream: ByteArray.OutputStream) -> Bool {
         stream.write(value: VarDict.version)
         for key in orderedKeys {
-            let typedValue = dict[key]!
+            let typedValue = dict[key]! // guaranteed to exist
             stream.write(value: typedValue.type.rawValue)
             let keyData = ByteArray(utf8String: key)
             stream.write(value: Int32(keyData.count))

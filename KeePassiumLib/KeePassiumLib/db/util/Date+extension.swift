@@ -26,7 +26,7 @@ public extension Date {
         timeZone: TimeZone(abbreviation: "UTC"),
         year: 1, month: 1, day: 1,
         hour: 0, minute: 0, second: 0, nanosecond: 0
-        ).date!
+        ).date! // ok to force-unwrap
 
     /// Creates date from an ISO8601-formatted string.
     init?(iso8601string string: String?) {

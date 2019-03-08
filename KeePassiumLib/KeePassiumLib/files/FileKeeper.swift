@@ -68,6 +68,8 @@ public class FileKeeper {
     private let docDirURL: URL
     /// App group's shared Backup folder
     private let backupDirURL: URL
+    /// App sandbox Documents/Inbox folder
+    private let inboxDirURL: URL
     
     // True when there are files to be opened/imported.
     public var hasPendingFileOperations: Bool {
@@ -75,7 +77,10 @@ public class FileKeeper {
     }
 
     private init() {
-        docDirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        docDirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! // ok to force-unwrap
+        inboxDirURL = docDirURL.appendingPathComponent(
+            FileKeeper.inboxDirectoryName,
+            isDirectory: true)
 
         print("\nDoc dir: \(docDirURL)\n")
         
@@ -92,6 +97,7 @@ public class FileKeeper {
             // No further action: postponing the error until the first file writing operation
             // that has UI to show the error to the user.
         }
+        
     }
 
     /// Returns URL of an internal directory corresponding to given location.
@@ -103,8 +109,7 @@ public class FileKeeper {
         case .internalBackup:
             return backupDirURL
         case .internalInbox:
-            return docDirURL.appendingPathComponent(
-                FileKeeper.inboxDirectoryName, isDirectory: true)
+            return inboxDirURL
         default:
             return nil
         }
@@ -113,13 +118,19 @@ public class FileKeeper {
     /// Returns the location type corresponding to given url.
     /// (Defaults to `.external` when does not match any internal location.)
     public func getLocation(for filePath: URL) -> URLReference.Location {
-        let filePath = filePath.standardizedFileURL.deletingLastPathComponent().path
+        let path: String
+        if filePath.isDirectory {
+            path = filePath.standardizedFileURL.path
+        } else {
+            path = filePath.standardizedFileURL.deletingLastPathComponent().path
+        }
+        
         for candidateLocation in URLReference.Location.allInternal {
-            guard let dirPath = getDirectory(for: candidateLocation) else {
+            guard let dirPath = getDirectory(for: candidateLocation)?.path else {
                 assertionFailure()
                 continue
             }
-            if filePath == dirPath.path {
+            if path == dirPath {
                 return candidateLocation
             }
         }
@@ -238,8 +249,7 @@ public class FileKeeper {
 //            scanLocalDirectory(fileType: fileType, location: .internalDocuments))
         result.append(contentsOf:getStoredReferences(fileType: fileType, forExternalFiles: true))
         if AppGroup.isMainApp {
-            let sandboxFileRefs = scanLocalDirectory(
-                fileType: fileType, location: .internalDocuments)
+            let sandboxFileRefs = scanLocalDirectory(docDirURL, fileType: fileType)
             // store app's sandboxed file refs for the app extension
             storeReferences(sandboxFileRefs, fileType: fileType, forExternalFiles: false)
             result.append(contentsOf: sandboxFileRefs)
@@ -251,18 +261,16 @@ public class FileKeeper {
         }
 
         if includeBackup {
-            result.append(contentsOf:
-                scanLocalDirectory(fileType: fileType, location: .internalBackup))
+            result.append(contentsOf:scanLocalDirectory(backupDirURL, fileType: fileType))
         }
         return result
     }
     
-    /// Returns all files in directory specified by `location`.
+    /// Returns all files of the given type in the given directory.
     /// Performs shallow search, does not follow deeper directories.
-    func scanLocalDirectory(fileType: FileType, location: URLReference.Location) -> [URLReference] {
+    func scanLocalDirectory(_ dirURL: URL, fileType: FileType) -> [URLReference] {
         var refs: [URLReference] = []
-        
-        let dirURL = getDirectory(for: location)! // will crash for external location
+        let location = getLocation(for: dirURL)
         do {
             let dirContents = try FileManager.default.contentsOfDirectory(
                 at: dirURL,
@@ -512,7 +520,6 @@ public class FileKeeper {
         success successHandler: ((URL) -> Void)?,
         error errorHandler: ((FileKeeperError)->Void)?)
     {
-        let docDirURL = getDirectory(for: .internalDocuments)!
         let fileName = sourceURL.lastPathComponent
         let targetURL = docDirURL.appendingPathComponent(fileName)
         let sourceDirs = sourceURL.deletingLastPathComponent() // without file name
@@ -548,10 +555,11 @@ public class FileKeeper {
     /// Removes all files from Documents/Inbox.
     /// Silently ignores any errors.
     private func clearInbox() {
-        let inboxDir = getDirectory(for: .internalInbox)!
-        guard let inboxFiles = try? FileManager.default
-            .contentsOfDirectory(at: inboxDir, includingPropertiesForKeys: nil, options: []) else
-        {
+        guard let inboxFiles = try? FileManager.default.contentsOfDirectory(
+            at: inboxDirURL,
+            includingPropertiesForKeys: nil,
+            options: [])
+        else {
             // probably, there is no Inbox there
             return
         }
@@ -573,7 +581,6 @@ public class FileKeeper {
         
         let fileManager = FileManager.default
         do {
-            let backupDirURL = getDirectory(for: .internalBackup)!
             try fileManager.createDirectory(
                 at: backupDirURL,
                 withIntermediateDirectories: true,

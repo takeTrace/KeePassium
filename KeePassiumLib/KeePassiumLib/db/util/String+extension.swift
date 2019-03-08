@@ -25,4 +25,8 @@ extension String {
     mutating func erase() {
         self.removeAll()
     }
+    
+    var utf8data: Data {
+        return self.data(using: .utf8)! // ok to force-unwrap
+    }
 }

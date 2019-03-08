@@ -262,7 +262,7 @@ public class Database1: Database {
         self.root = _root
         
         // restore group hierarchy
-        var parentGroup = root!
+        var parentGroup = _root
         for level in 0...maxLevel {
             let prevLevel = level - 1
             for group in groups {
@@ -356,7 +356,7 @@ public class Database1: Database {
                 }
             }
             contentStream.close()
-            let contentData = contentStream.data!
+            guard let contentData = contentStream.data else { fatalError() }
         
             // update the header
             Diag.debug("Updating the header")

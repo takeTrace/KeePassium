@@ -39,7 +39,7 @@ public class Entry1: Entry {
     
     // predefined field values of meta-stream entries
     private enum MetaStreamID {
-        public static let iconID   = IconID(rawValue: 0)!
+        public static let iconID   = IconID.withZeroID
         public static let title    = "Meta-Info"
         public static let userName = "SYSTEM"
         public static let url      = "$"

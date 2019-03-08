@@ -210,7 +210,10 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
                 activityItems: [url],
                 applicationActivities: nil)
             if let popover = exportSheet.popoverPresentationController {
-                let sourceView = tableView.cellForRow(at: indexPath)!
+                guard let sourceView = tableView.cellForRow(at: indexPath) else {
+                    assertionFailure()
+                    return
+                }
                 popover.sourceView = sourceView
                 popover.sourceRect = CGRect(
                     x: sourceView.bounds.width,
@@ -366,7 +369,7 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
         accessoryButtonTappedForRowWith indexPath: IndexPath)
     {
         let urlRef = databaseRefs[indexPath.row]
-        let cell = tableView.cellForRow(at: indexPath)!
+        guard let cell = tableView.cellForRow(at: indexPath) else { assertionFailure(); return }
         let databaseInfoVC = FileInfoVC.make(urlRef: urlRef, popoverSource: cell)
         present(databaseInfoVC, animated: true, completion: nil)
     }

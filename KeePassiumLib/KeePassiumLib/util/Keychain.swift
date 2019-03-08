@@ -126,10 +126,9 @@ public class Keychain {
     /// Saves the given app passcode in keychain.
     /// - Throws: KeychainError
     public func setAppPasscode(_ passcode: String) throws {
-        let passcodeData = passcode.data(using: .utf8)!
         // hashing is redundant, but is kept here for compatibility.
         // (To avoid locking out early beta users.)
-        let dataHash = ByteArray(data: passcodeData).sha256.asData
+        let dataHash = ByteArray(utf8String: passcode).sha256.asData
         try set(service: .general, account: appPasscodeAccount, data: dataHash) // throws KeychainError
     }
 
@@ -150,8 +149,7 @@ public class Keychain {
             // no passcode saved in keychain
             return false
         }
-        let passcodeData = passcode.data(using: .utf8)!
-        let passcodeHash = ByteArray(data: passcodeData).sha256.asData
+        let passcodeHash = ByteArray(utf8String: passcode).sha256.asData
         return passcodeHash == storedHash
     }
 

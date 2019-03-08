@@ -20,7 +20,7 @@ class ProtectedTextField: ValidatingTextField {
     private let horizontalInsets = CGFloat(8.0)
     private let verticalInsets = CGFloat(2.0)
     
-    private var toggleButton: UIButton!
+    private var toggleButton: UIButton! // owned strong ref
     override var isSecureTextEntry: Bool {
         didSet {
             toggleButton?.isSelected = !isSecureTextEntry

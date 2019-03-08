@@ -28,7 +28,7 @@ extension Date {
         calendar: Calendar(identifier: .iso8601),
         year: 2999, month: 12, day: 28,
         hour: 23, minute: 59, second: 59, nanosecond: 0)
-        .date!
+        .date! // ok to force-unwrap
 
     /// Inits a `Date` from the KeePass1 packed 5-byte array.
     init?(kp1Bytes dw: ByteArray) {

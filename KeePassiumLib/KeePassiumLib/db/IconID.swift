@@ -29,7 +29,10 @@ public enum IconID: UInt32 {
         .question, .box, .folder, .folderOpen, .folderBox, .lockOpen, .sheetLock, .checkmark,
         .pen, .photo, .book, .list, .userKey, .hammer, .home, .star, .tux, .feather, .apple,
         .wiki, .currency, .certificate, .phone]
-
+    
+    /// equivalent to `IconID(rawValue: 0)`
+    public static let withZeroID: IconID = .key
+    
     case key              =  0
     case globe            =  1
     case warning          =  2

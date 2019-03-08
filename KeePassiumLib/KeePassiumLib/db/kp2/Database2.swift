@@ -786,7 +786,7 @@ public class Database2: Database {
             try header.writeInner(to: contentStream) // throws `ProgressInterruption`, `HeaderError`
             Diag.verbose("Header written OK")
             contentStream.write(data: xmlData)
-            let contentData = contentStream.data!
+            guard let contentData = contentStream.data else { fatalError() }
 
             // compress
             var dataToEncrypt = contentData
@@ -898,7 +898,7 @@ public class Database2: Database {
         defer { blockStream.close() }
         blockStream.write(data: header.streamStartBytes!) // random stream start bytes go before any blocks
         try splitToBlocksV3(to: blockStream, data: dataToSplit) // throws ProgressInterruption
-        let blocksData = blockStream.data!
+        guard let blocksData = blockStream.data else { fatalError() }
         Diag.verbose("Blocks split OK")
         
         // encrypt everything

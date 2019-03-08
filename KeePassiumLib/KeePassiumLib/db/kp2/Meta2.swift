@@ -465,7 +465,7 @@ final class Meta2: Eraseable {
             Diag.verbose("Generating XML: meta binaries")
             let xmlBinaries = AEXMLElement(name: Xml2.binaries)
             for binaryID in database.binaries.keys.sorted() {
-                let binary = database.binaries[binaryID]!
+                let binary = database.binaries[binaryID]! // safe to force-unwrap
                 xmlBinaries.addChild(try binary.toXml(streamCipher: streamCipher))
                     // throws ProgressInterruption
             }

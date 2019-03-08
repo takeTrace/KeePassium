@@ -126,7 +126,7 @@ final class Header2: Eraseable {
     internal var size: Int { return data.count }
     private(set) var fields: [FieldID: ByteArray]
     private(set) var hash: ByteArray
-    private(set) var dataCipher: DataCipher!
+    private(set) var dataCipher: DataCipher
     private(set) var kdf: KeyDerivationFunction
     private(set) var kdfParams: KDFParams
     private(set) var streamCipher: StreamCipher
@@ -140,7 +140,11 @@ final class Header2: Eraseable {
 //    var cipherUUID: UUID? { return UUID(data: fields[.cipherID]) } // replaced by dataCipher
     var initialVector:  ByteArray { return fields[.encryptionIV]! }
     var isCompressed: Bool {
-        let compressionValue = UInt32(data: fields[.compressionFlags]!)!
+        guard let fieldData = fields[.compressionFlags],
+              let compressionValue = UInt32(data: fieldData) else {
+            assertionFailure()
+            return false
+        }
         return compressionValue != CompressionAlgorithm.noCompression.rawValue
     }
     
@@ -166,6 +170,7 @@ final class Header2: Eraseable {
         formatVersion = .v4
         data = ByteArray()
         fields = [:]
+        dataCipher = AESDataCipher()
         hash = ByteArray()
         kdf = AESKDF()
         kdfParams = kdf.defaultParams
@@ -184,6 +189,7 @@ final class Header2: Eraseable {
         hash.erase()
         for (_, field) in fields { field.erase() }
         fields.removeAll()
+        dataCipher = AESDataCipher()
         kdf = AESKDF()
         kdfParams = kdf.defaultParams
         innerStreamAlgorithm = .Null
@@ -464,9 +470,14 @@ final class Header2: Eraseable {
     /// Instantiates protected stream cipher (Salsa20/ChaCha20) using current `protectedStreamKey`,
     /// for reading/writing protected values.
     internal func initStreamCipher() {
+        guard let protectedStreamKey = protectedStreamKey else {
+            // This should not happen, because the presence of `protectedStreamKey`
+            // should have been checked in `verifyImportantFields()`
+            fatalError()
+        }
         self.streamCipher = StreamCipherFactory.create(
             algorithm: innerStreamAlgorithm,
-            key: protectedStreamKey!)
+            key: protectedStreamKey)
     }
     
     /// Calculates HMAC SHA256 of the raw header data

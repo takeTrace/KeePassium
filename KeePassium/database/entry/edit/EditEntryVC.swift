@@ -32,7 +32,7 @@ class EditEntryVC: UITableViewController, Refreshable {
     }
     private weak var delegate: EditEntryFieldsDelegate?
     private var databaseManagerNotifications: DatabaseManagerNotifications!
-    private var fields: [EditableEntryField]!
+    private var fields = [EditableEntryField]()
     private var isModified = false // was anything edited?
     
     /// Operation mode of the editor

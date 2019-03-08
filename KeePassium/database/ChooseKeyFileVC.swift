@@ -191,7 +191,7 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
         accessoryButtonTappedForRowWith indexPath: IndexPath)
     {
         let urlRef = urlRefs[indexPath.row - 1]
-        let cell = tableView.cellForRow(at: indexPath)!
+        guard let cell = tableView.cellForRow(at: indexPath) else { assertionFailure(); return }
         let databaseInfoVC = FileInfoVC.make(urlRef: urlRef, popoverSource: cell)
         present(databaseInfoVC, animated: true, completion: nil)
     }

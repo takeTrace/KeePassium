@@ -128,14 +128,14 @@ public class ByteArray: Eraseable {
         if sha256cache == nil {
             sha256cache = CryptoManager.sha256(of: self)
         }
-        return sha256cache!
+        return sha256cache! // safe to unwrap
     }
     
     public var sha512: ByteArray {
         if sha512cache == nil {
             sha512cache = CryptoManager.sha512(of: self)
         }
-        return sha512cache!
+        return sha512cache! // safe to unwrap
     }
     
     public var asData: Data { return Data(bytes: self.bytes) }
@@ -177,8 +177,7 @@ public class ByteArray: Eraseable {
         self.init(data: data)
     }
     convenience public init(utf8String: String) {
-        let data = utf8String.data(using: .utf8)! // will always succeed
-        self.init(data: data)
+        self.init(data: utf8String.utf8data)
     }
     convenience public init?(base64Encoded: String?) {
         if let base64Encoded = base64Encoded {

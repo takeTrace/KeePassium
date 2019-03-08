@@ -44,29 +44,29 @@ public class CustomIcon2: Eraseable {
         Diag.verbose("Loading XML: custom icon")
         
         erase()
-        var _uuid: UUID?
-        var _data: ByteArray?
+        var xmlUUID: UUID?
+        var xmlData: ByteArray?
         for tag in xml.children {
             switch tag.name {
             case Xml2.uuid:
-                _uuid = UUID(base64Encoded: tag.value)
+                xmlUUID = UUID(base64Encoded: tag.value)
             case Xml2.data:
-                _data = ByteArray(base64Encoded: tag.value ?? "")
+                xmlData = ByteArray(base64Encoded: tag.value ?? "")
             default:
                 Diag.error("Unexpected XML tag in CustomIcon: \(tag.name)")
                 throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: "CustomIcon/*")
             }
         }
-        guard _uuid != nil else {
+        guard let _uuid = xmlUUID else {
             Diag.error("Missing CustomIcon/UUID")
             throw Xml2.ParsingError.malformedValue(tag: "CustomIcon/UUID", value: nil)
         }
-        guard _data != nil else {
+        guard let _data = xmlData else {
             Diag.error("Missing CustomIcon/Data")
             throw Xml2.ParsingError.malformedValue(tag: "CustomIcon/Data", value: nil)
         }
-        self.uuid = _uuid!
-        self.data = _data!
+        self.uuid = _uuid
+        self.data = _data
     }
     
     func toXml() -> AEXMLElement {
