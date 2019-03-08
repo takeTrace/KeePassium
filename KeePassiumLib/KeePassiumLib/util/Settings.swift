@@ -89,6 +89,7 @@ public class Settings {
         case startWithSearch
         case groupSortOrder
         case entryListDetail
+        case entryViewerPage
 
         // Backup
         case backupDatabaseOnSave
@@ -874,6 +875,21 @@ public class Settings {
             if newValue != oldValue {
                 postChangeNotification(changedKey: Keys.entryListDetail)
             }
+        }
+    }
+    
+    /// Last used page/tab of the EntryViewer
+    public var entryViewerPage: Int {
+        get {
+            let storedPage = UserDefaults.appGroupShared
+                .object(forKey: Keys.entryViewerPage.rawValue) as? Int
+            return storedPage ?? 0
+        }
+        set {
+            updateAndNotify(
+                oldValue: entryViewerPage,
+                newValue: newValue,
+                key: Keys.entryViewerPage)
         }
     }
     
