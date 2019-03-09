@@ -51,7 +51,7 @@ class MainCoordinator: NSObject, Coordinator {
         watchdog = Watchdog.shared // init
         super.init()
 
-        SettingsMigrator.maybeUpgrade(Settings.current)
+        SettingsMigrator.processAppLaunch(with: Settings.current)
 
         navigationController.delegate = self
         watchdog.delegate = self

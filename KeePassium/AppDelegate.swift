@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ) -> Bool
     {
         AppGroup.applicationShared = application
-        SettingsMigrator.maybeUpgrade(Settings.current)
+        SettingsMigrator.processAppLaunch(with: Settings.current)
         
         // First thing first, cover the app to avoid flashing any content.
         // The cover will be hidden by Watchdog, if appropriate.

@@ -32,8 +32,11 @@ public enum KeychainError: LocalizedError {
 /// Helper class to simplify access to the system keychain.
 public class Keychain {
     public static let shared = Keychain()
+    
     private static let accessGroup: String? = nil
     private enum Service: String {
+        static let allValues: [Service] = [.general, .databaseKeys]
+        
         case general = "KeePassium"
         case databaseKeys = "KeePassium.dbKeys"
     }
@@ -205,5 +208,14 @@ public class Keychain {
     /// - Throws: KeychainError
     public func removeAllDatabaseKeys() throws {
         try remove(service: .databaseKeys, account: nil)
+    }
+    
+    /// Removes all data of this app from the keychain.
+    ///
+    /// - Throws: KeychainError
+    public func removeAll() throws {
+        for service in Service.allValues {
+            try remove(service: service, account: nil) // removes all accounts of the service
+        }
     }
 }
