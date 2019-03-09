@@ -100,17 +100,5 @@ public final class ChaCha20: StreamCipher {
     func decrypt(data: ByteArray, progress: Progress?=nil) throws -> ByteArray {
         return try encrypt(data: data, progress: progress) // throws ProgressInterruption
     }
-    
-    static func selftest() {
-        let c1 = ChaCha20(key: ByteArray(count: 32), iv: ByteArray(count: 12))
-        let out = try! c1.encrypt(data: ByteArray(count: 64))
-        let refOut = ByteArray.init(hexString:  "76b8e0ada0f13d90405d6ae55386bd28bdd219b8a08ded1aa836efcc8b770dc7da41597c5157488d7724e03fb8d84a376a43b8f41518a11cc387b669b2ee6586")!
-        print("out: \(out.asHexString)")
-        if out == refOut {
-            print("Test ok")
-        } else {
-            print("Test failed")
-        }
-    }
 }
 
