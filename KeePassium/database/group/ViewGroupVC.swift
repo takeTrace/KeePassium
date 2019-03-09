@@ -71,6 +71,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     private var searchResults: [SearchResult] = []
     private var searchController: UISearchController!
     var isSearchActive: Bool {
+        guard let searchController = searchController else { return false }
         return searchController.isActive && (searchController.searchBar.text?.isNotEmpty ?? false)
     }
     
@@ -103,8 +104,6 @@ open class ViewGroupVC: UITableViewController, Refreshable {
             style: .plain, target: self,
             action: #selector(onCreateNewItemAction)), animated: false)
         
-        setupSearch()
-
         isActivateSearch = Settings.current.isStartWithSearch && (group?.isRoot ?? false)
         
         databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
@@ -121,11 +120,8 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         settingsNotifications.startObserving()
         refresh()
         
-        if isActivateSearch {
-            isActivateSearch = false // activation is only once per database
-            DispatchQueue.main.async {
-                self.searchController.searchBar.becomeFirstResponder()
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.setupSearch()
         }
         
         if let warnings = loadingWarnings, !warnings.isEmpty {
@@ -195,17 +191,28 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     // MARK: - Searching
     
     private func setupSearch() {
-        searchController = UISearchController(searchResultsController: nil)
-        navigationItem.searchController = searchController
+        if navigationItem.searchController == nil  {
+            searchController = UISearchController(searchResultsController: nil)
+            navigationItem.searchController = searchController
+        } else {
+            searchController = navigationItem.searchController
+        }
+
         navigationItem.hidesSearchBarWhenScrolling = true
         searchController.searchBar.searchBarStyle = .default
         searchController.searchBar.returnKeyType = .search
         searchController.searchBar.barStyle = .default
-
         searchController.dimsBackgroundDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+
         definesPresentationContext = true
         searchController.searchResultsUpdater = self
+
+        if isActivateSearch {
+            isActivateSearch = false // activation is only once per database
+            searchController.searchBar.becomeFirstResponder()
+        }
     }
 
     // MARK: - Refreshing/updating
