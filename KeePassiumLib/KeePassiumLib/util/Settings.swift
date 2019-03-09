@@ -514,6 +514,9 @@ public class Settings {
     
     // MARK: - Internal
     
+    /// True iff the app has never been launched before.
+    public var isFirstLaunch: Bool { return _isFirstLaunch }
+    
     public var settingsVersion: Int {
         get {
             let storedVersion = UserDefaults.appGroupShared
@@ -1019,8 +1022,13 @@ public class Settings {
         }
     }
     
+    // MARK: - Internal vars and methods
+    
+    private var _isFirstLaunch: Bool
     private init() {
-        // nothing to do
+        let versionInfo = UserDefaults.appGroupShared
+            .object(forKey: Keys.settingsVersion.rawValue) as? Int
+        _isFirstLaunch = (versionInfo == nil)
     }
 
     // MARK: - Helper methods
