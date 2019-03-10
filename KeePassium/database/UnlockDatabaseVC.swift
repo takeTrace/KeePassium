@@ -135,9 +135,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         
         if let associatedKeyFileRef = Settings.current.getKeyFileForDatabase(databaseRef: databaseRef) {
             setKeyFile(urlRef: associatedKeyFileRef)
-        }
-        
-        rememberDatabaseKeySwitch.isOn = Settings.current.isRememberDatabaseKey
+        }        
     }
     
     // MARK: - Showing/hiding various messagess

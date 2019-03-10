@@ -35,7 +35,6 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     @IBOutlet weak var inputPanel: UIView!
     @IBOutlet weak var passwordField: ProtectedTextField!
     @IBOutlet weak var keyFileField: UITextField!
-    @IBOutlet weak var rememberMasterKeySwitch: UISwitch!
     
     weak var coordinator: MainCoordinator?
     weak var delegate: DatabaseUnlockerDelegate?
@@ -47,7 +46,6 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        rememberMasterKeySwitch.isOn = Settings.current.isRememberDatabaseKey
         
         // make background image
         view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
@@ -193,11 +191,6 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     @IBAction func didPressErrorDetailsButton(_ sender: Any) {
         Watchdog.shared.restart()
         coordinator?.showDiagnostics()
-    }
-    
-    @IBAction func didToggleRememberSwitch(_ sender: Any) {
-        Watchdog.shared.restart()
-        Settings.current.isRememberDatabaseKey = rememberMasterKeySwitch.isOn
     }
     
     @IBAction func didPressUnlock(_ sender: Any) {

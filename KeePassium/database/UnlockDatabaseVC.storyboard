@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eAa-Z5-pdq">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -14,28 +14,28 @@
         <!--Unlock Database-->
         <scene sceneID="Bah-z1-kFB">
             <objects>
-                <viewController storyboardIdentifier="UnlockDatabaseVC" title="Unlock Database" modalTransitionStyle="flipHorizontal" hidesBottomBarWhenPushed="YES" id="eAa-Z5-pdq" customClass="UnlockDatabaseVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UnlockDatabaseVC" title="Unlock Database" modalTransitionStyle="flipHorizontal" id="eAa-Z5-pdq" customClass="UnlockDatabaseVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bPc-V2-3Of">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cdl-k8-gTg" userLabel="KeyboardAdjustingView">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Database file name)" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsQ-5N-nP3">
-                                        <rect key="frame" x="112.5" y="243" width="150.5" height="19.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Database file name)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsQ-5N-nP3">
+                                        <rect key="frame" x="85" y="171.5" width="150.5" height="19.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                         <color key="textColor" name="PrimaryText"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" text="Database was closed by a timer." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epu-yU-Lyg">
-                                        <rect key="frame" x="8" y="615" width="359" height="16"/>
+                                        <rect key="frame" x="8" y="516" width="304" height="16"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" name="AuxiliaryText"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="3xv-vB-0Jn">
-                                        <rect key="frame" x="47.5" y="278.5" width="280" height="90"/>
+                                        <rect key="frame" x="20" y="207" width="280" height="90"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CuN-tE-lAG" customClass="ProtectedTextField" customModule="KeePassium" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="0.0" width="264" height="44"/>
@@ -84,30 +84,8 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l45-hq-1lr" userLabel="Unlock">
-                                        <rect key="frame" x="327.5" y="278.5" width="30" height="90"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                        <color key="tintColor" name="ActionTint"/>
-                                        <state key="normal" title="✓">
-                                            <color key="titleColor" name="ActionTint"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="ActionTint"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="didPressUnlock:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="9kb-5G-Hvo"/>
-                                        </connections>
-                                    </button>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1da-3k-RQm" userLabel="Error Message Panel">
-                                        <rect key="frame" x="106" y="207.5" width="163" height="19.5"/>
+                                        <rect key="frame" x="78.5" y="136" width="163" height="19.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Error message)" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2U-7y-vCm">
                                                 <rect key="frame" x="0.0" y="0.0" width="117" height="19.5"/>
@@ -136,49 +114,59 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="database-cloud-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="MLZ-P0-rnn">
-                                        <rect key="frame" x="75.5" y="238.5" width="29" height="29"/>
+                                        <rect key="frame" x="48" y="167" width="29" height="29"/>
                                         <color key="tintColor" name="PrimaryText"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="29" id="8AS-4O-0qN"/>
                                             <constraint firstAttribute="height" constant="29" id="rUf-rV-WA6"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember master password" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVC-n6-S5q">
-                                        <rect key="frame" x="47.5" y="382.5" width="207.5" height="19.5"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                        <color key="textColor" name="PrimaryText"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&quot;Remember master password&quot; switch has moved to app settings." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KE0-dM-47I">
+                                        <rect key="frame" x="20" y="357" width="280" height="34"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" name="AuxiliaryText"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lYJ-MK-Wfo">
-                                        <rect key="frame" x="278.5" y="376.5" width="51" height="31"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l45-hq-1lr" userLabel="Unlock">
+                                        <rect key="frame" x="20" y="305" width="280" height="44"/>
+                                        <color key="backgroundColor" name="ActionTint"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="vAF-Ke-xi5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <color key="tintColor" name="ActionText"/>
+                                        <state key="normal" title="Unlock"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="didToggleRememberDatabaseKey:" destination="eAa-Z5-pdq" eventType="valueChanged" id="Tl4-MR-NgG"/>
+                                            <action selector="didPressUnlock:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="9kb-5G-Hvo"/>
                                         </connections>
-                                    </switch>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="l45-hq-1lr" secondAttribute="trailing" id="1zC-6D-NgM"/>
-                                    <constraint firstItem="lYJ-MK-Wfo" firstAttribute="trailing" secondItem="3xv-vB-0Jn" secondAttribute="trailing" id="5ZJ-4Z-Q0z"/>
                                     <constraint firstItem="LsQ-5N-nP3" firstAttribute="leading" secondItem="MLZ-P0-rnn" secondAttribute="trailing" constant="8" id="5cX-Hn-j0I"/>
+                                    <constraint firstItem="l45-hq-1lr" firstAttribute="top" secondItem="3xv-vB-0Jn" secondAttribute="bottom" constant="8" id="77o-fO-qCY"/>
                                     <constraint firstItem="epu-yU-Lyg" firstAttribute="leading" secondItem="cdl-k8-gTg" secondAttribute="leadingMargin" id="Aou-HZ-SdU"/>
+                                    <constraint firstItem="1da-3k-RQm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="topMargin" id="EbW-cm-bpV"/>
                                     <constraint firstItem="1da-3k-RQm" firstAttribute="centerX" secondItem="cdl-k8-gTg" secondAttribute="centerX" id="FP4-XB-1dt"/>
                                     <constraint firstItem="3xv-vB-0Jn" firstAttribute="top" secondItem="LsQ-5N-nP3" secondAttribute="bottom" constant="16" id="HIq-Is-jVL"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="epu-yU-Lyg" secondAttribute="bottom" constant="8" id="JGC-h1-9tH"/>
                                     <constraint firstItem="epu-yU-Lyg" firstAttribute="trailing" secondItem="cdl-k8-gTg" secondAttribute="trailingMargin" id="NJc-XI-9Ke"/>
-                                    <constraint firstItem="l45-hq-1lr" firstAttribute="top" secondItem="3xv-vB-0Jn" secondAttribute="top" id="RL8-9u-fsQ"/>
-                                    <constraint firstItem="l45-hq-1lr" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="trailing" id="UsE-K5-Z4f"/>
-                                    <constraint firstItem="l45-hq-1lr" firstAttribute="bottom" secondItem="3xv-vB-0Jn" secondAttribute="bottom" id="YTG-jU-SOP"/>
+                                    <constraint firstItem="l45-hq-1lr" firstAttribute="trailing" secondItem="3xv-vB-0Jn" secondAttribute="trailing" id="aR7-Cy-5qJ"/>
                                     <constraint firstItem="MLZ-P0-rnn" firstAttribute="centerY" secondItem="LsQ-5N-nP3" secondAttribute="centerY" id="cDA-wr-znO"/>
+                                    <constraint firstItem="KE0-dM-47I" firstAttribute="leading" secondItem="l45-hq-1lr" secondAttribute="leading" id="ceW-d9-fIn"/>
+                                    <constraint firstItem="KE0-dM-47I" firstAttribute="top" secondItem="l45-hq-1lr" secondAttribute="bottom" constant="8" id="hVu-xg-KlU"/>
                                     <constraint firstItem="LsQ-5N-nP3" firstAttribute="centerX" secondItem="cdl-k8-gTg" secondAttribute="centerX" id="iuC-mL-Ish"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LsQ-5N-nP3" secondAttribute="trailing" constant="8" id="jGG-qk-12c"/>
-                                    <constraint firstItem="3xv-vB-0Jn" firstAttribute="centerY" secondItem="cdl-k8-gTg" secondAttribute="centerY" priority="750" id="lFg-zk-45a"/>
-                                    <constraint firstItem="BVC-n6-S5q" firstAttribute="centerY" secondItem="lYJ-MK-Wfo" secondAttribute="centerY" id="mzG-2e-xKI"/>
+                                    <constraint firstItem="3xv-vB-0Jn" firstAttribute="centerY" secondItem="cdl-k8-gTg" secondAttribute="centerY" priority="250" constant="-22" id="lFg-zk-45a"/>
                                     <constraint firstItem="LsQ-5N-nP3" firstAttribute="top" secondItem="1da-3k-RQm" secondAttribute="bottom" constant="16" id="osx-bU-Dh5"/>
                                     <constraint firstItem="MLZ-P0-rnn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="leading" constant="8" id="pCZ-4q-dmj"/>
-                                    <constraint firstItem="BVC-n6-S5q" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leading" id="qYO-if-r8X"/>
                                     <constraint firstItem="3xv-vB-0Jn" firstAttribute="centerX" secondItem="cdl-k8-gTg" secondAttribute="centerX" id="r4b-TP-z88"/>
-                                    <constraint firstItem="lYJ-MK-Wfo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BVC-n6-S5q" secondAttribute="trailing" constant="8" id="sL2-r3-8kF"/>
-                                    <constraint firstItem="lYJ-MK-Wfo" firstAttribute="top" secondItem="3xv-vB-0Jn" secondAttribute="bottom" constant="8" id="whC-E5-pSx"/>
+                                    <constraint firstItem="KE0-dM-47I" firstAttribute="trailing" secondItem="l45-hq-1lr" secondAttribute="trailing" id="tkl-ZG-YXv"/>
+                                    <constraint firstItem="l45-hq-1lr" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leading" id="ulw-yX-egg"/>
                                     <constraint firstItem="1da-3k-RQm" firstAttribute="width" relation="lessThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="width" id="yiL-kj-a2f"/>
                                 </constraints>
                             </view>
@@ -204,17 +192,19 @@
                         <outlet property="keyFileField" destination="mYY-hP-3vH" id="ITo-zF-Ead"/>
                         <outlet property="keyboardAdjView" destination="cdl-k8-gTg" id="gDU-xh-QP9"/>
                         <outlet property="passwordField" destination="CuN-tE-lAG" id="8Cx-tM-tfp"/>
-                        <outlet property="rememberDatabaseKeySwitch" destination="lYJ-MK-Wfo" id="zvp-PW-bQ6"/>
                         <outlet property="watchdogTimeoutLabel" destination="epu-yU-Lyg" id="8Mz-oL-08S"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Juw-QX-Vel" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="757.5" y="-438.38028169014086"/>
+            <point key="canvasLocation" x="756" y="-438.53073463268368"/>
         </scene>
     </scenes>
     <resources>
         <image name="database-cloud-listitem" width="29" height="29"/>
+        <namedColor name="ActionText">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ActionTint">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
