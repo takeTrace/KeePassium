@@ -70,7 +70,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     }
     
     func showErrorMessage(text: String) {
-        errorMessageLabel.text = " " + text + " "
+        errorMessageLabel.text = text
         UIView.animate(
             withDuration: 0.3,
             delay: 0.0,

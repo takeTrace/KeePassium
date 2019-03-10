@@ -85,33 +85,41 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1da-3k-RQm" userLabel="Error Message Panel">
-                                        <rect key="frame" x="78.5" y="136" width="163" height="19.5"/>
+                                        <rect key="frame" x="74.5" y="125.5" width="171" height="30"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Error message)" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2U-7y-vCm">
-                                                <rect key="frame" x="0.0" y="0.0" width="117" height="19.5"/>
-                                                <color key="backgroundColor" name="WarningBackground"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Error message)" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2U-7y-vCm">
+                                                <rect key="frame" x="8" y="0.0" width="117" height="30"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" name="WarningText"/>
                                                 <nil key="highlightedColor"/>
                                                 <size key="shadowOffset" width="1" height="1"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrD-QC-R8N">
-                                                <rect key="frame" x="125" y="-9" width="38" height="38"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrD-QC-R8N">
+                                                <rect key="frame" x="133" y="0.0" width="38" height="30"/>
                                                 <color key="tintColor" name="ActionTint"/>
-                                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
                                                 <connections>
                                                     <action selector="didPressErrorDetails:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="edS-Y9-GT3"/>
                                                 </connections>
                                             </button>
                                         </subviews>
+                                        <color key="backgroundColor" name="WarningBackground"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="d2U-7y-vCm" secondAttribute="bottom" id="1mb-u6-IgV"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="nrD-QC-R8N" secondAttribute="bottom" id="1vr-aB-9MA"/>
                                             <constraint firstItem="nrD-QC-R8N" firstAttribute="leading" secondItem="d2U-7y-vCm" secondAttribute="trailing" constant="8" id="Ezw-RE-QJt"/>
                                             <constraint firstItem="nrD-QC-R8N" firstAttribute="centerY" secondItem="d2U-7y-vCm" secondAttribute="centerY" id="Ld0-jc-4xf"/>
                                             <constraint firstItem="d2U-7y-vCm" firstAttribute="top" secondItem="1da-3k-RQm" secondAttribute="top" id="MW8-cL-bE4"/>
                                             <constraint firstAttribute="trailing" secondItem="nrD-QC-R8N" secondAttribute="trailing" id="bGv-4g-Kjr"/>
-                                            <constraint firstItem="d2U-7y-vCm" firstAttribute="leading" secondItem="1da-3k-RQm" secondAttribute="leading" id="wHo-hI-0As"/>
+                                            <constraint firstItem="nrD-QC-R8N" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1da-3k-RQm" secondAttribute="top" id="fUg-8o-7ge"/>
+                                            <constraint firstItem="d2U-7y-vCm" firstAttribute="leading" secondItem="1da-3k-RQm" secondAttribute="leadingMargin" id="wHo-hI-0As"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="database-cloud-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="MLZ-P0-rnn">
                                         <rect key="frame" x="48" y="167" width="29" height="29"/>
@@ -155,6 +163,7 @@
                                     <constraint firstItem="3xv-vB-0Jn" firstAttribute="top" secondItem="LsQ-5N-nP3" secondAttribute="bottom" constant="16" id="HIq-Is-jVL"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="epu-yU-Lyg" secondAttribute="bottom" constant="8" id="JGC-h1-9tH"/>
                                     <constraint firstItem="epu-yU-Lyg" firstAttribute="trailing" secondItem="cdl-k8-gTg" secondAttribute="trailingMargin" id="NJc-XI-9Ke"/>
+                                    <constraint firstItem="1da-3k-RQm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="leadingMargin" id="TRV-Gf-C9B"/>
                                     <constraint firstItem="l45-hq-1lr" firstAttribute="trailing" secondItem="3xv-vB-0Jn" secondAttribute="trailing" id="aR7-Cy-5qJ"/>
                                     <constraint firstItem="MLZ-P0-rnn" firstAttribute="centerY" secondItem="LsQ-5N-nP3" secondAttribute="centerY" id="cDA-wr-znO"/>
                                     <constraint firstItem="KE0-dM-47I" firstAttribute="leading" secondItem="l45-hq-1lr" secondAttribute="leading" id="ceW-d9-fIn"/>
@@ -164,10 +173,10 @@
                                     <constraint firstItem="3xv-vB-0Jn" firstAttribute="centerY" secondItem="cdl-k8-gTg" secondAttribute="centerY" priority="250" constant="-22" id="lFg-zk-45a"/>
                                     <constraint firstItem="LsQ-5N-nP3" firstAttribute="top" secondItem="1da-3k-RQm" secondAttribute="bottom" constant="16" id="osx-bU-Dh5"/>
                                     <constraint firstItem="MLZ-P0-rnn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="leading" constant="8" id="pCZ-4q-dmj"/>
+                                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="1da-3k-RQm" secondAttribute="trailing" id="qJL-KC-hd6"/>
                                     <constraint firstItem="3xv-vB-0Jn" firstAttribute="centerX" secondItem="cdl-k8-gTg" secondAttribute="centerX" id="r4b-TP-z88"/>
                                     <constraint firstItem="KE0-dM-47I" firstAttribute="trailing" secondItem="l45-hq-1lr" secondAttribute="trailing" id="tkl-ZG-YXv"/>
                                     <constraint firstItem="l45-hq-1lr" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leading" id="ulw-yX-egg"/>
-                                    <constraint firstItem="1da-3k-RQm" firstAttribute="width" relation="lessThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="width" id="yiL-kj-a2f"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -218,7 +227,7 @@
             <color red="0.94199997186660767" green="0.59700000286102295" blue="0.21699999272823334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="WarningText">
-            <color red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
     <color key="tintColor" name="ActionTint"/>
