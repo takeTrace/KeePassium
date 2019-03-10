@@ -28,7 +28,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     @IBOutlet private weak var errorDetailButton: UIButton!
     @IBOutlet private weak var watchdogTimeoutLabel: UILabel!
     @IBOutlet private weak var databaseIconImage: UIImageView!
-    @IBOutlet weak var rememberDatabaseKeySwitch: UISwitch!
     
     public var databaseRef: URLReference! {
         didSet {
@@ -272,10 +271,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     @IBAction func didPressErrorDetails(_ sender: Any) {
         let diagInfoVC = ViewDiagnosticsVC.make()
         present(diagInfoVC, animated: true, completion: nil)
-    }
-    
-    @IBAction func didToggleRememberDatabaseKey(_ sender: Any) {
-        Settings.current.isRememberDatabaseKey = rememberDatabaseKeySwitch.isOn
     }
     
     @IBAction func didPressUnlock(_ sender: Any) {
