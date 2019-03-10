@@ -622,10 +622,7 @@ public class Settings {
             let oldValue = isKeepKeyFileAssociations
             UserDefaults.appGroupShared.set(newValue, forKey: Keys.keepKeyFileAssociations.rawValue)
             if !newValue {
-                // clear existing associations
-                UserDefaults.appGroupShared.setValue(
-                    Dictionary<String, Data>(),
-                    forKey: Keys.keyFileAssociations.rawValue)
+                removeAllKeyFileAssociations()
             }
             if newValue != oldValue {
                 postChangeNotification(changedKey: Keys.keepKeyFileAssociations)
@@ -683,6 +680,13 @@ public class Settings {
         UserDefaults.appGroupShared.setValue(db2key, forKey: Keys.keyFileAssociations.rawValue)
     }
     
+    /// Removes all associations between databases and key files.
+    public func removeAllKeyFileAssociations() {
+        UserDefaults.appGroupShared.setValue(
+            Dictionary<String, Data>(),
+            forKey: Keys.keyFileAssociations.rawValue)
+    }
+
     // MARK: - AppLock and other timeouts
     
     public var isAppLockEnabled: Bool {
