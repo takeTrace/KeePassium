@@ -37,7 +37,6 @@ class MainCoordinator: NSObject, Coordinator {
     fileprivate var passcodeInputController: PasscodeInputVC?
     fileprivate var isBiometricAuthShown = false
     fileprivate var isPasscodeInputShown = false
-    fileprivate var isStarted = false
     
     init(rootController: CredentialProviderViewController) {
         self.rootController = rootController
@@ -73,9 +72,23 @@ class MainCoordinator: NSObject, Coordinator {
     }
 
     fileprivate func startMainFlow() {
-        showDatabaseChooser() { [weak self] in
-            self?.isStarted = true
+        let isPreviouslyCrashed = !Settings.current.isAutoFillFinishedOK
+        if isPreviouslyCrashed {
+            showCrashReport()
+        } else {
+            showDatabaseChooser(canPickDefaultDatabase: !isPreviouslyCrashed, completion: nil)
         }
+    }
+    
+    // Called/forwarded from the rootController
+    public func didReceiveMemoryWarning() {
+        Diag.error("Received a memory warning")
+        DatabaseManager.shared.progress.cancel()
+        let alert = UIAlertController.make(
+            title: NSLocalizedString("Not enough memory", comment: "Title of an `Out of Memory` error message"),
+            message: NSLocalizedString("Not enough memory to continue. This can happen with large databases or memory-demanding database settings (Argon2).\n\nPlease contact us if you need help with this.", comment: "Message shown when the app runs out of memory."),
+            cancelButtonTitle: LString.actionDismiss)
+        navigationController.present(alert, animated: true, completion: nil)
     }
     
     // Clears and closes any resources before quitting the extension.
@@ -87,6 +100,7 @@ class MainCoordinator: NSObject, Coordinator {
     /// Closes all view controllers and quits the extension.
     func dismissAndQuit() {
         rootController.dismiss()
+        Settings.current.isAutoFillFinishedOK = true
         cleanup()
     }
 
@@ -98,6 +112,7 @@ class MainCoordinator: NSObject, Coordinator {
         rootController.extensionContext.completeRequest(
             withSelectedCredential: passwordCredential,
             completionHandler: nil)
+        Settings.current.isAutoFillFinishedOK = true
         cleanup()
     }
     
@@ -113,6 +128,9 @@ class MainCoordinator: NSObject, Coordinator {
         password: String,
         keyFile: URLReference?)
     {
+        // This flag will be reset to `true` after we successfully quit the extension.
+        Settings.current.isAutoFillFinishedOK = false
+        
         isLoadingUsingStoredDatabaseKey = false
         DatabaseManager.shared.startLoadingDatabase(
             database: database,
@@ -124,6 +142,9 @@ class MainCoordinator: NSObject, Coordinator {
         database: URLReference,
         compositeKey: SecureByteArray)
     {
+        // This flag will be reset to `true` after we successfully quit the extension.
+        Settings.current.isAutoFillFinishedOK = false
+        
         isLoadingUsingStoredDatabaseKey = true
         DatabaseManager.shared.startLoadingDatabase(
             database: database,
@@ -132,7 +153,13 @@ class MainCoordinator: NSObject, Coordinator {
     
     // MARK: - Actions
     
-    func showDatabaseChooser(completion: (()->Void)?) {
+    func showCrashReport() {
+        let vc = CrashReportVC.instantiateFromStoryboard()
+        vc.delegate = self
+        navigationController.pushViewController(vc, animated: false)
+    }
+
+    func showDatabaseChooser(canPickDefaultDatabase: Bool, completion: (()->Void)?) {
         let databaseChooserVC = DatabaseChooserVC.instantiateFromStoryboard()
         databaseChooserVC.delegate = self
         navigationController.pushViewController(databaseChooserVC, animated: false)
@@ -143,9 +170,15 @@ class MainCoordinator: NSObject, Coordinator {
             firstSetupVC.navigationItem.hidesBackButton = true
             navigationController.pushViewController(firstSetupVC, animated: false)
             completion?()
-        } else if allRefs.count == 1 {
+        } else if allRefs.count == 1 && canPickDefaultDatabase {
             // If only one database, open it straight away
-            showDatabaseUnlocker(database: allRefs.first!, animated: false, completion: completion)
+            let defaultDatabaseRef = allRefs.first!
+            showDatabaseUnlocker(
+                database: defaultDatabaseRef,
+                animated: false,
+                completion: completion)
+        } else {
+            completion?()
         }
     }
     
@@ -585,5 +618,16 @@ extension MainCoordinator: PasscodeInputDelegate {
     
     func passcodeInputDidRequestBiometrics(_ sender: PasscodeInputVC) {
         showBiometricAuth()
+    }
+}
+
+// MARK: - CrashReportDelegate
+extension MainCoordinator: CrashReportDelegate {
+    func didPressDismiss(in crashReport: CrashReportVC) {
+        // crash report has been presented, the issue is now resolved
+        Settings.current.isAutoFillFinishedOK = true
+        
+        navigationController.viewControllers.removeAll()
+        startMainFlow()
     }
 }

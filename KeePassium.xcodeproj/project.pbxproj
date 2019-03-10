@@ -147,6 +147,8 @@
 		75D1674A21464333005E33C3 /* AboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D1674921464333005E33C3 /* AboutVC.swift */; };
 		75D3A3AF21BAE53F00255FC3 /* DatabaseFileListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D3A3AE21BAE53F00255FC3 /* DatabaseFileListCell.swift */; };
 		75D3A3B121BAE66F00255FC3 /* DatabaseFileListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D3A3AE21BAE53F00255FC3 /* DatabaseFileListCell.swift */; };
+		75D5D3FF2235CD510003CD55 /* CrashReportVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75D5D3FE2235CD510003CD55 /* CrashReportVC.storyboard */; };
+		75D5D4012235CD720003CD55 /* CrashReportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D5D4002235CD720003CD55 /* CrashReportVC.swift */; };
 		75DC043320E9E0C9007E63EC /* GroupChangeObserver+Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DC043220E9E0C9007E63EC /* GroupChangeObserver+Notifier.swift */; };
 		75E371942108CA08002602BD /* ProgressOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E371932108CA08002602BD /* ProgressOverlay.swift */; };
 		75EA64182098FC0500DDB941 /* ChooseDatabaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA64172098FC0500DDB941 /* ChooseDatabaseVC.swift */; };
@@ -308,6 +310,8 @@
 		75CFBE2921C2BDDF0029A80A /* DatabaseUnlockerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUnlockerVC.swift; sourceTree = "<group>"; };
 		75D1674921464333005E33C3 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
 		75D3A3AE21BAE53F00255FC3 /* DatabaseFileListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFileListCell.swift; sourceTree = "<group>"; };
+		75D5D3FE2235CD510003CD55 /* CrashReportVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CrashReportVC.storyboard; sourceTree = "<group>"; };
+		75D5D4002235CD720003CD55 /* CrashReportVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashReportVC.swift; sourceTree = "<group>"; };
 		75DC043220E9E0C9007E63EC /* GroupChangeObserver+Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GroupChangeObserver+Notifier.swift"; sourceTree = "<group>"; };
 		75E371932108CA08002602BD /* ProgressOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlay.swift; sourceTree = "<group>"; };
 		75EA64172098FC0500DDB941 /* ChooseDatabaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDatabaseVC.swift; sourceTree = "<group>"; };
@@ -574,6 +578,8 @@
 		75CBABA421C16DD400B8AFE2 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				75D5D3FE2235CD510003CD55 /* CrashReportVC.storyboard */,
+				75D5D4002235CD720003CD55 /* CrashReportVC.swift */,
 				75CBABA021C16CD000B8AFE2 /* FirstSetupVC.swift */,
 				75CBABA221C16D8E00B8AFE2 /* FirstSetupVC.storyboard */,
 				750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */,
@@ -712,6 +718,7 @@
 				75802632222EBC3800F4525F /* ProgressVC.storyboard in Resources */,
 				750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */,
 				750CFC0621BAD96C00E62B09 /* WelcomeVC.storyboard in Resources */,
+				75D5D3FF2235CD510003CD55 /* CrashReportVC.storyboard in Resources */,
 				75CBABA321C16D8E00B8AFE2 /* FirstSetupVC.storyboard in Resources */,
 				7532A24F21C5A03F005DF56F /* KeyFileChooserVC.storyboard in Resources */,
 				75CBABA621C1C2DB00B8AFE2 /* FileInfoVC.storyboard in Resources */,
@@ -766,6 +773,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75CBABA521C1C2D100B8AFE2 /* FileInfoVC.swift in Sources */,
+				75D5D4012235CD720003CD55 /* CrashReportVC.swift in Sources */,
 				7532A24D21C5A035005DF56F /* KeyFileChooserVC.swift in Sources */,
 				750CFBCB21BA9ACD00E62B09 /* CredentialProviderViewController.swift in Sources */,
 				757FB3CF21F9C51C00F016FA /* UITextView+border.swift in Sources */,

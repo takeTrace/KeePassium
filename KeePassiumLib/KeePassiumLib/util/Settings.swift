@@ -94,6 +94,9 @@ public class Settings {
         // Backup
         case backupDatabaseOnSave
         
+        // AutoFill crash watchdog
+        case autoFillFinishedOK
+        
         // Password generator
         case passwordGeneratorLength
         case passwordGeneratorIncludeLowerCase
@@ -915,6 +918,31 @@ public class Settings {
                 oldValue: isBackupDatabaseOnSave,
                 newValue: newValue,
                 key: .backupDatabaseOnSave)
+        }
+    }
+    
+    // MARK: - AutoFill crash watchdog
+    
+    /// Is set to `false` while AutoFill is running,
+    /// and set to `true` only after a controlled/graceful finish.
+    /// If this flag is `false` on AutoFill start,
+    /// the extension has previously crashed (likely went out of memory).
+    public var isAutoFillFinishedOK: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.autoFillFinishedOK.rawValue)
+                as? Bool
+            return stored ?? true
+        }
+        set {
+            updateAndNotify(
+                oldValue: isAutoFillFinishedOK,
+                newValue: newValue,
+                key: Keys.autoFillFinishedOK)
+            
+            // `isAutoFillFinishedOK` is written just before a possible out of memory crash,
+            // so we must make sure it has actually been written.
+            UserDefaults.appGroupShared.synchronize()
         }
     }
 

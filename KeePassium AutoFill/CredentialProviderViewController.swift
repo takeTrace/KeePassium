@@ -44,6 +44,10 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         )
     }
     
+    override func didReceiveMemoryWarning() {
+        mainCoordinator?.didReceiveMemoryWarning()
+    }
+    
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
