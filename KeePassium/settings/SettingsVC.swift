@@ -21,14 +21,9 @@ import LocalAuthentication
 class SettingsVC: UITableViewController, Refreshable {
     @IBOutlet weak var startWithSearchSwitch: UISwitch!
 
-    @IBOutlet weak var appLockCell: UITableViewCell!
-    @IBOutlet weak var databaseTimeoutCell: UITableViewCell!
-    @IBOutlet weak var clipboardTimeoutCell: UITableViewCell!
-
-    @IBOutlet weak var rememberKeyFilesSwitch: UISwitch!
-
-    @IBOutlet weak var makeBackupsSwitch: UISwitch!
-
+    @IBOutlet weak var appSafetyCell: UITableViewCell!
+    @IBOutlet weak var dataSafetyCell: UITableViewCell!
+    
     @IBOutlet weak var diagnosticLogCell: UITableViewCell!
     @IBOutlet weak var contactSupportCell: UITableViewCell!
     @IBOutlet weak var rateTheAppCell: UITableViewCell!
@@ -47,29 +42,23 @@ class SettingsVC: UITableViewController, Refreshable {
         return navVC
     }
 
+    // MARK: - VC life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         settingsNotifications = SettingsNotifications(observer: self)
-        settingsNotifications.startObserving()
-        
-        let appLockCellTitle: String
-        let biometryType = LAContext.getBiometryType()
-        if let biometryTypeName = biometryType.name {
-            appLockCellTitle = NSLocalizedString(
-                "App Lock & \(biometryTypeName)",
-                comment: "Settings section about app passcode protection and biometrics. biometryMethodName will be either 'Touch ID' or 'Face ID'.")
-        } else {
-            appLockCellTitle = NSLocalizedString(
-                "App Lock",
-                comment: "Settings section about app passcode protection")
-        }
-        appLockCell.textLabel?.text = appLockCellTitle
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        settingsNotifications.startObserving()
         refresh()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        settingsNotifications.stopObserving()
+        super.viewWillDisappear(animated)
     }
     
     func dismissPopover(animated: Bool) {
@@ -79,11 +68,18 @@ class SettingsVC: UITableViewController, Refreshable {
     func refresh() {
         let settings = Settings.current
         startWithSearchSwitch.isOn = settings.isStartWithSearch
-        rememberKeyFilesSwitch.isOn = settings.isKeepKeyFileAssociations
-        makeBackupsSwitch.isOn = settings.isBackupDatabaseOnSave
-        appLockCell.detailTextLabel?.text = getAppLockStatus()
-        databaseTimeoutCell.detailTextLabel?.text = settings.databaseCloseTimeout.shortTitle
-        clipboardTimeoutCell.detailTextLabel?.text = settings.clipboardTimeout.shortTitle
+        
+        let biometryType = LAContext.getBiometryType()
+        if let biometryTypeName = biometryType.name {
+            appSafetyCell.detailTextLabel?.text = NSLocalizedString(
+                "App Lock, \(biometryTypeName), timeout",
+                comment: "Settings: subtitle of the `App Protection` section. biometryTypeName will be either 'Touch ID' or 'Face ID'.")
+        } else {
+            appSafetyCell.detailTextLabel?.text = NSLocalizedString(
+                "App Lock, passcode, timeout",
+                comment: "Settings: subtitle of the `App Protection` section when biometric auth is not available.")
+        }
+
     }
     
     /// Returns App Lock status description: needs passcode/timeout/error
@@ -99,28 +95,24 @@ class SettingsVC: UITableViewController, Refreshable {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
         switch selectedCell {
-        case appLockCell:
-            let appLockSettingsVC = SettingsAppLockVC.make()
+        case appSafetyCell:
+            let appLockSettingsVC = SettingsAppLockVC.instantiateFromStoryboard()
             show(appLockSettingsVC, sender: self)
-        case databaseTimeoutCell:
-            let databaseTimeoutSettingsVC = SettingsDatabaseTimeoutVC.make()
-            show(databaseTimeoutSettingsVC, sender: self)
-        case clipboardTimeoutCell:
-            let clipboardTimeoutSettingsVC = SettingsClipboardTimeoutVC.make()
-            show(clipboardTimeoutSettingsVC, sender: self)
+        case dataSafetyCell:
+            let dataProtectionSettingsVC = SettingsDataProtectionVC.instantiateFromStoryboard()
+            show(dataProtectionSettingsVC, sender: self)
         case diagnosticLogCell:
             let viewer = ViewDiagnosticsVC.make()
-            present(viewer, animated: true, completion: nil) //TODO: change to show()?
+            show(viewer, sender: self)
         case contactSupportCell:
             SupportEmailComposer.show(includeDiagnostics: false)
         case rateTheAppCell:
             AppStoreReviewHelper.writeReview()
         case aboutAppCell:
             let aboutVC = AboutVC.make()
-            navigationController?.pushViewController(aboutVC, animated: true)//TODO: change to show()?
-//            present(aboutVC, animated: true, completion: nil)
+            show(aboutVC, sender: self)
         default:
-            assertionFailure("Unexpected cell selection")
+            break
         }
     }
     
@@ -131,15 +123,6 @@ class SettingsVC: UITableViewController, Refreshable {
     
     @IBAction func didChangeStartWithSearch(_ sender: Any) {
         Settings.current.isStartWithSearch = startWithSearchSwitch.isOn
-        refresh()
-    }
-    @IBAction func didChangeRememberKeyFiles(_ sender: Any) {
-        Settings.current.isKeepKeyFileAssociations = rememberKeyFilesSwitch.isOn
-        refresh()
-    }
-    
-    @IBAction func didChangeMakeBackups(_ sender: Any) {
-        Settings.current.isBackupDatabaseOnSave = makeBackupsSwitch.isOn
         refresh()
     }
 }

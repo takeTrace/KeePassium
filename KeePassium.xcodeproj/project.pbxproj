@@ -35,6 +35,8 @@
 		7529EAEB211577EA0093B117 /* UITableViewCell+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529EAEA211577EA0093B117 /* UITableViewCell+extension.swift */; };
 		752B1E9320E8AA070073AABD /* EditableEntryField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752B1E9220E8AA070073AABD /* EditableEntryField.swift */; };
 		752BB12520F089B30070FAC0 /* SettingsItemListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752BB12420F089B30070FAC0 /* SettingsItemListVC.swift */; };
+		752ED68B2235543F00C20D3E /* SettingsDataProtectionVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 752ED68A2235543F00C20D3E /* SettingsDataProtectionVC.storyboard */; };
+		752ED68D2235547D00C20D3E /* SettingsDataProtectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752ED68C2235547D00C20D3E /* SettingsDataProtectionVC.swift */; };
 		7532A24D21C5A035005DF56F /* KeyFileChooserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7532A24C21C5A035005DF56F /* KeyFileChooserVC.swift */; };
 		7532A24F21C5A03F005DF56F /* KeyFileChooserVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7532A24E21C5A03F005DF56F /* KeyFileChooserVC.storyboard */; };
 		753A3EEA20D3776D00A1CF70 /* Refreshable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753A3EE920D3776D00A1CF70 /* Refreshable.swift */; };
@@ -208,6 +210,8 @@
 		7529EAEA211577EA0093B117 /* UITableViewCell+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+extension.swift"; sourceTree = "<group>"; };
 		752B1E9220E8AA070073AABD /* EditableEntryField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableEntryField.swift; sourceTree = "<group>"; };
 		752BB12420F089B30070FAC0 /* SettingsItemListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemListVC.swift; sourceTree = "<group>"; };
+		752ED68A2235543F00C20D3E /* SettingsDataProtectionVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsDataProtectionVC.storyboard; sourceTree = "<group>"; };
+		752ED68C2235547D00C20D3E /* SettingsDataProtectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataProtectionVC.swift; sourceTree = "<group>"; };
 		7532A24C21C5A035005DF56F /* KeyFileChooserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyFileChooserVC.swift; sourceTree = "<group>"; };
 		7532A24E21C5A03F005DF56F /* KeyFileChooserVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyFileChooserVC.storyboard; sourceTree = "<group>"; };
 		753A3EE920D3776D00A1CF70 /* Refreshable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refreshable.swift; sourceTree = "<group>"; };
@@ -376,6 +380,8 @@
 				75C38018217A078D006F74C2 /* SettingsClipboardTimeoutVC.storyboard */,
 				752BB12420F089B30070FAC0 /* SettingsItemListVC.swift */,
 				75C3800D217A0344006F74C2 /* SettingsItemListVC.storyboard */,
+				752ED68C2235547D00C20D3E /* SettingsDataProtectionVC.swift */,
+				752ED68A2235543F00C20D3E /* SettingsDataProtectionVC.storyboard */,
 			);
 			path = settings;
 			sourceTree = "<group>";
@@ -746,6 +752,7 @@
 				75C3800C217A02DD006F74C2 /* SettingsFileSortingVC.storyboard in Resources */,
 				75C3803F217A281D006F74C2 /* UnlockDatabaseVC.storyboard in Resources */,
 				75C38019217A078D006F74C2 /* SettingsClipboardTimeoutVC.storyboard in Resources */,
+				752ED68B2235543F00C20D3E /* SettingsDataProtectionVC.storyboard in Resources */,
 				7546FBCA20C104EE00C5D834 /* SettingsVC.storyboard in Resources */,
 				75C3802D217A2650006F74C2 /* AppCoverVC.storyboard in Resources */,
 			);
@@ -799,6 +806,7 @@
 				754BF07F2082A6BD00E3A292 /* AppDelegate.swift in Sources */,
 				7584B3F120DD908A0086C094 /* UITextView+border.swift in Sources */,
 				752BB12520F089B30070FAC0 /* SettingsItemListVC.swift in Sources */,
+				752ED68D2235547D00C20D3E /* SettingsDataProtectionVC.swift in Sources */,
 				751BE253211C395D0071050A /* ViewDiagnosticsVC.swift in Sources */,
 				7561850320E033DB00EEFAEE /* WatchdogAwareTextView.swift in Sources */,
 				7546FBC620C1027700C5D834 /* SettingsVC.swift in Sources */,

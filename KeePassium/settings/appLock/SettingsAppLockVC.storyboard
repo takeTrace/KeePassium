@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--App Lock-->
+        <!--App Protection-->
         <scene sceneID="kIp-0I-a3K">
             <objects>
-                <tableViewController storyboardIdentifier="SettingsAppLockVC" title="App Lock" id="U5m-je-MhO" customClass="SettingsAppLockVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsAppLockVC" title="App Protection" id="U5m-je-MhO" customClass="SettingsAppLockVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Yab-03-eds">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,7 +28,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enabled" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IS1-Lb-MFy">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable AppLock" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IS1-Lb-MFy">
                                                     <rect key="frame" x="61" y="11.5" width="186" height="20.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" name="PrimaryText"/>
@@ -62,87 +62,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="After the timeout, you will need to enter the passcode to access the app." id="m50-fl-4tu">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ef4-Jw-xeO" detailTextLabel="FWz-EI-KaZ" imageView="VMH-qU-wJg" style="IBUITableViewCellStyleValue1" id="DtW-MQ-6ly">
-                                        <rect key="frame" x="0.0" y="127" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DtW-MQ-6ly" id="sU6-P0-VnC">
-                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Timeout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Ef4-Jw-xeO">
-                                                    <rect key="frame" x="60" y="12" width="63" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" name="PrimaryText"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="FWz-EI-KaZ">
-                                                    <rect key="frame" x="243.5" y="13" width="41.5" height="19.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                    <color key="textColor" name="AuxiliaryText"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="settings-app-lock-timeout-listitem" id="VMH-qU-wJg">
-                                                    <rect key="frame" x="16" y="7" width="29" height="29"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="tintColor" name="IconTint"/>
-                                                </imageView>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="" id="5Dg-KX-m7a">
-                                <string key="footerTitle">If you enter a wrong AppLock passcode, KeePassium will lock all databases and clear all remembered master keys from the keychain.</string>
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="QlD-uB-XaI" userLabel="Lock Database On Failed Passcode Cell">
-                                        <rect key="frame" x="0.0" y="235" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QlD-uB-XaI" id="EJO-oS-RvY">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Protect Databases" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Pk-35-Fx6">
-                                                    <rect key="frame" x="61" y="11.5" width="186" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" name="PrimaryText"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cLg-ic-wmL">
-                                                    <rect key="frame" x="255" y="6.5" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="didChangeLockDatabasesOnFailedPasscodeSwitch:" destination="U5m-je-MhO" eventType="valueChanged" id="H2o-Wt-gpV"/>
-                                                    </connections>
-                                                </switch>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-app-lock-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="7A0-DS-UtO">
-                                                    <rect key="frame" x="16" y="7.5" width="29" height="29"/>
-                                                    <color key="tintColor" name="IconTint"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="29" id="CRf-eY-3W9"/>
-                                                        <constraint firstAttribute="height" constant="29" id="mBZ-pl-Xp5"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="cLg-ic-wmL" firstAttribute="trailing" secondItem="EJO-oS-RvY" secondAttribute="trailingMargin" id="5A6-uW-2fu"/>
-                                                <constraint firstItem="6Pk-35-Fx6" firstAttribute="centerY" secondItem="EJO-oS-RvY" secondAttribute="centerY" id="8hp-um-Dgt"/>
-                                                <constraint firstItem="7A0-DS-UtO" firstAttribute="leading" secondItem="EJO-oS-RvY" secondAttribute="leadingMargin" id="Nga-qL-kE6"/>
-                                                <constraint firstItem="6Pk-35-Fx6" firstAttribute="leading" secondItem="7A0-DS-UtO" secondAttribute="trailing" constant="16" id="OE9-oM-CB2"/>
-                                                <constraint firstItem="cLg-ic-wmL" firstAttribute="leading" secondItem="6Pk-35-Fx6" secondAttribute="trailing" constant="8" id="PHs-TA-Xiy"/>
-                                                <constraint firstItem="7A0-DS-UtO" firstAttribute="centerY" secondItem="EJO-oS-RvY" secondAttribute="centerY" id="Tfn-mz-qDl"/>
-                                                <constraint firstItem="cLg-ic-wmL" firstAttribute="centerY" secondItem="EJO-oS-RvY" secondAttribute="centerY" id="cno-rA-NXK"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="Biometrics" footerTitle="Allow biometric authentication as a quick alternative to passcode." id="7ae-8I-LiQ">
+                            <tableViewSection headerTitle="Biometrics" footerTitle="Allows biometric authentication as a quick (but less secure) alternative to AppLock passcode." id="7ae-8I-LiQ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="e7F-0G-edd" userLabel="Biometrics Cell">
-                                        <rect key="frame" x="0.0" y="386.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="154.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="e7F-0G-edd" id="k5A-l1-01Y">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -177,6 +100,82 @@
                                                 <constraint firstItem="BEv-H7-38c" firstAttribute="centerY" secondItem="k5A-l1-01Y" secondAttribute="centerY" id="koz-wx-cXz"/>
                                                 <constraint firstItem="Qtt-Tp-tnl" firstAttribute="centerY" secondItem="k5A-l1-01Y" secondAttribute="centerY" id="pfu-EX-1DC"/>
                                                 <constraint firstItem="Qtt-Tp-tnl" firstAttribute="leading" secondItem="k5A-l1-01Y" secondAttribute="leadingMargin" id="z63-eB-dLI"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="The app will automatically lock up after this time." id="m50-fl-4tu">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ef4-Jw-xeO" detailTextLabel="FWz-EI-KaZ" imageView="VMH-qU-wJg" style="IBUITableViewCellStyleValue1" id="DtW-MQ-6ly">
+                                        <rect key="frame" x="0.0" y="262.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DtW-MQ-6ly" id="sU6-P0-VnC">
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Timeout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Ef4-Jw-xeO">
+                                                    <rect key="frame" x="60" y="12" width="63" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" name="PrimaryText"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="FWz-EI-KaZ">
+                                                    <rect key="frame" x="243.5" y="13" width="41.5" height="19.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <color key="textColor" name="AuxiliaryText"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="settings-app-lock-timeout-listitem" id="VMH-qU-wJg">
+                                                    <rect key="frame" x="16" y="7" width="29" height="29"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="tintColor" name="IconTint"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Wrong Passcode" footerTitle="If you enter a wrong AppLock passcode, KeePassium will close all databases and clear all  master keys from the keychain." id="5Dg-KX-m7a">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="QlD-uB-XaI" userLabel="Lock Database On Failed Passcode Cell">
+                                        <rect key="frame" x="0.0" y="398" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QlD-uB-XaI" id="EJO-oS-RvY">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Protect Databases" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Pk-35-Fx6">
+                                                    <rect key="frame" x="61" y="11.5" width="186" height="20.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" name="PrimaryText"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cLg-ic-wmL">
+                                                    <rect key="frame" x="255" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="didChangeLockDatabasesOnFailedPasscodeSwitch:" destination="U5m-je-MhO" eventType="valueChanged" id="H2o-Wt-gpV"/>
+                                                    </connections>
+                                                </switch>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-app-lock-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="7A0-DS-UtO">
+                                                    <rect key="frame" x="16" y="7.5" width="29" height="29"/>
+                                                    <color key="tintColor" name="IconTint"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="29" id="CRf-eY-3W9"/>
+                                                        <constraint firstAttribute="height" constant="29" id="mBZ-pl-Xp5"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="cLg-ic-wmL" firstAttribute="trailing" secondItem="EJO-oS-RvY" secondAttribute="trailingMargin" id="5A6-uW-2fu"/>
+                                                <constraint firstItem="6Pk-35-Fx6" firstAttribute="centerY" secondItem="EJO-oS-RvY" secondAttribute="centerY" id="8hp-um-Dgt"/>
+                                                <constraint firstItem="7A0-DS-UtO" firstAttribute="leading" secondItem="EJO-oS-RvY" secondAttribute="leadingMargin" id="Nga-qL-kE6"/>
+                                                <constraint firstItem="6Pk-35-Fx6" firstAttribute="leading" secondItem="7A0-DS-UtO" secondAttribute="trailing" constant="16" id="OE9-oM-CB2"/>
+                                                <constraint firstItem="cLg-ic-wmL" firstAttribute="leading" secondItem="6Pk-35-Fx6" secondAttribute="trailing" constant="8" id="PHs-TA-Xiy"/>
+                                                <constraint firstItem="7A0-DS-UtO" firstAttribute="centerY" secondItem="EJO-oS-RvY" secondAttribute="centerY" id="Tfn-mz-qDl"/>
+                                                <constraint firstItem="cLg-ic-wmL" firstAttribute="centerY" secondItem="EJO-oS-RvY" secondAttribute="centerY" id="cno-rA-NXK"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

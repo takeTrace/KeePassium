@@ -34,29 +34,35 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     
     // Table section numbers
     private enum Sections: Int {
-        static let allValues: [Sections] = [.passcode, .timeout, .protectDatabases, .biometrics]
+        static let allValues: [Sections] = [.passcode, .biometrics, .timeout, .protectDatabases]
         case passcode = 0
-        case timeout = 1
-        case protectDatabases = 2
-        case biometrics = 3
+        case biometrics = 1
+        case timeout = 2
+        case protectDatabases = 3
     }
     
-    public static func make() -> UIViewController {
-        return SettingsAppLockVC.instantiateFromStoryboard()
-    }
+    // MARK: - VC life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        settingsNotifications = SettingsNotifications(observer: self)
-        settingsNotifications.startObserving()
         clearsSelectionOnViewWillAppear = true
+        settingsNotifications = SettingsNotifications(observer: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        settingsNotifications.startObserving()
+
         refreshBiometricsSupport()
         refresh()
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        settingsNotifications.stopObserving()
+        super.viewWillDisappear(animated)
+    }
+    
+    // MARK: - Refresh
     
     private func refreshBiometricsSupport() {
         let context = LAContext()
@@ -70,17 +76,9 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
         // context.biometryType is set only after a call to canEvaluatePolicy()
         let biometryTypeName = context.biometryType.name ?? "Touch ID/Face ID"
         allowBiometricsLabel.text = NSLocalizedString(
-            "Allow \(biometryTypeName)",
-            comment: "Settings: whether AppLock is allowed to use Touch ID/Face ID.")
+            "Use \(biometryTypeName)",
+            comment: "Settings switch: whether AppLock is allowed to use Touch ID/Face ID.")
         biometricsIcon.image = context.biometryType.icon
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        if isBiometricsSupported {
-            return Sections.allValues.count
-        } else {
-            return Sections.allValues.count - 1 // hide the last Biometrics section
-        }
     }
     
     func refresh() {
@@ -93,17 +91,22 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
         
         appLockTimeoutCell.setEnabled(isAppLockEnabled)
         lockDatabasesOnFailedPasscodeCell.setEnabled(isAppLockEnabled)
-        biometricsCell.setEnabled(isAppLockEnabled)
-        biometricsSwitch.isEnabled = isAppLockEnabled
+        biometricsCell.setEnabled(isAppLockEnabled && isBiometricsSupported)
+        biometricsSwitch.isEnabled = isAppLockEnabled && isBiometricsSupported
     }
 
+    // MARK: - UITableView data source
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
         if selectedCell === appLockTimeoutCell {
             let timeoutVC = SettingsAppTimeoutVC.make()
             show(timeoutVC, sender: self)
         }
     }
+    
+    // MARK: - Actions
     
     @IBAction func didChangeAppLockEnabledSwitch(_ sender: Any) {
         if !appLockEnabledSwitch.isOn {
@@ -138,6 +141,7 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     }
 }
 
+// MARK: - SettingsObserver
 extension SettingsAppLockVC: SettingsObserver {
     func settingsDidChange(key: Settings.Keys) {
         switch key {
@@ -149,6 +153,7 @@ extension SettingsAppLockVC: SettingsObserver {
     }
 }
 
+// MARK: - PasscodeInputDelegate
 extension SettingsAppLockVC: PasscodeInputDelegate {
     func passcodeInputDidCancel(_ sender: PasscodeInputVC) {
         Settings.current.isAppLockEnabled = false
