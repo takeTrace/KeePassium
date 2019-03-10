@@ -40,7 +40,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     private var keyFileRef: URLReference?
     private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var fileKeeperNotifications: FileKeeperNotifications!
-    private var isInProgress = false
 
     static func make(databaseRef: URLReference) -> UnlockDatabaseVC {
         let vc = UnlockDatabaseVC.instantiateFromStoryboard()
