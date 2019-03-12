@@ -18,6 +18,8 @@ import Foundation
 
 /// sha256 digest length in bytes
 public let SHA256_SIZE = Int(CC_SHA256_DIGEST_LENGTH)
+/// sha1 digest length in bytes
+public let SHA1_SIZE = Int(CC_SHA1_DIGEST_LENGTH)
 
 public final class CryptoManager {
 
@@ -70,6 +72,25 @@ public final class CryptoManager {
                 out.withMutableBytes { (outBytes: inout [UInt8]) in
                     CCHmac(
                         CCHmacAlgorithm(kCCHmacAlgSHA256),
+                        keyBytes, keyBytes.count,
+                        dataBytes, dataBytes.count,
+                        &outBytes
+                    )
+                }
+            }
+        }
+        return out
+    }
+    
+    public static func hmacSHA1(data: ByteArray, key: ByteArray) -> ByteArray {
+//        assert(key.count == SHA1_SIZE)
+        
+        let out = ByteArray(count: SHA1_SIZE)
+        data.withBytes{ dataBytes in
+            key.withBytes{ keyBytes in
+                out.withMutableBytes { (outBytes: inout [UInt8]) in
+                    CCHmac(
+                        CCHmacAlgorithm(kCCHmacAlgSHA1),
                         keyBytes, keyBytes.count,
                         dataBytes, dataBytes.count,
                         &outBytes

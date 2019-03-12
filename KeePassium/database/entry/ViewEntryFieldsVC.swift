@@ -42,21 +42,33 @@ fileprivate class ToggleVisibilityAccessoryButton: UIButton {
 }
 
 protocol ViewEntryFieldCellDelegate: class {
-    func cellContentDidChange(cell: UITableViewCell)
+    func cellNeedsRefresh(cell: UITableViewCell)
 }
 
 class ViewEntrySimpleFieldCell: UITableViewCell, Refreshable {
     fileprivate static let storyboardID = "SimpleFieldCell"
     @IBOutlet fileprivate weak var nameLabel: UILabel!
     @IBOutlet fileprivate weak var valueLabel: UILabel!
-    
+
     fileprivate weak var delegate: ViewEntryFieldCellDelegate?
     fileprivate var url: URL?
     fileprivate var field: VisibleEntryField! {
         didSet {
             nameLabel.text = field?.visibleName
             valueLabel.text = field?.value
-            refresh()
+            periodicRefresh()
+        }
+    }
+    
+    func periodicRefresh() {
+        refresh()
+        if let refreshInterval = field.refreshInterval {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + refreshInterval) {
+                [weak self] in
+                guard let _self = self else { return }
+                _self.periodicRefresh()
+                _self.delegate?.cellNeedsRefresh(cell: _self)
+            }
         }
     }
     
@@ -127,7 +139,7 @@ class ViewEntryProtectedFieldCell: UITableViewCell {
             completion: {
                 [unowned self] _ in
                 self.valueLabel.text = self.field.isHidden ? self.hiddenValue : self.field.value
-                self.delegate?.cellContentDidChange(cell: self)
+                self.delegate?.cellNeedsRefresh(cell: self)
                 UIView.animate(
                     withDuration: 0.2,
                     delay: 0.0,
@@ -198,8 +210,11 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
         guard let entry = entry else { return }
         
         let category = ItemCategory.get(for: entry)
-        let fields = VisibleEntryField.extractAll(
-            from: entry, skipTitle: true, skipEmptyValues: true)
+        let fields = VisibleEntryFieldFactory.extractAll(
+            from: entry,
+            includeTitle: false,
+            includeEmptyValues: false,
+            includeTOTP: true)
         self.sortedFields = fields.sorted {
             return category.compare($0.internalName, $1.internalName)
         }
@@ -373,8 +388,10 @@ extension ViewEntryFieldsVC: UITableViewDragDelegate {
 }
 
 extension ViewEntryFieldsVC: ViewEntryFieldCellDelegate {
-    func cellContentDidChange(cell: UITableViewCell) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+    func cellNeedsRefresh(cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+//        tableView.beginUpdates()
+//        tableView.endUpdates()
     }
 }

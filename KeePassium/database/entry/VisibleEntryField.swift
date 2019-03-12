@@ -45,7 +45,9 @@ class VisibleEntryField {
         return field.isStandardField
     }
     var isHidden: Bool // is protected field's value currently hidden?
-
+    
+    /// Time after which the value must be refreshed
+    var refreshInterval: TimeInterval? { return nil }
     
     init(field: EntryField, isHidden: Bool) {
         self.field = field
@@ -63,6 +65,57 @@ class VisibleEntryField {
             return internalName
         }
     }
+}
+
+class VisibleTOTPEntryField: VisibleEntryField {
+    public static let internalName = "TOTP"
+    let totpSeedField: EntryField
+    // the parent's `field` will be "TOTP Settings"
+    
+    override var refreshInterval: TimeInterval? {
+        return 1.0
+    }
+    override var isProtected: Bool {
+        get { return false }
+        set {}
+    }
+    override var isSingleline: Bool {
+        get { return true }
+        set {}
+    }
+    override var internalName: String {
+        get { return VisibleTOTPEntryField.internalName}
+        set {}
+    }
+    override var visibleName: String {
+        return NSLocalizedString("TOTP", comment: "Visible name of the Time-based One-time Password (TOTP) field")
+    }
+    override var value: String {
+        get {
+            guard let totpGenerator = TOTPGeneratorFactory.makeGenerator(
+                seed: totpSeedField.value,
+                settings: field.value) else
+            {
+                return NSLocalizedString("(Unknown TOTP format)", comment: "Error message shown when unable to parse TOTP parameter values")
+            }
+//            let time = UInt64.init(Date.now.timeIntervalSince1970)
+//            return "%TOTP-\(time)%"
+            return totpGenerator.generate()
+        }
+        set {
+            // left empty
+        }
+    }
+    
+    init(totpSeedField: EntryField, totpSettingsField: EntryField) {
+        self.totpSeedField = totpSeedField
+        super.init(field: totpSettingsField, isHidden: false)
+    }
+}
+
+class VisibleEntryFieldFactory {
+    static let totpSeedFieldName = "TOTP Seed"
+    static let totpSettingsFieldName = "TOTP Settings"
     
     /// Returns all the fields of a given entry
     ///
@@ -70,14 +123,21 @@ class VisibleEntryField {
     ///   - entry: the entry to extract from;
     ///   - skipTitle: if `true`, don't include the title field;
     ///   - skipEmptyValues: if `true`, don't include any fields with empty values.
+    ///   - includeDynamic: include dynamically generated (virtual) fields (such as TOTP)
     /// - Returns: array of fields matching the given conditions.
     static func extractAll(
         from entry: Entry,
-        skipTitle: Bool,
-        skipEmptyValues: Bool
+        includeTitle: Bool,
+        includeEmptyValues: Bool,
+        includeTOTP: Bool
         ) -> [VisibleEntryField]
     {
+        let skipTitle = !includeTitle
+        let skipEmptyValues = !includeEmptyValues
+        
         var result: [VisibleEntryField] = []
+        var totpSeedField: EntryField?
+        var totpSettingsField: EntryField?
         for field in entry.fields {
             if skipTitle && field.name == EntryField.title {
                 continue
@@ -90,6 +150,25 @@ class VisibleEntryField {
             let isHidden = field.isProtected || field.name == EntryField.password
             let visibleField = VisibleEntryField(field: field, isHidden: isHidden)
             result.append(visibleField)
+            
+            switch field.name {
+            case totpSeedFieldName:
+                totpSeedField = field
+            case totpSettingsFieldName:
+                totpSettingsField = field
+            default:
+                break
+            }
+        }
+        
+        if includeTOTP,
+           let totpSeedField = totpSeedField,
+           let totpSettingsField = totpSettingsField
+        {
+            let totpField = VisibleTOTPEntryField(
+                totpSeedField: totpSeedField,
+                totpSettingsField: totpSettingsField)
+            result.append(totpField)
         }
         return result
     }

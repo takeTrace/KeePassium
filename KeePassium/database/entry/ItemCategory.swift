@@ -44,8 +44,9 @@ enum ItemCategory: String {
             EntryField.title: 1,
             EntryField.userName: 2,
             EntryField.password: 3,
-            EntryField.url: 4,
-            EntryField.notes: 5]
+            VisibleTOTPEntryField.internalName: 4,
+            EntryField.url: 5,
+            EntryField.notes: 6]
     }
     
     /// Returns `ItemCategory` for the given entry.

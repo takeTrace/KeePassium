@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NLN-lQ-bh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NLN-lQ-bh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -153,7 +153,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4FH-1C-Kl7">
                                                     <rect key="frame" x="16" y="11" width="343" height="22"/>
-                                                    <string key="text">• KeePass by Dominik Reichl (https://keepass.info)
+                                                    <mutableString key="text">• KeePass by Dominik Reichl (https://keepass.info)
 • Feather icons by Cole Bemis (MIT licence, https://feathericons.com) • Ionicons by Ionic (MIT license, http://ionicons.com)
 • Linecons by Andrian Valeanu (https://designmodo.com/linecons-free/)
 • Fancy deboss pattern by Daniel Beaton (CC BY 3.0, http://subtlepatterns.com)
@@ -162,7 +162,8 @@
 • ChaCha20 &amp; Salsa20 implementation by D. J. Bernstein (public domain, https://cr.yp.to/salsa20.html)
 • Twofish implementation by Niels Ferguson (available under its own very permissive  license, http://www.cartotype.com/downloads/twofish/twofish.cpp).
 • GzipSwift by 1024jp (MIT license, https://github.com/1024jp/GzipSwift)
-• KeyboardLayoutConstraint by James Tang (MIT license, https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift)</string>
+• Base32 for Swift by Norio Nomura (MIT license, https://github.com/norio-nomura/Base32)
+• KeyboardLayoutConstraint by James Tang (MIT license, https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift)</mutableString>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>

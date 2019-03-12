@@ -28,12 +28,11 @@ class EditableEntryField: VisibleEntryField {
     }
     
     static func extractAll(from entry: Entry) -> [EditableEntryField] {
-        let viewableFields = VisibleEntryField.extractAll(
-            from: entry, skipTitle: false, skipEmptyValues: false)
-        var result: [EditableEntryField] = []
-        for vField in viewableFields {
-            result.append(EditableEntryField(field: vField.field))
-        }
-        return result
+        let editableFields = VisibleEntryFieldFactory.extractAll(
+            from: entry,
+            includeTitle: true,
+            includeEmptyValues: false,
+            includeTOTP: false)
+        return editableFields.map { EditableEntryField(field: $0.field) }
     }
 }
