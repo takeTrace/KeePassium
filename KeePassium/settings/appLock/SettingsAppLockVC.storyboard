@@ -159,7 +159,7 @@
                                                         <action selector="didChangeLockDatabasesOnFailedPasscodeSwitch:" destination="U5m-je-MhO" eventType="valueChanged" id="H2o-Wt-gpV"/>
                                                     </connections>
                                                 </switch>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-app-lock-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="7A0-DS-UtO">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-database-protection-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="7A0-DS-UtO">
                                                     <rect key="frame" x="16" y="7.5" width="29" height="29"/>
                                                     <color key="tintColor" name="IconTint"/>
                                                     <constraints>
@@ -206,6 +206,7 @@
     <resources>
         <image name="settings-app-lock-listitem" width="29" height="29"/>
         <image name="settings-app-lock-timeout-listitem" width="29" height="29"/>
+        <image name="settings-database-protection-listitem" width="29" height="29"/>
         <image name="touch-id-listitem" width="29" height="29"/>
         <namedColor name="AuxiliaryText">
             <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

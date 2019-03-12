@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "00-Linecons-key_thin_29@1.png",
+      "filename" : "icons8-Silence_29@1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "00-Linecons-key_thin_29@2.png",
+      "filename" : "icons8-Silence_29@2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "00-Linecons-key_thin_29@3.png",
+      "filename" : "icons8-Silence_29@3.png",
       "scale" : "3x"
     }
   ],

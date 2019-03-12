@@ -29,7 +29,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-remember-keyfiles-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="o75-tg-dCR">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-remember-master-keys-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="o75-tg-dCR">
                                                     <rect key="frame" x="16" y="7.5" width="29" height="29"/>
                                                     <color key="tintColor" name="IconTint"/>
                                                     <constraints>
@@ -69,8 +69,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1v-nv-Mst">
-                                                    <rect key="frame" x="98" y="7" width="124" height="30"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <rect key="frame" x="94" y="6" width="132" height="32"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="tintColor" name="DestructiveTint"/>
                                                     <state key="normal" title="Clear Master Keys"/>
                                                     <connections>
@@ -195,7 +195,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="QES-Ru-anK">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings-database-protection-listitem" translatesAutoresizingMaskIntoConstraints="NO" id="QES-Ru-anK">
                                                     <rect key="frame" x="16" y="7.5" width="29" height="29"/>
                                                     <color key="tintColor" name="IconTint"/>
                                                     <constraints>
@@ -330,11 +330,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="search-listitem" width="29" height="29"/>
         <image name="settings-clipboard-timeout-listitem" width="29" height="29"/>
         <image name="settings-database-backup-listitem" width="29" height="29"/>
+        <image name="settings-database-protection-listitem" width="29" height="29"/>
         <image name="settings-database-timeout-listitem" width="29" height="29"/>
         <image name="settings-remember-keyfiles-listitem" width="29" height="29"/>
+        <image name="settings-remember-master-keys-listitem" width="29" height="29"/>
         <namedColor name="AuxiliaryText">
             <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
