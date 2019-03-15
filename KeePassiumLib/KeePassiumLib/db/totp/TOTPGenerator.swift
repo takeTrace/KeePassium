@@ -9,6 +9,23 @@
 import Foundation
 
 open class TOTPGeneratorFactory {
+    // KeePassX TOTP field names
+    public static let totpSeedFieldName = "TOTP Seed"
+    public static let totpSettingsFieldName = "TOTP Settings"
+    
+    /// Checks if `entry` contains TOTP parameter field(s),
+    /// and uses them to return a configured `TOTPGenerator` instance.
+    public static func makeGenerator(from fields: [EntryField]) -> TOTPGenerator? {
+        guard let seedField =
+            fields.first(where: { $0.name == TOTPGeneratorFactory.totpSeedFieldName })
+            else { return nil }
+        guard let settingsField =
+            fields.first(where: { $0.name == TOTPGeneratorFactory.totpSettingsFieldName })
+            else { return nil }
+        return TOTPGeneratorFactory.makeGenerator(
+            seed: seedField.value,
+            settings: settingsField.value)
+    }
     
     /// Parses given TOTP parameters and returns a suitable instance of
     /// `TOTPGenerator` (or `nil` if failed to parse parameters)
@@ -68,10 +85,31 @@ open class TOTPGeneratorFactory {
 public protocol TOTPGenerator: class {
     /// Fraction of TOTP's timeStep elapsed: `(now - timeOfGeneration) / timeStep`
     /// Increases from 0.0 to 1.0, then resets to zero.
-    var elapsedTimeFraction: Double { get }
+    var elapsedTimeFraction: Float { get }
     
     /// Returns TOTP value for current time
     func generate() -> String
+}
+
+extension TOTPGenerator {
+    fileprivate func getElapsedTimeFraction(timeStep: Int) -> Float {
+        let now = Date.now.timeIntervalSince1970
+        let _timeStep = Double(timeStep)
+        let totpTime = floor(now / _timeStep) * _timeStep
+        let result = Float((now - totpTime) / _timeStep)
+        return result
+    }
+    
+    fileprivate func calculateFullCode(counterBytes: ByteArray, seed: ByteArray) -> Int {
+        let hmac = CryptoManager.hmacSHA1(data: counterBytes, key: seed)
+        let fullCode = hmac.withBytes { (hmacBytes) -> UInt32 in
+            let startPos = Int(hmacBytes[hmacBytes.count - 1] & 0x0F)
+            let hmacBytesSlice = ByteArray(bytes: hmacBytes[startPos..<(startPos+4)])
+            let code = UInt32(data: hmacBytesSlice)!.byteSwapped
+            return code & 0x7FFFFFFF
+        }
+        return Int(fullCode)
+    }
 }
 
 public class TOTPGeneratorRFC6238: TOTPGenerator {
@@ -79,6 +117,8 @@ public class TOTPGeneratorRFC6238: TOTPGenerator {
     private let timeStep: Int
     private let length: Int
     
+    public var elapsedTimeFraction: Float { return getElapsedTimeFraction(timeStep: timeStep) }
+
     fileprivate init?(seed: ByteArray, timeStep: Int, length: Int) {
         guard length >= 4 && length <= 8 else { return nil }
         
@@ -87,24 +127,12 @@ public class TOTPGeneratorRFC6238: TOTPGenerator {
         self.length = length
     }
 
-    public var elapsedTimeFraction: Double {
-        //TODO
-        return 0
-    }
     
     public func generate() -> String {
         let counter = UInt64(floor(Date.now.timeIntervalSince1970 / Double(timeStep))).bigEndian
-        let counterBytes = counter.bytes
-        
-        let hmac = CryptoManager.hmacSHA1(data: ByteArray(bytes: counterBytes), key: seed)
-        let fullCode = hmac.withBytes { (hmacBytes) -> UInt32 in
-            let startPos = Int(hmacBytes[hmacBytes.count - 1] & 0x0F)
-            let hmacBytesSlice = ByteArray(bytes: hmacBytes[startPos..<(startPos+4)])
-            let code = UInt32(data: hmacBytesSlice)!.byteSwapped
-            return code & 0x7FFFFFFF
-        }
-        let power = Int(pow(Double(10), Double(length)))
-        let trimmedCode = Int(fullCode) % power
+        let fullCode = calculateFullCode(counterBytes: ByteArray(bytes: counter.bytes), seed: seed)
+        let trimmingMask = Int(pow(Double(10), Double(length)))
+        let trimmedCode = fullCode % trimmingMask
         return String(format: "%0.\(length)d", arguments: [trimmedCode])
     }
 }
@@ -116,33 +144,20 @@ public class TOTPGeneratorSteam: TOTPGenerator {
         "2","3","4","5","6","7","8","9","B","C","D","F","G",
         "H","J","K","M","N","P","Q","R","T","V","W","X","Y"]
 
+    public var elapsedTimeFraction: Float { return getElapsedTimeFraction(timeStep: timeStep) }
+
     private let seed: ByteArray
     private let timeStep: Int
     private let length = 5
-    
+
     fileprivate init?(seed: ByteArray, timeStep: Int) {
         self.seed = seed
         self.timeStep = timeStep
     }
-
-    public var elapsedTimeFraction: Double {
-        return 0 // TODO
-    }
     
-    ///TODO: WRONG RESULTS
     public func generate() -> String {
         let counter = UInt64(floor(Date.now.timeIntervalSince1970 / Double(timeStep))).bigEndian
-        let counterBytes = counter.bytes
-        
-        let hmac = CryptoManager.hmacSHA1(data: ByteArray(bytes: counterBytes), key: seed)
-        let fullCode = hmac.withBytes { (hmacBytes) -> UInt32 in
-            let startPos = Int(hmacBytes[hmacBytes.count - 1] & 0x0F)
-            let hmacBytesSlice = ByteArray(bytes: hmacBytes[startPos..<(startPos+4)])
-            let code = UInt32(data: hmacBytesSlice)!.byteSwapped
-            return code & 0x7FFFFFFF
-        }
-
-        var code = Int(fullCode)
+        var code = calculateFullCode(counterBytes: ByteArray(bytes: counter.bytes), seed: seed)
         var result = [String]()
         for _ in 0..<length {
             let index = code % steamChars.count
