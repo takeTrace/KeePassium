@@ -22,7 +22,7 @@ class EditableFieldFactory {
         let viewableFields = ViewableEntryFieldFactory.makeAll(
             from: entry,
             in: database,
-            excluding: [.emptyValues, .nonEditable]
+            excluding: [.nonEditable]
         )
         return viewableFields
             .filter { $0.field != nil }
