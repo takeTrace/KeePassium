@@ -24,6 +24,9 @@ public class EntryField: Eraseable {
     public static let notes    = "Notes"
     public static let standardNames = [title, userName, password, url, notes]
     
+    /// Common name for the "virtual" (generated) one-time-password field
+    public static let totp = "TOTP"
+
     public var name: String
     public var value: String
     public var isProtected: Bool

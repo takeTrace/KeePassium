@@ -31,6 +31,7 @@ enum ItemCategory: String {
             EntryField.title,
             EntryField.userName,
             EntryField.password,
+            EntryField.totp,
             EntryField.url,
             EntryField.notes]
     }
@@ -44,7 +45,7 @@ enum ItemCategory: String {
             EntryField.title: 1,
             EntryField.userName: 2,
             EntryField.password: 3,
-            VisibleTOTPEntryField.internalName: 4,
+            EntryField.totp: 4, // non-standard, but if present -- it goes after the password
             EntryField.url: 5,
             EntryField.notes: 6]
     }
