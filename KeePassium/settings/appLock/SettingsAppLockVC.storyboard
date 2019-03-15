@@ -138,7 +138,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Wrong Passcode" footerTitle="If you enter a wrong AppLock passcode, KeePassium will close all databases and clear all  master keys from the keychain." id="5Dg-KX-m7a">
+                            <tableViewSection headerTitle="Wrong Passcode" footerTitle="If you enter a wrong AppLock passcode, KeePassium will close all databases and clear all master keys from the keychain." id="5Dg-KX-m7a">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="QlD-uB-XaI" userLabel="Lock Database On Failed Passcode Cell">
                                         <rect key="frame" x="0.0" y="398" width="320" height="44"/>
