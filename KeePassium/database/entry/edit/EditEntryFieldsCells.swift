@@ -19,23 +19,55 @@
 import UIKit
 import KeePassiumLib
 
-internal protocol EditEntryFieldDelegate: class {
-    func editEntryCell(_ sender: EditEntryTableCell, didPressChangeIcon: Bool)
-    func editEntryCell(_ sender: EditEntryTableCell, fieldDidChange field: EditableEntryField)
-    func editEntryCell(_ sender: EditEntryTableCell, didPressReturn: Bool)
-    func editEntryCell(_ sender: EditEntryTableCell, shouldRandomize field: EditableEntryField)
+
+class EditableFieldCellFactory {
+    public static func dequeueAndConfigureCell(
+        from tableView: UITableView,
+        for indexPath: IndexPath,
+        field: EditableField
+        ) -> EditableFieldCell & UITableViewCell
+    {
+        
+        let cellStoryboardID: String
+        if field.isFixed {
+            if field.isMultiline {
+                cellStoryboardID = EditEntryMultiLineCell.storyboardID
+            } else {
+                if field.isProtected {
+                    cellStoryboardID = EditEntrySingleLineProtectedCell.storyboardID
+                } else {
+                    cellStoryboardID = EditEntrySingleLineCell.storyboardID
+                }
+            }
+        } else {
+            cellStoryboardID = EditEntryCustomFieldCell.storyboardID
+        }
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: cellStoryboardID,
+            for: indexPath)
+            as! EditableFieldCell & UITableViewCell
+        cell.field = field
+        return cell
+    }
 }
 
-internal protocol EditEntryTableCell: class {
-    var delegate: EditEntryFieldDelegate? { get set }
-    var field: EditableEntryField! { get set }
+internal protocol EditableFieldCellDelegate: class {
+    func didPressChangeIcon(in cell: EditableFieldCell)
+    func didChangeField(field: EditableField, in cell: EditableFieldCell)
+    func didPressReturn(in cell: EditableFieldCell)
+    func didPressRandomize(field: EditableField, in cell: EditableFieldCell)
+}
+
+internal protocol EditableFieldCell: class {
+    var delegate: EditableFieldCellDelegate? { get set }
+    var field: EditableField? { get set }
     func validate()
 }
 
 
 class EditEntryTitleCell:
     UITableViewCell,
-    EditEntryTableCell,
+    EditableFieldCell,
     UITextFieldDelegate,
     ValidatingTextFieldDelegate
 {
@@ -45,7 +77,7 @@ class EditEntryTitleCell:
     @IBOutlet weak var titleTextField: ValidatingTextField!
     @IBOutlet weak var changeIconButton: UIButton!
     
-    var field: EditableEntryField! {
+    weak var field: EditableField? {
         didSet {
             titleTextField.text = field?.value
         }
@@ -54,7 +86,7 @@ class EditEntryTitleCell:
         get { return iconView.image }
         set { iconView.image = newValue }
     }
-    weak var delegate: EditEntryFieldDelegate?
+    weak var delegate: EditableFieldCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -72,7 +104,7 @@ class EditEntryTitleCell:
     }
     
     @IBAction func didPressChangeIcon(_ sender: Any) {
-        delegate?.editEntryCell(self, didPressChangeIcon: true)
+        delegate?.didPressChangeIcon(in: self)
     }
     
     override func becomeFirstResponder() -> Bool {
@@ -90,24 +122,25 @@ class EditEntryTitleCell:
     }
     
     func validatingTextField(_ sender: ValidatingTextField, textDidChange text: String) {
+        guard let field = field else { return }
         field.value = titleTextField.text ?? ""
-        field.isValid = field.value.isNotEmpty
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        field.isValid = field.value?.isNotEmpty ?? false
+        delegate?.didChangeField(field: field, in: self)
     }
     
     func validatingTextFieldShouldValidate(_ sender: ValidatingTextField) -> Bool {
-        return field.isValid
+        return field?.isValid ?? false
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        delegate?.editEntryCell(self, didPressReturn: true)
+        delegate?.didPressReturn(in: self)
         return false
     }
 }
 
 class EditEntrySingleLineCell:
     UITableViewCell,
-    EditEntryTableCell,
+    EditableFieldCell,
     ValidatingTextFieldDelegate,
     UITextFieldDelegate
 {
@@ -115,8 +148,8 @@ class EditEntrySingleLineCell:
     @IBOutlet private weak var textField: ValidatingTextField!
     @IBOutlet private weak var titleLabel: UILabel!
     
-    var delegate: EditEntryFieldDelegate?
-    var field: EditableEntryField! {
+    var delegate: EditableFieldCellDelegate?
+    weak var field: EditableField? {
         didSet {
             titleLabel.text = field?.visibleName
             textField.text = field?.value
@@ -139,24 +172,24 @@ class EditEntrySingleLineCell:
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        delegate?.editEntryCell(self, didPressReturn: true)
+        delegate?.didPressReturn(in: self)
         return false
     }
     
     func validatingTextField(_ sender: ValidatingTextField, textDidChange text: String) {
+        guard let field = field else { return }
         field.value = textField.text ?? ""
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        delegate?.didChangeField(field: field, in: self)
     }
     
     func validatingTextFieldShouldValidate(_ sender: ValidatingTextField) -> Bool {
-        return field.isValid
+        return field?.isValid ?? false
     }
 }
 
-
 class EditEntrySingleLineProtectedCell:
     UITableViewCell,
-    EditEntryTableCell,
+    EditableFieldCell,
     ValidatingTextFieldDelegate,
     UITextFieldDelegate
 {
@@ -165,8 +198,8 @@ class EditEntrySingleLineProtectedCell:
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet weak var randomizeButton: UIButton!
     
-    var delegate: EditEntryFieldDelegate?
-    var field: EditableEntryField! {
+    var delegate: EditableFieldCellDelegate?
+    weak var field: EditableField? {
         didSet {
             titleLabel.text = field?.visibleName
             textField.text = field?.value
@@ -191,31 +224,33 @@ class EditEntrySingleLineProtectedCell:
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        delegate?.editEntryCell(self, didPressReturn: true)
+        delegate?.didPressReturn(in: self)
         return false
     }
     
     func validatingTextField(_ sender: ValidatingTextField, textDidChange text: String) {
+        guard let field = field else { return }
         field.value = textField.text ?? ""
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        delegate?.didChangeField(field: field, in: self)
     }
     
     func validatingTextFieldShouldValidate(_ sender: ValidatingTextField) -> Bool {
-        return field.isValid
+        return field?.isValid ?? false
     }
     
     @IBAction func didPressRandomizeButton(_ sender: Any) {
-        delegate?.editEntryCell(self, shouldRandomize: field)
+        guard let field = field else { return }
+        delegate?.didPressRandomize(field: field, in: self)
     }
 }
 
-class EditEntryMultiLineCell: UITableViewCell, EditEntryTableCell, ValidatingTextViewDelegate {
+class EditEntryMultiLineCell: UITableViewCell, EditableFieldCell, ValidatingTextViewDelegate {
     public static let storyboardID = "MultiLineCell"
     @IBOutlet private weak var textView: ValidatingTextView!
     @IBOutlet weak var titleLabel: UILabel!
     
-    var delegate: EditEntryFieldDelegate?
-    var field: EditableEntryField! {
+    var delegate: EditableFieldCellDelegate?
+    weak var field: EditableField? {
         didSet {
             titleLabel.text = field?.visibleName
             textView.text = field?.value
@@ -241,18 +276,19 @@ class EditEntryMultiLineCell: UITableViewCell, EditEntryTableCell, ValidatingTex
     }
 
     func validatingTextView(_ sender: ValidatingTextView, textDidChange text: String) {
+        guard let field = field else { return }
         field.value = textView.text ?? ""
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        delegate?.didChangeField(field: field, in: self)
     }
     
     func validatingTextViewShouldValidate(_ sender: ValidatingTextView) -> Bool {
-        return field.isValid
+        return field?.isValid ?? false
     }
 }
 
 class EditEntryCustomFieldCell:
     UITableViewCell,
-    EditEntryTableCell,
+    EditableFieldCell,
     ValidatingTextFieldDelegate,
     ValidatingTextViewDelegate
 {
@@ -261,8 +297,8 @@ class EditEntryCustomFieldCell:
     @IBOutlet private weak var valueTextView: ValidatingTextView!
     @IBOutlet private weak var protectionSwitch: UISwitch!
 
-    var delegate: EditEntryFieldDelegate?
-    var field: EditableEntryField! {
+    var delegate: EditableFieldCellDelegate?
+    weak var field: EditableField? {
         didSet {
             nameTextField.text = field?.visibleName
             valueTextView.text = field?.value
@@ -295,33 +331,35 @@ class EditEntryCustomFieldCell:
     }
 
     func validatingTextField(_ sender: ValidatingTextField, textDidChange text: String) {
-        assert(sender == nameTextField)
-
+        guard sender == nameTextField else { assertionFailure(); return }
+        guard let field = field else { return }
         field.internalName = text
         field.isValid = nameTextField.isValid
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        delegate?.didChangeField(field: field, in: self)
     }
     
     func validatingTextFieldShouldValidate(_ sender: ValidatingTextField) -> Bool {
-        assert(sender == nameTextField)
-        return field.isValid
+        guard sender == nameTextField else { assertionFailure(); return false }
+        return field?.isValid ?? false
     }
     
     func validatingTextView(_ sender: ValidatingTextView, textDidChange text: String) {
-        assert(sender == valueTextView)
+        guard sender == valueTextView else { assertionFailure(); return }
+        guard let field = field else { return }
         field.value = valueTextView.text ?? ""
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        delegate?.didChangeField(field: field, in: self)
     }
     
     func validatingTextViewShouldValidate(_ sender: ValidatingTextView) -> Bool {
-        assert(sender == valueTextView)
+        guard sender == valueTextView else { assertionFailure(); return false }
         return true // only names are checked, any value is ok
     }
 
     @objc func protectionDidChange() {
+        guard let field = field else { return }
         field.isProtected = protectionSwitch.isOn
         valueTextView.isSecureTextEntry = protectionSwitch.isOn
-        delegate?.editEntryCell(self, fieldDidChange: field)
+        delegate?.didChangeField(field: field, in: self)
     }
 }
 

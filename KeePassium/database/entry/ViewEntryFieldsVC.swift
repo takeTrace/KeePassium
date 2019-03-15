@@ -18,142 +18,6 @@ import UIKit
 import MobileCoreServices
 import KeePassiumLib
 
-fileprivate class OpenURLAccessoryButton: UIButton {
-    required init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 44, height: 80))
-        setImage(UIImage(asset: .openURLCellAccessory), for: .normal)
-        contentMode = .scaleAspectFit
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("Not implemented")
-    }
-}
-
-fileprivate class ToggleVisibilityAccessoryButton: UIButton {
-    required init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 44, height: 80))
-        setImage(UIImage(asset: .unhideListitem), for: .normal)
-        setImage(UIImage(asset: .hideListitem), for: .selected)
-        contentMode = .scaleAspectFit
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("Not implemented")
-    }
-}
-
-protocol ViewEntryFieldCellDelegate: class {
-    func cellNeedsRefresh(cell: UITableViewCell)
-}
-
-class ViewEntrySimpleFieldCell: UITableViewCell, Refreshable {
-    fileprivate static let storyboardID = "SimpleFieldCell"
-    @IBOutlet fileprivate weak var nameLabel: UILabel!
-    @IBOutlet fileprivate weak var valueLabel: UILabel!
-
-    fileprivate weak var delegate: ViewEntryFieldCellDelegate?
-    fileprivate var url: URL?
-    fileprivate var field: VisibleEntryField! {
-        didSet {
-            nameLabel.text = field?.visibleName
-            valueLabel.text = field?.value
-            periodicRefresh()
-        }
-    }
-    
-    func periodicRefresh() {
-        refresh()
-        if let refreshInterval = field.refreshInterval {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + refreshInterval) {
-                [weak self] in
-                guard let _self = self else { return }
-                _self.periodicRefresh()
-                _self.delegate?.cellNeedsRefresh(cell: _self)
-            }
-        }
-    }
-    
-    func refresh() {
-        if let urlString = field?.value, urlString.isOpenableURL {
-            url = URL(string: urlString)
-            let openURLButton = OpenURLAccessoryButton()
-            openURLButton.addTarget(
-                self,
-                action: #selector(didPressOpenURLButton),
-                for: .touchUpInside)
-            accessoryView = openURLButton
-            accessoryType = .detailButton
-        } else {
-            url = nil
-            accessoryType = .none
-            accessoryView = nil
-        }
-    }
-
-    @objc func didPressOpenURLButton(_ sender: UIButton) {
-        guard let url = url else { return }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    }
-}
-
-
-class ViewEntryProtectedFieldCell: UITableViewCell {
-    fileprivate static let storyboardID = "ProtectedFieldCell"
-
-    @IBOutlet fileprivate weak var nameLabel: UILabel!
-    @IBOutlet fileprivate weak var valueLabel: UILabel!
-
-    fileprivate var url: URL?
-    fileprivate weak var delegate: ViewEntryFieldCellDelegate?
-
-    private let hiddenValue = "* * * *"
-    private var toggleButton: ToggleVisibilityAccessoryButton!
-    
-    fileprivate var field: VisibleEntryField! {
-        didSet {
-            nameLabel.text = field?.visibleName
-            valueLabel.text = field.isHidden ? hiddenValue : field.value
-            toggleButton.isSelected = !(field?.isHidden ?? false)
-        }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        toggleButton = ToggleVisibilityAccessoryButton()
-        toggleButton.addTarget(self, action: #selector(toggleVisibility), for: .touchUpInside)
-        accessoryView = toggleButton
-        accessoryType = .detailButton
-    }
-
-    @IBAction func toggleVisibility() {
-        toggleButton.isSelected = !toggleButton.isSelected
-
-        field.isHidden = !toggleButton.isSelected
-        UIView.animate(
-            withDuration: 0.1,
-            delay: 0.0,
-            options: UIView.AnimationOptions.curveLinear,
-            animations: {
-                [unowned self] in
-                self.valueLabel.alpha = 0.0
-            },
-            completion: {
-                [unowned self] _ in
-                self.valueLabel.text = self.field.isHidden ? self.hiddenValue : self.field.value
-                self.delegate?.cellNeedsRefresh(cell: self)
-                UIView.animate(
-                    withDuration: 0.2,
-                    delay: 0.0,
-                    options: UIView.AnimationOptions.curveLinear,
-                    animations: {
-                        [unowned self] in
-                        self.valueLabel.alpha = 1.0
-                    },
-                    completion: nil)
-            }
-        )
-    }
-}
-
 class ViewEntryFieldsVC: UITableViewController, Refreshable {
     @IBOutlet weak var copiedCellView: UIView!
     
@@ -161,7 +25,7 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
 
     private weak var entry: Entry?
     private var isHistoryMode = false
-    private var sortedFields: [VisibleEntryField] = []
+    private var sortedFields: [ViewableField] = []
     private var entryChangeNotifications: EntryChangeNotifications!
 
     static func make(with entry: Entry?, historyMode: Bool) -> ViewEntryFieldsVC {
@@ -207,14 +71,14 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
     }
 
     func refresh() {
-        guard let entry = entry else { return }
+        guard let entry = entry, let database = entry.database else { return }
         
         let category = ItemCategory.get(for: entry)
-        let fields = VisibleEntryFieldFactory.extractAll(
+        let fields = ViewableEntryFieldFactory.makeAll(
             from: entry,
-            includeTitle: false,
-            includeEmptyValues: false,
-            includeTOTP: true)
+            in: database,
+            excluding: [.title, .emptyValues]
+        )
         self.sortedFields = fields.sorted {
             return category.compare($0.internalName, $1.internalName)
         }
@@ -237,11 +101,12 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
         
         let fieldNumber = indexPath.row
         let field = sortedFields[fieldNumber]
+        guard let value = field.value else { return }
         
-        var items: [Any] = [field.value]
-        if field.value.isOpenableURL, let url = URL(string: field.value) {
-                items = [url]
-            }
+        var items: [Any] = [value]
+        if value.isOpenableURL, let url = URL(string: value) {
+            items = [url]
+        }
         let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
         if let popover = activityVC.popoverPresentationController {
             popover.sourceView = tableView
@@ -267,33 +132,20 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
     {
         let fieldNumber = indexPath.row
         let field = sortedFields[fieldNumber]
-
-        if field.isProtected {
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ViewEntryProtectedFieldCell.storyboardID,
-                for: indexPath)
-                as! ViewEntryProtectedFieldCell
-            cell.field = field
-            cell.delegate = self
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ViewEntrySimpleFieldCell.storyboardID,
-                for: indexPath)
-                as! ViewEntrySimpleFieldCell
-            cell.field = field
-            cell.delegate = self
-            return cell
-        }
+        let cell = ViewableFieldCellFactory.dequeueAndConfigureCell(
+            from: tableView,
+            for: indexPath,
+            field: field)
+        cell.delegate = self
+        return cell
     }
     
     // MARK: - Cell copying animation
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let fieldNumber = indexPath.row
-        let text: String
         let field = sortedFields[fieldNumber]
-        text = field.value
+        guard let text = field.value else { return }
 
         let timeout = Double(Settings.current.clipboardTimeout.seconds)
         if text.isOpenableURL {
@@ -372,7 +224,7 @@ extension ViewEntryFieldsVC: UITableViewDragDelegate {
     {
         let fieldNumber = indexPath.row
         let field = sortedFields[fieldNumber]
-        let data = field.value.data(using: .utf8)
+        guard let data = field.value?.data(using: .utf8) else { return [] }
         
         let itemProvider = NSItemProvider()
         itemProvider.registerDataRepresentation(
@@ -387,11 +239,9 @@ extension ViewEntryFieldsVC: UITableViewDragDelegate {
     }
 }
 
-extension ViewEntryFieldsVC: ViewEntryFieldCellDelegate {
-    func cellNeedsRefresh(cell: UITableViewCell) {
+extension ViewEntryFieldsVC: ViewableFieldCellDelegate {    
+    func cellContentsDidChange(_ cell: ViewableFieldCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-//        tableView.beginUpdates()
-//        tableView.endUpdates()
+        tableView.reloadRows(at: [indexPath], with: .none)
     }
 }

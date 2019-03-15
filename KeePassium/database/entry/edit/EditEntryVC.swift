@@ -32,7 +32,7 @@ class EditEntryVC: UITableViewController, Refreshable {
     }
     private weak var delegate: EditEntryFieldsDelegate?
     private var databaseManagerNotifications: DatabaseManagerNotifications!
-    private var fields = [EditableEntryField]()
+    private var fields = [EditableField]()
     private var isModified = false // was anything edited?
     
     /// Operation mode of the editor
@@ -85,7 +85,8 @@ class EditEntryVC: UITableViewController, Refreshable {
         let editEntryVC = EditEntryVC.instantiateFromStoryboard()
         editEntryVC.mode = mode
         editEntryVC.entry = entry
-        editEntryVC.fields = EditableEntryField.extractAll(from: entry)
+        guard let database = entry.database else { fatalError() }
+        editEntryVC.fields = EditableFieldFactory.makeAll(from: entry, in: database)
         editEntryVC.delegate = delegate
         editEntryVC.databaseManagerNotifications =
             DatabaseManagerNotifications(observer: editEntryVC)
@@ -182,7 +183,7 @@ class EditEntryVC: UITableViewController, Refreshable {
             value: "",
             isProtected: true)
         entry2.fields.append(newField)
-        fields.append(EditableEntryField(field: newField))
+        fields.append(EditableField(field: newField))
         
         let newIndexPath = IndexPath(row: fields.count - 1, section: 0)
         tableView.beginUpdates()
@@ -205,9 +206,10 @@ class EditEntryVC: UITableViewController, Refreshable {
         }
 
         let fieldNumber = indexPath.row
-        let visibleField = fields[fieldNumber]
+        let editableField = fields[fieldNumber]
+        guard let entryField = editableField.field else { return }
         
-        entry2.removeField(visibleField.field)
+        entry2.removeField(entryField)
         fields.remove(at: fieldNumber)
 
         tableView.beginUpdates()
@@ -250,41 +252,14 @@ class EditEntryVC: UITableViewController, Refreshable {
             cell.delegate = self
             cell.icon = UIImage.kpIcon(forEntry: entry)
             cell.field = field
-            field.cell = cell
+//            field.cell = cell
             return cell
         }
         
-        let cell = dequeueReusableCell(for: field, indexPath: indexPath)
+        let cell = EditableFieldCellFactory
+            .dequeueAndConfigureCell(from: tableView, for: indexPath, field: field)
         cell.delegate = self
-        cell.field = field
-        field.cell = cell
-        return cell
-    }
-
-    private func dequeueReusableCell(
-        for field: EditableEntryField,
-        indexPath: IndexPath
-        ) -> EditEntryTableCell & UITableViewCell
-    {
-        let cellStoryboardID: String
-        if field.isFixed {
-            if field.isSingleline {
-                if field.isProtected {
-                    cellStoryboardID = EditEntrySingleLineProtectedCell.storyboardID
-                } else {
-                    cellStoryboardID = EditEntrySingleLineCell.storyboardID
-                }
-            } else {
-                cellStoryboardID = EditEntryMultiLineCell.storyboardID
-            }
-        } else {
-            cellStoryboardID = EditEntryCustomFieldCell.storyboardID
-        }
-        
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: cellStoryboardID,
-            for: indexPath)
-            as! (EditEntryTableCell & UITableViewCell)
+        cell.validate() // highlight if invalid
         return cell
     }
     
@@ -318,7 +293,6 @@ class EditEntryVC: UITableViewController, Refreshable {
         let category = ItemCategory.get(for: entry)
         fields.sort { category.compare($0.internalName, $1.internalName)}
         revalidate()
-        tableView.reloadData()
     }
     
     /// Re-checks validity of all the fields
@@ -327,11 +301,9 @@ class EditEntryVC: UITableViewController, Refreshable {
         for field in fields {
             field.isValid = isFieldValid(field: field)
             isAllFieldsValid = isAllFieldsValid && field.isValid
-            if let cell = field.cell {
-                cell.validate()
-            }
         }
         navigationItem.rightBarButtonItem?.isEnabled = isAllFieldsValid
+        tableView.reloadData()
     }
     
     // MARK: - Database saving
@@ -384,21 +356,23 @@ extension EditEntryVC: ValidatingTextFieldDelegate {
     }
 }
 
-extension EditEntryVC: EditEntryFieldDelegate {
-    func editEntryCell(_ sender: EditEntryTableCell, fieldDidChange field: EditableEntryField) {
-        isModified = true
-        revalidate()
-    }
+// MARK: - EditableFieldCellDelegate
 
-    func editEntryCell(_ sender: EditEntryTableCell, didPressChangeIcon: Bool) {
+extension EditEntryVC: EditableFieldCellDelegate {
+    func didPressChangeIcon(in cell: EditableFieldCell) {
         showIconChooser()
     }
 
-    func editEntryCell(_ sender: EditEntryTableCell, didPressReturn: Bool) {
+    func didPressReturn(in cell: EditableFieldCell) {
         onSaveAction(self)
     }
 
-    func editEntryCell(_ sender: EditEntryTableCell, shouldRandomize field: EditableEntryField) {
+    func didChangeField(field: EditableField, in cell: EditableFieldCell) {
+        isModified = true
+        revalidate()
+    }
+    
+    func didPressRandomize(field: EditableField, in cell: EditableFieldCell) {
         let vc = PasswordGeneratorVC.make(completion: {
             [weak self] (password) in
             guard let _self = self else { return }
@@ -410,9 +384,9 @@ extension EditEntryVC: EditEntryFieldDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func isFieldValid(field: EditableEntryField) -> Bool {
+    func isFieldValid(field: EditableField) -> Bool {
         if field.internalName == EntryField.title {
-            return field.value.isNotEmpty
+            return field.value?.isNotEmpty ?? false
         }
         
         // Names of custom fields must be (1) non-empty and (2) unique
