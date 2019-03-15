@@ -58,11 +58,6 @@ class ToggleVisibilityAccessoryButton: UIButton {
     }
 }
 
-protocol ViewableFieldCellDelegate: class {
-    /// Called when the cell needs the parent tableView to refresh it.
-    func cellContentsDidChange(_ cell: ViewableFieldCell)
-}
-
 protocol ViewableFieldCellDecorator: class {
     func setupCell(_ cell: ViewableFieldCell)
     func getValue() -> String?
@@ -75,7 +70,6 @@ class ViewableFieldCell: UITableViewCell {
     @IBOutlet fileprivate weak var valueLabel: UILabel!
     @IBOutlet fileprivate weak var progressView: UIProgressView!
     
-    weak var delegate: ViewableFieldCellDelegate?
     var decorator: ViewableFieldCellDecorator?
     weak var field: ViewableField?
     
@@ -173,7 +167,6 @@ class ProtectedFieldCellDecorator: ViewableFieldCellDecorator {
                 [weak self] _ in
                 guard let _self = self else { return }
                 cell.valueLabel.text = _self.getValue()
-                cell.delegate?.cellContentsDidChange(cell)
                 UIView.animate(
                     withDuration: 0.2,
                     delay: 0.0,
@@ -212,7 +205,6 @@ class TOTPFieldCellDecorator: ViewableFieldCellDecorator {
             [weak self] in
             guard let cell = self?.cell else { return }
             cell.valueLabel.text = self?.getValue()
-//            cell.delegate?.cellContentsDidChange(cell)
             self?.refreshProgress()
             self?.scheduleRefresh()
         }

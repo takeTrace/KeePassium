@@ -136,7 +136,6 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
             from: tableView,
             for: indexPath,
             field: field)
-        cell.delegate = self
         return cell
     }
     
@@ -236,12 +235,5 @@ extension ViewEntryFieldsVC: UITableViewDragDelegate {
             return nil
         }
         return [UIDragItem(itemProvider: itemProvider)]
-    }
-}
-
-extension ViewEntryFieldsVC: ViewableFieldCellDelegate {    
-    func cellContentsDidChange(_ cell: ViewableFieldCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        tableView.reloadRows(at: [indexPath], with: .none)
     }
 }
