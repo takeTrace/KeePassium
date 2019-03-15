@@ -217,7 +217,7 @@ class EditEntryVC: UITableViewController, Refreshable {
         tableView.endUpdates()
         
         isModified = true
-        revalidate()
+        refresh()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -293,6 +293,7 @@ class EditEntryVC: UITableViewController, Refreshable {
         let category = ItemCategory.get(for: entry)
         fields.sort { category.compare($0.internalName, $1.internalName)}
         revalidate()
+        tableView.reloadData()
     }
     
     /// Re-checks validity of all the fields
@@ -302,8 +303,11 @@ class EditEntryVC: UITableViewController, Refreshable {
             field.isValid = isFieldValid(field: field)
             isAllFieldsValid = isAllFieldsValid && field.isValid
         }
+        // update the visible cells
+        tableView.visibleCells.forEach {
+            ($0 as? EditableFieldCell)?.validate()
+        }
         navigationItem.rightBarButtonItem?.isEnabled = isAllFieldsValid
-        tableView.reloadData()
     }
     
     // MARK: - Database saving
