@@ -23,7 +23,9 @@ protocol DatabaseChooserDelegate: class {
     func databaseChooserShouldAddDatabase(_ sender: DatabaseChooserVC)
     /// Called when the user selects a database from the list
     func databaseChooser(_ sender: DatabaseChooserVC, didSelectDatabase urlRef: URLReference)
-    /// Called when the user wants to remove a database from the list
+    /// Called when the user wants to delete a (local) database file from the list
+    func databaseChooser(_ sender: DatabaseChooserVC, shouldDeleteDatabase urlRef: URLReference)
+    /// Called when the user wants to remove a database (reference) from the list
     func databaseChooser(_ sender: DatabaseChooserVC, shouldRemoveDatabase urlRef: URLReference)
     /// Called when the user requests additional info about a database file
     func databaseChooser(_ sender: DatabaseChooserVC, shouldShowInfoForDatabase urlRef: URLReference)
@@ -140,15 +142,20 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
         Watchdog.shared.restart()
         guard databaseRefs.count > 0 else { return nil }
         
+        let urlRef = databaseRefs[indexPath.row]
+        let isInternalFile = urlRef.location.isInternal
         let deleteAction = UITableViewRowAction(
             style: .destructive,
-            title: LString.actionRemoveFile)
+            title: isInternalFile ? LString.actionDeleteFile : LString.actionRemoveFile)
         {
             [weak self] (_,_) in
             guard let _self = self else { return }
             _self.setEditing(false, animated: true)
-            let urlRef = _self.databaseRefs[indexPath.row]
-            _self.delegate?.databaseChooser(_self, shouldRemoveDatabase: urlRef)
+            if isInternalFile {
+                _self.delegate?.databaseChooser(_self, shouldDeleteDatabase: urlRef)
+            } else {
+                _self.delegate?.databaseChooser(_self, shouldRemoveDatabase: urlRef)
+            }
         }
         deleteAction.backgroundColor = UIColor.destructiveTint
         

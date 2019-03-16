@@ -200,6 +200,22 @@ class MainCoordinator: NSObject, Coordinator {
         refreshFileList()
     }
     
+    func deleteDatabase(_ urlRef: URLReference) {
+        try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef)
+        do {
+            try FileKeeper.shared.deleteFile(urlRef, fileType: .database, ignoreErrors: false)
+                // throws `FileKeeperError`
+        } catch {
+            Diag.error("Failed to delete database file [message: \(error.localizedDescription)]")
+            let alert = UIAlertController.make(
+                title: NSLocalizedString("Failed to delete database file", comment: "Error message"),
+                message: error.localizedDescription,
+                cancelButtonTitle: LString.actionDismiss)
+            navigationController.present(alert, animated: true, completion: nil)
+        }
+        refreshFileList()
+    }
+
     func showDatabaseFileInfo(fileRef: URLReference) {
         let databaseInfoVC = FileInfoVC.make(urlRef: fileRef, popoverSource: nil)
         navigationController.pushViewController(databaseInfoVC, animated: true)
@@ -287,6 +303,11 @@ extension MainCoordinator: DatabaseChooserDelegate {
     func databaseChooser(_ sender: DatabaseChooserVC, didSelectDatabase urlRef: URLReference) {
         watchdog.restart()
         showDatabaseUnlocker(database: urlRef, animated: true, completion: nil)
+    }
+    
+    func databaseChooser(_ sender: DatabaseChooserVC, shouldDeleteDatabase urlRef: URLReference) {
+        watchdog.restart()
+        deleteDatabase(urlRef)
     }
     
     func databaseChooser(_ sender: DatabaseChooserVC, shouldRemoveDatabase urlRef: URLReference) {
