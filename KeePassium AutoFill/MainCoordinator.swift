@@ -628,6 +628,6 @@ extension MainCoordinator: CrashReportDelegate {
         Settings.current.isAutoFillFinishedOK = true
         
         navigationController.viewControllers.removeAll()
-        startMainFlow()
+        showDatabaseChooser(canPickDefaultDatabase: false, completion: nil)
     }
 }
