@@ -68,14 +68,16 @@ open class TOTPGeneratorFactory {
     }
     
     static func parseSeedString(_ seedString: String) -> ByteArray? {
-        let trimmedSeed = seedString.replacingOccurrences(of: "=", with: "")
-        if let seedData = base32DecodeToData(trimmedSeed) {
+        let cleanedSeedString = seedString
+            .replacingOccurrences(of: " ", with: "")
+            .replacingOccurrences(of: "=", with: "")
+        if let seedData = base32DecodeToData(cleanedSeedString) {
             return ByteArray(data: seedData)
         }
-        if let seedData = base32HexDecodeToData(trimmedSeed) {
+        if let seedData = base32HexDecodeToData(cleanedSeedString) {
             return ByteArray(data: seedData)
         }
-        if let seedData = Data(base64Encoded: trimmedSeed) {
+        if let seedData = Data(base64Encoded: cleanedSeedString) {
             return ByteArray(data: seedData)
         }
         return nil
