@@ -87,7 +87,7 @@ public class URLReference: Equatable, Codable {
         data = try url.bookmarkData(
             options: [], //.minimalBookmark,
             includingResourceValuesForKeys: resourceKeys,
-            relativeTo: nil)
+            relativeTo: nil) // throws an internal system error
         self.location = location
     }
 

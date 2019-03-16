@@ -506,7 +506,7 @@ public class FileKeeper {
                 guard let _self = self else { return }
                 do {
                     let newRef = try URLReference(from: sourceURL, location: .external)
-                        // throws some UIKit error
+                        // throws an internal system error
                     
                     var storedRefs = _self.getStoredReferences(
                         fileType: fileType,
