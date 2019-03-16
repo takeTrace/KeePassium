@@ -156,8 +156,10 @@ class ViewEntryHistoryVC: UITableViewController, Refreshable {
         guard let section = Section(rawValue: indexPath.section),
             section == .previousVersions else { return }
         
-        let historyEntry = entry2.history[indexPath.row]
+        let entryIndex = indexPath.row
+        guard entryIndex < entry2.history.count else { return }
         
+        let historyEntry = entry2.history[entryIndex]
         let vc = ViewEntryVC.make(with: historyEntry, historyMode: true)
         self.show(vc, sender: self)
     }
