@@ -292,7 +292,7 @@ public class Settings {
             case .after1minute:
                 return NSLocalizedString("After 1 minute", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 1 minute'")
             case .after2minutes:
-                return NSLocalizedString("After 5 minutes", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 2 minutes'")
+                return NSLocalizedString("After 2 minutes", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 2 minutes'")
             }
         }
         public var shortTitle: String {
@@ -300,7 +300,7 @@ public class Settings {
             case .never:
                 return NSLocalizedString("Never", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'Never'. Will be shown as 'Clear Clipboard: Never'")
             case .after10seconds:
-                return NSLocalizedString("10 s", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 5 seconds'. Will be shown as 'Clear Clipboard: 10 s'")
+                return NSLocalizedString("10 s", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 10 seconds'. Will be shown as 'Clear Clipboard: 10 s'")
             case .after20seconds:
                 return NSLocalizedString("20 s", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 20 seconds'. Will be shown as 'Clear Clipboard: 20 s'")
             case .after30seconds:
