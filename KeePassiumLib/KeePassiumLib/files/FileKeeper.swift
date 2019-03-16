@@ -77,18 +77,24 @@ public class FileKeeper {
     }
 
     private init() {
-        docDirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! // ok to force-unwrap
+        docDirURL = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first!  // ok to force-unwrap
+            .standardizedFileURL
         inboxDirURL = docDirURL.appendingPathComponent(
             FileKeeper.inboxDirectoryName,
             isDirectory: true)
+            .standardizedFileURL
 
         print("\nDoc dir: \(docDirURL)\n")
         
         // Intitialize (and create if necessary) internal directories.
         guard let sharedContainerURL = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: AppGroup.id) else { fatalError() }
-        backupDirURL = sharedContainerURL
-            .appendingPathComponent(FileKeeper.backupDirectoryName, isDirectory: true)
+        backupDirURL = sharedContainerURL.appendingPathComponent(
+            FileKeeper.backupDirectoryName,
+            isDirectory: true)
+            .standardizedFileURL
         do {
             try FileManager.default.createDirectory(
                 at: backupDirURL, withIntermediateDirectories: true, attributes: nil)
