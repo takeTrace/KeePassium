@@ -423,7 +423,7 @@ public class Settings {
             case .nameAsc:
                 return entry1.title.localizedStandardCompare(entry2.title) == .orderedAscending
             case .nameDesc:
-                return entry1.title.localizedStandardCompare(entry1.title) == .orderedDescending
+                return entry1.title.localizedStandardCompare(entry2.title) == .orderedDescending
             case .creationTimeAsc:
                 return entry1.creationTime.compare(entry2.creationTime) == .orderedAscending
             case .creationTimeDesc:
