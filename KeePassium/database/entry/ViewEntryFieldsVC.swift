@@ -240,8 +240,9 @@ extension ViewEntryFieldsVC: UITableViewDragDelegate {
 }
 
 extension ViewEntryFieldsVC: ViewableFieldCellDelegate {    
-    func cellContentsDidChange(_ cell: ViewableFieldCell) {
+    func cellHeightDidChange(_ cell: ViewableFieldCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 }

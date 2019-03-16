@@ -59,8 +59,9 @@ class ToggleVisibilityAccessoryButton: UIButton {
 }
 
 protocol ViewableFieldCellDelegate: class {
-    /// Called when the cell needs the parent tableView to refresh it.
-    func cellContentsDidChange(_ cell: ViewableFieldCell)
+    /// Called when the cell contents might have changed its height
+    /// and needs the parent tableView to refresh.
+    func cellHeightDidChange(_ cell: ViewableFieldCell)
 }
 
 protocol ViewableFieldCellDecorator: class {
@@ -173,7 +174,7 @@ class ProtectedFieldCellDecorator: ViewableFieldCellDecorator {
                 [weak self] _ in
                 guard let _self = self else { return }
                 cell.valueLabel.text = _self.getValue()
-                cell.delegate?.cellContentsDidChange(cell)
+                cell.delegate?.cellHeightDidChange(cell)
                 UIView.animate(
                     withDuration: 0.2,
                     delay: 0.0,
@@ -212,7 +213,6 @@ class TOTPFieldCellDecorator: ViewableFieldCellDecorator {
             [weak self] in
             guard let cell = self?.cell else { return }
             cell.valueLabel.text = self?.getValue()
-//            cell.delegate?.cellContentsDidChange(cell)
             self?.refreshProgress()
             self?.scheduleRefresh()
         }
