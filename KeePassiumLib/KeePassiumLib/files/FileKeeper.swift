@@ -497,21 +497,38 @@ public class FileKeeper {
         // Note: If dummyDoc is replaced with `_`, the document is immediately
         //       deallocated => transient "permission denied" issues.
         let dummyDoc = FileDocument(fileURL: sourceURL)
-        do {
-            let newRef = try URLReference(from: sourceURL, location: .external) // throws some UIKit error
-            
-            var storedRefs = getStoredReferences(fileType: fileType, forExternalFiles: true)
-            storedRefs.insert(newRef, at: 0)
-            storeReferences(storedRefs, fileType: fileType, forExternalFiles: true)
-            
-            dummyDoc.data.erase() // just to silence the "unused var" warning; `data` is empty anyway.
-            Diag.info("External URL reference added OK")
-            successHandler?(newRef)
-        } catch {
-            Diag.error("Failed to create URL reference [error: '\(error.localizedDescription)', url: '\(sourceURL.redacted)']")
-            let importError = FileKeeperError.openError(reason: error.localizedDescription)
-            errorHandler?(importError)
-        }
+        
+        // Creating a UIDocument is sufficient for some file providers.
+        // However, some other file providers (like OneDrive) throw a "File does not exist"
+        // unless we actually open the document.
+        dummyDoc.open(
+            successHandler: { [weak self] in
+                guard let _self = self else { return }
+                do {
+                    let newRef = try URLReference(from: sourceURL, location: .external)
+                        // throws some UIKit error
+                    
+                    var storedRefs = _self.getStoredReferences(
+                        fileType: fileType,
+                        forExternalFiles: true)
+                    storedRefs.insert(newRef, at: 0)
+                    _self.storeReferences(storedRefs, fileType: fileType, forExternalFiles: true)
+                    
+                    Diag.info("External URL reference added OK")
+                    successHandler?(newRef)
+                } catch {
+                    Diag.error("Failed to create URL reference [error: '\(error.localizedDescription)', url: '\(sourceURL.redacted)']")
+                    let importError = FileKeeperError.openError(reason: error.localizedDescription)
+                    errorHandler?(importError)
+                }
+            },
+            errorHandler: { (error) in
+                Diag.error("Failed to open document [error: '\(error.localizedDescription)', url: '\(sourceURL.redacted)']")
+                let docError = FileKeeperError.openError(reason: error.localizedDescription)
+                errorHandler?(docError)
+
+            }
+        )
     }
     
     /// Given a file (either external or in 'Documents/Inbox'), copes/moves it to 'Documents'.
