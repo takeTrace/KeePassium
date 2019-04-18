@@ -218,7 +218,10 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     // MARK: - Refreshing/updating
     
     func refresh() {
-        if !isSearchActive {
+        if isSearchActive {
+            // changes could have affected the search results
+            updateSearchResults(for: searchController)
+        } else {
             sortGroupItems()
         }
         tableView.reloadData()
@@ -671,13 +674,14 @@ extension ViewGroupVC: DatabaseManagerObserver {
     }
     
     public func databaseManager(didSaveDatabase urlRef: URLReference) {
-        refresh()
         databaseManagerNotifications.stopObserving()
+        refresh()
         hideSavingOverlay()
     }
     
     public func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         databaseManagerNotifications.stopObserving()
+        refresh()
         hideSavingOverlay()
     }
 
@@ -690,10 +694,10 @@ extension ViewGroupVC: DatabaseManagerObserver {
         savingError message: String,
         reason: String?)
     {
-        refresh()
         databaseManagerNotifications.stopObserving()
+        refresh()
         hideSavingOverlay()
-        
+
         //FIXME: undefined state if save failed
         let errorAlert = UIAlertController(title: message, message: reason, preferredStyle: .alert)
         let showDetailsAction = UIAlertAction(title: LString.actionShowDetails, style: .default)
@@ -723,12 +727,6 @@ extension ViewGroupVC: SettingsObserver {
 extension ViewGroupVC: EditEntryFieldsDelegate {
     func entryEditor(entryDidChange entry: Entry) {
         refresh()
-        
-        if isSearchActive {
-            // new entry content might affect the search results
-            updateSearchResults(for: searchController)
-            return
-        }
         
         guard let splitVC = splitViewController else { fatalError() }
         
