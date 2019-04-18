@@ -39,8 +39,6 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
         super.viewDidLoad()
         self.clearsSelectionOnViewWillAppear = true
         
-        tableView.dragDelegate = self
-        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
@@ -215,29 +213,6 @@ extension ViewEntryFieldsVC: EntryChangeObserver {
     }
 }
 
-extension ViewEntryFieldsVC: UITableViewDragDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        itemsForBeginning session: UIDragSession,
-        at indexPath: IndexPath
-        ) -> [UIDragItem]
-    {
-        let fieldNumber = indexPath.row
-        let field = sortedFields[fieldNumber]
-        guard let data = field.value?.data(using: .utf8) else { return [] }
-        
-        let itemProvider = NSItemProvider()
-        itemProvider.registerDataRepresentation(
-            forTypeIdentifier: kUTTypePlainText as String,
-            visibility: .all)
-        {
-            (completion) in
-            completion(data, nil)
-            return nil
-        }
-        return [UIDragItem(itemProvider: itemProvider)]
-    }
-}
 
 extension ViewEntryFieldsVC: ViewableFieldCellDelegate {    
     func cellHeightDidChange(_ cell: ViewableFieldCell) {
