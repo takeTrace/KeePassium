@@ -62,6 +62,12 @@ protocol ViewableFieldCellDelegate: class {
     /// Called when the cell contents might have changed its height
     /// and needs the parent tableView to refresh.
     func cellHeightDidChange(_ cell: ViewableFieldCell)
+    
+    /// Called when the cell contents (value field) has been tapped.
+    func didTapCellValue(_ cell: ViewableFieldCell)
+    
+    /// Called when the user long-taps the accessory button
+    func didLongTapAccessoryButton(_ cell: ViewableFieldCell)
 }
 
 protocol ViewableFieldCellDecorator: class {
@@ -73,7 +79,8 @@ protocol ViewableFieldCellDecorator: class {
 class ViewableFieldCell: UITableViewCell {
     public static let storyboardID = "ViewableFieldCell"
     @IBOutlet fileprivate weak var nameLabel: UILabel!
-    @IBOutlet fileprivate weak var valueLabel: UILabel!
+    @IBOutlet weak var valueText: UITextView!
+    @IBOutlet weak var valueScrollView: UIScrollView!
     @IBOutlet fileprivate weak var progressView: UIProgressView!
     
     weak var delegate: ViewableFieldCellDelegate?
@@ -83,12 +90,33 @@ class ViewableFieldCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         setupCell()
+        let textTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapValueTextView))
+        textTapGestureRecognizer.numberOfTapsRequired = 1
+        valueText.addGestureRecognizer(textTapGestureRecognizer)
+        // gesture recognizer supports only one view at a time, so create another one
+        let scrollTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapValueTextView))
+        scrollTapGestureRecognizer.numberOfTapsRequired = 1
+        valueScrollView.addGestureRecognizer(scrollTapGestureRecognizer)
     }
     
     func setupCell() {
         nameLabel.text = field?.visibleName
-        valueLabel.text = decorator?.getUserVisibleValue()
+        valueText.text = decorator?.getUserVisibleValue()
         decorator?.setupCell(self)
+    }
+    
+    @objc func didTapValueTextView(_ sender: Any) {
+        if let selRange = valueText.selectedTextRange,
+            !selRange.isEmpty
+        {
+            valueText.selectedTextRange = nil
+        } else {
+            delegate?.didTapCellValue(self)
+        }
     }
 }
 
@@ -116,6 +144,11 @@ class URLFieldCellDecorator: ViewableFieldCellDecorator {
             self,
             action: #selector(didPressOpenURLButton),
             for: .touchUpInside)
+        let longTapRecognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(handleLongPressURLButton))
+        openURLButton.addGestureRecognizer(longTapRecognizer)
+        
         cell.accessoryView = openURLButton
         cell.accessoryType = .detailButton
     }
@@ -124,6 +157,13 @@ class URLFieldCellDecorator: ViewableFieldCellDecorator {
         return cell?.field?.value
     }
 
+    @objc
+    private func handleLongPressURLButton(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard gestureRecognizer.state == .began else { return }
+        guard let cell = self.cell else { return }
+        cell.delegate?.didLongTapAccessoryButton(cell)
+    }
+    
     @objc
     private func didPressOpenURLButton(_ sender: UIButton) {
         guard let url = url else { return }
@@ -146,6 +186,7 @@ class ProtectedFieldCellDecorator: ViewableFieldCellDecorator {
         let theButton = ToggleVisibilityAccessoryButton()
         theButton.addTarget(self, action: #selector(toggleValueHidden), for: .touchUpInside)
         theButton.isSelected = !(cell.field?.isValueHidden ?? true)
+        cell.valueText.isSelectable = theButton.isSelected
         cell.accessoryView = theButton
         cell.accessoryType = .detailButton
         self.toggleButton = theButton
@@ -163,24 +204,25 @@ class ProtectedFieldCellDecorator: ViewableFieldCellDecorator {
         
         toggleButton.isSelected = !toggleButton.isSelected
         field.isValueHidden = !toggleButton.isSelected
+        cell.valueText.isSelectable = !field.isValueHidden
         UIView.animate(
             withDuration: 0.1,
             delay: 0.0,
             options: UIView.AnimationOptions.curveLinear,
             animations: {
-                cell.valueLabel.alpha = 0.0
+                cell.valueText.alpha = 0.0
             },
             completion: {
                 [weak self] _ in
                 guard let _self = self else { return }
-                cell.valueLabel.text = _self.getUserVisibleValue()
+                cell.valueText.text = _self.getUserVisibleValue()
                 cell.delegate?.cellHeightDidChange(cell)
                 UIView.animate(
                     withDuration: 0.2,
                     delay: 0.0,
                     options: UIView.AnimationOptions.curveLinear,
                     animations: {
-                        cell.valueLabel.alpha = 1.0
+                        cell.valueText.alpha = 1.0
                     },
                     completion: nil)
             }
@@ -222,7 +264,7 @@ class TOTPFieldCellDecorator: ViewableFieldCellDecorator {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + refreshInterval) {
             [weak self] in
             guard let cell = self?.cell else { return }
-            cell.valueLabel.text = self?.getUserVisibleValue()
+            cell.valueText.text = self?.getUserVisibleValue()
             self?.refreshProgress()
             self?.scheduleRefresh()
         }

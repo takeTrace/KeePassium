@@ -42,11 +42,6 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(
-            target: self,
-            action: #selector(handleLongPress))
-        tableView.addGestureRecognizer(longPressGestureRecognizer)
-        
         editButton.image = UIImage(asset: .editItemToolbar)
         editButton.target = self
         editButton.action = #selector(onEditAction)
@@ -89,28 +84,6 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
         guard let entry = entry else { return }
         let editEntryFieldsVC = EditEntryVC.make(entry: entry, popoverSource: nil, delegate: nil)
         present(editEntryFieldsVC, animated: true, completion: nil)
-    }
-    
-    @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        guard gestureRecognizer.state == .began else { return }
-
-        let point = gestureRecognizer.location(in: tableView)
-        guard let indexPath = tableView.indexPathForRow(at: point) else { return }
-        
-        let fieldNumber = indexPath.row
-        let field = sortedFields[fieldNumber]
-        guard let value = field.value else { return }
-        
-        var items: [Any] = [value]
-        if value.isOpenableURL, let url = URL(string: value) {
-            items = [url]
-        }
-        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        if let popover = activityVC.popoverPresentationController {
-            popover.sourceView = tableView
-            popover.sourceRect = tableView.rectForRow(at: indexPath)
-        }
-        present(activityVC, animated: true)
     }
     
     // MARK: - Table view data source
@@ -219,5 +192,26 @@ extension ViewEntryFieldsVC: ViewableFieldCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         tableView.beginUpdates()
         tableView.endUpdates()
+    }
+    
+    func didTapCellValue(_ cell: ViewableFieldCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        tableView(tableView, didSelectRowAt: indexPath)
+    }
+    
+    func didLongTapAccessoryButton(_ cell: ViewableFieldCell) {
+        guard let value = cell.field?.value else { return }
+        guard let accessoryView = cell.accessoryView else { return }
+        
+        var items: [Any] = [value]
+        if value.isOpenableURL, let url = URL(string: value) {
+            items = [url]
+        }
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = accessoryView
+            popover.sourceRect = accessoryView.bounds
+        }
+        present(activityVC, animated: true)
     }
 }
