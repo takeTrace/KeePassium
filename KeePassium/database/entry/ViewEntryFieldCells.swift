@@ -66,7 +66,7 @@ protocol ViewableFieldCellDelegate: class {
 
 protocol ViewableFieldCellDecorator: class {
     func setupCell(_ cell: ViewableFieldCell)
-    func getValue() -> String?
+    func getUserVisibleValue() -> String?
     init(cell: ViewableFieldCell)
 }
 
@@ -87,7 +87,7 @@ class ViewableFieldCell: UITableViewCell {
     
     func setupCell() {
         nameLabel.text = field?.visibleName
-        valueLabel.text = decorator?.getValue()
+        valueLabel.text = decorator?.getUserVisibleValue()
         decorator?.setupCell(self)
     }
 }
@@ -120,7 +120,7 @@ class URLFieldCellDecorator: ViewableFieldCellDecorator {
         cell.accessoryType = .detailButton
     }
     
-    func getValue() -> String? {
+    func getUserVisibleValue() -> String? {
         return cell?.field?.value
     }
 
@@ -151,7 +151,7 @@ class ProtectedFieldCellDecorator: ViewableFieldCellDecorator {
         self.toggleButton = theButton
     }
     
-    func getValue() -> String? {
+    func getUserVisibleValue() -> String? {
         guard let field = cell?.field else { return nil }
         return field.isValueHidden ? hiddenValueMask : field.value
     }
@@ -173,7 +173,7 @@ class ProtectedFieldCellDecorator: ViewableFieldCellDecorator {
             completion: {
                 [weak self] _ in
                 guard let _self = self else { return }
-                cell.valueLabel.text = _self.getValue()
+                cell.valueLabel.text = _self.getUserVisibleValue()
                 cell.delegate?.cellHeightDidChange(cell)
                 UIView.animate(
                     withDuration: 0.2,
@@ -196,8 +196,18 @@ class TOTPFieldCellDecorator: ViewableFieldCellDecorator {
         self.cell = cell
     }
 
-    func getValue() -> String? {
-        return cell?.field?.value
+    func getUserVisibleValue() -> String? {
+        guard var value = cell?.field?.value else { return nil }
+        switch value.count {
+        case 5: value.insert(" ", at: String.Index(encodedOffset: 2))
+        case 6: value.insert(" ", at: String.Index(encodedOffset: 3))
+        case 7: value.insert(" ", at: String.Index(encodedOffset: 3))
+        case 8: value.insert(" ", at: String.Index(encodedOffset: 4))
+        default:
+            // unsure how to format, so leave it alone
+            break
+        }
+        return value
     }
     
     func setupCell(_ cell: ViewableFieldCell) {
@@ -212,7 +222,7 @@ class TOTPFieldCellDecorator: ViewableFieldCellDecorator {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + refreshInterval) {
             [weak self] in
             guard let cell = self?.cell else { return }
-            cell.valueLabel.text = self?.getValue()
+            cell.valueLabel.text = self?.getUserVisibleValue()
             self?.refreshProgress()
             self?.scheduleRefresh()
         }
