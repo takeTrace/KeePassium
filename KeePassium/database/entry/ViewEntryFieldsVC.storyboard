@@ -61,7 +61,7 @@
                                             </constraints>
                                         </scrollView>
                                         <progressView hidden="YES" opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="249" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aQw-2L-cSK">
-                                            <rect key="frame" x="16" y="64.5" width="126" height="2"/>
+                                            <rect key="frame" x="16" y="68.5" width="126" height="2"/>
                                             <color key="tintColor" name="ActionTint"/>
                                         </progressView>
                                     </subviews>
@@ -75,7 +75,7 @@
                                         <constraint firstItem="9Ag-qF-itI" firstAttribute="bottom" secondItem="jjW-5J-9hc" secondAttribute="bottomMargin" id="ZLH-5V-X13"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="9Ag-qF-itI" secondAttribute="trailing" id="ZiZ-qR-U2N"/>
                                         <constraint firstAttribute="trailing" secondItem="itG-fy-fi4" secondAttribute="trailing" id="dhE-jG-nAX"/>
-                                        <constraint firstItem="aQw-2L-cSK" firstAttribute="top" secondItem="Lyz-4O-dvw" secondAttribute="baseline" constant="4" id="jvh-47-r5x"/>
+                                        <constraint firstItem="aQw-2L-cSK" firstAttribute="top" secondItem="Lyz-4O-dvw" secondAttribute="baseline" constant="8" id="jvh-47-r5x"/>
                                         <constraint firstItem="46A-ga-B85" firstAttribute="top" secondItem="itG-fy-fi4" secondAttribute="bottom" constant="8" id="mDW-Zq-Jmb"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="46A-ga-B85" secondAttribute="trailing" id="tYE-y1-Bb6"/>
                                         <constraint firstItem="46A-ga-B85" firstAttribute="leading" secondItem="jjW-5J-9hc" secondAttribute="leadingMargin" id="zXO-am-9pT"/>
