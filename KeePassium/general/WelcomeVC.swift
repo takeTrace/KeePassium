@@ -32,7 +32,9 @@ class WelcomeVC: UIViewController {
     }
     
     @IBAction func didPressOpenDatabase(_ sender: Any) {
-        let picker = UIDocumentPickerViewController(documentTypes: FileType.databaseUTIs, in: .open)
+        let picker = UIDocumentPickerViewController(
+            documentTypes: FileType.publicDataUTIs,
+            in: .open)
         picker.delegate = self
         picker.modalPresentationStyle = .pageSheet
         present(picker, animated: true, completion: nil)
