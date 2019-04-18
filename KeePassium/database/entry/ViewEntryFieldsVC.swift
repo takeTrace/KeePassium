@@ -143,13 +143,14 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
     
     /// Helper function: Phase 1 of `animateCopyToClipboard`
     private func showCopyNotification(indexPath: IndexPath, view: UIView) {
+        view.alpha = 0.0
         UIView.animate(
             withDuration: 0.3,
             delay: 0.0,
             options: .curveEaseOut ,
             animations: {
                 view.backgroundColor = UIColor.actionTint
-                view.alpha = 1.0
+                view.alpha = 0.8
             },
             completion: {
                 [weak self] finished in
@@ -163,7 +164,7 @@ class ViewEntryFieldsVC: UITableViewController, Refreshable {
     /// Helper function: Phase 2 of `animateCopyToClipboard`
     private func hideCopyNotification(view: UIView) {
         UIView.animate(
-            withDuration: 0.5,
+            withDuration: 0.2,
             delay: 0.5,
             options: .curveEaseIn,
             animations: {
