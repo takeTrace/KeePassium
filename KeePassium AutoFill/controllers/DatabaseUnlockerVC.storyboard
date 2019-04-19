@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bxv-kR-0w1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bxv-kR-0w1">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -154,19 +154,11 @@
                                             <action selector="didPressUnlock:" destination="bxv-kR-0w1" eventType="touchUpInside" id="QAG-Ht-CFv"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&quot;Remember master password&quot; switch has moved to app settings." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TvC-lk-ZO7">
-                                        <rect key="frame" x="20" y="379" width="280" height="34"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                        <color key="textColor" name="AuxiliaryText"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="Crk-4o-Fqu" secondAttribute="trailing" id="3Bb-8K-cfD"/>
                                     <constraint firstItem="89h-8b-LRO" firstAttribute="leading" secondItem="Q5g-RY-uXD" secondAttribute="leading" id="F1I-t4-mXr"/>
                                     <constraint firstItem="Crk-4o-Fqu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fAZ-VX-s1Y" secondAttribute="leadingMargin" id="GvL-M0-ENV"/>
-                                    <constraint firstItem="TvC-lk-ZO7" firstAttribute="top" secondItem="89h-8b-LRO" secondAttribute="bottom" constant="8" id="ICk-7b-fPD"/>
-                                    <constraint firstItem="TvC-lk-ZO7" firstAttribute="trailing" secondItem="89h-8b-LRO" secondAttribute="trailing" id="KwM-gP-oog"/>
                                     <constraint firstItem="66o-BC-gwg" firstAttribute="leading" secondItem="i0B-8N-nM0" secondAttribute="trailing" constant="8" id="LnB-He-MSd"/>
                                     <constraint firstItem="Q5g-RY-uXD" firstAttribute="centerX" secondItem="fAZ-VX-s1Y" secondAttribute="centerX" id="Mgu-j5-XDW"/>
                                     <constraint firstItem="66o-BC-gwg" firstAttribute="centerX" secondItem="fAZ-VX-s1Y" secondAttribute="centerX" id="O7O-gU-15a"/>
@@ -176,10 +168,10 @@
                                     <constraint firstItem="89h-8b-LRO" firstAttribute="trailing" secondItem="Q5g-RY-uXD" secondAttribute="trailing" id="Vn8-OD-H9q"/>
                                     <constraint firstItem="Crk-4o-Fqu" firstAttribute="centerX" secondItem="fAZ-VX-s1Y" secondAttribute="centerX" id="WoG-Qb-u5t"/>
                                     <constraint firstItem="89h-8b-LRO" firstAttribute="top" secondItem="Q5g-RY-uXD" secondAttribute="bottom" constant="8" id="XUZ-f1-D77"/>
-                                    <constraint firstItem="TvC-lk-ZO7" firstAttribute="leading" secondItem="89h-8b-LRO" secondAttribute="leading" id="cJg-1E-fP7"/>
                                     <constraint firstItem="i0B-8N-nM0" firstAttribute="centerY" secondItem="66o-BC-gwg" secondAttribute="centerY" id="dSY-ts-aEq"/>
                                     <constraint firstItem="Q5g-RY-uXD" firstAttribute="centerY" secondItem="fAZ-VX-s1Y" secondAttribute="centerY" priority="250" id="gaS-ck-Wc3"/>
                                     <constraint firstItem="i0B-8N-nM0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fAZ-VX-s1Y" secondAttribute="leading" constant="8" id="m4A-7S-ULI"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="89h-8b-LRO" secondAttribute="bottom" constant="8" id="ndT-fa-Ujj"/>
                                     <constraint firstItem="66o-BC-gwg" firstAttribute="top" secondItem="Crk-4o-Fqu" secondAttribute="bottom" constant="16" id="zW6-ID-zph"/>
                                 </constraints>
                             </view>
@@ -217,9 +209,6 @@
         </namedColor>
         <namedColor name="ActionTint">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="AuxiliaryText">
-            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="PrimaryText">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
