@@ -15,10 +15,12 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import UIKit
+import KeePassiumLib
 
 class AboutVC: UITableViewController {
     @IBOutlet weak var contactSupportCell: UITableViewCell!
     @IBOutlet weak var writeReviewCell: UITableViewCell!
+    @IBOutlet weak var debugInfoCell: UITableViewCell!
     
     static func make() -> UIViewController {
         let vc = AboutVC.instantiateFromStoryboard()
@@ -31,6 +33,11 @@ class AboutVC: UITableViewController {
         tableView.estimatedRowHeight = 44
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refresh()
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
@@ -39,8 +46,22 @@ class AboutVC: UITableViewController {
             SupportEmailComposer.show(includeDiagnostics: false, completion: nil)
         case writeReviewCell:
             AppStoreReviewHelper.writeReview()
+        case debugInfoCell:
+            resetAutoFillCleanExitFlag()
         default:
             break
         } 
+    }
+    
+    /// For user-side debug
+    /// TODO: remove in release
+    private func resetAutoFillCleanExitFlag() {
+        Settings.current.isAutoFillFinishedOK = true
+        refresh()
+    }
+    
+    // TODO: remove in release
+    private func refresh() {
+        debugInfoCell.textLabel?.text = "AutoFill finished OK: \(Settings.current.isAutoFillFinishedOK)"
     }
 }

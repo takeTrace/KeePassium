@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NLN-lQ-bh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NLN-lQ-bh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -153,7 +153,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4FH-1C-Kl7">
                                                     <rect key="frame" x="16" y="11" width="343" height="22"/>
-                                                    <mutableString key="text">• KeePass by Dominik Reichl (https://keepass.info)
+                                                    <string key="text">• KeePass by Dominik Reichl (https://keepass.info)
 • Feather icons by Cole Bemis (MIT licence, https://feathericons.com) • Ionicons by Ionic (MIT license, http://ionicons.com)
 • Linecons by Andrian Valeanu (https://designmodo.com/linecons-free/)
 • Fancy deboss pattern by Daniel Beaton (CC BY 3.0, http://subtlepatterns.com)
@@ -163,7 +163,7 @@
 • Twofish implementation by Niels Ferguson (available under its own very permissive  license, http://www.cartotype.com/downloads/twofish/twofish.cpp).
 • GzipSwift by 1024jp (MIT license, https://github.com/1024jp/GzipSwift)
 • Base32 for Swift by Norio Nomura (MIT license, https://github.com/norio-nomura/Base32)
-• KeyboardLayoutConstraint by James Tang (MIT license, https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift)</mutableString>
+• KeyboardLayoutConstraint by James Tang (MIT license, https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift)</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -179,6 +179,34 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Debug Info" id="yvL-iq-6nI">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="LJx-op-sBo" detailTextLabel="Un8-ao-DFC" style="IBUITableViewCellStyleSubtitle" id="Ldd-r7-23g">
+                                        <rect key="frame" x="0.0" y="332" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ldd-r7-23g" id="IEP-XU-dwr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="(Debug Info)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="LJx-op-sBo">
+                                                    <rect key="frame" x="16" y="5" width="96.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" name="PrimaryText"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Press here to reset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Un8-ao-DFC">
+                                                    <rect key="frame" x="16" y="25.5" width="107" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                    <color key="textColor" name="AuxiliaryText"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="NLN-lQ-bh5" id="K2c-4H-F1l"/>
@@ -187,6 +215,7 @@
                     </tableView>
                     <connections>
                         <outlet property="contactSupportCell" destination="lcp-fz-TzI" id="SFZ-rV-MFA"/>
+                        <outlet property="debugInfoCell" destination="Ldd-r7-23g" id="NO1-gd-GQ2"/>
                         <outlet property="writeReviewCell" destination="aun-72-lCX" id="EWW-SV-WVB"/>
                     </connections>
                 </tableViewController>
@@ -198,8 +227,14 @@
     <resources>
         <image name="app-rating-listitem" width="29" height="29"/>
         <image name="email-us-listitem" width="29" height="29"/>
+        <namedColor name="AuxiliaryText">
+            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
         <namedColor name="IconTint">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="PrimaryText">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
     </resources>
     <color key="tintColor" name="ActionTint"/>
