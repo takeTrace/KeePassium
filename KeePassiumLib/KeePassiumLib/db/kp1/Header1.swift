@@ -65,11 +65,11 @@ class Header1 {
     private(set) var flags: UInt32 // used internally by KeePass
     private(set) var masterSeed: ByteArray
     private(set) var initialVector: ByteArray
-    internal(set) var contentHash: ByteArray
+    internal var contentHash: ByteArray
     private(set) var transformSeed: ByteArray
     private(set) var transformRounds: UInt32
-    internal(set) var groupCount: Int // Int for convenience, actually UInt32
-    internal(set) var entryCount: Int // Int for convenience, actually UInt32
+    internal var groupCount: Int // Int for convenience, actually UInt32
+    internal var entryCount: Int // Int for convenience, actually UInt32
     private(set) var algorithm: CipherAlgorithm
     
     init(database: Database1) {

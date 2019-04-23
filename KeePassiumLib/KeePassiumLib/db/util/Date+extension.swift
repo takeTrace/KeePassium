@@ -18,7 +18,7 @@ import Foundation
 
 public extension Date {
     /// A readability-improving wrapper for `Date()`
-    public static var now: Date { return Date() }
+    static var now: Date { return Date() }
     
     /// .NET's DateTime reference date: January 1, 0001 at 00:00:00.000 in the Gregorian calendar.
     static internal let dotNetTimeZero = DateComponents(
@@ -49,13 +49,13 @@ public extension Date {
     }
     
     /// Returns the date as an ISO8601-formatted string
-    public func iso8601String() -> String {
+    func iso8601String() -> String {
         return ISO8601DateFormatter().string(from: self)
     }
     
     /// Returns the date as Base64-encoded UInt64 of seconds since
     /// `Date.dotNetTimeZero` (KP2v4)
-    public func base64EncodedString() -> String {
+    func base64EncodedString() -> String {
         let secondsSinceRef = Int64(self.timeIntervalSince(Date.dotNetTimeZero))
         return secondsSinceRef.data.base64EncodedString()
     }

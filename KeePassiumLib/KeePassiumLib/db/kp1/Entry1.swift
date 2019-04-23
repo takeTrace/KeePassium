@@ -64,7 +64,7 @@ public class Entry1: Entry {
             }
         }
     }
-    internal(set) var groupID: Group1ID
+    internal var groupID: Group1ID
     
     override public var isSupportsExtraFields: Bool { get { return false } }
     

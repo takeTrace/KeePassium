@@ -91,7 +91,7 @@ final class Meta2: Eraseable {
     
     private unowned let database: Database2
     private(set) var generator: String
-    internal(set) var headerHash: ByteArray? // might be set externally for saving kp2v3 database
+    internal var headerHash: ByteArray? // might be set externally for saving kp2v3 database
     private(set) var settingsChangedTime: Date
     private(set) var databaseName: String
     private(set) var databaseNameChangedTime: Date
@@ -102,13 +102,13 @@ final class Meta2: Eraseable {
     private(set) var maintenanceHistoryDays: UInt32
     /// Database color coded as a CSS-format hex string (e.g. #123456), empty string means transparent
     private(set) var colorString: String
-    internal(set) var masterKeyChangedTime: Date
+    internal var masterKeyChangedTime: Date
     private(set) var masterKeyChangeRec: Int64
     private(set) var masterKeyChangeForce: Int64
     private(set) var memoryProtection: MemoryProtection
     private(set) var isRecycleBinEnabled: Bool
     private(set) var recycleBinGroupUUID: UUID
-    internal(set) var recycleBinChangedTime: Date
+    internal var recycleBinChangedTime: Date
     private(set) var entryTemplatesGroupUUID: UUID
     private(set) var entryTemplatesGroupChangedTime: Date
     private(set) var historyMaxItems: Int32

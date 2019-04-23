@@ -21,7 +21,7 @@ public extension URL {
     /// Second-level domain name, if any.
     /// (For example, for "auth.private.example.com" returns "example")
     /// Will not work with IP addresses (e.g. "127.0.0.1" -> "0")
-    public var domain2: String? {
+    var domain2: String? {
         guard let names = host?.split(separator: ".") else { return nil }
         let nameCount = names.count
         if nameCount >= 2 {
@@ -31,34 +31,34 @@ public extension URL {
     }
     
     /// Last modiifcation date of a file URL.
-    public var fileModificationDate: Date? {
+    var fileModificationDate: Date? {
         guard let attr = try? FileManager.default
             .attributesOfItem(atPath: self.path) else { return nil }
         return attr[FileAttributeKey.modificationDate] as? Date
     }
 
     /// Creation date of a file URL.
-    public var fileCreationDate: Date? {
+    var fileCreationDate: Date? {
         guard let attr = try? FileManager.default
             .attributesOfItem(atPath: self.path) else { return nil }
         return attr[FileAttributeKey.creationDate] as? Date
     }
     
     /// Size of the file at this URL.
-    public var fileSize: Int64? {
+    var fileSize: Int64? {
         guard let attr = try? FileManager.default
             .attributesOfItem(atPath: self.path) else { return nil}
         return attr[FileAttributeKey.size] as? Int64
     }
     
     /// True for directories.
-    public var isDirectory: Bool {
+    var isDirectory: Bool {
         let res = try? resourceValues(forKeys: [.isDirectoryKey])
         return res?.isDirectory ?? false
     }
     
     /// Same URL with last component name replaced with "_redacted_"
-    public var redacted: URL {
+    var redacted: URL {
         let isDirectory = self.isDirectory
         return self.deletingLastPathComponent().appendingPathComponent("_redacted_", isDirectory: isDirectory)
 //        return self //TODO debug stuff, remove in production

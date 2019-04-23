@@ -39,7 +39,7 @@ public class Group1: Group {
     public static let backupGroupIconID = IconID.trashBin
     
     private(set)  var id: Group1ID
-    internal(set) var level: Int16
+    internal var level: Int16
     private(set)  var flags: Int32 // some internal KeePass field
     //TODO: test if this (get/set) works correctly
     override public var canExpire: Bool {
