@@ -12,6 +12,13 @@
 		7505E8D12236FA0F00E5202E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7505E8D02236FA0F00E5202E /* StringExtension.swift */; };
 		75C764E4226F475500025F8B /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D0C76A2174AF1F00C64C93 /* KeePassiumLib.framework */; };
 		75C764EB226F493300025F8B /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C764EA226F493300025F8B /* CryptoTests.swift */; };
+		75C764ED226F6E0D00025F8B /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C764EC226F6E0D00025F8B /* DatabaseTests.swift */; };
+		75C764F5226F6F9700025F8B /* v4-pluginData.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 75C764EF226F6F9700025F8B /* v4-pluginData.kdbx */; };
+		75C764F6226F6F9700025F8B /* kp1-pw-2fi-100k.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 75C764F0226F6F9700025F8B /* kp1-pw-2fi-100k.kdb */; };
+		75C764F7226F6F9700025F8B /* v4-pw-ar2-c20-c20-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 75C764F1226F6F9700025F8B /* v4-pw-ar2-c20-c20-nocomp.kdbx */; };
+		75C764F8226F6F9700025F8B /* v3-pw-aes-aes-s20-gzip-100k.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 75C764F2226F6F9700025F8B /* v3-pw-aes-aes-s20-gzip-100k.kdbx */; };
+		75C764F9226F6F9700025F8B /* kp1-pw-aes-100k.kdb in Resources */ = {isa = PBXBuildFile; fileRef = 75C764F3226F6F9700025F8B /* kp1-pw-aes-100k.kdb */; };
+		75C764FA226F6F9700025F8B /* v4-pw-ar2-c20-c20-gzip.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 75C764F4226F6F9700025F8B /* v4-pw-ar2-c20-c20-gzip.kdbx */; };
 		75D09B8E2174F02F00F7DEF2 /* Salsa20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D09B6B2174F02F00F7DEF2 /* Salsa20.swift */; };
 		75D09BA32174F02F00F7DEF2 /* salsa20.h in Headers */ = {isa = PBXBuildFile; fileRef = 75D09B852174F02F00F7DEF2 /* salsa20.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		75D09BA42174F02F00F7DEF2 /* salsa20.c in Sources */ = {isa = PBXBuildFile; fileRef = 75D09B862174F02F00F7DEF2 /* salsa20.c */; };
@@ -134,6 +141,13 @@
 		75C764DF226F475500025F8B /* KeePassiumLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeePassiumLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75C764E3226F475500025F8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75C764EA226F493300025F8B /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
+		75C764EC226F6E0D00025F8B /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
+		75C764EF226F6F9700025F8B /* v4-pluginData.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v4-pluginData.kdbx"; sourceTree = "<group>"; };
+		75C764F0226F6F9700025F8B /* kp1-pw-2fi-100k.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = "kp1-pw-2fi-100k.kdb"; sourceTree = "<group>"; };
+		75C764F1226F6F9700025F8B /* v4-pw-ar2-c20-c20-nocomp.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v4-pw-ar2-c20-c20-nocomp.kdbx"; sourceTree = "<group>"; };
+		75C764F2226F6F9700025F8B /* v3-pw-aes-aes-s20-gzip-100k.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v3-pw-aes-aes-s20-gzip-100k.kdbx"; sourceTree = "<group>"; };
+		75C764F3226F6F9700025F8B /* kp1-pw-aes-100k.kdb */ = {isa = PBXFileReference; lastKnownFileType = file; path = "kp1-pw-aes-100k.kdb"; sourceTree = "<group>"; };
+		75C764F4226F6F9700025F8B /* v4-pw-ar2-c20-c20-gzip.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v4-pw-ar2-c20-c20-gzip.kdbx"; sourceTree = "<group>"; };
 		75D09B6B2174F02F00F7DEF2 /* Salsa20.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Salsa20.swift; sourceTree = "<group>"; };
 		75D09B852174F02F00F7DEF2 /* salsa20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = salsa20.h; path = KeePassiumLib/crypto/salsa20/salsa20.h; sourceTree = SOURCE_ROOT; };
 		75D09B862174F02F00F7DEF2 /* salsa20.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = salsa20.c; sourceTree = "<group>"; };
@@ -282,10 +296,25 @@
 		75C764E0226F475500025F8B /* KeePassiumLibTests */ = {
 			isa = PBXGroup;
 			children = (
+				75C764EE226F6F3C00025F8B /* resources */,
 				75C764EA226F493300025F8B /* CryptoTests.swift */,
+				75C764EC226F6E0D00025F8B /* DatabaseTests.swift */,
 				75C764E3226F475500025F8B /* Info.plist */,
 			);
 			path = KeePassiumLibTests;
+			sourceTree = "<group>";
+		};
+		75C764EE226F6F3C00025F8B /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				75C764F0226F6F9700025F8B /* kp1-pw-2fi-100k.kdb */,
+				75C764F3226F6F9700025F8B /* kp1-pw-aes-100k.kdb */,
+				75C764F2226F6F9700025F8B /* v3-pw-aes-aes-s20-gzip-100k.kdbx */,
+				75C764EF226F6F9700025F8B /* v4-pluginData.kdbx */,
+				75C764F4226F6F9700025F8B /* v4-pw-ar2-c20-c20-gzip.kdbx */,
+				75C764F1226F6F9700025F8B /* v4-pw-ar2-c20-c20-nocomp.kdbx */,
+			);
+			path = resources;
 			sourceTree = "<group>";
 		};
 		75D09B6A2174F02F00F7DEF2 /* crypto */ = {
@@ -669,6 +698,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75C764F8226F6F9700025F8B /* v3-pw-aes-aes-s20-gzip-100k.kdbx in Resources */,
+				75C764FA226F6F9700025F8B /* v4-pw-ar2-c20-c20-gzip.kdbx in Resources */,
+				75C764F5226F6F9700025F8B /* v4-pluginData.kdbx in Resources */,
+				75C764F9226F6F9700025F8B /* kp1-pw-aes-100k.kdb in Resources */,
+				75C764F6226F6F9700025F8B /* kp1-pw-2fi-100k.kdb in Resources */,
+				75C764F7226F6F9700025F8B /* v4-pw-ar2-c20-c20-nocomp.kdbx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -687,6 +722,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75C764ED226F6E0D00025F8B /* DatabaseTests.swift in Sources */,
 				75C764EB226F493300025F8B /* CryptoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
