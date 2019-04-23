@@ -856,7 +856,7 @@ public class Database2: Database {
             blockIndex += 1
             writeProgress.completedUnitCount += Int64(blockSize)
             if writeProgress.isCancelled {
-                throw ProgressInterruption.cancelledByUser()
+                throw ProgressInterruption.cancelledByUser
             }
         }
         // finally, write the terminating block
@@ -944,7 +944,7 @@ public class Database2: Database {
             blockID += 1
             writingProgress.completedUnitCount += Int64(blockSize)
             if writingProgress.isCancelled {
-                throw ProgressInterruption.cancelledByUser()
+                throw ProgressInterruption.cancelledByUser
             }
         }
         // finally, write the terminating block

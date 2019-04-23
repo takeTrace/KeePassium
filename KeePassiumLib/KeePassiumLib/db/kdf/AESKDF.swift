@@ -111,7 +111,7 @@ class AESKDF: KeyDerivationFunction {
         }
         progress.completedUnitCount = progress.totalUnitCount
         if progress.isCancelled {
-            throw ProgressInterruption.cancelledByUser()
+            throw ProgressInterruption.cancelledByUser
         }
         
         guard status == kCCSuccess else {

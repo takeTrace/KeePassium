@@ -90,7 +90,7 @@ public final class Argon2 {
         }
         progress?.completedUnitCount = Int64(t_cost) // for consistency
         if progress?.isCancelled ?? false {
-            throw ProgressInterruption.cancelledByUser()
+            throw ProgressInterruption.cancelledByUser
         }
         if statusCode != ARGON2_OK.rawValue {
             throw CryptoError.argon2Error(code: Int(statusCode))

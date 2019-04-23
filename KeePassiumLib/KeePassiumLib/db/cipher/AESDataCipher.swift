@@ -74,7 +74,7 @@ final class AESDataCipher: DataCipher {
         //TODO: check if need fine-grained progress tracking here
         progress.completedUnitCount = Int64(data.count)
         if progress.isCancelled {
-            throw ProgressInterruption.cancelledByUser()
+            throw ProgressInterruption.cancelledByUser
         }
         
         debugPrint("encrypted size: \(numBytesEncrypted) bytes")
@@ -124,7 +124,7 @@ final class AESDataCipher: DataCipher {
         //TODO: check if need fine-grained progress tracking here
         progress.completedUnitCount = Int64(encData.count)
         if progress.isCancelled {
-            throw ProgressInterruption.cancelledByUser()
+            throw ProgressInterruption.cancelledByUser
         }
         
         debugPrint("decrypted \(numBytesDecrypted) bytes")

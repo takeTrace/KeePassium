@@ -81,7 +81,7 @@ public final class Salsa20: StreamCipher {
         if let progress = progress {
             progress.completedUnitCount = progress.totalUnitCount
             if progress.isCancelled {
-                throw ProgressInterruption.cancelledByUser()
+                throw ProgressInterruption.cancelledByUser
             }
         }
     }
