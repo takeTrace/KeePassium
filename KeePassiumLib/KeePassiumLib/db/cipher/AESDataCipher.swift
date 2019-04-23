@@ -47,7 +47,7 @@ final class AESDataCipher: DataCipher {
         progress.localizedDescription = NSLocalizedString("Encrypting", comment: "Status message")
         
         let operation: CCOperation = UInt32(kCCEncrypt)
-        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES128)
+        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
         let options: CCOptions = UInt32(kCCOptionPKCS7Padding)
         
         progress.completedUnitCount = 0
@@ -98,7 +98,7 @@ final class AESDataCipher: DataCipher {
         
         progress.localizedDescription = NSLocalizedString("Decrypting", comment: "Status message")
         let operation: CCOperation = UInt32(kCCDecrypt)
-        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES128)
+        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
         let options: CCOptions = UInt32(kCCOptionPKCS7Padding)
         
         progress.completedUnitCount = 0
