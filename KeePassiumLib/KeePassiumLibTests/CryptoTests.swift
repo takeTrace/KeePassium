@@ -11,6 +11,21 @@ import XCTest
 
 class CryptoTests: XCTestCase {
 
+    // MARK: - Padding test
+
+    func testPadding() {
+        for value: UInt8 in 0...20 {
+            for len in 0...17 {
+                let originalData = ByteArray(data: Data(repeating: UInt8(value), count: len))
+                let data = originalData.clone()
+                CryptoManager.addPadding(data: data, blockSize: 16)
+                XCTAssertNotEqual(data, originalData)
+                try! CryptoManager.removePadding(data: data)
+                XCTAssertEqual(data, originalData)
+            }
+        }
+    }
+    
     // MARK: - AES tests
     
     func testAES() {
