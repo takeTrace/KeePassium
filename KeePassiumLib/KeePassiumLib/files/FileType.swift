@@ -29,15 +29,22 @@ public enum FileType {
     
     public static let keyFileUTIs =
         ["com.keepassium.keyfile", "public.data", "public.content"]
-    
-    public static let databaseExtensions = ["kdb", "kdbx"]
+
+    /// File extensions for database files
+    public enum DatabaseExtensions {
+        public static let all = [kdb, kdbx]
+        public static let kdb = "kdb"
+        public static let kdbx = "kdbx"
+    }
+
     //public static let keyFileExtensions = anything except database
+    
     
     case database
     case keyFile
 
     init(for url: URL) {
-        if FileType.databaseExtensions.contains(url.pathExtension) {
+        if FileType.DatabaseExtensions.all.contains(url.pathExtension) {
             self = .database
         } else {
             self = .keyFile
@@ -46,6 +53,6 @@ public enum FileType {
 
     /// `true` if the `url` has a KeePass database extension
     public static func isDatabaseFile(url: URL) -> Bool {
-        return databaseExtensions.contains(url.pathExtension)
+        return DatabaseExtensions.all.contains(url.pathExtension)
     }
 }
