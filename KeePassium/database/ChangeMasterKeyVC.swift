@@ -24,7 +24,6 @@ class ChangeMasterKeyVC: UIViewController {
     @IBOutlet weak var passwordField: ValidatingTextField!
     @IBOutlet weak var keyFileField: ValidatingTextField!
     
-    private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var databaseRef: URLReference!
     private var keyFileRef: URLReference?
     
@@ -38,7 +37,6 @@ class ChangeMasterKeyVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         
         databaseNameLabel.text = databaseRef.info.fileName
         databaseIcon.image = UIImage.databaseIcon(for: databaseRef)
@@ -85,7 +83,7 @@ class ChangeMasterKeyVC: UIViewController {
                 let dbm = DatabaseManager.shared
                 dbm.changeCompositeKey(to: newCompositeKey)
                 try? dbm.rememberDatabaseKey(onlyIfExists: true) // throws KeychainError, ignored
-                _self.databaseManagerNotifications.startObserving()
+                dbm.addObserver(_self)
                 dbm.startSavingDatabase()
             },
             error: {
@@ -197,7 +195,7 @@ extension ChangeMasterKeyVC: DatabaseManagerObserver {
     }
     
     func databaseManager(didSaveDatabase urlRef: URLReference) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideProgressOverlay()
         let parentVC = presentingViewController
         dismiss(animated: true, completion: {
@@ -215,7 +213,7 @@ extension ChangeMasterKeyVC: DatabaseManagerObserver {
     
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         Diag.info("Master key change cancelled")
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideProgressOverlay()
     }
     
@@ -227,7 +225,7 @@ extension ChangeMasterKeyVC: DatabaseManagerObserver {
         let errorAlert = UIAlertController.make(title: message, message: reason)
         present(errorAlert, animated: true, completion: nil)
         
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideProgressOverlay()
     }
 }
