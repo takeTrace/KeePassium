@@ -180,6 +180,12 @@ final class Meta2: Eraseable {
         customIcons.removeAll() //erase()
     }
     
+    /// Sets default values for a new kp2v4 database.
+    func loadDefaultValuesV4() {
+        erase()
+        generator = Meta2.generatorName
+    }
+    
     /// - Throws: Xml2.ParsingError, ProgressInterruption
     func load(
         xml: AEXMLElement,

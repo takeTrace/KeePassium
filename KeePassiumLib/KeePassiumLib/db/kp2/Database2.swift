@@ -109,6 +109,19 @@ public class Database2: Database {
         super.erase()
     }
     
+    /// Creates a new instance of `Database2`, preinitialized with kp2v4 fields.
+    ///
+    /// - Returns: ready-to-save `Database2` instance
+    internal static func makeNewV4() -> Database2 {
+        let db = Database2()
+        db.header.loadDefaultValuesV4()
+        db.meta.loadDefaultValuesV4()
+        let rootGroup = Group2(database: db)
+        rootGroup.isExpanded = true
+        db.root = rootGroup
+        return db
+    }
+    
     /// Checks if given data starts with compatible KP2 signature.
     override public class func isSignatureMatches(data: ByteArray) -> Bool {
         return Header2.isSignatureMatches(data: data)

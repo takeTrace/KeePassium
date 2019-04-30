@@ -62,7 +62,10 @@ internal enum LString {
     public static let confirmKeyFileDeletion = NSLocalizedString("Delete key file?\n Make sure you have a backup.", comment: "Message to confirm deletion of a key file.")
     public static let confirmDatabaseDeletion = NSLocalizedString("Delete database file?\n Make sure you have a backup.", comment: "Message to confirm deletion of a database file.")
     public static let confirmDatabaseRemoval = NSLocalizedString("Remove database from the list?\n The file will remain intact and you can add it again later.", comment: "Message to confirm removal of database file from the app.")
-    
+
+    // Database creation
+    public static let titleCreateDatabase = NSLocalizedString("Create Database", comment: "Title of a form for creating a database")
+
     // Group editing/creation
     public static let actionCreateGroup = NSLocalizedString("Create Group", comment: "Action/button to create a new sub-group in the current group")
     public static let defaultNewGroupName = NSLocalizedString("New Group", comment: "Default name of a new group")

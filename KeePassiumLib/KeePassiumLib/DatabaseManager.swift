@@ -181,7 +181,6 @@ public class DatabaseManager {
             assertionFailure("Tried to save database before opening one.")
             return
         }
-        
         serialDispatchQueue.async {
             self._saveDatabase(databaseDocument, dbRef: dbRef)
             Diag.info("Async database saving finished")
@@ -261,10 +260,66 @@ public class DatabaseManager {
         }
     }
     
+    /// Creates an in-memory kp2v4 database with given master key,
+    /// pre-populates it using `template` callback.
+    /// The caller is responsible for calling `startSavingDatabase`.
+    ///
+    /// - Parameters:
+    ///   - databaseURL: URL to a target file for the database; `DatabaseManager.databaseRef` will be based on this value in case of success.
+    ///   - password: DB password; can be empty if `keyFile` is given.
+    ///   - keyFile: DB key file reference; can be `nil` is `password` is given.
+    ///   - templateSetupHandler: callback to populate the database with sample items;
+    ///         has DB's root group as parameter.
+    ///   - successHandler: called after successful setup of the database
+    ///   - errorHandler: called in case of error; with error message as parameter
+    public func createDatabase(
+        databaseURL: URL,
+        password: String,
+        keyFile: URLReference?,
+        template templateSetupHandler: @escaping (Group2) -> Void,
+        success successHandler: @escaping () -> Void,
+        error errorHandler: @escaping ((String?) -> Void))
+    {
+        assert(database == nil)
+        assert(databaseDocument == nil)
+        let db2 = Database2.makeNewV4()
+        guard let root2 = db2.root as? Group2 else { fatalError() }
+        templateSetupHandler(root2)
+        
+        DatabaseManager.createCompositeKey(
+            keyHelper: db2.keyHelper,
+            password: password,
+            keyFile: keyFile,
+            success: { // strong self
+                (newCompositeKey) in
+                DatabaseManager.shared.changeCompositeKey(to: newCompositeKey)
+                self.databaseDocument = DatabaseDocument(fileURL: databaseURL)
+                self.databaseDocument!.database = db2
+                
+                // we don't have dedicated location for temporary files,
+                // so set it to generic `.external`
+                do {
+                    self.databaseRef = try URLReference(from: databaseURL, location: .external)
+                        // throws some internal system error
+                    successHandler()
+                } catch {
+                    Diag.error("Failed to create reference to temporary DB file [message: \(error.localizedDescription)]")
+                    errorHandler(error.localizedDescription)
+                }
+            },
+            error: { // strong self
+                (message) in
+                assert(self.databaseRef == nil)
+                Diag.error("Error creating composite key for a new database [message: \(message)]")
+                errorHandler(message)
+            }
+        )
+    }
     
-//    /// Creates a template database file at a given location with the given master key.
+//    
+//    /// Creates a template database file at a given location.
 //    /// Asynchronous call, returns immediately.
-//    func startCreatingDatabase(database dbRef: URLReference, password: String, keyFile keyFileRef: URLReference?) {
+//    func startCreatingDatabase(database dbRef: URLReference) {
 //        notifyDatabaseWillCreate(database: dbRef)
 //        let dbURL: URL
 //        do {

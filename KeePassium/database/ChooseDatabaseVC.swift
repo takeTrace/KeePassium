@@ -173,35 +173,50 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
     }
     
     @IBAction func didPressAddDatabase(_ sender: Any) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: LString.actionCreateDatabase, style: .default) {
+            [weak self] _ in
+            self?.didPressCreateDatabase()
+        })
+        
+        actionSheet.addAction(UIAlertAction(title: LString.actionOpenDatabase, style: .default) {
+            [weak self] _ in
+            self?.didPressOpenDatabase()
+        })
+        
+        actionSheet.addAction(UIAlertAction(
+            title: LString.actionCancel,
+            style: .cancel,
+            handler: nil)
+        )
+            
+        if let popover = actionSheet.popoverPresentationController {
+            popover.barButtonItem = addDatabaseBarButton
+        }
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func didPressOpenDatabase() {
         let picker = UIDocumentPickerViewController(
             documentTypes: FileType.publicDataUTIs,
             in: .open)
         picker.delegate = self
         picker.modalPresentationStyle = .pageSheet
         present(picker, animated: true, completion: nil)
-
-        // TODO: uncomment when Create Database is implemented
-//        let actionSelector = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//        let createDatabaseAction = UIAlertAction(title: String.Localized.actionCreateDatabase, style: .default) { [weak self] _ in
-//            let vc = CreateDatabaseVC.make(delegate: self)
-//            self?.present(vc, animated: true)
-//        }
-//        let openDatabaseAction = UIAlertAction(title: String.Localized.actionOpenDatabase, style: .default) { [weak self] _ in
-//            guard let sself = self else { return }
-//            let picker = UIDocumentPickerViewController(documentTypes: FileType.databaseUTIs, in: .open)
-//            picker.delegate = sself
-//            picker.modalPresentationStyle = .pageSheet
-//            sself.present(picker, animated: true, completion: nil)
-//        }
-//        actionSelector.addAction(createDatabaseAction)
-//        actionSelector.addAction(openDatabaseAction)
-//        actionSelector.addAction(UIAlertAction(title: String.Localized.actionCancel, style: .cancel, handler: nil))
-//        if let popover = actionSelector.popoverPresentationController {
-//            popover.barButtonItem = addDatabaseBarButton
-//        }
-//        present(actionSelector, animated: true, completion: nil)
     }
     
+    var databaseCreatorCoordinator: DatabaseCreatorCoordinator?
+    func didPressCreateDatabase() {
+        let navVC = UINavigationController()
+        navVC.modalPresentationStyle = .formSheet
+        
+        assert(databaseCreatorCoordinator == nil)
+        databaseCreatorCoordinator = DatabaseCreatorCoordinator(navigationController: navVC)
+        databaseCreatorCoordinator!.delegate = self
+        databaseCreatorCoordinator!.start()
+        present(navVC, animated: true)
+    }
+
     func didPressExportDatabase(at indexPath: IndexPath) {
         let urlRef = databaseRefs[indexPath.row]
         do {
@@ -472,9 +487,18 @@ extension ChooseDatabaseVC: UIDocumentPickerDelegate {
     }
 }
 
-extension ChooseDatabaseVC: CreateDatabaseVCDelegate {
-    func databaseCreator(didCreateDatabase urlRef: URLReference) {
-        //TODO select and open unlock
-        //plus a message "Let's see if you remember your master password" :)
+extension ChooseDatabaseVC: DatabaseCreatorCoordinatorDelegate {
+    func didPressCancel(in databaseCreatorCoordinator: DatabaseCreatorCoordinator) {
+        presentedViewController?.dismiss(animated: true) {
+            self.databaseCreatorCoordinator = nil
+        }
+    }
+    
+    func didCreateDatabase(
+        in databaseCreatorCoordinator: DatabaseCreatorCoordinator,
+        database urlRef: URLReference)
+    {
+        Settings.current.startupDatabase = urlRef
+        updateDetailView(onlyInTwoPaneMode: false)
     }
 }

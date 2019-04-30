@@ -79,7 +79,7 @@ public class URLReference: Equatable, Codable {
         case location = "location"
     }
     
-    init(from url: URL, location: Location) throws {
+    public init(from url: URL, location: Location) throws {
         let resourceKeys = Set<URLResourceKey>(
             [.canonicalPathKey, .nameKey, .fileSizeKey,
             .creationDateKey, .contentModificationDateKey]

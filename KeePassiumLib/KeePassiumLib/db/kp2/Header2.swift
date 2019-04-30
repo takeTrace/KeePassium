@@ -197,6 +197,31 @@ final class Header2: Eraseable {
         publicCustomData.erase()
     }
     
+    /// Configures header for a new kp2v4 database.
+    func loadDefaultValuesV4() {
+        formatVersion = .v4
+
+        dataCipher = ChaCha20DataCipher()
+        fields[.cipherID] = dataCipher.uuid.data
+        
+        kdf = Argon2KDF()
+        kdfParams = kdf.defaultParams
+        fields[.kdfParameters] = kdfParams.data!
+        
+        let compressionFlags = UInt32(exactly: CompressionAlgorithm.gzipCompression.rawValue)!
+        fields[.compressionFlags] = compressionFlags.data
+
+        innerStreamAlgorithm = .ChaCha20
+
+        fields[.publicCustomData] = ByteArray()
+        
+        // setup .masterSeed, .encryptionIV, .protectedStreamKey and streamCipher
+        // Done in randomizeSeeds(), will be called before saving.
+        //try randomizeSeeds() // throws `CryptoError.rngError`
+        
+        initialized = true
+    }
+    
     /// Reads and parses main(v3)/outer(v4) header data
     /// - Throws: HeaderError
     func read(data inputData: ByteArray) throws {
