@@ -315,55 +315,6 @@ public class DatabaseManager {
             }
         )
     }
-    
-//    
-//    /// Creates a template database file at a given location.
-//    /// Asynchronous call, returns immediately.
-//    func startCreatingDatabase(database dbRef: URLReference) {
-//        notifyDatabaseWillCreate(database: dbRef)
-//        let dbURL: URL
-//        do {
-//            dbURL = try dbRef.resolve()
-//        } catch {
-//            Diag.error("Failed to resolve database URL reference [error: \(error.localizedDescription)]")
-//            notifyDatabaseSaveError(database: dbRef, isCancelled: false,
-//                                    message: NSLocalizedString("Cannot create database file", comment: "Error message"),
-//                                    reason: error.localizedDescription)
-//            return
-//        }
-//        let dbDoc = DatabaseDocument(fileURL: dbURL) //TODO: maybe open the doc?
-//        dbDoc.database = makeTemplateDatabase(password: password, keyFile: keyFileRef)
-//        self.databaseDocument = dbDoc
-//        self.databaseRef = dbRef
-//        startSavingDatabase()
-//    }
-//
-//    /// Creates an instance of a new database with the given master key.
-//    private func makeTemplateDatabase(password: String, keyFile keyFileRef: URLReference?) -> Database2 {
-//        // open template DB from localized resources
-//        guard let templateDatabaseURL = Bundle.main.url(forResource: "template", withExtension: "kdbx", subdirectory: ""),
-//            let dbData = try? Data(contentsOf: templateDatabaseURL) else {
-//            fatalError("Missing template database resource")
-//        }
-//        let keyHelper = KeyHelper2()
-//        let templateKey = keyHelper.makeCompositeKey(passwordData: keyHelper.getPasswordData(password: "KeePassium template database"), keyFileData: ByteArray(count: 0))
-//
-//        let db = Database2()
-//        do {
-//            try db.load(dbFileData: ByteArray(data: dbData), compositeKey: templateKey)
-//        } catch {
-//            fatalError("Failed to load template database")
-//        }
-//
-//        // reset timestamps
-//        db.setAllTimestamps(to: Date.now)
-//
-//        // change master key
-//        db.changeCompositeKey(newKey: ByteArray)
-//
-//        // save to new path
-//        // TODO
-//    }
 
     // MARK: - Observer management
     
