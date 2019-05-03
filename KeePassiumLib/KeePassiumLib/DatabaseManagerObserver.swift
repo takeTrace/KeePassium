@@ -71,7 +71,6 @@ public extension DatabaseManagerObserver {
 public class DatabaseManagerNotifications {
     private weak var observer: DatabaseManagerObserver?
     private var isObserving: Bool
-    private var progressKVO: NSKeyValueObservation?
     
     public init(observer: DatabaseManagerObserver) {
         self.observer = observer
@@ -82,6 +81,7 @@ public class DatabaseManagerNotifications {
     public func startObserving() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(cancelled), name: DatabaseManager.Notifications.cancelled, object: nil)
+        nc.addObserver(self, selector: #selector(progressDidChange), name: DatabaseManager.Notifications.progressDidChange, object: nil)
         nc.addObserver(self, selector: #selector(willLoadDatabase), name: DatabaseManager.Notifications.willLoadDatabase, object: nil)
         nc.addObserver(self, selector: #selector(didLoadDatabase), name: DatabaseManager.Notifications.didLoadDatabase, object: nil)
         nc.addObserver(self, selector: #selector(willSaveDatabase), name: DatabaseManager.Notifications.willSaveDatabase, object: nil)
@@ -98,6 +98,7 @@ public class DatabaseManagerNotifications {
     public func stopObserving() {
         guard isObserving else { return }
         NotificationCenter.default.removeObserver(self, name: DatabaseManager.Notifications.cancelled, object: nil)
+        NotificationCenter.default.removeObserver(self, name: DatabaseManager.Notifications.progressDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: DatabaseManager.Notifications.willLoadDatabase, object: nil)
         NotificationCenter.default.removeObserver(self, name: DatabaseManager.Notifications.didLoadDatabase, object: nil)
         NotificationCenter.default.removeObserver(self, name: DatabaseManager.Notifications.willSaveDatabase, object: nil)
@@ -111,24 +112,9 @@ public class DatabaseManagerNotifications {
         isObserving = false
     }
     
-    private func startObservingProgress() {
-        let progress = DatabaseManager.shared.progress
-        progressKVO = progress.observe(\.fractionCompleted, options: [.new], changeHandler: { [weak self] (progress, _) in
-            DispatchQueue.main.async { [weak self] in
-                self?.observer?.databaseManager(progressDidChange: progress)
-            }
-        })
-    }
-    
-    private func stopObservingProgress() {
-        progressKVO?.invalidate()
-        progressKVO = nil
-    }
-    
     // MARK: - Notification selectors
     
     @objc private func cancelled(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'cancelled': URL ref is missing")
@@ -137,9 +123,18 @@ public class DatabaseManagerNotifications {
             self.observer?.databaseManager(database: urlRef, isCancelled: true)
         }
     }
-    
+
+    @objc private func progressDidChange(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let progress = userInfo[DatabaseManager.Notifications.userInfoProgressKey] as? ProgressEx else {
+                fatalError("DBM notification 'progressDidChange': ProgressEx is missing")
+        }
+        DispatchQueue.main.async {
+            self.observer?.databaseManager(progressDidChange: progress)
+        }
+    }
+
     @objc private func willLoadDatabase(_ notification: Notification) {
-        startObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'willLoadDatabase': URL ref is missing")
@@ -150,7 +145,6 @@ public class DatabaseManagerNotifications {
     }
     
     @objc private func didLoadDatabase(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'didLoadDatabase': URL ref is missing")
@@ -168,7 +162,6 @@ public class DatabaseManagerNotifications {
     }
     
     @objc private func willSaveDatabase(_ notification: Notification) {
-        startObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'willSaveDatabase': URL ref is missing")
@@ -179,7 +172,6 @@ public class DatabaseManagerNotifications {
     }
     
     @objc private func didSaveDatabase(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'didSaveDatabase': URL ref is missing")
@@ -190,7 +182,6 @@ public class DatabaseManagerNotifications {
     }
     
     @objc private func invalidMasterKey(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference,
             let message = userInfo[DatabaseManager.Notifications.userInfoErrorMessageKey] as? String else {
@@ -202,7 +193,6 @@ public class DatabaseManagerNotifications {
     }
     
     @objc private func loadingError(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference,
             let message = userInfo[DatabaseManager.Notifications.userInfoErrorMessageKey] as? String else {
@@ -215,7 +205,6 @@ public class DatabaseManagerNotifications {
     }
     
     @objc private func savingError(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference,
             let message = userInfo[DatabaseManager.Notifications.userInfoErrorMessageKey] as? String else {
@@ -238,7 +227,6 @@ public class DatabaseManagerNotifications {
     }
 
     @objc private func willCloseDatabase(_ notification: Notification) {
-        stopObservingProgress()
         guard let userInfo = notification.userInfo,
             let urlRef = userInfo[DatabaseManager.Notifications.userInfoURLRefKey] as? URLReference else {
                 fatalError("DBM notification 'willCloseDatabase': URL ref is missing")

@@ -343,6 +343,7 @@ public class DatabaseManager {
 
     internal enum Notifications {
         static let cancelled = Notification.Name("com.keepassium.databaseManager.cancelled")
+        static let progressDidChange = Notification.Name("com.keepassium.databaseManager.progressDidChange")
         static let willLoadDatabase = Notification.Name("com.keepassium.databaseManager.willLoadDatabase")
         static let didLoadDatabase = Notification.Name("com.keepassium.databaseManager.didLoadDatabase")
         static let willSaveDatabase = Notification.Name("com.keepassium.databaseManager.willSaveDatabase")
@@ -356,6 +357,7 @@ public class DatabaseManager {
         static let didCloseDatabase = Notification.Name("com.keepassium.databaseManager.didCloseDatabase")
         
         static let userInfoURLRefKey = "urlRef"
+        static let userInfoProgressKey = "progress"
         static let userInfoErrorMessageKey = "errorMessage"
         static let userInfoErrorReasonKey = "errorReason"
         static let userInfoWarningsKey = "warningMessages"
@@ -610,6 +612,7 @@ fileprivate class DatabaseLoader {
     private let password: String
     private let keyFileRef: URLReference?
     private let progress: ProgressEx
+    private var progressKVO: NSKeyValueObservation?
     private unowned var notifier: DatabaseManager
     /// Warning messages related to DB loading, that should be shown to the user.
     private let warnings: DatabaseLoadingWarnings
@@ -631,6 +634,28 @@ fileprivate class DatabaseLoader {
         self.completion = completion
         self.warnings = DatabaseLoadingWarnings()
         self.notifier = DatabaseManager.shared
+    }
+
+    private func startObservingProgress() {
+        assert(progressKVO == nil)
+        progressKVO = progress.observe(
+            \.fractionCompleted,
+            options: [.new],
+            changeHandler: {
+                [weak self] (progress, _) in
+                guard let _self = self else { return }
+                _self.notifier.notifyProgressDidChange(
+                    database: _self.dbRef,
+                    progress: _self.progress
+                )
+            }
+        )
+    }
+    
+    private func stopObservingProgress() {
+        assert(progressKVO != nil)
+        progressKVO?.invalidate()
+        progressKVO = nil
     }
     
     private func initDatabase(signature data: ByteArray) -> Database? {
@@ -675,12 +700,14 @@ fileprivate class DatabaseLoader {
     
     func load() {
         startBackgroundTask()
+        startObservingProgress()
         notifier.notifyDatabaseWillLoad(database: dbRef)
         let dbURL: URL
         do {
             dbURL = try dbRef.resolve()
         } catch {
             Diag.error("Failed to resolve database URL reference [error: \(error.localizedDescription)]")
+            stopObservingProgress()
             notifier.notifyDatabaseLoadError(
                 database: dbRef,
                 isCancelled: progress.isCancelled,
@@ -699,6 +726,7 @@ fileprivate class DatabaseLoader {
             errorHandler: {
                 (errorMessage) in
                 Diag.error("Failed to open database document [error: \(String(describing: errorMessage))]")
+                self.stopObservingProgress()
                 self.notifier.notifyDatabaseLoadError(
                     database: self.dbRef,
                     isCancelled: self.progress.isCancelled,
@@ -715,6 +743,7 @@ fileprivate class DatabaseLoader {
         // Create DB instance of appropriate version
         guard let db = initDatabase(signature: dbDoc.encryptedData) else {
             Diag.error("Unrecognized database format [firstBytes: \(dbDoc.encryptedData.prefix(8).asHexString)]")
+            stopObservingProgress()
             notifier.notifyDatabaseLoadError(
                 database: dbRef,
                 isCancelled: progress.isCancelled,
@@ -742,6 +771,7 @@ fileprivate class DatabaseLoader {
                 keyFileURL = try keyFileRef.resolve()
             } catch {
                 Diag.error("Failed to resolve key file URL reference [error: \(error.localizedDescription)]")
+                stopObservingProgress()
                 notifier.notifyDatabaseLoadError(
                     database: dbRef,
                     isCancelled: progress.isCancelled,
@@ -759,6 +789,7 @@ fileprivate class DatabaseLoader {
                 errorHandler: {
                     (error) in
                     Diag.error("Failed to open key file [error: \(error.localizedDescription)]")
+                    self.stopObservingProgress()
                     self.notifier.notifyDatabaseLoadError(
                         database: self.dbRef,
                         isCancelled: self.progress.isCancelled,
@@ -780,6 +811,7 @@ fileprivate class DatabaseLoader {
         let passwordData = keyHelper.getPasswordData(password: password)
         if passwordData.isEmpty && keyFileData.isEmpty {
             Diag.error("Both password and key file are empty")
+            stopObservingProgress()
             notifier.notifyDatabaseInvalidMasterKey(
                 database: dbRef,
                 message: NSLocalizedString(
@@ -808,6 +840,7 @@ fileprivate class DatabaseLoader {
             Diag.info("Database loaded OK")
             progress.localizedDescription = NSLocalizedString("Done", comment: "Status message: operation completed")
             completion(dbDoc, dbRef)
+            stopObservingProgress()
             notifier.notifyDatabaseDidLoad(database: dbRef, warnings: warnings)
             endBackgroundTask()
         } catch let error as DatabaseError {
@@ -823,6 +856,7 @@ fileprivate class DatabaseLoader {
                             message: \(error.localizedDescription),
                             reason: \(String(describing: error.failureReason))]
                     """)
+                stopObservingProgress()
                 notifier.notifyDatabaseLoadError(
                     database: dbRef,
                     isCancelled: progress.isCancelled,
@@ -831,6 +865,7 @@ fileprivate class DatabaseLoader {
                 endBackgroundTask()
             case .invalidKey:
                 Diag.error("Invalid master key. [message: \(error.localizedDescription)]")
+                stopObservingProgress()
                 notifier.notifyDatabaseInvalidMasterKey(
                     database: dbRef,
                     message: error.localizedDescription)
@@ -845,6 +880,7 @@ fileprivate class DatabaseLoader {
             switch error {
             case .cancelledByUser:
                 Diag.info("Database load was cancelled by user. [message: \(error.localizedDescription)]")
+                stopObservingProgress()
                 notifier.notifyDatabaseLoadError(
                     database: dbRef,
                     isCancelled: true,
@@ -857,6 +893,7 @@ fileprivate class DatabaseLoader {
             dbDoc.database = nil
             dbDoc.close(completionHandler: nil)
             Diag.error("Unexpected error [message: \(error.localizedDescription)]")
+            stopObservingProgress()
             notifier.notifyDatabaseLoadError(
                 database: dbRef,
                 isCancelled: progress.isCancelled,
@@ -872,6 +909,7 @@ fileprivate class DatabaseSaver {
     private let dbDoc: DatabaseDocument
     private let dbRef: URLReference
     private let progress: ProgressEx
+    private var progressKVO: NSKeyValueObservation?
     private unowned var notifier: DatabaseManager
     private let completion: ((DatabaseDocument) -> Void)
 
@@ -888,6 +926,28 @@ fileprivate class DatabaseSaver {
         self.progress = progress
         notifier = DatabaseManager.shared
         self.completion = completion
+    }
+    
+    private func startObservingProgress() {
+        assert(progressKVO == nil)
+        progressKVO = progress.observe(
+            \.fractionCompleted,
+            options: [.new],
+            changeHandler: {
+                [weak self] (progress, _) in
+                guard let _self = self else { return }
+                _self.notifier.notifyProgressDidChange(
+                    database: _self.dbRef,
+                    progress: _self.progress
+                )
+            }
+        )
+    }
+    
+    private func stopObservingProgress() {
+        assert(progressKVO != nil)
+        progressKVO?.invalidate()
+        progressKVO = nil
     }
     
     // MARK: - Running in background
@@ -918,6 +978,7 @@ fileprivate class DatabaseSaver {
     func save() {
         guard let database = dbDoc.database else { fatalError("Database is nil") }
         startBackgroundTask()
+        startObservingProgress()
         do {
             if Settings.current.isBackupDatabaseOnSave {
                 // dbDoc has already been opened, so we backup its old encrypted data
@@ -937,6 +998,7 @@ fileprivate class DatabaseSaver {
                 successHandler: {
                     self.progress.completedUnitCount += ProgressSteps.writeDatabase
                     Diag.info("Database saved OK")
+                    self.stopObservingProgress()
                     self.notifier.notifyDatabaseDidSave(database: self.dbRef)
                     self.completion(self.dbDoc)
                     self.endBackgroundTask()
@@ -944,6 +1006,7 @@ fileprivate class DatabaseSaver {
                 errorHandler: {
                     (errorMessage) in
                     Diag.error("Database saving error. [message: \(String(describing: errorMessage))]")
+                    self.stopObservingProgress()
                     self.notifier.notifyDatabaseSaveError(
                         database: self.dbRef,
                         isCancelled: self.progress.isCancelled,
@@ -959,6 +1022,7 @@ fileprivate class DatabaseSaver {
                     message: \(error.localizedDescription),
                     reason: \(String(describing: error.failureReason))]
                 """)
+            stopObservingProgress()
             notifier.notifyDatabaseSaveError(
                 database: dbRef,
                 isCancelled: progress.isCancelled,
@@ -966,6 +1030,7 @@ fileprivate class DatabaseSaver {
                 reason: error.failureReason)
             endBackgroundTask()
         } catch let error as ProgressInterruption {
+            stopObservingProgress()
             switch error {
             case .cancelledByUser:
                 Diag.error("Database saving was interrupted by user. [message: \(error.localizedDescription)]")
@@ -978,6 +1043,7 @@ fileprivate class DatabaseSaver {
             }
         } catch { // file writing errors
             Diag.error("Database saving error. [isCancelled: \(progress.isCancelled), message: \(error.localizedDescription)]")
+            stopObservingProgress()
             notifier.notifyDatabaseSaveError(
                 database: dbRef,
                 isCancelled: progress.isCancelled,
