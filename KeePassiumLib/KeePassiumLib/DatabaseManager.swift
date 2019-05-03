@@ -322,21 +322,23 @@ public class DatabaseManager {
         weak var observer: DatabaseManagerObserver?
     }
     private var observers = [ObjectIdentifier: WeakObserver]()
+    private var notificationQueue = DispatchQueue(
+        label: "com.keepassium.DatabaseManager.notifications",
+        qos: .default
+    )
     
     public func addObserver(_ observer: DatabaseManagerObserver) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        
         let id = ObjectIdentifier(observer)
-        observers[id] = WeakObserver(observer: observer)
+        notificationQueue.async(flags: .barrier) { // strong self
+            self.observers[id] = WeakObserver(observer: observer)
+        }
     }
     
     public func removeObserver(_ observer: DatabaseManagerObserver) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        
         let id = ObjectIdentifier(observer)
-        observers.removeValue(forKey: id)
+        notificationQueue.async(flags: .barrier) { // strong self
+            self.observers.removeValue(forKey: id)
+        }
     }
 
     // MARK: - Notification management
@@ -364,15 +366,15 @@ public class DatabaseManager {
     }
     
     fileprivate func notifyDatabaseWillLoad(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(willLoadDatabase: urlRef)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(willLoadDatabase: urlRef)
+                }
             }
         }
-
+        
         NotificationCenter.default.post(
             name: Notifications.willLoadDatabase,
             object: self,
@@ -381,17 +383,17 @@ public class DatabaseManager {
     
     fileprivate func notifyDatabaseDidLoad(
         database urlRef: URLReference,
-        warnings: DatabaseLoadingWarnings
-    ) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(didLoadDatabase: urlRef, warnings: warnings)
+        warnings: DatabaseLoadingWarnings)
+    {
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(didLoadDatabase: urlRef, warnings: warnings)
+                }
             }
         }
-
+        
         NotificationCenter.default.post(
             name: Notifications.didLoadDatabase,
             object: self,
@@ -403,12 +405,12 @@ public class DatabaseManager {
     }
     
     fileprivate func notifyOperationCancelled(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(database: urlRef, isCancelled: true)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(database: urlRef, isCancelled: true)
+                }
             }
         }
         
@@ -417,6 +419,22 @@ public class DatabaseManager {
             object: self,
             userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
+
+    fileprivate func notifyProgressDidChange(database urlRef: URLReference, progress: ProgressEx) {
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(progressDidChange: progress)
+                }
+            }
+        }
+        NotificationCenter.default.post(
+            name: Notifications.progressDidChange,
+            object: self,
+            userInfo: [Notifications.userInfoProgressKey: progress])
+    }
+
     
     fileprivate func notifyDatabaseLoadError(
         database urlRef: URLReference,
@@ -429,18 +447,17 @@ public class DatabaseManager {
             return
         }
         
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(
-                    database: urlRef,
-                    loadingError: message,
-                    reason: reason)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(
+                        database: urlRef,
+                        loadingError: message,
+                        reason: reason)
+                }
             }
         }
-
         let userInfo: [AnyHashable: Any]
         if let reason = reason {
             userInfo = [
@@ -459,15 +476,14 @@ public class DatabaseManager {
     }
     
     fileprivate func notifyDatabaseInvalidMasterKey(database urlRef: URLReference, message: String) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(database: urlRef, invalidMasterKey: message)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(database: urlRef, invalidMasterKey: message)
+                }
             }
         }
-
         NotificationCenter.default.post(
             name: Notifications.invalidMasterKey,
             object: self,
@@ -479,15 +495,14 @@ public class DatabaseManager {
     }
     
     fileprivate func notifyDatabaseWillSave(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(willSaveDatabase: urlRef)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(willSaveDatabase: urlRef)
+                }
             }
         }
-
         NotificationCenter.default.post(
             name: Notifications.willSaveDatabase,
             object: self,
@@ -498,15 +513,14 @@ public class DatabaseManager {
     }
     
     fileprivate func notifyDatabaseDidSave(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(didSaveDatabase: urlRef)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(didSaveDatabase: urlRef)
+                }
             }
         }
-
         NotificationCenter.default.post(
             name: Notifications.didSaveDatabase,
             object: self,
@@ -527,18 +541,17 @@ public class DatabaseManager {
             return
         }
 
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(
-                    database: urlRef,
-                    savingError: message,
-                    reason: reason)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(
+                        database: urlRef,
+                        savingError: message,
+                        reason: reason)
+                }
             }
         }
-
         let userInfo: [AnyHashable: Any]
         if let reason = reason {
             userInfo = [
@@ -557,15 +570,14 @@ public class DatabaseManager {
     }
 
     fileprivate func notifyDatabaseWillCreate(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(willCreateDatabase: urlRef)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(willCreateDatabase: urlRef)
+                }
             }
         }
-
         NotificationCenter.default.post(
             name: Notifications.willCreateDatabase,
             object: self,
@@ -573,15 +585,14 @@ public class DatabaseManager {
     }
 
     fileprivate func notifyDatabaseWillClose(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(willCloseDatabase: urlRef)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(willCloseDatabase: urlRef)
+                }
             }
         }
-
         NotificationCenter.default.post(
             name: Notifications.willCloseDatabase,
             object: self,
@@ -589,15 +600,14 @@ public class DatabaseManager {
     }
     
     fileprivate func notifyDatabaseDidClose(database urlRef: URLReference) {
-        objc_sync_enter(observers)
-        defer { objc_sync_exit(observers) }
-        for (_, observer) in observers {
-            guard let strongObserver = observer.observer else { continue }
-            DispatchQueue.main.async {
-                strongObserver.databaseManager(didCloseDatabase: urlRef)
+        notificationQueue.async { // strong self
+            for (_, observer) in self.observers {
+                guard let strongObserver = observer.observer else { continue }
+                DispatchQueue.main.async {
+                    strongObserver.databaseManager(didCloseDatabase: urlRef)
+                }
             }
         }
-
         NotificationCenter.default.post(
             name: Notifications.didCloseDatabase,
             object: self,
