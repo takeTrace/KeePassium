@@ -294,15 +294,40 @@ public class FileKeeper {
         return refs
     }
     
+    /// Adds given file to the file keeper.
+    /// (A combination of `prepareToAddFile` and `processPendingOperations`.)
+    ///
+    /// - Parameters:
+    ///   - url: file to add
+    ///   - mode: whether to import the file or open in place
+    ///   - successHandler: called after the file has been added
+    ///   - errorHandler: called in case of error
+    public func addFile(
+        url: URL,
+        mode: OpenMode,
+        success successHandler: ((URLReference)->Void)?,
+        error errorHandler: ((FileKeeperError)->Void)?)
+    {
+        prepareToAddFile(url: url, mode: mode, notify: false)
+        processPendingOperations(success: successHandler, error: errorHandler)
+    }
+    
     /// Stores the `url` to be added (opened or imported) as a file at some later point.
-    public func prepareToAddFile(url: URL, mode: OpenMode) {
+    ///
+    /// - Parameters:
+    ///   - url: URL of the file to add
+    ///   - mode: whether to import the file or open in place
+    ///   - notify: if true (default), notifies observers about pending file operation
+    public func prepareToAddFile(url: URL, mode: OpenMode, notify: Bool=true) {
         Diag.debug("Preparing to add file [mode: \(mode)]")
         let origURL = url
         let actualURL = origURL.resolvingSymlinksInPath()
         print("\n originURL: \(origURL) \n actualURL: \(actualURL) \n")
         self.urlToOpen = origURL
         self.openMode = mode
-        FileKeeperNotifier.notifyPendingFileOperation()
+        if notify {
+            FileKeeperNotifier.notifyPendingFileOperation()
+        }
     }
     
     /// Performs prepared file operation (see `prepareToAddFile`) asynchronously.
