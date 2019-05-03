@@ -15,7 +15,7 @@ protocol DatabaseCreatorDelegate: class {
     func didPressPickKeyFile(in databaseCreatorVC: DatabaseCreatorVC, popoverSource: UIView)
 }
 
-class DatabaseCreatorVC: UITableViewController {
+class DatabaseCreatorVC: UIViewController {
 
     public var databaseFileName: String { return fileNameField.text ?? "" }
     public var password: String { return passwordField.text ?? ""}
@@ -29,14 +29,14 @@ class DatabaseCreatorVC: UITableViewController {
     @IBOutlet weak var passwordField: ProtectedTextField!
     @IBOutlet weak var keyFileField: WatchdogAwareTextField!
     @IBOutlet weak var continueButton: UIButton!
-    @IBOutlet var errorWrapperView: UIView!
+    @IBOutlet var errorMessagePanel: UIView!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var keyboardLayoutConstraint: KeyboardLayoutConstraint!
     
     weak var delegate: DatabaseCreatorDelegate?
-    
-    private enum SectionID: Int {
-        case fileName = 0
-        case masterKey = 1
+
+    private var containerView: UIView {
+        return navigationController?.view ?? self.view
     }
     private var progressOverlay: ProgressOverlay?
     
@@ -49,13 +49,49 @@ class DatabaseCreatorVC: UITableViewController {
         
         navigationItem.title = LString.titleCreateDatabase
         
-        errorLabel.text = nil // hide error message
+        setError(message: nil, animated: false)
         
+        // make background image
+        view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
+        view.layer.isOpaque = false
+
         fileNameField.validityDelegate = self
+        fileNameField.delegate = self
         passwordField.validityDelegate = self
+        passwordField.delegate = self
         keyFileField.delegate = self
+        
+        passwordField.becomeFirstResponder()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateKeyboardLayoutConstraints()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        DispatchQueue.main.async {
+            self.updateKeyboardLayoutConstraints()
+        }
+    }
+    
+    private func updateKeyboardLayoutConstraints() {
+        let view = containerView
+        if let window = view.window {
+            let viewTop = view.convert(view.frame.origin, to: window).y
+            let viewHeight = view.frame.height
+            let windowHeight = window.frame.height
+            let viewBottomOffset = windowHeight - (viewTop + viewHeight)
+            keyboardLayoutConstraint.viewOffset = viewBottomOffset
+        }
+    }
+    
+    @discardableResult
+    override func becomeFirstResponder() -> Bool {
+        return passwordField.becomeFirstResponder()
+    }
+    
     private func showKeyFile(_ keyFile: URLReference?) {
         guard let info = keyFile?.getInfo() else {
             keyFileField.text = nil
@@ -69,30 +105,18 @@ class DatabaseCreatorVC: UITableViewController {
             keyFileField.text = info.fileName
             keyFileField.textColor = .primaryText
         }
-        setError(message: nil)
+        setError(message: nil, animated: true)
     }
     
-    func setError(message: String?) {
+    func setError(message: String?, animated: Bool) {
         errorLabel.text = message
-        tableView.reloadSections([SectionID.masterKey.rawValue], with: .automatic)
-    }
-    
-    // MARK: - Table view data source
-    
-    override func tableView(
-        _ tableView: UITableView,
-        viewForFooterInSection section: Int
-        ) -> UIView?
-    {
-        guard section == SectionID.masterKey.rawValue else {
-            return super.tableView(tableView, viewForFooterInSection: section)
-        }
-        
-        let hasError = (errorLabel.text?.isNotEmpty ?? false)
-        if hasError {
-            return errorWrapperView
+        let visible = message?.isNotEmpty ?? false
+        if animated {
+            UIView.animate(withDuration: 0.3) { // strong self
+                self.errorMessagePanel.isHidden = !visible
+            }
         } else {
-            return super.tableView(tableView, viewForFooterInSection: section)
+            self.errorMessagePanel.isHidden = !visible
         }
     }
     
@@ -102,16 +126,24 @@ class DatabaseCreatorVC: UITableViewController {
         delegate?.didPressCancel(in: self)
     }
     
+    @IBAction func didPressErrorDetails(_ sender: Any) {
+        let diagInfoVC = ViewDiagnosticsVC.make()
+        present(diagInfoVC, animated: true, completion: nil)
+    }
+    
     @IBAction func didPressContinue(_ sender: Any) {
         let hasPassword = passwordField.text?.isNotEmpty ?? false
         guard hasPassword || (keyFile != nil) else {
-            setError(message: NSLocalizedString("Please enter a password or choose a key file.", comment: "Hint shown when both password and key file are empty."))
+            setError(
+                message: NSLocalizedString("Please enter a password or choose a key file.", comment: "Hint shown when both password and key file are empty."),
+                animated: true)
             return
         }
         delegate?.didPressContinue(in: self)
     }
 }
 
+// MARK: - ValidatingTextFieldDelegate
 extension DatabaseCreatorVC: ValidatingTextFieldDelegate {
     func validatingTextFieldShouldValidate(_ sender: ValidatingTextField) -> Bool {
         guard let text = sender.text else { return false }
@@ -126,18 +158,26 @@ extension DatabaseCreatorVC: ValidatingTextFieldDelegate {
     }
     func validatingTextField(_ sender: ValidatingTextField, textDidChange text: String) {
         if sender === passwordField {
-            setError(message: nil)
+            setError(message: nil, animated: true)
         }
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension DatabaseCreatorVC: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField === keyFileField {
-            setError(message: nil)
+            setError(message: nil, animated: true)
             passwordField.becomeFirstResponder()
             delegate?.didPressPickKeyFile(in: self, popoverSource: textField)
             return false
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == self.passwordField {
+            didPressContinue(textField)
         }
         return true
     }
@@ -157,7 +197,7 @@ extension DatabaseCreatorVC: ProgressViewHost {
         navigationItem.rightBarButtonItem?.isEnabled = false
         continueButton.isEnabled = false
         progressOverlay = ProgressOverlay.addTo(
-            self.view,
+            containerView,
             title: title,
             animated: true)
         progressOverlay?.isCancellable = allowCancelling

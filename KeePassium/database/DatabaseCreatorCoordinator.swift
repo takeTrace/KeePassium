@@ -78,7 +78,7 @@ class DatabaseCreatorCoordinator: NSObject {
         do {
             tmpFileURL = try createEmptyLocalFile(fileName: fileName)
         } catch {
-            databaseCreatorVC.setError(message: error.localizedDescription)
+            databaseCreatorVC.setError(message: error.localizedDescription, animated: true)
             return
         }
         
@@ -93,7 +93,7 @@ class DatabaseCreatorCoordinator: NSObject {
                 self?.startSavingDatabase()
             },
             error: { [weak self] (message) in
-                self?.databaseCreatorVC.setError(message: message)
+                self?.databaseCreatorVC.setError(message: message, animated: true)
             }
         )
     }
@@ -138,7 +138,10 @@ class DatabaseCreatorCoordinator: NSObject {
             },
             error: { [weak self] (fileKeeperError) in
                 Diag.error("Failed to add created file [mesasge: \(fileKeeperError.localizedDescription)]")
-                self?.databaseCreatorVC.setError(message: fileKeeperError.localizedDescription)
+                self?.databaseCreatorVC.setError(
+                    message: fileKeeperError.localizedDescription,
+                    animated: true
+                )
             }
         )
     }
@@ -168,6 +171,7 @@ extension DatabaseCreatorCoordinator: DatabaseCreatorDelegate {
 extension DatabaseCreatorCoordinator: KeyFileChooserDelegate {
     func onKeyFileSelected(urlRef: URLReference?) {
         databaseCreatorVC.keyFile = urlRef
+        databaseCreatorVC.becomeFirstResponder()
     }
 }
 
@@ -198,9 +202,9 @@ extension DatabaseCreatorCoordinator: DatabaseManagerObserver {
         DatabaseManager.shared.removeObserver(self)
         databaseCreatorVC.hideProgressView()
         if let reason = reason {
-            databaseCreatorVC.setError(message: "\(message)\n\(reason)")
+            databaseCreatorVC.setError(message: "\(message)\n\(reason)", animated: true)
         } else {
-            databaseCreatorVC.setError(message: message)
+            databaseCreatorVC.setError(message: message, animated: true)
         }
     }
 }
