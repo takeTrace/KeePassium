@@ -285,7 +285,9 @@ public class DatabaseManager {
         let db2 = Database2.makeNewV4()
         guard let root2 = db2.root as? Group2 else { fatalError() }
         templateSetupHandler(root2)
-        
+
+        self.databaseDocument = DatabaseDocument(fileURL: databaseURL)
+        self.databaseDocument!.database = db2
         DatabaseManager.createCompositeKey(
             keyHelper: db2.keyHelper,
             password: password,
@@ -293,8 +295,6 @@ public class DatabaseManager {
             success: { // strong self
                 (newCompositeKey) in
                 DatabaseManager.shared.changeCompositeKey(to: newCompositeKey)
-                self.databaseDocument = DatabaseDocument(fileURL: databaseURL)
-                self.databaseDocument!.database = db2
                 
                 // we don't have dedicated location for temporary files,
                 // so set it to generic `.external`
@@ -310,12 +310,24 @@ public class DatabaseManager {
             error: { // strong self
                 (message) in
                 assert(self.databaseRef == nil)
+                // cleanup failed DB document
+                self.abortDatabaseCreation()
                 Diag.error("Error creating composite key for a new database [message: \(message)]")
                 errorHandler(message)
             }
         )
     }
 
+    /// Cleans up DatabaseManager state after a cancelled or failed
+    /// createDatabase() call.
+    public func abortDatabaseCreation() {
+        assert(self.databaseDocument != nil)
+        self.databaseDocument?.database = nil
+        self.databaseDocument = nil
+        self.databaseRef = nil
+
+    }
+    
     // MARK: - Observer management
     
     fileprivate struct WeakObserver {
