@@ -88,8 +88,9 @@ class DatabaseCreatorCoordinator: NSObject {
             databaseURL: tmpFileURL,
             password: databaseCreatorVC.password,
             keyFile: databaseCreatorVC.keyFile,
-            template: { [weak self] (database2) in
-                self?.addTemplateItems(to: database2)
+            template: { [weak self] (rootGroup2) in
+                rootGroup2.name = fileName // override default "/" with a meaningful name
+                self?.addTemplateItems(to: rootGroup2)
             },
             success: { [weak self] in
                 self?.startSavingDatabase()
