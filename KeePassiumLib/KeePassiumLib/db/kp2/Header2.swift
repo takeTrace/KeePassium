@@ -206,6 +206,19 @@ final class Header2: Eraseable {
         
         kdf = Argon2KDF()
         kdfParams = kdf.defaultParams
+        // refine the default KDF params
+        let iterations: UInt64 = 100
+        let memory: UInt64 = 1*1024*1024
+        let parallelism: UInt32 = 2
+        kdfParams.setValue(
+            key: Argon2KDF.iterationsParam,
+            value: VarDict.TypedValue(value: iterations))
+        kdfParams.setValue(
+            key: Argon2KDF.memoryParam,
+            value: VarDict.TypedValue(value: memory))
+        kdfParams.setValue(
+            key: Argon2KDF.parallelismParam,
+            value: VarDict.TypedValue(value: parallelism))
         fields[.kdfParameters] = kdfParams.data!
         
         let compressionFlags = UInt32(exactly: CompressionAlgorithm.gzipCompression.rawValue)!

@@ -116,7 +116,13 @@ public class Database2: Database {
         let db = Database2()
         db.header.loadDefaultValuesV4()
         db.meta.loadDefaultValuesV4()
+        
         let rootGroup = Group2(database: db)
+        rootGroup.uuid = UUID()
+        rootGroup.name = "/"
+        rootGroup.isAutoTypeEnabled = true
+        rootGroup.isSearchingEnabled = true
+        rootGroup.canExpire = false
         rootGroup.isExpanded = true
         db.root = rootGroup
         return db
