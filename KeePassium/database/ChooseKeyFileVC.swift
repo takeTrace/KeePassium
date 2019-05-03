@@ -175,6 +175,7 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = indexPath.row
+        dismissPopover()
         if row == 0 {
             Diag.debug("Selected No Key File")
             delegate?.onKeyFileSelected(urlRef: nil)
@@ -183,7 +184,6 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
             let selectedRef = urlRefs[row - 1]
             delegate?.onKeyFileSelected(urlRef: selectedRef)
         }
-        dismissPopover()
     }
     
     override func tableView(

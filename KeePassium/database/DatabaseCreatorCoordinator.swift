@@ -44,7 +44,7 @@ class DatabaseCreatorCoordinator: NSObject {
     /// - Parameter fileName: name of the file to be created
     /// - Returns: URL of the created file
     /// - Throws: some IO error
-    func createEmptyLocalFile(fileName: String) throws -> URL {
+    private func createEmptyLocalFile(fileName: String) throws -> URL {
         let fileManager = FileManager()
         let docDir = try fileManager.url(
             for: .documentDirectory,
@@ -63,6 +63,8 @@ class DatabaseCreatorCoordinator: NSObject {
             .appendingPathExtension(FileType.DatabaseExtensions.kdbx)
         
         do {
+            // remove previous leftovers, if any
+            try? fileManager.removeItem(at: tmpFileURL)
             try Data().write(to: tmpFileURL, options: []) // throws some IO error
         } catch {
             Diag.error("Failed to create temporary file [message: \(error.localizedDescription)]")
@@ -116,19 +118,21 @@ class DatabaseCreatorCoordinator: NSObject {
         do{
             let tmpUrl = try tmpDatabaseRef.resolve() // throws some UIKit error
             let picker = UIDocumentPickerViewController(url: tmpUrl, in: .exportToService)
+            picker.modalPresentationStyle = navigationController.modalPresentationStyle
             picker.delegate = self
-            navigationController.pushViewController(picker, animated: true)
+            databaseCreatorVC.present(picker, animated: true, completion: nil)
         } catch {
             Diag.error("Failed to resolve temporary DB reference [message: \(error.localizedDescription)]")
-            databaseCreatorVC.setError(message: error.localizedDescription)
+            databaseCreatorVC.setError(message: error.localizedDescription, animated: true)
         }
     }
     
     /// Step 5: Save final location in FileKeeper
     private func addCreatedDatabase(at finalURL: URL) {
         let fileKeeper = FileKeeper.shared
-        fileKeeper.prepareToAddFile(url: finalURL, mode: .openInPlace)
-        fileKeeper.processPendingOperations(
+        fileKeeper.addFile(
+            url: finalURL,
+            mode: .openInPlace,
             success: { [weak self] (addedRef) in
                 guard let _self = self else { return }
                 if let initialTopController = _self.initialTopController {
@@ -190,16 +194,25 @@ extension DatabaseCreatorCoordinator: DatabaseManagerObserver {
     func databaseManager(didSaveDatabase urlRef: URLReference) {
         DatabaseManager.shared.removeObserver(self)
         databaseCreatorVC.hideProgressView()
-        pickTargetLocation(for: urlRef)
+        DatabaseManager.shared.closeDatabase(
+            completion: { [weak self] in
+                DispatchQueue.main.async { [weak self] in
+                    self?.pickTargetLocation(for: urlRef)
+                }
+            },
+            clearStoredKey: true
+        )
     }
     
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         DatabaseManager.shared.removeObserver(self)
-        databaseCreatorVC.hideProgressView()
+        DatabaseManager.shared.abortDatabaseCreation()
+        self.databaseCreatorVC.hideProgressView()
     }
     
     func databaseManager(database urlRef: URLReference, savingError message: String, reason: String?) {
         DatabaseManager.shared.removeObserver(self)
+        DatabaseManager.shared.abortDatabaseCreation()
         databaseCreatorVC.hideProgressView()
         if let reason = reason {
             databaseCreatorVC.setError(message: "\(message)\n\(reason)", animated: true)
@@ -212,7 +225,11 @@ extension DatabaseCreatorCoordinator: DatabaseManagerObserver {
 // MARK: - UIDocumentPickerDelegate
 extension DatabaseCreatorCoordinator: UIDocumentPickerDelegate {
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        // do nothing
+        // cancel overall database creation
+        if let initialTopController = self.initialTopController {
+            self.navigationController.popToViewController(initialTopController, animated: false)
+        }
+        self.delegate?.didPressCancel(in: self)
     }
     
     func documentPicker(

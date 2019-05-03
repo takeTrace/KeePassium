@@ -487,17 +487,22 @@ extension ChooseDatabaseVC: UIDocumentPickerDelegate {
     }
 }
 
+// MARK: - DatabaseCreatorCoordinatorDelegate
 extension ChooseDatabaseVC: DatabaseCreatorCoordinatorDelegate {
     func didPressCancel(in databaseCreatorCoordinator: DatabaseCreatorCoordinator) {
         presentedViewController?.dismiss(animated: true) {
             self.databaseCreatorCoordinator = nil
         }
+        self.databaseCreatorCoordinator = nil
     }
     
     func didCreateDatabase(
         in databaseCreatorCoordinator: DatabaseCreatorCoordinator,
         database urlRef: URLReference)
     {
+        presentedViewController?.dismiss(animated: true, completion: { // strong self
+            self.databaseCreatorCoordinator = nil
+        })
         Settings.current.startupDatabase = urlRef
         updateDetailView(onlyInTwoPaneMode: false)
     }
