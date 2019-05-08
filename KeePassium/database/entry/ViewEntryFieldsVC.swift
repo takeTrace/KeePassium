@@ -190,7 +190,6 @@ extension ViewEntryFieldsVC: EntryChangeObserver {
 
 extension ViewEntryFieldsVC: ViewableFieldCellDelegate {    
     func cellHeightDidChange(_ cell: ViewableFieldCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
         tableView.beginUpdates()
         tableView.endUpdates()
     }

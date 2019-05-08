@@ -241,10 +241,10 @@ class TOTPFieldCellDecorator: ViewableFieldCellDecorator {
     func getUserVisibleValue() -> String? {
         guard var value = cell?.field?.value else { return nil }
         switch value.count {
-        case 5: value.insert(" ", at: String.Index(encodedOffset: 2))
-        case 6: value.insert(" ", at: String.Index(encodedOffset: 3))
-        case 7: value.insert(" ", at: String.Index(encodedOffset: 3))
-        case 8: value.insert(" ", at: String.Index(encodedOffset: 4))
+        case 5: value.insert(" ", at: String.Index(utf16Offset: 2, in: value))
+        case 6: value.insert(" ", at: String.Index(utf16Offset: 3, in: value))
+        case 7: value.insert(" ", at: String.Index(utf16Offset: 3, in: value))
+        case 8: value.insert(" ", at: String.Index(utf16Offset: 4, in: value))
         default:
             // unsure how to format, so leave it alone
             break
