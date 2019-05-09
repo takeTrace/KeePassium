@@ -103,9 +103,37 @@ class DatabaseCreatorCoordinator: NSObject {
     
     /// Step 2: Fill in-memory database with sample groups and entries
     private func addTemplateItems(to rootGroup: Group2) {
-        //TODO: add some sample groups/entries
-        let group = rootGroup.createGroup()
-        group.name = NSLocalizedString("Internet", comment: "Predefined group in a new database")
+        let groupGeneral = rootGroup.createGroup()
+        groupGeneral.iconID = .folder
+        groupGeneral.name = "General".localized(comment: "Predefined group in a new database")
+        
+        let groupInternet = rootGroup.createGroup()
+        groupInternet.iconID = .globe
+        groupInternet.name = "Internet".localized(comment: "Predefined group in a new database")
+
+        let groupEmail = rootGroup.createGroup()
+        groupEmail.iconID = .envelopeOpen
+        groupEmail.name = "Email".localized(comment: "Predefined group in a new database")
+
+        let groupHomebanking = rootGroup.createGroup()
+        groupHomebanking.iconID = .currency
+        groupHomebanking.name = "Finance".localized(comment: "Predefined group in a new database")
+        
+        let groupNetwork = rootGroup.createGroup()
+        groupNetwork.iconID = .server
+        groupNetwork.name = "Network".localized(comment: "Predefined group in a new database")
+
+        let groupLinux = rootGroup.createGroup()
+        groupLinux.iconID = .apple
+        groupLinux.name = "OS".localized(comment: "Predefined `Operating system` group in a new database")
+        
+        let sampleEntry = rootGroup.createEntry()
+        sampleEntry.iconID = .key
+        sampleEntry.title = "Sample Entry".localized(comment: "Title for a sample entry")
+        sampleEntry.userName = "john.smith".localized(comment: "User name for a sample entry. Set to a typical person name for your language.")
+        sampleEntry.password = "pa$$word".localized(comment: "Password for a sample entry. Translation is optional.")
+        sampleEntry.url = "https://keepassium.com" // do not localize
+        sampleEntry.notes = "You can also store some notes, if you like.".localized(comment: "Note for a sample entry")
     }
     
     /// Step 3: Save temporary database
