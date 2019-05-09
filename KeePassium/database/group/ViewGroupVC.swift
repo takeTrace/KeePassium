@@ -137,7 +137,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         if DatabaseManager.shared.isDatabaseOpen {
             if parent == nil && group.isRoot {
                 // poping root group VC from navigation => close database
-                DatabaseManager.shared.closeDatabase(clearStoredKey: true)
+                DatabaseManager.shared.closeDatabase(clearStoredKey: false)
             }
         }
         super.didMove(toParent: parent)

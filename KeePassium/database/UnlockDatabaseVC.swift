@@ -28,6 +28,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     @IBOutlet private weak var errorDetailButton: UIButton!
     @IBOutlet private weak var watchdogTimeoutLabel: UILabel!
     @IBOutlet private weak var databaseIconImage: UIImageView!
+    @IBOutlet weak var masterKeyKnownLabel: UILabel!
     
     public var databaseRef: URLReference! {
         didSet {
@@ -70,8 +71,9 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         
         // Back button to return to this VC (that is, to be shown in ViewGroupVC)
         let lockDatabaseButton = UIBarButtonItem(
-            image: UIImage(asset: .lockDatabaseToolbar),
-            style: .done,
+            //image: UIImage(asset: .lockDatabaseToolbar),
+            title: NSLocalizedString("Close", comment: "Button to close currently opened database, when leaving the root group"),
+            style: .plain,
             target: nil,
             action: nil)
         navigationItem.backBarButtonItem = lockDatabaseButton
@@ -96,13 +98,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             processPendingFileOperations()
         }
         
-        let isDatabaseKeyStored = try? DatabaseManager.shared.hasKey(for: databaseRef)
-            // throws KeychainError, ignored
-        if isDatabaseKeyStored ?? false {
-            tryToUnlockDatabase()
-        } else {
-            passwordField.becomeFirstResponder()
-        }
+        maybeFocusOnPassword()
     }
     
     @objc func onAppDidBecomeActive() {
@@ -139,7 +135,27 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         
         if let associatedKeyFileRef = Settings.current.getKeyFileForDatabase(databaseRef: databaseRef) {
             setKeyFile(urlRef: associatedKeyFileRef)
-        }        
+        }
+        
+        refreshInputMode()
+    }
+    
+    
+    /// Switch the UI depending on whether the master key is already known.
+    private func refreshInputMode() {
+        let isDatabaseKeyStored = try? DatabaseManager.shared.hasKey(for: databaseRef)
+            // throws KeychainError, ignored
+        
+        let shouldInputMasterKey = !(isDatabaseKeyStored ?? false)
+        masterKeyKnownLabel.isHidden = shouldInputMasterKey
+        inputPanel.isHidden = !shouldInputMasterKey
+    }
+
+    /// Makes password field the first responder, if visible
+    private func maybeFocusOnPassword() {
+        if !inputPanel.isHidden {
+            passwordField.becomeFirstResponder()
+        }
     }
     
     // MARK: - Showing/hiding various messagess
@@ -395,9 +411,10 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         databaseManagerNotifications.stopObserving()
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
+        refresh()
         hideProgressOverlay()
         // cancelled by the user, no errors to show
-        return
+        maybeFocusOnPassword()
     }
     
     func databaseManager(progressDidChange progress: ProgressEx) {
@@ -406,9 +423,11 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     
     func databaseManager(database urlRef: URLReference, invalidMasterKey message: String) {
         databaseManagerNotifications.stopObserving()
-        hideProgressOverlay()
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
+        refresh()
+        hideProgressOverlay()
         showErrorMessage(message)
+        maybeFocusOnPassword()
     }
     
     func databaseManager(didLoadDatabase urlRef: URLReference, warnings: DatabaseLoadingWarnings) {
@@ -433,9 +452,11 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
 
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?) {
         databaseManagerNotifications.stopObserving()
-        hideProgressOverlay()
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
+        refresh()
+        hideProgressOverlay()
         showErrorMessage(message, details: reason)
+        maybeFocusOnPassword()
     }
 }
 
