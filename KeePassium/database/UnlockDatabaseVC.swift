@@ -71,7 +71,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         
         // Back button to return to this VC (that is, to be shown in ViewGroupVC)
         let lockDatabaseButton = UIBarButtonItem(
-            //image: UIImage(asset: .lockDatabaseToolbar),
             title: NSLocalizedString("Close", comment: "Button to close currently opened database, when leaving the root group"),
             style: .plain,
             target: nil,
