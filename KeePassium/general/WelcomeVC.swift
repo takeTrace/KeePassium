@@ -19,6 +19,8 @@ import KeePassiumLib
 
 /// Shown on first run of the app, provides user onboarding.
 class WelcomeVC: UIViewController {
+    private var databaseCreatorCoordinator: DatabaseCreatorCoordinator?
+    
     static func make() -> UIViewController {
         let vc = WelcomeVC.instantiateFromStoryboard()
         let navVC = UINavigationController(rootViewController: vc)
@@ -26,9 +28,14 @@ class WelcomeVC: UIViewController {
     }
     
     @IBAction func didPressCreateDatabase(_ sender: Any) {
-        let vc = CreateDatabaseVC.make()
-        navigationController?.popViewController(animated: true)
-        parent?.present(vc, animated: true, completion: nil)
+        let navVC = UINavigationController()
+        navVC.modalPresentationStyle = .formSheet
+        
+        assert(databaseCreatorCoordinator == nil)
+        databaseCreatorCoordinator = DatabaseCreatorCoordinator(navigationController: navVC)
+        databaseCreatorCoordinator!.delegate = self
+        databaseCreatorCoordinator!.start()
+        present(navVC, animated: true)
     }
     
     @IBAction func didPressOpenDatabase(_ sender: Any) {
@@ -41,9 +48,12 @@ class WelcomeVC: UIViewController {
     }
 }
 
-
+// MARK: - UIDocumentPickerDelegate
 extension WelcomeVC: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    func documentPicker(
+        _ controller: UIDocumentPickerViewController,
+        didPickDocumentsAt urls: [URL])
+    {
         guard let url = urls.first else { return }
         switch controller.documentPickerMode {
         case .open:
@@ -74,5 +84,25 @@ extension WelcomeVC: UIDocumentPickerDelegate {
                 self?.present(alert, animated: true, completion: nil)
             }
         )
+    }
+}
+
+// MARK: - DatabaseCreatorCoordinatorDelegate
+extension WelcomeVC: DatabaseCreatorCoordinatorDelegate {
+    private func dismissDatabaseCreator() {
+        presentedViewController?.dismiss(animated: true) {
+            self.databaseCreatorCoordinator = nil
+        }
+    }
+    
+    func didCreateDatabase(
+        in databaseCreatorCoordinator: DatabaseCreatorCoordinator,
+        database urlRef: URLReference)
+    {
+        dismissDatabaseCreator()
+    }
+    
+    func didPressCancel(in databaseCreatorCoordinator: DatabaseCreatorCoordinator) {
+        dismissDatabaseCreator()
     }
 }
