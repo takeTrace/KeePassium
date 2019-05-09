@@ -81,8 +81,8 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
         guard let splitVC = splitViewController else { fatalError() }
         if !splitVC.isCollapsed {
             navigationItem.backBarButtonItem = UIBarButtonItem(
-                image: UIImage(asset: .lockDatabaseToolbar),
-                style: .done,
+                title: NSLocalizedString("Close", comment: "Button to close currently opened database, when leaving the root group"),
+                style: .plain,
                 target: nil,
                 action: nil
             )
