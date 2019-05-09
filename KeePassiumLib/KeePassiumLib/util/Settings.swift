@@ -268,13 +268,14 @@ public class Settings {
     public enum ClipboardTimeout: Int {
         public static let allValues = [
             after10seconds, after20seconds, after30seconds, after1minute, after2minutes,
-            after5minutes, after10minutes, after20minutes, never]
+            after3minutes, after5minutes, after10minutes, after20minutes, never]
         case never = -1
         case after10seconds = 10
         case after20seconds = 20
         case after30seconds = 30
         case after1minute = 60
         case after2minutes = 120
+        case after3minutes = 180
         case after5minutes = 300
         case after10minutes = 600
         case after20minutes = 1200
@@ -297,6 +298,8 @@ public class Settings {
                 return NSLocalizedString("After 1 minute", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 1 minute'")
             case .after2minutes:
                 return NSLocalizedString("After 2 minutes", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 2 minutes'")
+            case .after3minutes:
+                return NSLocalizedString("After 3 minutes", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 3 minutes'")
             case .after5minutes:
                 return NSLocalizedString("After 5 minutes", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be full description. Will be shown as 'Clear Clipboard: After 5 minutes'")
             case .after10minutes:
@@ -319,6 +322,8 @@ public class Settings {
                 return NSLocalizedString("1 min", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 1 minute'. Will be shown as 'Clear Clipboard: 1 min'")
             case .after2minutes:
                 return NSLocalizedString("2 min", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 2 minutes'. Will be shown as 'Clear Clipboard: 2 min'")
+            case .after3minutes:
+                return NSLocalizedString("3 min", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 3 minutes'. Will be shown as 'Clear Clipboard: 3 min'")
             case .after5minutes:
                 return NSLocalizedString("5 min", comment: "One of the possible values of the 'Clear Clipboard Timeout' setting. This should be a short version of 'After 5 minutes'. Will be shown as 'Clear Clipboard: 5 min'")
             case .after10minutes:
