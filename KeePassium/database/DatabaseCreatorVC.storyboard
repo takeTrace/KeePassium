@@ -173,7 +173,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="tintColor" name="ActionText"/>
-                                                <state key="normal" title="Save To..."/>
+                                                <state key="normal" title="Save Database"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                         <real key="value" value="5"/>
