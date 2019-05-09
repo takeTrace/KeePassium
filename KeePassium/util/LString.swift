@@ -16,8 +16,15 @@
 
 import UIKit
 
+extension String {
+    /// Wrapper for NSLocalizedString
+    func localized(comment: String?=nil) -> String {
+        return NSLocalizedString(self, comment: comment ?? "")
+    }
+}
+
 /// Common user-readable strings, localized.
-internal enum LString {
+public enum LString {
 
     // Button/action titles
     public static let actionOK = NSLocalizedString("OK", comment: "Action/button: generic OK")
