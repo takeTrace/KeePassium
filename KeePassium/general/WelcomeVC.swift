@@ -17,92 +17,26 @@
 import UIKit
 import KeePassiumLib
 
+protocol WelcomeDelegate: class {
+    func didPressCreateDatabase(in welcomeVC: WelcomeVC)
+    func didPressAddExistingDatabase(in welcomeVC: WelcomeVC)
+}
+
 /// Shown on first run of the app, provides user onboarding.
 class WelcomeVC: UIViewController {
-    private var databaseCreatorCoordinator: DatabaseCreatorCoordinator?
-    
-    static func make() -> UIViewController {
+    private weak var delegate: WelcomeDelegate?
+
+    static func make(delegate: WelcomeDelegate) -> WelcomeVC {
         let vc = WelcomeVC.instantiateFromStoryboard()
-        let navVC = UINavigationController(rootViewController: vc)
-        return navVC
+        vc.delegate = delegate
+        return vc
     }
     
     @IBAction func didPressCreateDatabase(_ sender: Any) {
-        let navVC = UINavigationController()
-        navVC.modalPresentationStyle = .formSheet
-        
-        assert(databaseCreatorCoordinator == nil)
-        databaseCreatorCoordinator = DatabaseCreatorCoordinator(navigationController: navVC)
-        databaseCreatorCoordinator!.delegate = self
-        databaseCreatorCoordinator!.start()
-        present(navVC, animated: true)
+        delegate?.didPressCreateDatabase(in: self)
     }
     
     @IBAction func didPressOpenDatabase(_ sender: Any) {
-        let picker = UIDocumentPickerViewController(
-            documentTypes: FileType.publicDataUTIs,
-            in: .open)
-        picker.delegate = self
-        picker.modalPresentationStyle = .pageSheet
-        present(picker, animated: true, completion: nil)
-    }
-}
-
-// MARK: - UIDocumentPickerDelegate
-extension WelcomeVC: UIDocumentPickerDelegate {
-    func documentPicker(
-        _ controller: UIDocumentPickerViewController,
-        didPickDocumentsAt urls: [URL])
-    {
-        guard let url = urls.first else { return }
-        switch controller.documentPickerMode {
-        case .open:
-            FileKeeper.shared.prepareToAddFile(url: url, mode: .openInPlace)
-        case .import:
-            FileKeeper.shared.prepareToAddFile(url: url, mode: .import)
-        default:
-            assertionFailure("Unexpected document picker mode")
-        }
-        processPendingFileOperations()
-    }
-    
-    private func processPendingFileOperations() {
-        FileKeeper.shared.processPendingOperations(
-            success: {
-                [weak self] addedRef in
-                Settings.current.startupDatabase = addedRef
-                // pop this VC with its embedded NavVC
-                self?.navigationController?
-                    .navigationController?
-                    .popViewController(animated: false) //FIXME: refactor this ugliness
-            },
-            error: {
-                [weak self] error in
-                let alert = UIAlertController.make(
-                    title: LString.titleError,
-                    message: error.localizedDescription)
-                self?.present(alert, animated: true, completion: nil)
-            }
-        )
-    }
-}
-
-// MARK: - DatabaseCreatorCoordinatorDelegate
-extension WelcomeVC: DatabaseCreatorCoordinatorDelegate {
-    private func dismissDatabaseCreator() {
-        presentedViewController?.dismiss(animated: true) {
-            self.databaseCreatorCoordinator = nil
-        }
-    }
-    
-    func didCreateDatabase(
-        in databaseCreatorCoordinator: DatabaseCreatorCoordinator,
-        database urlRef: URLReference)
-    {
-        dismissDatabaseCreator()
-    }
-    
-    func didPressCancel(in databaseCreatorCoordinator: DatabaseCreatorCoordinator) {
-        dismissDatabaseCreator()
+        delegate?.didPressAddExistingDatabase(in: self)
     }
 }

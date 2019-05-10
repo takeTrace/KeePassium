@@ -109,7 +109,9 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
 
         if databaseRefs.isEmpty {
             databaseUnlocker = nil
-            showDetailViewController(WelcomeVC.make(), sender: self)
+            let welcomeVC = WelcomeVC.make(delegate: self)
+            let wrapperNavVC = UINavigationController(rootViewController: welcomeVC)
+            showDetailViewController(wrapperNavVC, sender: self)
             return
         }
 
@@ -504,5 +506,16 @@ extension ChooseDatabaseVC: DatabaseCreatorCoordinatorDelegate {
         }
         Settings.current.startupDatabase = urlRef
         updateDetailView(onlyInTwoPaneMode: false)
+    }
+}
+
+// MARK: - WelcomeDelegate
+extension ChooseDatabaseVC: WelcomeDelegate {
+    func didPressCreateDatabase(in welcomeVC: WelcomeVC) {
+        didPressCreateDatabase()
+    }
+
+    func didPressAddExistingDatabase(in welcomeVC: WelcomeVC) {
+        didPressOpenDatabase()
     }
 }
