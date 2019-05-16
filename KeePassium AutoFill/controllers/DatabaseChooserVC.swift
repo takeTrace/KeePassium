@@ -40,7 +40,10 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
     weak var delegate: DatabaseChooserDelegate?
     
     private var databaseRefs: [URLReference] = []
-    
+
+    // handles background refresh of file attributes
+    private let fileInfoReloader = FileInfoReloader()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
@@ -62,13 +65,16 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
         databaseRefs = FileKeeper.shared.getAllReferences(
             fileType: .database,
             includeBackup: Settings.current.isBackupFilesVisible)
-        sortFileList()
-        if refreshControl?.isRefreshing ?? false {
-            refreshControl?.endRefreshing()
+        fileInfoReloader.reload(databaseRefs) { [weak self] in
+            guard let self = self else { return }
+            self.sortFileList()
+            if self.refreshControl?.isRefreshing ?? false {
+                self.refreshControl?.endRefreshing()
+            }
         }
     }
     
-    func sortFileList() {
+    fileprivate func sortFileList() {
         let fileSortOrder = Settings.current.filesSortOrder
         databaseRefs.sort { return fileSortOrder.compare($0, $1) }
         tableView.reloadData()

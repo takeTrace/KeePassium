@@ -33,6 +33,9 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
     private var urlRefs: [URLReference] = []
 
     private var fileKeeperNotifications: FileKeeperNotifications!
+    
+    // handles background refresh of file attributes
+    private let fileInfoReloader = FileInfoReloader()
 
     static func make(
         popoverSourceView: UIView,
@@ -83,23 +86,24 @@ class ChooseKeyFileVC: UITableViewController, Refreshable {
     // MARK: - Refreshing
     
     @objc func refresh() {
-        refreshDirContent()
-        
+        // Key files are non-modifiable, so no backups
+        urlRefs = FileKeeper.shared.getAllReferences(fileType: .keyFile, includeBackup: false)
         let navBarHeight = navigationController?.navigationBar.frame.height ?? 0.0
         let preferredHeight = 44.0 * CGFloat(tableView.numberOfRows(inSection: 0)) + navBarHeight // FIXME: replace magic-constant row height
         preferredContentSize = CGSize(width: 300, height: preferredHeight)
-        
-        if refreshControl?.isRefreshing ?? false {
-            refreshControl?.endRefreshing()
+
+        fileInfoReloader.reload(urlRefs) { [weak self] in
+            guard let self = self else { return }
+            self.sortFileList()
+            if self.refreshControl?.isRefreshing ?? false {
+                self.refreshControl?.endRefreshing()
+            }
         }
     }
     
-    func refreshDirContent() {
-        // Key files are non-modifiable, so no backups
-        urlRefs = FileKeeper.shared.getAllReferences(fileType: .keyFile, includeBackup: false)
-        
+    fileprivate func sortFileList() {
         let fileSortOrder = Settings.current.filesSortOrder
-        urlRefs.sort { return fileSortOrder.compare($0, $1) }
+        self.urlRefs.sort { return fileSortOrder.compare($0, $1) }
         tableView.reloadData()
     }
     

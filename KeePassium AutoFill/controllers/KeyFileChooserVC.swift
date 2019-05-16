@@ -31,6 +31,9 @@ class KeyFileChooserVC: UITableViewController, Refreshable {
 
     var keyFileRefs = [URLReference]()
     
+    // handles background refresh of file attributes
+    private let fileInfoReloader = FileInfoReloader()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,13 +46,19 @@ class KeyFileChooserVC: UITableViewController, Refreshable {
 
     @objc func refresh() {
         keyFileRefs = FileKeeper.shared.getAllReferences(fileType: .keyFile, includeBackup: false)
+        fileInfoReloader.reload(keyFileRefs) { [weak self] in
+            guard let self = self else { return }
+            self.sortFileList()
+            if self.refreshControl?.isRefreshing ?? false {
+                self.refreshControl?.endRefreshing()
+            }
+        }
+    }
+    
+    fileprivate func sortFileList() {
         let sortOrder = Settings.current.filesSortOrder
         keyFileRefs.sort { return sortOrder.compare($0, $1) }
         tableView.reloadData()
-        
-        if refreshControl?.isRefreshing ?? false {
-            refreshControl?.endRefreshing()
-        }
     }
     
     // MARK: - Table view data source
