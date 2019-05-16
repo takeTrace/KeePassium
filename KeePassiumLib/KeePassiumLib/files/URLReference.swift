@@ -128,6 +128,12 @@ public class URLReference: Equatable, Codable {
     /// Might be slow, as it needs to resolve the URL.
     /// In case of trouble, only `hasError` and `errorMessage` fields are valid.
     public func getInfo() -> FileInfo {
+        refreshInfo()
+        return info
+    }
+    
+    /// Re-aquires information about resolved URL and updates the `info` field.
+    public func refreshInfo() {
         let result: FileInfo
         do {
             let url = try resolve()
@@ -153,6 +159,5 @@ public class URLReference: Equatable, Codable {
                 modificationDate: nil)
         }
         self.info = result
-        return result
     }
 }
