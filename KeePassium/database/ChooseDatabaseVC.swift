@@ -176,14 +176,15 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
     
     @IBAction func didPressAddDatabase(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: LString.actionCreateDatabase, style: .default) {
-            [weak self] _ in
-            self?.didPressCreateDatabase()
-        })
         
         actionSheet.addAction(UIAlertAction(title: LString.actionOpenDatabase, style: .default) {
             [weak self] _ in
             self?.didPressOpenDatabase()
+        })
+        
+        actionSheet.addAction(UIAlertAction(title: LString.actionCreateDatabase, style: .default) {
+            [weak self] _ in
+            self?.didPressCreateDatabase()
         })
         
         actionSheet.addAction(UIAlertAction(
