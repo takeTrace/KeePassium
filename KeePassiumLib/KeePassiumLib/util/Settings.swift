@@ -57,6 +57,7 @@ public class Settings {
     
     public enum Keys: String {
         case settingsVersion
+        case firstLaunchTimestamp
         
         // Database list
         case filesSortOrder
@@ -589,7 +590,25 @@ public class Settings {
             }
         }
     }
-    
+
+    /// Timestamp when the app was first launched (since install)
+    public var firstLaunchTimestamp: Date {
+        get {
+            if let storedTimestamp = UserDefaults.appGroupShared
+                .object(forKey: Keys.firstLaunchTimestamp.rawValue)
+                as? Date
+            {
+                return storedTimestamp
+            } else {
+                let firstLaunchTimestamp = Date.now
+                UserDefaults.appGroupShared.set(
+                    firstLaunchTimestamp,
+                    forKey: Keys.firstLaunchTimestamp.rawValue)
+                return firstLaunchTimestamp
+            }
+        }
+    }
+
     // MARK: - Database list
     
     /// Sort order for the file lists

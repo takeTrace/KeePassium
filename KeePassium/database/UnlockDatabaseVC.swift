@@ -297,6 +297,14 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         tryToUnlockDatabase()
     }
     
+    private var premiumCoordinator: PremiumCoordinator?
+    @IBAction func didPressUpgradeToPremium(_ sender: Any) {
+        assert(premiumCoordinator == nil)
+        premiumCoordinator = PremiumCoordinator(presentingViewController: self)
+        premiumCoordinator?.delegate = self
+        premiumCoordinator?.start()
+    }
+    
     // MARK: - DB unlocking
     
     func tryToUnlockDatabase() {
@@ -484,5 +492,17 @@ extension UnlockDatabaseVC: FileKeeperObserver {
                 _self.present(alert, animated: true, completion: nil)
             }
         )
+    }
+}
+
+extension UnlockDatabaseVC: PremiumCoordinatorDelegate {
+    func didUpgradeToPremium(in premiumCoordinator: PremiumCoordinator) {
+        refresh()
+        //TODO hurray
+    }
+    
+    func didFinish(_ premiumCoordinator: PremiumCoordinator) {
+        // it has already removed its modal VC
+        self.premiumCoordinator = nil
     }
 }
