@@ -179,6 +179,14 @@
                                         <color key="textColor" name="AuxiliaryText"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i6N-fq-JbM">
+                                        <rect key="frame" x="212" y="0.0" width="100" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <state key="normal" title="Get Premium"/>
+                                        <connections>
+                                            <action selector="didPressUpgradeToPremium:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="i0V-29-l6q"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="epu-yU-Lyg" firstAttribute="leading" secondItem="cdl-k8-gTg" secondAttribute="leadingMargin" id="Aou-HZ-SdU"/>
@@ -186,9 +194,11 @@
                                     <constraint firstItem="1da-3k-RQm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="topMargin" id="EbW-cm-bpV"/>
                                     <constraint firstItem="1da-3k-RQm" firstAttribute="centerX" secondItem="cdl-k8-gTg" secondAttribute="centerX" id="FP4-XB-1dt"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="epu-yU-Lyg" secondAttribute="bottom" constant="8" id="JGC-h1-9tH"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="i6N-fq-JbM" secondAttribute="trailing" id="K3R-Ah-UaM"/>
                                     <constraint firstItem="epu-yU-Lyg" firstAttribute="trailing" secondItem="cdl-k8-gTg" secondAttribute="trailingMargin" id="NJc-XI-9Ke"/>
                                     <constraint firstItem="Dr0-TU-sMX" firstAttribute="top" secondItem="1da-3k-RQm" secondAttribute="bottom" constant="8" id="O4m-qw-isl"/>
                                     <constraint firstItem="1da-3k-RQm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="leadingMargin" id="TRV-Gf-C9B"/>
+                                    <constraint firstItem="i6N-fq-JbM" firstAttribute="top" secondItem="cdl-k8-gTg" secondAttribute="top" id="XQ0-DM-1T5"/>
                                     <constraint firstItem="G3Q-hY-M1b" firstAttribute="top" secondItem="Dr0-TU-sMX" secondAttribute="bottom" constant="8" id="gih-9n-0TA"/>
                                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="Dr0-TU-sMX" secondAttribute="trailing" id="iPw-bZ-jul"/>
                                     <constraint firstItem="Dr0-TU-sMX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="leadingMargin" id="mbo-7y-lJ6"/>
@@ -196,6 +206,7 @@
                                     <constraint firstItem="G3Q-hY-M1b" firstAttribute="centerY" secondItem="cdl-k8-gTg" secondAttribute="centerY" priority="250" id="qdq-Nk-k5M"/>
                                     <constraint firstItem="G3Q-hY-M1b" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="cdl-k8-gTg" secondAttribute="topMargin" id="sTd-Jp-xZI"/>
                                     <constraint firstItem="G3Q-hY-M1b" firstAttribute="centerX" secondItem="cdl-k8-gTg" secondAttribute="centerX" id="yQN-7S-jaf"/>
+                                    <constraint firstItem="1da-3k-RQm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i6N-fq-JbM" secondAttribute="bottom" constant="8" id="zNn-eF-nnf"/>
                                 </constraints>
                             </view>
                         </subviews>
