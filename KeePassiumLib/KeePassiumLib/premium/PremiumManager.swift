@@ -12,15 +12,9 @@ import StoreKit
 
 
 public enum InAppProductID: String {
-
+    static let allValues: [InAppProductID] = [.foreverBetaSandbox]
+    
     case foreverBetaSandbox = "com.keepassium.ios.iap.foreverBeta.sandbox"
-
-    /// Lifetime for those who helped with major issues
-    case thankYouPremium = "comp.keepassium.iap.thankYou-201905"
-    
-    /// Lifetime all-you-can-eat
-    case foreverPremium = "com.keepassium.iap.forever-201905"
-    
 }
 
 
@@ -29,7 +23,7 @@ public class PremiumManager: NSObject {
     public static let shared = PremiumManager()
 
     /// Time since first launch, when premium features are available in free version.
-    private let gracePeriodInSeconds: Double = 5 * 24 * 60 * 60
+    private let gracePeriodInSeconds: Double = 5 * 60 //5 * 24 * 60 * 60 //TODO: restore after debug
     
     /// Premium is not enforced until this time
     private let launchGracePeriodDeadline = DateComponents(
@@ -38,14 +32,6 @@ public class PremiumManager: NSObject {
         year: 2019, month: 7, day: 1,
         hour: 0, minute: 0, second: 0, nanosecond: 0
         ).date! // ok to force-unwrap
-    
-    private var purchasedProductIDs = Set<InAppProductID>()
-    private var productRequest: SKProductsRequest?
-    
-    public var isGracePeriod: Bool {
-        //TODO: if premium, return false
-        return (gracePeriodSecondsRemaining > 0) || isLaunchGracePeriod
-    }
 
     public var gracePeriodSecondsRemaining: Double {
         let firstLaunchTimestamp = Settings.current.firstLaunchTimestamp
@@ -64,9 +50,7 @@ public class PremiumManager: NSObject {
         static let shownUpgradeNotices = "com.keepassium.premium.shownUpgradeNotice"
     }
     
-    
-    
-    override init() {
+    private override init() {
         super.init()
     }
     
@@ -80,6 +64,7 @@ public class PremiumManager: NSObject {
         if isFeaturePurchased(feature) {
             return false // premium user, no further questions
         }
+        let isGracePeriod = (gracePeriodSecondsRemaining > 0) || isLaunchGracePeriod
         if isGracePeriod && wasGracePeriodUpgradeNoticeShown(for: feature) {
             return false
         }
@@ -108,5 +93,93 @@ public class PremiumManager: NSObject {
             forKey: UserDefaultsKey.shownUpgradeNotices) as? [Int]
             else { return false }
         return shownNotices.contains(feature.rawValue)
+    }
+    
+    // MARK: - In-app purchase management
+
+    public typealias ProductListAvailableHandler = (([SKProduct]?, Error?) -> Void)
+
+    private var purchasedProductIDs = Set<InAppProductID>()
+    private var productsRequest: SKProductsRequest?
+    private var productListAvailableHandler: ProductListAvailableHandler?
+    
+    public func startObservingTransactions() {
+        SKPaymentQueue.default().add(self)
+    }
+    public func finishObservingTransactions() {
+        SKPaymentQueue.default().remove(self)
+    }
+    
+    public func requestAvailableProducts(completionHandler: @escaping ProductListAvailableHandler)
+    {
+        productsRequest?.cancel()
+        productListAvailableHandler = completionHandler
+        
+        let knownProductIDs: Set<String> = Set(InAppProductID.allValues.map { return $0.rawValue} )
+        productsRequest = SKProductsRequest(productIdentifiers: knownProductIDs)
+        productsRequest!.delegate = self
+        productsRequest!.start()
+    }
+}
+
+// MARK: - SKPaymentTransactionObserver
+extension PremiumManager: SKPaymentTransactionObserver {
+    public func paymentQueue(
+        _ queue: SKPaymentQueue,
+        updatedTransactions transactions: [SKPaymentTransaction])
+    {
+        // Called whenever some payment update happens:
+        // subscription made/renewed/cancelled; single purchase confirmed.
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchased:
+                // verify authenticity
+                verifyReceipt() { isValid in
+                    if isValid {
+                        // save status
+                        queue.finishTransaction(transaction)
+                    }
+                }
+            case .purchasing:
+                // nothing to do, wait for further updates
+                break
+            case .failed:
+                // show an error. if cancelled - don't show an error
+                break
+            case .restored:
+                // same as purchased
+                break
+            case .deferred:
+                // nothing to do, wait for further updates
+                break
+            }
+        }
+    }
+    
+    /// Checks AppStore receipt validity, then calls the completion handler
+    /// with `isValid` flag.
+    private func verifyReceipt(completion: (Bool)->Void) {
+        // maybe some day
+        completion(true)
+    }
+}
+
+// MARK: - SKProductsRequestDelegate
+extension PremiumManager: SKProductsRequestDelegate {
+    public func productsRequest(
+        _ request: SKProductsRequest,
+        didReceive response: SKProductsResponse)
+    {
+        Diag.debug("Received list of in-app purchases")
+        productListAvailableHandler?(response.products, nil)
+        productsRequest = nil
+        productListAvailableHandler = nil
+    }
+    
+    public func request(_ request: SKRequest, didFailWithError error: Error) {
+        Diag.warning("Failed to acquire list of in-app purchases [message: \(error.localizedDescription)]")
+        productListAvailableHandler?(nil, error)
+        productsRequest = nil
+        productListAvailableHandler = nil
     }
 }

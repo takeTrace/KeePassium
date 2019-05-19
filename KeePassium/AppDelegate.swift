@@ -33,11 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         AppGroup.applicationShared = application
         SettingsMigrator.processAppLaunch(with: Settings.current)
+        PremiumManager.shared.startObservingTransactions()
         
         // First thing first, cover the app to avoid flashing any content.
         // The cover will be hidden by Watchdog, if appropriate.
         showAppCoverScreen()
         return true
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        PremiumManager.shared.finishObservingTransactions()
     }
     
     func application(

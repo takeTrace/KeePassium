@@ -24,19 +24,39 @@ class PremiumCoordinator {
     /// Parent VC which will present our modal form
     let presentingViewController: UIViewController
     
+    private let premiumManager: PremiumManager
     private let navigationController: UINavigationController
     private let premiumVC: PremiumVC
     
     init(presentingViewController: UIViewController) {
+        self.premiumManager = PremiumManager.shared
         self.presentingViewController = presentingViewController
-        premiumVC = PremiumVC.create(premiumManager: PremiumManager.shared)
+        premiumVC = PremiumVC.create(premiumManager: premiumManager)
         navigationController = UINavigationController(rootViewController: premiumVC)
         premiumVC.delegate = self
     }
     
     func start() {
-        // start fetching prices
         self.presentingViewController.present(navigationController, animated: true, completion: nil)
+        premiumManager.requestAvailableProducts(completionHandler: {
+            [weak self] (products, error) in
+            if let error = error {
+                self?.showStoreError(error.localizedDescription)
+                return
+            }
+            guard let products = products, products.count > 0 else {
+                self?.showStoreError("Hmm, there are no available premium upgrades. This should not happen, please contact support.".localized(comment: "Error message: AppStore returned no available in-app purchase options"))
+                return
+            }
+            //TODO: elaborate on this
+            for product in products {
+                print("\nID: \(product.productIdentifier)")
+                print("Title: \(product.localizedTitle)")
+                print("Description: \(product.localizedDescription)")
+                print("Raw price: \(product.price.floatValue)")
+                print("Localized price: \(product.localizedPrice)")
+            }
+        })
     }
     
     func finish(animated: Bool, completion: (() -> Void)?) {
@@ -44,6 +64,23 @@ class PremiumCoordinator {
             guard let self = self else { return }
             self.delegate?.didFinish(self)
         }
+    }
+    
+    func showStoreError(_ message: String) {
+        Diag.error("IAP error [message: \(message)]")
+        let alert = UIAlertController(
+            title: "Cannot contact AppStore".localized(comment: "Title of error message related to in-app purchase"),
+            message: message,
+            preferredStyle: .alert)
+        let cancelAction = UIAlertAction(
+            title: LString.actionCancel,
+            style: .cancel,
+            handler: { [weak self] _ in
+                self?.finish(animated: true, completion: nil)
+            }
+        )
+        alert.addAction(cancelAction)
+        navigationController.present(alert, animated: true, completion: nil)
     }
 }
 
