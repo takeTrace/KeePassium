@@ -14,7 +14,7 @@
  * You should have received a copy of both of these licenses along with this
  * software. If not, they may be obtained at the above URLs.
  */
-// AP: added progress callback for each iteration
+// KeePassium/Andrei Popleteev: added progress callback for each iteration
 
 #include <string.h>
 #include <stdlib.h>

@@ -1,6 +1,6 @@
 // The code below is from https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift
 // Modified by Andrei Popleteev for KeePassium
-
+//
 // The MIT License (MIT)
 //
 // Copyright (c) 2015 James Tang (j@jamztang.com)

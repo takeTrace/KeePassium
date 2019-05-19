@@ -1,7 +1,7 @@
 KeePassium: Copyright (C) 2018 Andrei Popleteev <info@keepassium.com>
 
 The software is distributed under the terms of the GNU General Public License 
-version 3 or later. For alternative licensing, please contact the author.
+version 3. For commercial licensing, please contact the author.
 
 KeePassium includes contributions from other authors, available under 
 permissive licenses. For details, please see About/Credits in the app.
