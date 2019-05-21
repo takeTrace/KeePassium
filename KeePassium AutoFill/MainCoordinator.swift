@@ -358,12 +358,20 @@ extension MainCoordinator: DatabaseManagerObserver {
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
         guard let databaseUnlockerVC = navigationController.topViewController
             as? DatabaseUnlockerVC else { return }
+        do {
+            try Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError
+        } catch {
+            Diag.warning("Failed to remove database key [message: \(error.localizedDescription)]")
+            // only log, nothing else
+        }
+        Settings.current.isAutoFillFinishedOK = true
         databaseUnlockerVC.hideProgressOverlay()
     }
     
     func databaseManager(database urlRef: URLReference, invalidMasterKey message: String) {
         guard let databaseUnlockerVC = navigationController.topViewController
             as? DatabaseUnlockerVC else { return }
+        Settings.current.isAutoFillFinishedOK = true
         databaseUnlockerVC.hideProgressOverlay()
         databaseUnlockerVC.showMasterKeyInvalid(message: message)
     }
