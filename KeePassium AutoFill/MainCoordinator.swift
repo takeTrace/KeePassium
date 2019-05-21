@@ -120,7 +120,7 @@ class MainCoordinator: NSObject, Coordinator {
         password: String,
         keyFile: URLReference?)
     {
-        // This flag will be reset to `true` after we successfully quit the extension.
+        // This flag will be reset to `true` after we successfully open the database.
         Settings.current.isAutoFillFinishedOK = false
         
         isLoadingUsingStoredDatabaseKey = false
@@ -134,7 +134,7 @@ class MainCoordinator: NSObject, Coordinator {
         database: URLReference,
         compositeKey: SecureByteArray)
     {
-        // This flag will be reset to `true` after we successfully quit the extension.
+        // This flag will be reset to `true` after we successfully open the database.
         Settings.current.isAutoFillFinishedOK = false
         
         isLoadingUsingStoredDatabaseKey = true
@@ -371,6 +371,7 @@ extension MainCoordinator: DatabaseManagerObserver {
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?) {
         guard let databaseUnlockerVC = navigationController.topViewController
             as? DatabaseUnlockerVC else { return }
+        Settings.current.isAutoFillFinishedOK = true
         databaseUnlockerVC.hideProgressOverlay()
 
         let errorText = (reason != nil) ? (message + "\n" + reason!) : message
@@ -392,8 +393,9 @@ extension MainCoordinator: DatabaseManagerObserver {
                 // only log, nothing else
             }
         }
-
         guard let database = DatabaseManager.shared.database else { fatalError() }
+
+        Settings.current.isAutoFillFinishedOK = true
         showDatabaseContent(database: database, databaseRef: urlRef)
     }
 }
