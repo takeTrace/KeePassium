@@ -111,7 +111,12 @@ public class Group2: Group {
 
     /// Loads group properties from the <Group> XML element
     /// - Throws: `Xml2.ParsingError`, `ProgressInterruption`
-    func load(xml: AEXMLElement, streamCipher: StreamCipher) throws {
+    func load(
+        xml: AEXMLElement,
+        streamCipher: StreamCipher,
+        warnings: DatabaseLoadingWarnings
+        ) throws
+    {
         assert(xml.name == Xml2.group)
         Diag.verbose("Loading XML: group")
         
@@ -162,12 +167,14 @@ public class Group2: Group {
                 Diag.verbose("Custom data loaded OK")
             case Xml2.group:
                 let subGroup = Group2(database: database)
-                try subGroup.load(xml: tag, streamCipher: streamCipher) // throws ProgressInterruption
+                try subGroup.load(xml: tag, streamCipher: streamCipher, warnings: warnings)
+                    // throws ProgressInterruption
                 self.add(group: subGroup)
                 Diag.verbose("Subgroup loaded OK")
             case Xml2.entry:
                 let entry = Entry2(database: database)
-                try entry.load(xml: tag, streamCipher: streamCipher) // throws ProgressInterruption
+                try entry.load(xml: tag, streamCipher: streamCipher, warnings: warnings)
+                    // throws ProgressInterruption
                 self.add(entry: entry)
                 Diag.verbose("Entry loaded OK")
             default:

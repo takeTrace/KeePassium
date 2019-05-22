@@ -201,6 +201,9 @@ public class Database2: Database {
             // check if there are any missing or redundant (unreferenced) binaries
             checkAttachmentsIntegrity(warnings: warnings)
             
+            // check if there are any (non-critically) misformatted custom fields
+            checkCustomFieldsIntegrity(warnings: warnings)
+            
             Diag.debug("Content loaded OK")
             Diag.verbose("== DB2 progress CP5: \(progress.completedUnitCount)")
         } catch let error as Header2.HeaderError {
@@ -443,7 +446,7 @@ public class Database2: Database {
                     }
                     Diag.verbose("Meta loaded OK")
                 case Xml2.root:
-                    try loadRoot(xml: tag, root: rootGroup)
+                    try loadRoot(xml: tag, root: rootGroup, warnings: warnings)
                         // throws Xml2.ParsingError, ProgressInterruption
                     Diag.verbose("XML root loaded OK")
                 default:
@@ -469,13 +472,19 @@ public class Database2: Database {
     }
     
     /// - Throws: `Xml2.ParsingError`, `ProgressInterruption`
-    internal func loadRoot(xml: AEXMLElement, root: Group2) throws {
+    internal func loadRoot(
+        xml: AEXMLElement,
+        root: Group2,
+        warnings: DatabaseLoadingWarnings
+        ) throws
+    {
         assert(xml.name == Xml2.root)
         Diag.debug("Loading XML root")
         for tag in xml.children {
             switch tag.name {
             case Xml2.group:
-                try root.load(xml: tag, streamCipher: header.streamCipher) // throws ProgressInterruption
+                try root.load(xml: tag, streamCipher: header.streamCipher, warnings: warnings)
+                    // throws ProgressInterruption
             case Xml2.deletedObjects:
                 try loadDeletedObjects(xml: tag)
             default:
@@ -643,6 +652,27 @@ public class Database2: Database {
         }
     }
     
+    /// Checks if there are any (non-critically) misformatted custom fields,
+    /// and adds a corresponding warning in case of trouble.
+    private func checkCustomFieldsIntegrity(warnings: DatabaseLoadingWarnings) {
+        guard let root = root else { return }
+        var allEntries = [Entry]()
+        root.collectAllEntries(to: &allEntries)
+        
+        let problematicEntries = allEntries.filter { entry in
+            let isProblematicEntry = entry.fields.reduce(false) { result, field in
+                return result || field.name.isEmpty
+            }
+            return isProblematicEntry
+        }
+        guard problematicEntries.count > 0 else { return }
+        
+        let entryPaths = problematicEntries
+            .map { entry in "'\(entry.title)' in '\(entry.getGroupPath())'" }
+            .joined(separator: "\n")
+        let warningMessage = NSLocalizedString("Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n\(entryPaths)", comment: "A warning about misformatted custom fields after loading the database.")
+        warnings.messages.append(warningMessage)
+    }
     
     /// Rebuilds the binary pool from attachments of individual entries (including their histories).
     private func updateBinaries(root: Group2) {
