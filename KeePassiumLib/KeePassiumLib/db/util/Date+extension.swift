@@ -12,13 +12,9 @@ public extension Date {
     /// A readability-improving wrapper for `Date()`
     static var now: Date { return Date() }
     
-    /// .NET's DateTime reference date: January 1, 0001 at 00:00:00.000 in the Gregorian calendar.
-    static internal let dotNetTimeZero = DateComponents(
-        calendar: Calendar(identifier: .gregorian),
-        timeZone: TimeZone(abbreviation: "UTC"),
-        year: 1, month: 1, day: 1,
-        hour: 0, minute: 0, second: 0, nanosecond: 0
-        ).date! // ok to force-unwrap
+    /// Number of seconds between 0001-01-01 00:00 and 2001-01-01 00:00,
+    /// in .NET context (Swift thinks there are 2 days less)
+    static internal let secondsBetweenSwiftAndDotNetReferenceDates = Int64(63113904000)
 
     /// Creates date from an ISO8601-formatted string.
     init?(iso8601string string: String?) {
@@ -36,8 +32,10 @@ public extension Date {
     /// since `Date.dotNetTimeZero` (KP2v4)
     init?(base64Encoded string: String?) {
         guard let data = ByteArray(base64Encoded: string) else { return nil }
-        guard let seconds = Int64(data: data) else { return nil }
-        self = Date(timeInterval: Double(seconds), since: Date.dotNetTimeZero)
+        guard let secondsSinceDotNetReferenceDate = Int64(data: data) else { return nil }
+        let secondsSinceSwiftReferenceDate =
+            secondsSinceDotNetReferenceDate - Date.secondsBetweenSwiftAndDotNetReferenceDates
+        self = Date(timeIntervalSinceReferenceDate: Double(secondsSinceSwiftReferenceDate))
     }
     
     /// Returns the date as an ISO8601-formatted string
@@ -48,7 +46,9 @@ public extension Date {
     /// Returns the date as Base64-encoded UInt64 of seconds since
     /// `Date.dotNetTimeZero` (KP2v4)
     func base64EncodedString() -> String {
-        let secondsSinceRef = Int64(self.timeIntervalSince(Date.dotNetTimeZero))
-        return secondsSinceRef.data.base64EncodedString()
+        let secondsSinceSwiftReferenceDate = Int64(self.timeIntervalSinceReferenceDate)
+        let secondsSinceDotNetReferenceDate =
+            secondsSinceSwiftReferenceDate + Date.secondsBetweenSwiftAndDotNetReferenceDates
+        return secondsSinceDotNetReferenceDate.data.base64EncodedString()
     }
 }
