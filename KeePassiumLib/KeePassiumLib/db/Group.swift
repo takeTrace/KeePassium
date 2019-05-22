@@ -210,6 +210,14 @@ public class Group: Eraseable {
         entries.append(contentsOf: self.entries)
     }
     
+    /// Recursively collects all entries from this group and its subgroups.
+    public func collectAllEntries(to entries: inout Array<Entry>) {
+        for group in self.groups {
+            group.collectAllEntries(to: &entries)
+        }
+        entries.append(contentsOf: self.entries)
+    }
+    
     /// Finds entries which match the query, and adds them to the `result`.
     public func filterEntries(query: SearchQuery, result: inout Array<Entry>) {
         if self.isDeleted && !query.includeDeleted {

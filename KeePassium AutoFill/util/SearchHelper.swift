@@ -81,10 +81,9 @@ class SearchHelper {
     private func performSearch(in database: Database, url: String) -> [ScoredEntry] {
         guard let url = URL(string: url) else { return [] }
         
-        var allGroups = [Group]()
         var allEntries = [Entry]()
         guard let rootGroup = database.root else { return [] }
-        rootGroup.collectAllChildren(groups: &allGroups, entries: &allEntries)
+        rootGroup.collectAllEntries(to: &allEntries)
         
         // Now just order them by similarity score, and remove unrelated
         let relevantEntries = allEntries
@@ -113,10 +112,9 @@ class SearchHelper {
 
     /// Returns entries that correspond (somewhat) to the given `domain`.
     private func performSearch(in database: Database, domain: String) -> [ScoredEntry] {
-        var allGroups = [Group]()
         var allEntries = [Entry]()
         guard let rootGroup = database.root else { return [] }
-        rootGroup.collectAllChildren(groups: &allGroups, entries: &allEntries)
+        rootGroup.collectAllEntries(to: &allEntries)
         
         // Now just order them by similarity score, and remove unrelated
         let relevantEntries = allEntries

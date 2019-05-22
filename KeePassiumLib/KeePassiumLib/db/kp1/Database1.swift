@@ -421,9 +421,8 @@ public class Database1: Database {
         // detach this branch from the parent group
         parentGroup.remove(group: group)
         
-        var subGroups = [Group]()
         var subEntries = [Entry]()
-        group.collectAllChildren(groups: &subGroups, entries: &subEntries)
+        group.collectAllEntries(to: &subEntries)
         
         // kp1 does not backup subgroups, so move only entries
         subEntries.forEach { (entry) in

@@ -588,9 +588,8 @@ public class Database2: Database {
             }
         }
         
-        var allGroups = [Group]()
         var allEntries = [Entry]()
-        root?.collectAllChildren(groups: &allGroups, entries: &allEntries)
+        root?.collectAllEntries(to: &allEntries)
         
         var usedIDs = Set<Binary2.ID>() // BinaryID referenced by entries
         allEntries.forEach { (entry) in
@@ -648,9 +647,8 @@ public class Database2: Database {
     /// Rebuilds the binary pool from attachments of individual entries (including their histories).
     private func updateBinaries(root: Group2) {
         Diag.verbose("Updating all binaries")
-        var allGroups = [Group2]() as [Group]
         var allEntries = [Entry2]() as [Entry]
-        root.collectAllChildren(groups: &allGroups, entries: &allEntries)
+        root.collectAllEntries(to: &allEntries)
 
         // Make a content-keyed lookup dict for faster search
         var oldBinaryPoolInverse = [ByteArray : Binary2]()
