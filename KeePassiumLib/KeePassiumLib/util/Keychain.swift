@@ -116,6 +116,15 @@ public class Keychain {
         }
     }
     
+    /// Removes all data of this app from the keychain.
+    ///
+    /// - Throws: KeychainError
+    public func removeAll() throws {
+        for service in Service.allValues {
+            try remove(service: service, account: nil) // removes all accounts of the service
+        }
+    }
+
     // MARK: - App Lock passcode routines
     
     /// Saves the given app passcode in keychain.
@@ -200,14 +209,5 @@ public class Keychain {
     /// - Throws: KeychainError
     public func removeAllDatabaseKeys() throws {
         try remove(service: .databaseKeys, account: nil)
-    }
-    
-    /// Removes all data of this app from the keychain.
-    ///
-    /// - Throws: KeychainError
-    public func removeAll() throws {
-        for service in Service.allValues {
-            try remove(service: service, account: nil) // removes all accounts of the service
-        }
     }
 }
