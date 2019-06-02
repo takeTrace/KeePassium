@@ -9,30 +9,170 @@
 import Foundation
 import StoreKit
 
+/// Known predefined products
+public enum InAppProduct: String {
+    /// General kind of product (single purchase, subscription, ...)
+    public enum Kind {
+        case oneTime
+        case yearly
+        case monthly
+        case other
+    }
 
-
-public enum InAppProductID: String {
-    static let allValues: [InAppProductID] = [.foreverBetaSandbox]
+    static let allKnownIDs: Set<String> = [
+        InAppProduct.foreverBetaSandbox.rawValue,
+        InAppProduct.foreverThankYou.rawValue,
+        InAppProduct.forever.rawValue,
+        InAppProduct.montlySubscription.rawValue,
+        InAppProduct.yearlySubscription.rawValue]
     
     case foreverBetaSandbox = "com.keepassium.ios.iap.foreverBeta.sandbox"
+    
+    case forever = "com.keepassium.ios.iap.forever"
+    case foreverThankYou = "com.keepassium.ios.iap.forever.thankYou"
+    case montlySubscription = "com.keepassium.ios.iap.subscription.1month"
+    case yearlySubscription = "com.keepassium.ios.iap.subscription.1year"
+    
+    var kind: Kind {
+        return InAppProduct.kind(productIdentifier: self.rawValue)
+    }
+
+    /// Whether this product should be shown to the user
+    var isHidden: Bool {
+        return InAppProduct.isHidden(productIdentifier: self.rawValue)
+    }
+
+    public static func kind(productIdentifier: String) -> Kind {
+        if productIdentifier.contains(".forever") {
+            return .oneTime
+        } else if productIdentifier.contains(".1year") {
+            return .yearly
+        } else if productIdentifier.contains(".1month") {
+            return .monthly
+        } else {
+            assertionFailure("Should not be here")
+            return .other
+        }
+    }
+    
+    
+    /// Whether given product should be shown to the user
+    public static func isHidden(productIdentifier: String) -> Bool {
+        return productIdentifier.contains(".thankYou") ||
+            productIdentifier.contains(".hidden") ||
+            productIdentifier.contains(".test")
+    }
 }
 
+
+// MARK: - PremiumManagerDelegate
+
+public protocol PremiumManagerDelegate: class {
+    /// Called once purchase has been started
+    func purchaseStarted(in premiumManager: PremiumManager)
+    
+    /// Called after a successful new or restored purchase
+    func purchaseSucceeded(_ product: InAppProduct, in premiumManager: PremiumManager)
+    
+    /// Purchase is waiting for approval ("Ask to buy" feature)
+    func purchaseDeferred(in premiumManager: PremiumManager)
+    
+    /// Purchase failed (except cancellation)
+    func purchaseFailed(with error: Error, in premiumManager: PremiumManager)
+    
+    /// Purchase cancelled by the user
+    func purchaseCancelledByUser(in premiumManager: PremiumManager)
+    
+    /// Called after all previous transactions have been processed.
+    /// If status is still not premium, then "Sorry, no previous purchases could be restored".
+    func purchaseRestoringFinished(in premiumManager: PremiumManager)
+}
 
 /// Manages availability of some features depending on subscription status.
 public class PremiumManager: NSObject {
     public static let shared = PremiumManager()
 
-    /// Time since first launch, when premium features are available in free version.
-    private let gracePeriodInSeconds: Double = 5 * 60 //5 * 24 * 60 * 60 //TODO: restore after debug
+    public weak var delegate: PremiumManagerDelegate? {
+        willSet {
+            assert(newValue == nil || delegate == nil, "PremiumManager supports only one delegate")
+        }
+    }
     
-    /// Premium is not enforced until this time
-    private let launchGracePeriodDeadline = DateComponents(
-        calendar: Calendar.autoupdatingCurrent,
-        timeZone: TimeZone.autoupdatingCurrent,
-        year: 2019, month: 7, day: 1,
-        hour: 0, minute: 0, second: 0, nanosecond: 0
-        ).date! // ok to force-unwrap
+    // MARK: - Subscription status
+    
+    public enum Status {
+        /// The user launched the app but did not use any premium features yet
+        case initialGracePeriod
+        /// The user has been notified about premium features
+        case initialGracePeriodNotified
+        /// Active premium subscription
+        case subscribed
+        /// Grace period expired, no premium purchased
+        case expired
+    }
+    
+    /// Current subscription status
+    public var status: Status = .initialGracePeriod
+    
+    /// Name of notification broadcasted whenever subscription status might have changed.
+    public static let statusUpdateNotification =
+        Notification.Name("com.keepassium.premiumManager.statusUpdated")
 
+    /// Sends a notification whenever subscription status might have changed.
+    fileprivate func notifyStatusChanged() {
+        NotificationCenter.default.post(name: PremiumManager.statusUpdateNotification, object: self)
+    }
+
+    private override init() {
+        super.init()
+        updateStatus()
+    }
+    
+    fileprivate func updateStatus() {
+        let previousStatus = status
+        if isSubscribed {
+            status = .subscribed
+        } else {
+            if gracePeriodSecondsRemaining > 0 {
+                if wasGracePeriodUpgradeNoticeShown() {
+                    status = .initialGracePeriodNotified
+                } else {
+                    status = .initialGracePeriod
+                }
+            } else {
+                status = .expired
+            }
+        }
+        if status != previousStatus {
+            notifyStatusChanged()
+        }
+    }
+    
+    /// True iff the user is currently subscribed
+    private var isSubscribed: Bool {
+        do {
+            guard let premiumExpiryDate =
+                try Keychain.shared.getPremiumExpiryDate() // throws KeychainError
+                else { return false }
+            let isPremium = Date.now < premiumExpiryDate
+            return isPremium
+        } catch {
+            Diag.error("Failed to check premium status [message: \(error.localizedDescription)]")
+            return false
+        }
+    }
+
+    
+    // MARK: - Grace period management
+
+    /// Time since first launch, when premium features are available in free version.
+    private let gracePeriodInSeconds: Double = 1 * 60 //5 * 24 * 60 * 60 //TODO: restore after debug
+    
+    fileprivate enum UserDefaultsKey {
+        static let gracePeriodUpgradeNoticeShown =
+            "com.keepassium.premium.gracePeriodUpgradeNoticeShown"
+    }
+    
     public var gracePeriodSecondsRemaining: Double {
         let firstLaunchTimestamp = Settings.current.firstLaunchTimestamp
         let secondsFromFirstLaunch = abs(Date.now.timeIntervalSince(firstLaunchTimestamp))
@@ -40,87 +180,109 @@ public class PremiumManager: NSObject {
         Diag.debug(String(format: "Grace period left: %.0f s", secondsLeft))
         return secondsLeft
     }
-    
-    public var isLaunchGracePeriod: Bool {
-        return Date.now < launchGracePeriodDeadline
+
+    /// Remembers that grace period notice has been shown.
+    public func setGracePeriodUpgradeNoticeShown(_ shown: Bool = true) {
+        UserDefaults.appGroupShared.set(shown, forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShown)
+        updateStatus()
     }
 
-    
-    fileprivate enum UserDefaultsKey {
-        static let shownUpgradeNotices = "com.keepassium.premium.shownUpgradeNotice"
-    }
-    
-    private override init() {
-        super.init()
-    }
-    
-    /// True for premium users only.
-    public func isFeaturePurchased(_ feature: PremiumFeature) -> Bool {
-        return true //TODO
-    }
-    
-    /// Whether to show "Please upgrade" notice for the given feature.
-    public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
-        if isFeaturePurchased(feature) {
-            return false // premium user, no further questions
-        }
-        let isGracePeriod = (gracePeriodSecondsRemaining > 0) || isLaunchGracePeriod
-        if isGracePeriod && wasGracePeriodUpgradeNoticeShown(for: feature) {
+    /// True iff the app should offer an upgrade.
+    public var shouldShowUpgradeNotice: Bool {
+        updateStatus()
+        switch status {
+        case .initialGracePeriod:
+            return true
+        case .initialGracePeriodNotified:
             return false
+        case .subscribed:
+            return false
+        case .expired:
+            return true
         }
-        return true
     }
     
-    /// Remember that upgrade notice for the given `feature` has been shown.
-    /// Use `wasGracePeriodUpgradeNoticeShown` to read remembered value.
-    public func setGracePeriodUpgradeNoticeShown(for feature: PremiumFeature) {
-        var shownNotices = [Int]()
-        if let storedShownNotices = UserDefaults.appGroupShared.array(
-            forKey: UserDefaultsKey.shownUpgradeNotices) as? [Int]
-        {
-            shownNotices = storedShownNotices
-        }
-        if !shownNotices.contains(feature.rawValue) {
-            shownNotices.append(feature.rawValue)
-        }
-        UserDefaults.appGroupShared.set(shownNotices, forKey: UserDefaultsKey.shownUpgradeNotices)
+    public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
+        //TODO make it feature-specific
+        return shouldShowUpgradeNotice
     }
     
-    /// Check if upgrade notice has been previously shown for the given `feature`.
+    /// Returns true iff the upgrade notice has already been shown.
     /// Use `setGracePeriodUpgradeNoticeShown` to change returned value.
-    public func wasGracePeriodUpgradeNoticeShown(for feature: PremiumFeature) -> Bool {
-        guard let shownNotices = UserDefaults.appGroupShared.array(
-            forKey: UserDefaultsKey.shownUpgradeNotices) as? [Int]
+    public func wasGracePeriodUpgradeNoticeShown() -> Bool {
+        guard let wasShown = UserDefaults.appGroupShared
+            .object(forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShown) as? Bool
             else { return false }
-        return shownNotices.contains(feature.rawValue)
+        return wasShown
+    }
+
+    // MARK: - Available in-app products
+    
+    public fileprivate(set) var availableProducts: [SKProduct]?
+    private let knownProductIDs = InAppProduct.allKnownIDs
+    
+    private var productsRequest: SKProductsRequest?
+
+    public typealias ProductsRequestHandler = (([SKProduct]?, Error?) -> Void)
+    fileprivate var productsRequestHandler: ProductsRequestHandler?
+    
+    public func requestAvailableProducts(completionHandler: @escaping ProductsRequestHandler)
+    {
+        productsRequest?.cancel()
+        productsRequestHandler = completionHandler
+        
+        productsRequest = SKProductsRequest(productIdentifiers: Set<String>(knownProductIDs))
+        productsRequest!.delegate = self
+        productsRequest!.start()
     }
     
-    // MARK: - In-app purchase management
-
-    public typealias ProductListAvailableHandler = (([SKProduct]?, Error?) -> Void)
-
-    private var purchasedProductIDs = Set<InAppProductID>()
-    private var productsRequest: SKProductsRequest?
-    private var productListAvailableHandler: ProductListAvailableHandler?
+    // MARK: - In-app purchase transactions
     
     public func startObservingTransactions() {
         SKPaymentQueue.default().add(self)
     }
+    
     public func finishObservingTransactions() {
         SKPaymentQueue.default().remove(self)
     }
     
-    public func requestAvailableProducts(completionHandler: @escaping ProductListAvailableHandler)
-    {
-        productsRequest?.cancel()
-        productListAvailableHandler = completionHandler
-        
-        let knownProductIDs: Set<String> = Set(InAppProductID.allValues.map { return $0.rawValue} )
-        productsRequest = SKProductsRequest(productIdentifiers: knownProductIDs)
-        productsRequest!.delegate = self
-        productsRequest!.start()
+    /// Initiates purchase of the given product.
+    public func purchase(_ product: SKProduct) {
+        Diag.info("Starting purchase [product: \(product.productIdentifier)]")
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+    
+    /// Starts restoring completed transactions
+    public func restorePurchases() {
+        Diag.info("Starting to restore purchases")
+        SKPaymentQueue.default().restoreCompletedTransactions()
     }
 }
+
+
+// MARK: - SKProductsRequestDelegate
+extension PremiumManager: SKProductsRequestDelegate {
+    public func productsRequest(
+        _ request: SKProductsRequest,
+        didReceive response: SKProductsResponse)
+    {
+        Diag.debug("Received list of in-app purchases")
+        self.availableProducts = response.products
+        productsRequestHandler?(self.availableProducts, nil)
+        productsRequest = nil
+        productsRequestHandler = nil
+    }
+    
+    public func request(_ request: SKRequest, didFailWithError error: Error) {
+        Diag.warning("Failed to acquire list of in-app purchases [message: \(error.localizedDescription)]")
+        self.availableProducts = nil
+        productsRequestHandler?(nil, error)
+        productsRequest = nil
+        productsRequestHandler = nil
+    }
+}
+
 
 // MARK: - SKPaymentTransactionObserver
 extension PremiumManager: SKPaymentTransactionObserver {
@@ -133,53 +295,169 @@ extension PremiumManager: SKPaymentTransactionObserver {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased:
-                // verify authenticity
-                verifyReceipt() { isValid in
-                    if isValid {
-                        // save status
-                        queue.finishTransaction(transaction)
-                    }
-                }
+                didPurchase(with: transaction, in: queue)
             case .purchasing:
                 // nothing to do, wait for further updates
+                delegate?.purchaseStarted(in: self)
                 break
             case .failed:
                 // show an error. if cancelled - don't show an error
+                didFailToPurchase(with: transaction, in: queue)
                 break
             case .restored:
-                // same as purchased
+                didRestorePurchase(transaction, in: queue)
                 break
             case .deferred:
                 // nothing to do, wait for further updates
+                delegate?.purchaseDeferred(in: self)
                 break
             }
         }
     }
     
-    /// Checks AppStore receipt validity, then calls the completion handler
-    /// with `isValid` flag.
-    private func verifyReceipt(completion: (Bool)->Void) {
-        // maybe some day
-        completion(true)
-    }
-}
-
-// MARK: - SKProductsRequestDelegate
-extension PremiumManager: SKProductsRequestDelegate {
-    public func productsRequest(
-        _ request: SKProductsRequest,
-        didReceive response: SKProductsResponse)
+    public func paymentQueue(
+        _ queue: SKPaymentQueue,
+        restoreCompletedTransactionsFailedWithError error: Error)
     {
-        Diag.debug("Received list of in-app purchases")
-        productListAvailableHandler?(response.products, nil)
-        productsRequest = nil
-        productListAvailableHandler = nil
+        Diag.error("Failed to restore purchases [message: \(error.localizedDescription)]")
+        delegate?.purchaseFailed(with: error, in: self)
+    }
+
+    public func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        Diag.debug("Finished restoring purchases")
+        delegate?.purchaseRestoringFinished(in: self)
     }
     
-    public func request(_ request: SKRequest, didFailWithError error: Error) {
-        Diag.warning("Failed to acquire list of in-app purchases [message: \(error.localizedDescription)]")
-        productListAvailableHandler?(nil, error)
-        productsRequest = nil
-        productListAvailableHandler = nil
+    // Called when the user purchases some IAP directly from AppStore.
+    public func paymentQueue(
+        _ queue: SKPaymentQueue,
+        shouldAddStorePayment payment: SKPayment,
+        for product: SKProduct
+        ) -> Bool
+    {
+        return true // yes, add the purchase to the payment queue.
+    }
+    
+    private func didPurchase(with transaction: SKPaymentTransaction, in queue: SKPaymentQueue) {
+        guard let transactionDate = transaction.transactionDate else {
+            // According to docs, this should not happen.
+            assertionFailure()
+            Diag.warning("IAP transaction date is empty?!")
+            // Should not happen, but if it does - keep the transaction around,
+            // to be taken into account after bugfix.
+            return
+        }
+        
+        let productID = transaction.payment.productIdentifier
+        guard let product = InAppProduct(rawValue: productID) else {
+            // If we are here, I messed up InAppProduct constants...
+            assertionFailure()
+            Diag.error("IAP with unrecognized product ID [id: \(productID)]")
+            return
+        }
+        
+        Diag.info("IAP purchase update [date: \(transactionDate), product: \(productID)]")
+        if applyPurchase(of: product, on: transactionDate) {
+            queue.finishTransaction(transaction)
+        }
+        delegate?.purchaseSucceeded(product, in: self)
+    }
+    
+    private func didRestorePurchase(_ transaction: SKPaymentTransaction, in queue: SKPaymentQueue) {
+        guard let transactionDate = transaction.original?.transactionDate else {
+            // According to docs, this should not happen.
+            assertionFailure()
+            Diag.warning("IAP transaction date is empty?!")
+            // there is no point to keep a restored transaction
+            queue.finishTransaction(transaction)
+            return
+        }
+        
+        let productID = transaction.payment.productIdentifier
+        guard let product = InAppProduct(rawValue: productID) else {
+            // If we are here, I messed up InAppProduct constants...
+            assertionFailure()
+            Diag.error("IAP with unrecognized product ID [id: \(productID)]")
+            // there is no point to keep a restored transaction
+            queue.finishTransaction(transaction)
+            return
+        }
+        Diag.info("Restored purchase [date: \(transactionDate), product: \(productID)]")
+        if applyPurchase(of: product, on: transactionDate) {
+            queue.finishTransaction(transaction)
+        }
+        delegate?.purchaseSucceeded(product, in: self)
+    }
+    
+    /// Process new or restored purchase and update internal expiration date.
+    ///
+    /// - Parameters:
+    ///   - product: purchased product
+    ///   - transactionDate: purchase transaction date (new/original for new/restored purchase)
+    /// - Returns: true if transaction can be finalized
+    private func applyPurchase(of product: InAppProduct, on transactionDate: Date) -> Bool {
+        let calendar = Calendar.current
+        let newExpiryDate: Date
+        switch product.kind {
+        case .oneTime:
+            newExpiryDate = Date.distantFuture
+        case .yearly:
+            newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
+        case .monthly:
+            newExpiryDate = calendar.date(byAdding: .month, value: 1, to: transactionDate)!
+        case .other:
+            // Ok, being here is dev's fault. A year should be a safe compensation.
+            newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
+        }
+        
+        let keychain = Keychain.shared
+        do {
+            let oldExpiryDate = try keychain.getPremiumExpiryDate() // throws KeychainError
+            if newExpiryDate > (oldExpiryDate ?? Date.distantPast) {
+                try keychain.setPremiumExpiryDate(to: newExpiryDate) // throws KeychainError
+                updateStatus()
+            }
+            return true
+        } catch {
+            // transaction remains unfinished, will be retried on next launch
+            Diag.error("Failed to save purchase [message: \(error.localizedDescription)]")
+            return false
+        }
+    }
+    
+    
+    private func didFailToPurchase(
+        with transaction: SKPaymentTransaction,
+        in queue: SKPaymentQueue)
+    {
+        guard let _ = transaction.error else {
+            assertionFailure()
+            Diag.error("In-app purchase failed [message: nil]")
+            queue.finishTransaction(transaction)
+            return
+        }
+        guard let error = transaction.error as? SKError else {
+            assertionFailure("Not an SKError")
+            // DEBUG TIME ONLY - probably should not happen, so leave the transaction hanging
+            return
+        }
+
+        let productID = transaction.payment.productIdentifier
+        guard let _ = InAppProduct(rawValue: productID) else {
+            // If we are here, I messed up InAppProduct constants...
+            assertionFailure()
+            Diag.warning("IAP transaction failed, plus unrecognized product [id: \(productID)]")
+            return
+        }
+
+        if error.code == .paymentCancelled {
+            Diag.info("IAP cancelled by the user [message: \(error.localizedDescription)]")
+            delegate?.purchaseCancelledByUser(in: self)
+        } else {
+            Diag.error("In-app purchase failed [message: \(error.localizedDescription)]")
+            delegate?.purchaseFailed(with: error, in: self)
+        }
+        updateStatus()
+        queue.finishTransaction(transaction)
     }
 }
