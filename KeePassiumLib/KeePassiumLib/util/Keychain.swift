@@ -27,12 +27,14 @@ public class Keychain {
     
     private static let accessGroup: String? = nil
     private enum Service: String {
-        static let allValues: [Service] = [.general, .databaseKeys]
+        static let allValues: [Service] = [.general, .databaseKeys, .premium]
         
         case general = "KeePassium"
         case databaseKeys = "KeePassium.dbKeys"
+        case premium = "KeePassium.premium"
     }
     private let appPasscodeAccount = "appPasscode"
+    private let premiumExpiryDateAccount = "premiumExpiryDate"
     
     private init() {
         // left empty
@@ -209,5 +211,31 @@ public class Keychain {
     /// - Throws: KeychainError
     public func removeAllDatabaseKeys() throws {
         try remove(service: .databaseKeys, account: nil)
+    }
+    
+    // MARK: - Premium-related routines
+    
+    /// Sets premium expiry date to the given value
+    ///
+    /// - Parameter newDate: new expiry date
+    /// - Throws: `KeychainError`
+    public func setPremiumExpiryDate(to newDate: Date) throws {
+        let timestampBytes = UInt64(newDate.timeIntervalSinceReferenceDate).data
+        try set(service: .premium, account: premiumExpiryDateAccount, data: timestampBytes.asData)
+    }
+    
+    /// Returns stored premium expiry date.
+    ///
+    /// - Returns: stored date, if any.
+    /// - Throws: `KeychainError`
+    public func getPremiumExpiryDate() throws -> Date? {
+        guard let data = try get(service: .premium, account: premiumExpiryDateAccount) else {
+            return nil
+        }
+        guard let timestamp = UInt64(data: ByteArray(data: data)) else {
+            assertionFailure()
+            return nil
+        }
+        return Date(timeIntervalSinceReferenceDate: Double(timestamp))
     }
 }
