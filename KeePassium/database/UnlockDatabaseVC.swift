@@ -21,6 +21,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     @IBOutlet private weak var watchdogTimeoutLabel: UILabel!
     @IBOutlet private weak var databaseIconImage: UIImageView!
     @IBOutlet weak var masterKeyKnownLabel: UILabel!
+    @IBOutlet weak var getPremiumButton: UIButton!
     
     public var databaseRef: URLReference! {
         didSet {
@@ -48,6 +49,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         
         databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         fileKeeperNotifications = FileKeeperNotifications(observer: self)
+        // listen for
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshPremiumStatus),
+            name: PremiumManager.statusUpdateNotification,
+            object: nil)
 
         // make background image
         view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
@@ -72,6 +79,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshPremiumStatus()
         refresh()
     }
     
@@ -139,6 +147,9 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         refreshInputMode()
     }
     
+    @objc private func refreshPremiumStatus() {
+        getPremiumButton.isHidden = (PremiumManager.shared.status == .subscribed)
+    }
     
     /// Switch the UI depending on whether the master key is already known.
     private func refreshInputMode() {

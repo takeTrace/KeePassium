@@ -180,9 +180,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i6N-fq-JbM">
-                                        <rect key="frame" x="212" y="0.0" width="100" height="33"/>
+                                        <rect key="frame" x="153" y="0.0" width="159" height="33"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <state key="normal" title="Get Premium"/>
+                                        <state key="normal" title="Upgrade to Premium"/>
                                         <connections>
                                             <action selector="didPressUpgradeToPremium:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="i0V-29-l6q"/>
                                         </connections>
@@ -227,6 +227,7 @@
                         <outlet property="errorDetailButton" destination="nrD-QC-R8N" id="Hdc-k4-pl1"/>
                         <outlet property="errorLabel" destination="d2U-7y-vCm" id="Tfd-pH-JMJ"/>
                         <outlet property="errorMessagePanel" destination="1da-3k-RQm" id="XSq-Rx-ZNa"/>
+                        <outlet property="getPremiumButton" destination="i6N-fq-JbM" id="ptX-SW-qPO"/>
                         <outlet property="inputPanel" destination="3xv-vB-0Jn" id="dpu-5T-Uzb"/>
                         <outlet property="keyFileField" destination="mYY-hP-3vH" id="ITo-zF-Ead"/>
                         <outlet property="keyboardAdjView" destination="cdl-k8-gTg" id="gDU-xh-QP9"/>
