@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Preimum-->
+        <!--Premium-->
         <scene sceneID="jVP-0t-Asp">
             <objects>
-                <viewController storyboardIdentifier="PremiumVC" title="Preimum" id="yXg-JJ-VAJ" customClass="PremiumVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PremiumVC" title="Preimum" id="yXg-JJ-VAJ" userLabel="Premium" customClass="PremiumVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZaF-vV-wvb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,89 +25,80 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfw-Sq-XAv" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3Yu-LW-kBJ" userLabel="Launch Promo">
-                                                <rect key="frame" x="8" y="8" width="304" height="100"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HaK-Ot-oNN" userLabel="Promo Panel">
-                                                        <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" layoutMarginsFollowReadableWidth="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J4w-ln-31h">
-                                                                <rect key="frame" x="8" y="8" width="288" height="84"/>
-                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <string key="text">Launch special: Until 1 July 2019, all premium features are available in the free version. (But the premium price may change in the future.)</string>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                                <color key="textColor" name="WarningText"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                        <color key="backgroundColor" name="WarningBackground"/>
-                                                        <constraints>
-                                                            <constraint firstItem="J4w-ln-31h" firstAttribute="top" secondItem="HaK-Ot-oNN" secondAttribute="topMargin" id="UsZ-SC-m6S"/>
-                                                            <constraint firstItem="J4w-ln-31h" firstAttribute="leading" secondItem="HaK-Ot-oNN" secondAttribute="leadingMargin" id="Yvb-5W-idt"/>
-                                                            <constraint firstAttribute="bottomMargin" secondItem="J4w-ln-31h" secondAttribute="bottom" id="mIW-5O-K8e"/>
-                                                            <constraint firstAttribute="trailingMargin" secondItem="J4w-ln-31h" secondAttribute="trailing" id="sk7-hF-udV"/>
-                                                        </constraints>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                </subviews>
-                                            </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="Manage multiple databases, quickly unlock them, preview attachments (images and PDF documents)..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqg-WJ-mix">
-                                                <rect key="frame" x="16" y="116" width="288" height="61.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="Upgrade to unlock premium features:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vf2-M7-cIa" userLabel="Title">
+                                                <rect key="frame" x="16" y="16" width="288" height="20.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" name="PrimaryText"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jwv-Qe-X9w" userLabel="Buy Forever">
-                                                <rect key="frame" x="20" y="193.5" width="280" height="44"/>
-                                                <color key="backgroundColor" name="ActionTint"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="3kE-bH-R6g"/>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="280" id="D5k-Ed-6Uy"/>
-                                                </constraints>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqg-WJ-mix" userLabel="Features">
+                                                <rect key="frame" x="16" y="44.5" width="288" height="86.5"/>
+                                                <string key="text">- Edit databases
+- Quickly unlock them
+- Use multiple databases
+- Preview attachments</string>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <state key="normal" title="$39.99 one-time">
-                                                    <color key="titleColor" name="ActionText"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="5"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="didPressBuyForever:" destination="yXg-JJ-VAJ" eventType="touchUpInside" id="PJS-JZ-qHy"/>
-                                                </connections>
-                                            </button>
+                                                <color key="textColor" name="PrimaryText"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Lb7-tD-p8f" userLabel="ButtonStack">
+                                                <rect key="frame" x="20" y="147" width="280" height="47.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Status/error text)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOe-GX-YWy">
+                                                        <rect key="frame" x="0.0" y="0.0" width="280" height="19.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                        <color key="textColor" name="AuxiliaryText"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="D4c-jF-xBI">
+                                                        <rect key="frame" x="0.0" y="27.5" width="280" height="20"/>
+                                                    </activityIndicatorView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="280" id="zgA-gr-Ksr"/>
+                                                </constraints>
+                                            </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yss-Xu-2XK">
-                                                <rect key="frame" x="92" y="253.5" width="136" height="32"/>
+                                                <rect key="frame" x="92" y="210.5" width="136" height="32"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <state key="normal" title="Restore Purchases"/>
                                                 <connections>
                                                     <action selector="didPressRestorePurchases:" destination="yXg-JJ-VAJ" eventType="touchUpInside" id="dYJ-LA-Gk6"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rkk-oi-8fO" userLabel="Footer">
+                                                <rect key="frame" x="16" y="258.5" width="288" height="214"/>
+                                                <string key="text">Payment will be charged to your Apple ID account at the confirmation of purchase. 
+
+Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. 
+
+You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase.</string>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <color key="textColor" name="AuxiliaryText"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="Jwv-Qe-X9w" firstAttribute="centerX" secondItem="pfw-Sq-XAv" secondAttribute="centerX" id="GTb-99-bs1"/>
-                                            <constraint firstItem="3Yu-LW-kBJ" firstAttribute="leading" secondItem="pfw-Sq-XAv" secondAttribute="leadingMargin" id="Iov-Bs-3Ga"/>
-                                            <constraint firstItem="Jwv-Qe-X9w" firstAttribute="top" secondItem="nqg-WJ-mix" secondAttribute="bottom" constant="16" id="Qrb-vO-JlA"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Rkk-oi-8fO" secondAttribute="trailing" constant="8" id="7nP-jI-1Rl"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Vf2-M7-cIa" secondAttribute="trailing" constant="8" id="8fu-ny-REI"/>
+                                            <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Rkk-oi-8fO" secondAttribute="bottom" constant="8" id="CaL-wf-YqI"/>
+                                            <constraint firstItem="yss-Xu-2XK" firstAttribute="centerX" secondItem="pfw-Sq-XAv" secondAttribute="centerX" id="D3g-h7-YCe"/>
+                                            <constraint firstItem="Vf2-M7-cIa" firstAttribute="top" secondItem="pfw-Sq-XAv" secondAttribute="topMargin" constant="8" id="OmM-lI-TXq"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="nqg-WJ-mix" secondAttribute="trailing" constant="8" id="Rle-BU-jIF"/>
-                                            <constraint firstItem="nqg-WJ-mix" firstAttribute="top" secondItem="3Yu-LW-kBJ" secondAttribute="bottom" constant="8" id="XEQ-eg-uqh"/>
-                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yss-Xu-2XK" secondAttribute="bottom" constant="8" id="clz-jM-nhc"/>
-                                            <constraint firstItem="3Yu-LW-kBJ" firstAttribute="top" secondItem="pfw-Sq-XAv" secondAttribute="topMargin" id="ocN-Xt-880"/>
-                                            <constraint firstItem="yss-Xu-2XK" firstAttribute="top" secondItem="Jwv-Qe-X9w" secondAttribute="bottom" constant="16" id="pC6-PT-mSc"/>
-                                            <constraint firstItem="yss-Xu-2XK" firstAttribute="centerX" secondItem="pfw-Sq-XAv" secondAttribute="centerX" id="rjb-cP-OLE"/>
+                                            <constraint firstItem="Rkk-oi-8fO" firstAttribute="leading" secondItem="pfw-Sq-XAv" secondAttribute="leadingMargin" constant="8" id="UiJ-Cf-s1s"/>
+                                            <constraint firstItem="Lb7-tD-p8f" firstAttribute="centerX" secondItem="pfw-Sq-XAv" secondAttribute="centerX" id="WpY-fX-smW"/>
+                                            <constraint firstItem="nqg-WJ-mix" firstAttribute="top" secondItem="Vf2-M7-cIa" secondAttribute="bottom" constant="8" id="YuA-31-fey"/>
+                                            <constraint firstItem="Lb7-tD-p8f" firstAttribute="top" secondItem="nqg-WJ-mix" secondAttribute="bottom" constant="16" id="ZEf-HB-jSy"/>
+                                            <constraint firstItem="Vf2-M7-cIa" firstAttribute="leading" secondItem="pfw-Sq-XAv" secondAttribute="leadingMargin" constant="8" id="mWw-na-1PZ"/>
                                             <constraint firstItem="nqg-WJ-mix" firstAttribute="leading" secondItem="pfw-Sq-XAv" secondAttribute="leadingMargin" constant="8" id="tHy-SZ-OzG"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="3Yu-LW-kBJ" secondAttribute="trailing" id="xD8-Iu-wnB"/>
+                                            <constraint firstItem="Rkk-oi-8fO" firstAttribute="top" secondItem="yss-Xu-2XK" secondAttribute="bottom" constant="16" id="u3J-FH-I0p"/>
+                                            <constraint firstItem="yss-Xu-2XK" firstAttribute="top" secondItem="Lb7-tD-p8f" secondAttribute="bottom" constant="16" id="zXt-P2-EXn"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="pfw-Sq-XAv" secondAttribute="bottom" priority="250" id="2tk-kn-wkF"/>
+                                    <constraint firstAttribute="bottom" secondItem="pfw-Sq-XAv" secondAttribute="bottom" priority="750" id="2tk-kn-wkF"/>
                                     <constraint firstAttribute="trailing" secondItem="pfw-Sq-XAv" secondAttribute="trailing" id="6FN-fW-y6A"/>
                                     <constraint firstItem="pfw-Sq-XAv" firstAttribute="leading" secondItem="D1h-nO-yH4" secondAttribute="leading" id="94b-pw-olc"/>
                                     <constraint firstItem="pfw-Sq-XAv" firstAttribute="top" secondItem="D1h-nO-yH4" secondAttribute="top" id="oOg-rG-PIq"/>
@@ -127,7 +118,7 @@
                         <viewLayoutGuide key="safeArea" id="sog-vN-ood"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Upgrade to Premium" id="WdG-3q-lNo">
+                    <navigationItem key="navigationItem" title="Upgrade" id="WdG-3q-lNo">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Agm-4c-8eT">
                             <connections>
                                 <action selector="didPressCancel:" destination="yXg-JJ-VAJ" id="f8j-5v-PV3"/>
@@ -136,8 +127,11 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="activityIndcator" destination="D4c-jF-xBI" id="U77-eW-OL6"/>
+                        <outlet property="buttonStack" destination="Lb7-tD-p8f" id="zrA-M9-QPV"/>
                         <outlet property="contentView" destination="pfw-Sq-XAv" id="RUD-ic-Xhd"/>
-                        <outlet property="promoPanel" destination="HaK-Ot-oNN" id="26P-1A-gOh"/>
+                        <outlet property="footerLabel" destination="Rkk-oi-8fO" id="ZOK-s1-01r"/>
+                        <outlet property="statusLabel" destination="GOe-GX-YWy" id="svC-9X-iJE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ze-9Y-7aQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -146,20 +140,11 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="ActionText">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="ActionTint">
-            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="AuxiliaryText">
+            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="PrimaryText">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </namedColor>
-        <namedColor name="WarningBackground">
-            <color red="0.94199997186660767" green="0.59700000286102295" blue="0.21699999272823334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="WarningText">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
