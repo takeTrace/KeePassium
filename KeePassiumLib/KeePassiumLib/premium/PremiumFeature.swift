@@ -8,6 +8,14 @@
 
 /// Features reserved for the premium version.
 public enum PremiumFeature: Int {
+    public static let all: [PremiumFeature] = [
+        .canEditDatabase,
+        .canUseMultipleDatabases,
+        .canUseBiometricAppLock,
+        .canRememberKeyFiles,
+        .canUseLongDatabaseTimeouts,
+        .canPreviewAttachments
+    ]
     
     /// Can unlock any added database (otherwise only one, with olders modification date)
     case canUseMultipleDatabases = 0
@@ -21,7 +29,10 @@ public enum PremiumFeature: Int {
     /// Can preview attached files by one tap (otherwise, opens a Share sheet)
     case canPreviewAttachments = 3
     
+    /// Can enable "Remember key files" in settings (otherwise pick manually every time)
+    case canRememberKeyFiles = 4
+    
     /// Can edit entries and groups; otherwise read-only mode
     /// (nothing involving DB saving will be allowed)
-    case canEditDatabase = 4
+    case canEditDatabase = 5
 }

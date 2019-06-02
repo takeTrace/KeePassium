@@ -22,6 +22,8 @@ extension PremiumFeature {
             return "Edit Database".localized(comment: "Title of a premium feature: ability to edit database: add/edit/delete new groups and entries (In Title Case)")
         case .canPreviewAttachments:
             return "Preview Attachments".localized(comment: "Title of a premium feature: ability to preview some attached files directly in the app (In Title Case)")
+        case .canRememberKeyFiles:
+            return "Remember Key Files".localized(comment: "Title of a premium feature: ability to enable 'Remember Key Files' setting, that is to remember which key file was used with which database (In Title Case)")
         }
     }
     
@@ -37,6 +39,8 @@ extension PremiumFeature {
             return "Edit your database, generate new passwords, add new entries and attachments in the premium version.".localized(comment: "Description/advertisement for the `Edit Database` premium feature")
         case .canPreviewAttachments:
             return "Preview images and documents directly in the app, in the premium version.".localized(comment: "Description/advertisement for the `Preview Attachments` premium feature")
+        case .canRememberKeyFiles:
+            return "Save time selecting key files — automatically select the previously used one".localized(comment: "Description/advertisement for the `Remember Key Files` premium feature")
         }
     }
 }
