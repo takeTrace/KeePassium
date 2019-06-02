@@ -29,7 +29,6 @@ public class PremiumUpgradeHelper {
             PremiumUpgradeHelper.showUpgradeNotice(
                 in: viewController,
                 for: feature,
-                graceTimeLeft: premiumManager.gracePeriodSecondsRemaining,
                 premiumActionHandler: premiumActionHandler,
                 upgradeActionHandler: upgradeActionHandler
             )
@@ -45,18 +44,17 @@ public class PremiumUpgradeHelper {
     /// - Parameters:
     ///   - viewController: host VC to present the upgrade notice
     ///   - feature: which premium feature was requested by the user
-    ///   - graceTimeLeft: seconds of grace period left
     ///   - premiumActionHandler: called when the user choses "Continue"
     ///   - upgradeActionHandler: called when the user chooses "Upgrade'
     static func showUpgradeNotice(
         in viewController: UIViewController,
         for feature: PremiumFeature,
-        graceTimeLeft: TimeInterval,
         premiumActionHandler: @escaping (()->Void),
         upgradeActionHandler: @escaping (()->Void))
     {
         var message = feature.upgradeNoticeText
         let secondsInOneDay = 24 * 60 * 60.0
+        let graceTimeLeft = PremiumManager.shared.gracePeriodSecondsRemaining
         if graceTimeLeft > secondsInOneDay {
             // When less than a day left: don't invite to look around, but allow to use the feature.
             let gracePeriodFooter = "No pressure, though. Feel free to look around for a few days.".localized(comment: "Footer added to `Upgrade to Premium` notice during the free trial/grace period.")
