@@ -44,8 +44,6 @@
 		7532A24D21C5A035005DF56F /* KeyFileChooserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7532A24C21C5A035005DF56F /* KeyFileChooserVC.swift */; };
 		7532A24F21C5A03F005DF56F /* KeyFileChooserVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7532A24E21C5A03F005DF56F /* KeyFileChooserVC.storyboard */; };
 		753A3EEA20D3776D00A1CF70 /* Refreshable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753A3EE920D3776D00A1CF70 /* Refreshable.swift */; };
-		753F924822905607005E496F /* PremiumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A26773228E7D200097C693 /* PremiumVC.swift */; };
-		753F924922905607005E496F /* PremiumCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A26775228F02C70097C693 /* PremiumCoordinator.swift */; };
 		753F924B22905621005E496F /* PremiumUpgradeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753F924A22905621005E496F /* PremiumUpgradeHelper.swift */; };
 		753F924C22905621005E496F /* PremiumUpgradeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753F924A22905621005E496F /* PremiumUpgradeHelper.swift */; };
 		753F924E2290705D005E496F /* SKProduct+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753F924D2290705D005E496F /* SKProduct+extension.swift */; };
@@ -903,7 +901,6 @@
 				75779865223023D3006671BD /* ProgressViewHost.swift in Sources */,
 				75B24DB821C3C594003C9486 /* ProgressOverlay.swift in Sources */,
 				757FB3CB21F8D34A00F016FA /* PasscodeInputVC.swift in Sources */,
-				753F924822905607005E496F /* PremiumVC.swift in Sources */,
 				75B24DD521C523AE003C9486 /* SearchHelper.swift in Sources */,
 				7582544B2211BB830053FCC9 /* Watchdog.swift in Sources */,
 				750CFC0721BAD98B00E62B09 /* LString.swift in Sources */,
