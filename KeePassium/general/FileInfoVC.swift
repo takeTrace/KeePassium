@@ -91,16 +91,16 @@ class FileInfoVC: UITableViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         // automatic popover height
         tableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         tableView.removeObserver(self, forKeyPath: "contentSize")
-        super.viewDidDisappear(animated)
+        super.viewWillDisappear(animated)
     }
     
     override func observeValue(
