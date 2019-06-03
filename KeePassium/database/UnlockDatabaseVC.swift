@@ -124,8 +124,17 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             showErrorMessage(databaseRef.info.errorMessage)
         }
         
-        if let associatedKeyFileRef = Settings.current.getKeyFileForDatabase(databaseRef: databaseRef) {
-            setKeyFile(urlRef: associatedKeyFileRef)
+        let settings = Settings.current
+        if let associatedKeyFileRef = settings.getKeyFileForDatabase(databaseRef: databaseRef) {
+            // Stored reference can be from the main app (inaccessible),
+            // so make sure 1) it is available, or at least 2) there is a same-name available file.
+            let allAvailableKeyFiles = FileKeeper.shared
+                .getAllReferences(fileType: .keyFile, includeBackup: false)
+            if let availableKeyFileRef = associatedKeyFileRef
+                .find(in: allAvailableKeyFiles, fallbackToNamesake: true)
+            {
+                setKeyFile(urlRef: availableKeyFileRef)
+            }
         }
         
         refreshInputMode()

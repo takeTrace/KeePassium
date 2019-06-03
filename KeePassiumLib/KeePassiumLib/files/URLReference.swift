@@ -152,4 +152,24 @@ public class URLReference: Equatable, Codable {
         }
         self.info = result
     }
+    
+    /// Finds the same reference in the given list.
+    /// If no exact match found, and `fallbackToNamesake` is `true`,
+    /// looks also for references with the same file name.
+    ///
+    /// - Parameters:
+    ///   - refs: list of references to search in
+    ///   - fallbackToNamesake: if `true`, repeat search with relaxed conditions
+    ///       (same file name instead of exact match).
+    /// - Returns: suitable reference from `refs`, if any.
+    public func find(in refs: [URLReference], fallbackToNamesake: Bool=false) -> URLReference? {
+        if let exactMatchIndex = refs.firstIndex(of: self) {
+            return refs[exactMatchIndex]
+        }
+        if fallbackToNamesake {
+            let fileName = self.info.fileName
+            return refs.first(where: { $0.info.fileName == fileName })
+        }
+        return nil
+    }
 }
