@@ -295,7 +295,6 @@ class EditEntryCustomFieldCell:
             nameTextField.text = field?.visibleName
             valueTextView.text = field?.value
             protectionSwitch.isOn = field?.isProtected ?? false
-            valueTextView.isSecureTextEntry = protectionSwitch.isOn
         }
     }
     
@@ -350,7 +349,6 @@ class EditEntryCustomFieldCell:
     @objc func protectionDidChange() {
         guard let field = field else { return }
         field.isProtected = protectionSwitch.isOn
-        valueTextView.isSecureTextEntry = protectionSwitch.isOn
         delegate?.didChangeField(field: field, in: self)
     }
 }
