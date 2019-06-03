@@ -49,6 +49,10 @@ class MainCoordinator: NSObject, Coordinator {
     }
     
     func start() {
+        // Sometimes the extension is not killed immediately (issue #2).
+        // In case the previous instance is still alive, close the DB.
+        DatabaseManager.shared.closeDatabase(clearStoredKey: false)
+        
         databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         databaseManagerNotifications?.startObserving()
         watchdog.didBecomeActive()
