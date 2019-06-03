@@ -103,8 +103,6 @@ public class PremiumManager: NSObject {
     public enum Status {
         /// The user launched the app but did not use any premium features yet
         case initialGracePeriod
-        /// The user has been notified about premium features
-        case initialGracePeriodNotified
         /// Active premium subscription
         case subscribed
         /// Grace period expired, no premium purchased
@@ -134,11 +132,7 @@ public class PremiumManager: NSObject {
             status = .subscribed
         } else {
             if gracePeriodSecondsRemaining > 0 {
-                if wasGracePeriodUpgradeNoticeShown() {
-                    status = .initialGracePeriodNotified
-                } else {
-                    status = .initialGracePeriod
-                }
+                status = .initialGracePeriod
             } else {
                 status = .expired
             }
@@ -169,8 +163,8 @@ public class PremiumManager: NSObject {
     private let gracePeriodInSeconds: Double = 1 * 60 //5 * 24 * 60 * 60 //TODO: restore after debug
     
     fileprivate enum UserDefaultsKey {
-        static let gracePeriodUpgradeNoticeShown =
-            "com.keepassium.premium.gracePeriodUpgradeNoticeShown"
+        static let gracePeriodUpgradeNoticeShownForFeatures =
+            "com.keepassium.premium.gracePeriodUpgradeNoticeShownForFeatures"
     }
     
     public var gracePeriodSecondsRemaining: Double {
@@ -181,40 +175,66 @@ public class PremiumManager: NSObject {
         return secondsLeft
     }
 
-    /// Remembers that grace period notice has been shown.
-    public func setGracePeriodUpgradeNoticeShown(_ shown: Bool = true) {
-        UserDefaults.appGroupShared.set(shown, forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShown)
-        updateStatus()
+    /// Remembers that upgrade notice for the given `feature` has been shown.
+    /// Use `wasGracePeriodUpgradeNoticeShown` to read remembered value.
+    public func setGracePeriodUpgradeNoticeShown(for feature: PremiumFeature) {
+        var shownNotices = [Int]()
+        if let storedShownNotices = UserDefaults.appGroupShared.array(
+            forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures) as? [Int]
+        {
+            shownNotices = storedShownNotices
+        }
+        if !shownNotices.contains(feature.rawValue) {
+            shownNotices.append(feature.rawValue)
+            UserDefaults.appGroupShared.set(
+                shownNotices,
+                forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures)
+            updateStatus()
+        }
     }
 
-    /// True iff the app should offer an upgrade.
-    public var shouldShowUpgradeNotice: Bool {
-        updateStatus()
+//    /// True iff the app should offer an upgrade.
+//    public var shouldShowUpgradeNotice: Bool {
+//        updateStatus()
+//        switch status {
+//        case .initialGracePeriod:
+//            return true
+//        case .initialGracePeriodNotified:
+//            return false
+//        case .subscribed:
+//            return false
+//        case .expired:
+//            return true
+//        }
+//    }
+    
+    /// True iff the app should offer an upgrade to premium.
+    /// `feature` helps to avoid nagging about the same premium feature.
+    public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
         switch status {
-        case .initialGracePeriod:
-            return true
-        case .initialGracePeriodNotified:
-            return false
         case .subscribed:
             return false
         case .expired:
             return true
+        case .initialGracePeriod:
+            var shownNotices = [Int]()
+            if let storedShownNotices = UserDefaults.appGroupShared.array(
+                forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures) as? [Int]
+            {
+                shownNotices = storedShownNotices
+            }
+            return !shownNotices.contains(feature.rawValue)
         }
     }
     
-    public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
-        //TODO make it feature-specific
-        return shouldShowUpgradeNotice
-    }
-    
-    /// Returns true iff the upgrade notice has already been shown.
-    /// Use `setGracePeriodUpgradeNoticeShown` to change returned value.
-    public func wasGracePeriodUpgradeNoticeShown() -> Bool {
-        guard let wasShown = UserDefaults.appGroupShared
-            .object(forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShown) as? Bool
-            else { return false }
-        return wasShown
-    }
+//    /// Returns true iff the upgrade notice has already been shown.
+//    /// Use `setGracePeriodUpgradeNoticeShown` to change returned value.
+//    public func wasGracePeriodUpgradeNoticeShown() -> Bool {
+//        guard let wasShown = UserDefaults.appGroupShared
+//            .object(forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures) as? Bool
+//            else { return false }
+//        return wasShown
+//    }
 
     // MARK: - Available in-app products
     
