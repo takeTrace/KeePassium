@@ -129,8 +129,10 @@ You can manage and cancel your subscriptions by going to your account settings o
                     <connections>
                         <outlet property="activityIndcator" destination="D4c-jF-xBI" id="U77-eW-OL6"/>
                         <outlet property="buttonStack" destination="Lb7-tD-p8f" id="zrA-M9-QPV"/>
+                        <outlet property="cancelButton" destination="Agm-4c-8eT" id="Na8-Ut-sRm"/>
                         <outlet property="contentView" destination="pfw-Sq-XAv" id="RUD-ic-Xhd"/>
                         <outlet property="footerLabel" destination="Rkk-oi-8fO" id="ZOK-s1-01r"/>
+                        <outlet property="restorePurchasesButton" destination="yss-Xu-2XK" id="nji-TJ-JG5"/>
                         <outlet property="statusLabel" destination="GOe-GX-YWy" id="svC-9X-iJE"/>
                     </connections>
                 </viewController>

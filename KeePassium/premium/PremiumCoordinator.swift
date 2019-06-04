@@ -40,10 +40,19 @@ class PremiumCoordinator {
         
         // fetch available purchase options from AppStore
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        // disable manual "Restore Purchases" while loading products,
+        // because this might interfere with the workflow.
+        premiumVC.allowRestorePurchases = false
+        
         premiumManager.requestAvailableProducts(completionHandler: {
             [weak self] (products, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let self = self else { return }
+            
+            // we're done, can restore purchases now
+            self.premiumVC.allowRestorePurchases = true
+            
             if let error = error {
                 self.premiumVC.showMessage(error.localizedDescription)
                 return

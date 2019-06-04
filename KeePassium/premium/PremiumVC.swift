@@ -20,13 +20,24 @@ class PremiumVC: UIViewController {
 
     weak var delegate: PremiumDelegate?
     
+    var allowRestorePurchases: Bool = true {
+        didSet {
+            guard isViewLoaded else { return }
+            restorePurchasesButton.isHidden = !allowRestorePurchases
+        }
+    }
+    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var buttonStack: UIStackView!
     @IBOutlet weak var activityIndcator: UIActivityIndicatorView!
     @IBOutlet weak var footerLabel: UILabel!
+    @IBOutlet weak var restorePurchasesButton: UIButton!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     private var products: [SKProduct]?
+    private var purchaseButtons = [UIButton]()
+    
     
     public static func create(
         delegate: PremiumDelegate? = nil
@@ -48,7 +59,7 @@ class PremiumVC: UIViewController {
         
         statusLabel.text = "Contacting AppStore...".localized(comment: "Status message before downloading available in-app purchases")
         activityIndcator.isHidden = false
-        
+        restorePurchasesButton.isHidden = !allowRestorePurchases
         footerLabel.isHidden = true
     }
     
@@ -76,7 +87,7 @@ class PremiumVC: UIViewController {
     public func setAvailableProducts(_ products: [SKProduct]) {
         assert(self.products == nil)
         self.products = products
-        var purchaseButtons = [UIButton]()
+        purchaseButtons.removeAll()
         for index in 0..<products.count {
             let product = products[index]
             let title = getActionText(for: product)
@@ -137,7 +148,9 @@ class PremiumVC: UIViewController {
     ///
     /// - Parameter isPurchasing: true when purchasing, false once done.
     public func setPurchasing(_ isPurchasing: Bool) {
-        //TODO: disable purchase buttons and maybe "Cancel" button
+        cancelButton.isEnabled = !isPurchasing
+        restorePurchasesButton.isEnabled = !isPurchasing
+        purchaseButtons.forEach { $0.isEnabled = !isPurchasing }
         if isPurchasing {
             showMessage("Contacting AppStore...".localized(comment: "Status: transaction related to in-app purchase (not necessarily a purchase) is in progress"))
             UIView.animate(withDuration: 0.3) {
