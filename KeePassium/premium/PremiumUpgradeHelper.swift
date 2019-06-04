@@ -71,8 +71,8 @@ public class PremiumUpgradeHelper {
             handler: { _ in upgradeActionHandler() }
         )
         let continueAction = UIAlertAction(
-            title: "Maybe Later".localized(comment: "Action in `Upgrade to Premium` dialog: "),
-            style: .default,
+            title: "Continue Free Trial".localized(comment: "Action in `Upgrade to Premium` dialog: continue free trial"),
+            style: .cancel,
             handler: { _ in premiumActionHandler() }
         )
         let cancelAction = UIAlertAction(
@@ -81,8 +81,8 @@ public class PremiumUpgradeHelper {
             handler: nil
         )
         if graceTimeLeft > 0 {
-            alertVC.addAction(continueAction)
             alertVC.addAction(upgradeAction)
+            alertVC.addAction(continueAction)
         } else {
             alertVC.addAction(upgradeAction)
             alertVC.addAction(cancelAction)
