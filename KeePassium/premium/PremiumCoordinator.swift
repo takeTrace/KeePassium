@@ -70,6 +70,11 @@ class PremiumCoordinator {
         })
     }
     
+    /// Can be called immediately after start() to start restoring purchases.
+    func restorePurchases() {
+        premiumManager.restorePurchases()
+    }
+    
     func finish(animated: Bool, completion: (() -> Void)?) {
         navigationController.dismiss(animated: animated) { [weak self] in
             guard let self = self else { return }
@@ -109,7 +114,7 @@ extension PremiumCoordinator: PremiumDelegate {
     }
     
     func didPressRestorePurchases(in premiumController: PremiumVC) {
-        premiumManager.restorePurchases()
+        restorePurchases()
     }
 }
 
