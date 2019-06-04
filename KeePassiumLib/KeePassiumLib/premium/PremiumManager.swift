@@ -126,7 +126,7 @@ public class PremiumManager: NSObject {
         updateStatus()
     }
     
-    fileprivate func updateStatus() {
+    public func updateStatus() {
         let previousStatus = status
         if isSubscribed {
             status = .subscribed
@@ -138,24 +138,46 @@ public class PremiumManager: NSObject {
             }
         }
         if status != previousStatus {
+            Diag.info("Premium subscription status changed [was: \(previousStatus), now: \(status)]")
             notifyStatusChanged()
         }
     }
     
     /// True iff the user is currently subscribed
     private var isSubscribed: Bool {
-        do {
-            guard let premiumExpiryDate =
-                try Keychain.shared.getPremiumExpiryDate() // throws KeychainError
-                else { return false }
+        if let premiumExpiryDate = getPremiumExpiryDate() {
             let isPremium = Date.now < premiumExpiryDate
             return isPremium
+        }
+        return false
+    }
+
+    /// Returns subscription expiry date (distantFuture for one-time purcahse),
+    /// or `nil` if not subscribed.
+    public func getPremiumExpiryDate() -> Date? {
+        do {
+            return try Keychain.shared.getPremiumExpiryDate() // throws KeychainError
         } catch {
-            Diag.error("Failed to check premium status [message: \(error.localizedDescription)]")
+            Diag.error("Failed to get premium expiry date [message: \(error.localizedDescription)]")
+            return nil
+        }
+    }
+    
+    /// Saves the given expiry date in keychain.
+    ///
+    /// - Parameter expiryDate: new expiry date
+    /// - Returns: true iff the new date saved successfully.
+    fileprivate func setPremiumExpiryDate(to expiryDate: Date) -> Bool {
+        do {
+            try Keychain.shared.setPremiumExpiryDate(to: expiryDate) // throws KeychainError
+            updateStatus()
+            return true
+        } catch {
+            // transaction remains unfinished, will be retried on next launch
+            Diag.error("Failed to save purchase expiry date [message: \(error.localizedDescription)]")
             return false
         }
     }
-
     
     // MARK: - Grace period management
 
@@ -406,21 +428,15 @@ extension PremiumManager: SKPaymentTransactionObserver {
             newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
         }
         
-        let keychain = Keychain.shared
-        do {
-            let oldExpiryDate = try keychain.getPremiumExpiryDate() // throws KeychainError
-            if newExpiryDate > (oldExpiryDate ?? Date.distantPast) {
-                try keychain.setPremiumExpiryDate(to: newExpiryDate) // throws KeychainError
-                updateStatus()
-            }
+        
+        let oldExpiryDate = getPremiumExpiryDate()
+        if newExpiryDate > (oldExpiryDate ?? Date.distantPast) {
+            let isNewDateSaved = setPremiumExpiryDate(to: newExpiryDate)
+            return isNewDateSaved
+        } else {
             return true
-        } catch {
-            // transaction remains unfinished, will be retried on next launch
-            Diag.error("Failed to save purchase [message: \(error.localizedDescription)]")
-            return false
         }
     }
-    
     
     private func didFailToPurchase(
         with transaction: SKPaymentTransaction,
