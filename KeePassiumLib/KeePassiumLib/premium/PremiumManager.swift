@@ -382,7 +382,7 @@ extension PremiumManager: SKPaymentTransactionObserver {
     }
     
     private func didRestorePurchase(_ transaction: SKPaymentTransaction, in queue: SKPaymentQueue) {
-        guard let transactionDate = transaction.original?.transactionDate else {
+        guard let transactionDate = transaction.transactionDate else {
             // According to docs, this should not happen.
             assertionFailure()
             Diag.warning("IAP transaction date is empty?!")
@@ -404,7 +404,8 @@ extension PremiumManager: SKPaymentTransactionObserver {
         if applyPurchase(of: product, on: transactionDate) {
             queue.finishTransaction(transaction)
         }
-        delegate?.purchaseSucceeded(product, in: self)
+        // purchaseSuccessfull() is not called for restored transactions, because
+        // there will be purchaseRestoringFinished() instead
     }
     
     /// Process new or restored purchase and update internal expiration date.
