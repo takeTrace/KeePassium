@@ -192,21 +192,6 @@ public class PremiumManager: NSObject {
             updateStatus()
         }
     }
-
-//    /// True iff the app should offer an upgrade.
-//    public var shouldShowUpgradeNotice: Bool {
-//        updateStatus()
-//        switch status {
-//        case .initialGracePeriod:
-//            return true
-//        case .initialGracePeriodNotified:
-//            return false
-//        case .subscribed:
-//            return false
-//        case .expired:
-//            return true
-//        }
-//    }
     
     /// True iff the app should offer an upgrade to premium.
     /// `feature` helps to avoid nagging about the same premium feature.
@@ -226,15 +211,6 @@ public class PremiumManager: NSObject {
             return !shownNotices.contains(feature.rawValue)
         }
     }
-    
-//    /// Returns true iff the upgrade notice has already been shown.
-//    /// Use `setGracePeriodUpgradeNoticeShown` to change returned value.
-//    public func wasGracePeriodUpgradeNoticeShown() -> Bool {
-//        guard let wasShown = UserDefaults.appGroupShared
-//            .object(forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures) as? Bool
-//            else { return false }
-//        return wasShown
-//    }
 
     // MARK: - Available in-app products
     
