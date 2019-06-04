@@ -31,6 +31,7 @@ class PremiumCoordinator {
         self.presentingViewController = presentingViewController
         premiumVC = PremiumVC.create()
         navigationController = UINavigationController(rootViewController: premiumVC)
+        navigationController.modalPresentationStyle = .formSheet
         premiumVC.delegate = self
     }
     
