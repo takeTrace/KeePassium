@@ -56,6 +56,7 @@ public class PremiumUpgradeHelper {
         let secondsInOneDay = 24 * 60 * 60.0
         let graceTimeLeft = PremiumManager.shared.gracePeriodSecondsRemaining
         if graceTimeLeft > secondsInOneDay {
+            Diag.debug(String(format: "Grace period left: %.0f s", graceTimeLeft))
             // When less than a day left: don't invite to look around, but allow to use the feature.
             let gracePeriodFooter = "No pressure, though. Feel free to look around for a few days.".localized(comment: "Footer added to `Upgrade to Premium` notice during the free trial/grace period.")
             message = message + "\n\n" + gracePeriodFooter
