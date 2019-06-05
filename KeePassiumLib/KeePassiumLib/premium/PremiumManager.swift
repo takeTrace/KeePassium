@@ -195,7 +195,11 @@ public class PremiumManager: NSObject {
     // MARK: - Grace period management
 
     /// Time since first launch, when premium features are available in free version.
-    private let gracePeriodInSeconds: Double = 1 * 60 //5 * 24 * 60 * 60 //TODO: restore after debug
+    #if DEBUG
+        private let gracePeriodInSeconds: Double = 1 * 60
+    #else
+        private let gracePeriodInSeconds: Double = 5 * 24 * 60 * 60
+    #endif
     
     fileprivate enum UserDefaultsKey {
         static let gracePeriodUpgradeNoticeShownForFeatures =
