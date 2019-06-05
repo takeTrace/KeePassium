@@ -193,7 +193,6 @@ public class PremiumManager: NSObject {
         let firstLaunchTimestamp = Settings.current.firstLaunchTimestamp
         let secondsFromFirstLaunch = abs(Date.now.timeIntervalSince(firstLaunchTimestamp))
         let secondsLeft = gracePeriodInSeconds - secondsFromFirstLaunch
-        Diag.debug(String(format: "Grace period left: %.0f s", secondsLeft))
         return secondsLeft
     }
 
