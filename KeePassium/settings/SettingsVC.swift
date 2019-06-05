@@ -95,7 +95,7 @@ class SettingsVC: UITableViewController, Refreshable {
                 "App Lock, passcode, timeout",
                 comment: "Settings: subtitle of the `App Protection` section when biometric auth is not available.")
         }
-        refreshPremiumStatus(animated: true)
+        refreshPremiumStatus(animated: false)
     }
     
     @objc private func refreshPremiumStatus(animated: Bool) {
