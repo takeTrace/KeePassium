@@ -150,7 +150,12 @@ class PremiumVC: UIViewController {
     public func setPurchasing(_ isPurchasing: Bool) {
         cancelButton.isEnabled = !isPurchasing
         restorePurchasesButton.isEnabled = !isPurchasing
-        purchaseButtons.forEach { $0.isEnabled = !isPurchasing }
+        purchaseButtons.forEach { button in
+            button.isEnabled = !isPurchasing
+            UIView.animate(withDuration: 0.3) {
+                button.alpha = isPurchasing ? 0.5 : 1.0
+            }
+        }
         if isPurchasing {
             showMessage("Contacting AppStore...".localized(comment: "Status: transaction related to in-app purchase (not necessarily a purchase) is in progress"))
             UIView.animate(withDuration: 0.3) {
