@@ -123,10 +123,23 @@ public class PremiumManager: NSObject {
 
     private override init() {
         super.init()
-        updateStatus()
+        updateStatus(allowSubscriptionExpiration: true)
     }
     
+    /// Updates current subscription status.
+    /// NOTE: if an ongoing subscription is expired, the status remains `.subscribed`
+    /// to avoid expiration while the app is running.
+    /// (Subscription renewal transactions are delivered only on launch.)
     public func updateStatus() {
+        updateStatus(allowSubscriptionExpiration: false)
+    }
+    
+    private func updateStatus(allowSubscriptionExpiration: Bool) {
+        if !allowSubscriptionExpiration && status == .subscribed {
+            // stay subscribed no matter what -- until the next app launch.
+            return
+        }
+        
         let previousStatus = status
         if isSubscribed {
             status = .subscribed
@@ -420,10 +433,19 @@ extension PremiumManager: SKPaymentTransactionObserver {
         case .oneTime:
             newExpiryDate = Date.distantFuture
         case .yearly:
-            newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
+            #if DEBUG
+                newExpiryDate = calendar.date(byAdding: .hour, value: 1, to: transactionDate)!
+            #else
+                newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
+            #endif
         case .monthly:
-            newExpiryDate = calendar.date(byAdding: .month, value: 1, to: transactionDate)!
+            #if DEBUG
+                newExpiryDate = calendar.date(byAdding: .minute, value: 5, to: transactionDate)!
+            #else
+                newExpiryDate = calendar.date(byAdding: .month, value: 1, to: transactionDate)!
+            #endif
         case .other:
+            assertionFailure()
             // Ok, being here is dev's fault. A year should be a safe compensation.
             newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
         }
@@ -442,15 +464,10 @@ extension PremiumManager: SKPaymentTransactionObserver {
         with transaction: SKPaymentTransaction,
         in queue: SKPaymentQueue)
     {
-        guard let _ = transaction.error else {
-            assertionFailure()
-            Diag.error("In-app purchase failed [message: nil]")
-            queue.finishTransaction(transaction)
-            return
-        }
         guard let error = transaction.error as? SKError else {
-            assertionFailure("Not an SKError")
-            // DEBUG TIME ONLY - probably should not happen, so leave the transaction hanging
+            assertionFailure()
+            Diag.error("In-app purchase failed [message: \(transaction.error?.localizedDescription ?? "nil")]")
+            queue.finishTransaction(transaction)
             return
         }
 
