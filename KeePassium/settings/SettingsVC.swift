@@ -109,16 +109,13 @@ class SettingsVC: UITableViewController, Refreshable {
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             
             let secondsLeft = premiumManager.gracePeriodSecondsRemaining
-            let timeFormatter = DateComponentsFormatter()
-            timeFormatter.allowedUnits = [.day, .hour, .minute, .second]
-            timeFormatter.collapsesLargestUnit = true
-            timeFormatter.includesTimeRemainingPhrase = true
-            timeFormatter.maximumUnitCount = 3
-            timeFormatter.unitsStyle = .abbreviated
-            let remainingTimeFormatted = timeFormatter.string(from: secondsLeft) ?? "?"
-            premiumTrialCell.detailTextLabel?.text = "Free trial: \(remainingTimeFormatted)".localized(comment: "Status: remaining time of free trial. For example: `Free trial: 2d 23h remaining`")
+            let timeFormatted = formatTrialTime(
+                secondsLeft,
+                allowedUnits: [.day, .hour, .minute, .second],
+                maxUnitCount: 3) ?? "?"
+            premiumTrialCell.detailTextLabel?.text = "Free trial: \(timeFormatted) remaining".localized(comment: "Status: remaining time of free trial. For example: `Free trial: 2d 23h remaining`")
             // make sure the countdown timer updates
-            DispatchQueue.main.asyncAfter(deadline: .now() + 60.0) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                 self?.refreshPremiumStatus(animated: true)
             }
         case .subscribed:
@@ -134,7 +131,7 @@ class SettingsVC: UITableViewController, Refreshable {
                 } else {
                     let expiryDateString = DateFormatter
                         .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .short)
-                    premiumStatusText = "Next renewal on \(expiryDateString)".localized(comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 January 2050`")
+                    premiumStatusText = "Next renewal on \(expiryDateString)".localized(comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 Jan 2050 12:34`")
                 }
             } else {
                 assertionFailure()
@@ -147,7 +144,29 @@ class SettingsVC: UITableViewController, Refreshable {
             setCellVisibility(restorePurchasesCell, isHidden: false)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
 
-            premiumTrialCell.detailTextLabel?.text = ""
+            if let subscriptionExpiryDate = premiumManager.getPremiumExpiryDate() {
+                // had a subscription, it expired
+                let secondsAgo = abs(subscriptionExpiryDate.timeIntervalSinceNow)
+                let timeFormatted = formatTrialTime(
+                    secondsAgo,
+                    allowedUnits: [.year, .month, .day, .hour, .minute, .second],
+                    maxUnitCount: 1,
+                    style: .full) ?? "?"
+                premiumTrialCell.detailTextLabel?.text = "Expired \(timeFormatted) ago".localized(comment: "Status: how long ago the premium subscription has expired. For example: `Expired 12 days ago`")
+            } else {
+                // had a grace period, it ended
+                let secondsAgo = abs(premiumManager.gracePeriodSecondsRemaining)
+                let timeFormatted = formatTrialTime(
+                    secondsAgo,
+                    allowedUnits: [.year, .month, .day, .hour, .minute, .second], //TODO: get rid of seconds
+                    maxUnitCount: 1,
+                    style: .full) ?? "?"
+                premiumTrialCell.detailTextLabel?.text = "Free trial ended \(timeFormatted) ago".localized(comment: "Status: how long ago the free trial (grace period) has expired. For example: `Free trial ended 12 days ago`")
+
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // TODO increase to 60
+                self?.refreshPremiumStatus(animated: true)
+            }
         }
         if animated {
             tableView.beginUpdates()
@@ -155,6 +174,24 @@ class SettingsVC: UITableViewController, Refreshable {
         } else {
             tableView.reloadData()
         }
+    }
+    
+    /// Converts number of seconds to human-readable string, e.g. "2h 25m"
+    private func formatTrialTime(
+        _ interval: TimeInterval,
+        allowedUnits: NSCalendar.Unit = [.day, .hour, .minute, .second], //TODO: remove .second after debug
+        maxUnitCount: Int = 3,
+        style: DateComponentsFormatter.UnitsStyle = .abbreviated,
+        remaining: Bool = false
+        ) -> String?
+    {
+        let timeFormatter = DateComponentsFormatter()
+        timeFormatter.allowedUnits = allowedUnits
+        timeFormatter.collapsesLargestUnit = true
+        timeFormatter.includesTimeRemainingPhrase = remaining
+        timeFormatter.maximumUnitCount = maxUnitCount
+        timeFormatter.unitsStyle = style
+        return timeFormatter.string(from: interval)
     }
     
     /// Marks given cell as hidden/visible. The caller is responsible for refreshing the table.
