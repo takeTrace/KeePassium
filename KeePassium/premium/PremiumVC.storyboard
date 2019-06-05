@@ -118,7 +118,7 @@ You can manage and cancel your subscriptions by going to your account settings o
                         <viewLayoutGuide key="safeArea" id="sog-vN-ood"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Upgrade" id="WdG-3q-lNo">
+                    <navigationItem key="navigationItem" title="Premium" id="WdG-3q-lNo">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Agm-4c-8eT">
                             <connections>
                                 <action selector="didPressCancel:" destination="yXg-JJ-VAJ" id="f8j-5v-PV3"/>
