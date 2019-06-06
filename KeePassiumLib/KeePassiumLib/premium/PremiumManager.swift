@@ -265,6 +265,7 @@ public class PremiumManager: NSObject {
     /// True iff the app should offer an upgrade to premium.
     /// `feature` helps to avoid nagging about the same premium feature.
     public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
+        updateStatus()
         switch status {
         case .subscribed, .lapsed:
             return false
