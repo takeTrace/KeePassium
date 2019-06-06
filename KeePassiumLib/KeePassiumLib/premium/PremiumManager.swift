@@ -423,7 +423,7 @@ extension PremiumManager: SKPaymentTransactionObserver {
         }
         
         Diag.info("IAP purchase update [date: \(transactionDate), product: \(productID)]")
-        if applyPurchase(of: product, on: transactionDate) {
+        if applyPurchase(of: product, on: transactionDate, skipExpired: false) {
             queue.finishTransaction(transaction)
         }
         delegate?.purchaseSucceeded(product, in: self)
@@ -449,7 +449,7 @@ extension PremiumManager: SKPaymentTransactionObserver {
             return
         }
         Diag.info("Restored purchase [date: \(transactionDate), product: \(productID)]")
-        if applyPurchase(of: product, on: transactionDate) {
+        if applyPurchase(of: product, on: transactionDate, skipExpired: true) {
             queue.finishTransaction(transaction)
         }
         // purchaseSuccessfull() is not called for restored transactions, because
@@ -461,8 +461,14 @@ extension PremiumManager: SKPaymentTransactionObserver {
     /// - Parameters:
     ///   - product: purchased product
     ///   - transactionDate: purchase transaction date (new/original for new/restored purchase)
+    ///   - skipExpired: ignore purchases that have already expired by now
     /// - Returns: true if transaction can be finalized
-    private func applyPurchase(of product: InAppProduct, on transactionDate: Date) -> Bool {
+    private func applyPurchase(
+        of product: InAppProduct,
+        on transactionDate: Date,
+        skipExpired: Bool = false
+        ) -> Bool
+    {
         let calendar = Calendar.current
         let newExpiryDate: Date
         switch product.kind {
@@ -486,6 +492,10 @@ extension PremiumManager: SKPaymentTransactionObserver {
             newExpiryDate = calendar.date(byAdding: .year, value: 1, to: transactionDate)!
         }
         
+        if skipExpired && newExpiryDate < Date.now {
+            // skipping expired purchase
+            return true
+        }
         
         let oldExpiryDate = getPremiumExpiryDate()
         if newExpiryDate > (oldExpiryDate ?? Date.distantPast) {
