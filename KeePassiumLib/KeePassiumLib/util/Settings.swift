@@ -608,6 +608,15 @@ public class Settings {
             }
         }
     }
+    
+#if DEBUG
+    /// To be used for debug.
+    public func resetFirstLaunchTimestampToNow() {
+        UserDefaults.appGroupShared.set(
+            Date.now,
+            forKey: Keys.firstLaunchTimestamp.rawValue)
+    }
+#endif
 
     // MARK: - Database list
     
