@@ -18,6 +18,9 @@ protocol PremiumDelegate: class {
 
 class PremiumVC: UIViewController {
 
+    fileprivate let termsAndConditionsURL = URL(string: "https://keepassium.com/terms/app")!
+    fileprivate let privacyPolicyURL = URL(string: "https://keepassium.com/privacy/app")!
+    
     weak var delegate: PremiumDelegate?
     
     var allowRestorePurchases: Bool = true {
@@ -31,9 +34,11 @@ class PremiumVC: UIViewController {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var buttonStack: UIStackView!
     @IBOutlet weak var activityIndcator: UIActivityIndicatorView!
-    @IBOutlet weak var footerLabel: UILabel!
+    @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var restorePurchasesButton: UIButton!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
+    @IBOutlet weak var termsButton: UIButton!
+    @IBOutlet weak var privacyPolicyButton: UIButton!
     
     private var products: [SKProduct]?
     private var purchaseButtons = [UIButton]()
@@ -60,7 +65,7 @@ class PremiumVC: UIViewController {
         statusLabel.text = "Contacting AppStore...".localized(comment: "Status message before downloading available in-app purchases")
         activityIndcator.isHidden = false
         restorePurchasesButton.isHidden = !allowRestorePurchases
-        footerLabel.isHidden = true
+        footerView.isHidden = true
     }
     
     // MARK: - Error message routines
@@ -109,7 +114,7 @@ class PremiumVC: UIViewController {
         statusLabel.isHidden = true
         // Show conditions only when there are some products to buy.
         UIView.animate(withDuration: 0.5) {
-            self.footerLabel.isHidden = false
+            self.footerView.isHidden = false
         }
     }
     
@@ -185,5 +190,12 @@ class PremiumVC: UIViewController {
         setPurchasing(true)
         let productIndex = sender.tag
         delegate?.didPressBuy(product: products[productIndex], in: self)
+    }
+    
+    @IBAction func didPressTerms(_ sender: Any) {
+        AppGroup.applicationShared?.open(termsAndConditionsURL, options: [:])
+    }
+    @IBAction func didPressPrivacyPolicy(_ sender: Any) {
+        AppGroup.applicationShared?.open(privacyPolicyURL, options: [:])
     }
 }
