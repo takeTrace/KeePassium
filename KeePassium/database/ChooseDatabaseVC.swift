@@ -45,7 +45,7 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
     // handles background refresh of file attributes
     private let fileInfoReloader = FileInfoReloader()
     
-    private var premiumCoordinator: PremiumCoordinator? // strong ref
+    private let premiumUpgradeHelper = PremiumUpgradeHelper()
     
     // MAKE: - VC lifecycle
     override func viewDidLoad() {
@@ -189,22 +189,17 @@ class ChooseDatabaseVC: UITableViewController, Refreshable {
     }
 
     @IBAction func didPressAddDatabase(_ sender: Any) {
-        if (self.databaseRefs.count > 0) &&
-            PremiumManager.shared.shouldShowUpgradeNotice(for: .canUseMultipleDatabases)
-        {
-            PremiumUpgradeHelper.performPremiumAction(
-                .canUseMultipleDatabases,
-                in: self,
-                premiumActionHandler: {
-                    self.didPressAddDatabase(sender)
-                }, upgradeActionHandler: { [weak self] in
-                    guard let self = self else { return }
-                    self.premiumCoordinator = PremiumCoordinator(presentingViewController: self)
-                    self.premiumCoordinator?.delegate = self
-                    self.premiumCoordinator?.start()
-                }
-            )
+        if databaseRefs.count > 0 {
+            premiumUpgradeHelper.performActionOrOfferUpgrade(.canUseMultipleDatabases, in: self) {
+                [weak self] in
+                self?.handleDidPressAddDatabase()
+            }
+        } else {
+            handleDidPressAddDatabase()
         }
+    }
+    
+    private func handleDidPressAddDatabase() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: LString.actionOpenDatabase, style: .default) {
@@ -550,12 +545,5 @@ extension ChooseDatabaseVC: WelcomeDelegate {
 
     func didPressAddExistingDatabase(in welcomeVC: WelcomeVC) {
         didPressOpenDatabase()
-    }
-}
-
-// MARK: - PremiumCoordinatorDelegate
-extension ChooseDatabaseVC: PremiumCoordinatorDelegate {
-    func didFinish(_ premiumCoordinator: PremiumCoordinator) {
-        self.premiumCoordinator = nil
     }
 }

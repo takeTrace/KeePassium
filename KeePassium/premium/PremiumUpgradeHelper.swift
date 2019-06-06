@@ -11,30 +11,41 @@ import KeePassiumLib
 
 public class PremiumUpgradeHelper {
     
+    fileprivate var premiumCoordinator: PremiumCoordinator?
+    
+    init() {
+        // left empty
+    }
+    
     /// Checks premium status before permitting access to a premium feature.
     ///
     /// - Parameters:
     ///   - feature: premium feature that the user requests
     ///   - viewController: host controller for eventual modal notifications
-    ///   - premiumActionHandler: should perform requested premium action
-    ///   - upgradeActionHandler: should prepare and show upgrade UI
-    static func performPremiumAction(
+    ///   - actionHandler: should perform requested premium action
+    public func performActionOrOfferUpgrade(
         _ feature: PremiumFeature,
         in viewController: UIViewController,
-        premiumActionHandler: @escaping ()->Void,
-        upgradeActionHandler: @escaping ()->Void)
+        actionHandler: @escaping ()->Void)
     {
         let premiumManager = PremiumManager.shared
         if premiumManager.shouldShowUpgradeNotice(for: feature) {
             PremiumUpgradeHelper.showUpgradeNotice(
                 in: viewController,
                 for: feature,
-                premiumActionHandler: premiumActionHandler,
-                upgradeActionHandler: upgradeActionHandler
+                premiumActionHandler: actionHandler,
+                upgradeActionHandler: { [weak self] in
+                    guard let self = self else { return }
+                    self.premiumCoordinator = PremiumCoordinator(
+                        presentingViewController: viewController
+                    )
+                    self.premiumCoordinator?.delegate = self
+                    self.premiumCoordinator?.start()
+                }
             )
             premiumManager.setGracePeriodUpgradeNoticeShown(for: feature)
         } else {
-            premiumActionHandler()
+            actionHandler()
         }
     }
     
@@ -89,5 +100,12 @@ public class PremiumUpgradeHelper {
             alertVC.addAction(cancelAction)
         }
         viewController.present(alertVC, animated: true, completion: nil)
+    }
+}
+
+// MARK: - PremiumCoordinatorDelegate
+extension PremiumUpgradeHelper: PremiumCoordinatorDelegate {
+    func didFinish(_ premiumCoordinator: PremiumCoordinator) {
+        self.premiumCoordinator = nil
     }
 }
