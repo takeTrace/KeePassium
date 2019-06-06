@@ -64,6 +64,10 @@ class SettingsVC: UITableViewController, Refreshable {
             name: PremiumManager.statusUpdateNotification,
             object: nil)
         refreshPremiumStatus(animated: false)
+        #if DEBUG
+        premiumStatusCell.accessoryType = .detailButton
+        premiumTrialCell.accessoryType = .detailButton
+        #endif
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -302,6 +306,22 @@ class SettingsVC: UITableViewController, Refreshable {
             show(aboutVC, sender: self)
         default:
             break
+        }
+    }
+    
+    override func tableView(
+        _ tableView: UITableView,
+        accessoryButtonTappedForRowWith indexPath: IndexPath)
+    {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        switch cell {
+#if DEBUG
+        case premiumStatusCell, premiumTrialCell:
+            PremiumManager.shared.resetSubscription()
+            refreshPremiumStatus(animated: true)
+#endif
+        default:
+            assertionFailure() // should not be here
         }
     }
     

@@ -224,6 +224,16 @@ public class Keychain {
         try set(service: .premium, account: premiumExpiryDateAccount, data: timestampBytes.asData)
     }
     
+    #if DEBUG
+    /// Removes premium expiry date from the keychain.
+    /// Useful mainly for debug.
+    ///
+    /// - Throws: `KeychainError`
+    public func clearPremiumExpiryDate() throws {
+        try remove(service: .premium, account: premiumExpiryDateAccount)
+    }
+    #endif
+    
     /// Returns stored premium expiry date.
     ///
     /// - Returns: stored date, if any.
