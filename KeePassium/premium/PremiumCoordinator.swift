@@ -25,6 +25,7 @@ class PremiumCoordinator {
     private let premiumManager: PremiumManager
     private let navigationController: UINavigationController
     private let premiumVC: PremiumVC
+    private var isProductsRefreshed: Bool = false
     
     init(presentingViewController: UIViewController) {
         self.premiumManager = PremiumManager.shared
@@ -35,7 +36,7 @@ class PremiumCoordinator {
         premiumVC.delegate = self
     }
     
-    func start() {
+    func start(tryRestoringPurchasesFirst: Bool=false) {
         premiumManager.delegate = self
         self.presentingViewController.present(navigationController, animated: true, completion: nil)
         
@@ -46,6 +47,18 @@ class PremiumCoordinator {
         // because this might interfere with the workflow.
         premiumVC.allowRestorePurchases = false
         
+        if tryRestoringPurchasesFirst {
+            restorePurchases()
+        } else {
+            refreshAvailableProducts()
+        }
+    }
+    
+    fileprivate func restorePurchases() {
+        premiumManager.restorePurchases()
+    }
+    
+    fileprivate func refreshAvailableProducts() {
         premiumManager.requestAvailableProducts(completionHandler: {
             [weak self] (products, error) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -66,13 +79,9 @@ class PremiumCoordinator {
             let productsToShow = products.sorted().filter {
                 !InAppProduct.isHidden(productIdentifier: $0.productIdentifier)
             }
+            self.isProductsRefreshed = true
             self.premiumVC.setAvailableProducts(productsToShow)
         })
-    }
-    
-    /// Can be called immediately after start() to start restoring purchases.
-    func restorePurchases() {
-        premiumManager.restorePurchases()
     }
     
     func finish(animated: Bool, completion: (() -> Void)?) {
@@ -174,7 +183,10 @@ extension PremiumCoordinator: PremiumManagerDelegate {
             premiumVC.present(successAlert, animated: true, completion: nil)
         default:
             // sorry, no previous purchase could be restored
-            // successfully restored
+            if !isProductsRefreshed {
+                // start fetching available products while showing a "Sorry" alert
+                refreshAvailableProducts()
+            }
             let notRestoredAlert = UIAlertController.make(
                 title: "Sorry".localized(comment: "Title: there were no in-app purchases that can be restored"),
                 message: "No previous purchase could be restored.".localized(comment: "Body: there were no in-app purchases that can be restored"),

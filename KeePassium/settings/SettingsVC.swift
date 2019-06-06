@@ -349,8 +349,7 @@ class SettingsVC: UITableViewController, Refreshable {
         assert(premiumCoordinator == nil)
         premiumCoordinator = PremiumCoordinator(presentingViewController: self)
         premiumCoordinator!.delegate = self
-        premiumCoordinator!.start()
-        premiumCoordinator!.restorePurchases()
+        premiumCoordinator!.start(tryRestoringPurchasesFirst: true)
     }
     
     func didPressManageSubscription() {
