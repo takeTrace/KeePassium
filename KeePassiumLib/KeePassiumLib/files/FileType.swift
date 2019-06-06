@@ -9,7 +9,8 @@
 import Foundation
 
 public enum FileType {
-    public static let publicDataUTIs = ["public.data"]
+    // For some reason, Google Drive needs "public.content" for some files...
+    public static let publicDataUTIs = ["public.data", "public.content"]
     
     public static let databaseUTIs = [
         "com.keepassium.kdb", "com.keepassium.kdbx",
