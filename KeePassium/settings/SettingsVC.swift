@@ -138,6 +138,29 @@ class SettingsVC: UITableViewController, Refreshable {
                 premiumStatusText = "?"
             }
             premiumStatusCell.detailTextLabel?.text = premiumStatusText
+        case .lapsed:
+            setCellVisibility(premiumTrialCell, isHidden: false)
+            setCellVisibility(premiumStatusCell, isHidden: false)
+            setCellVisibility(restorePurchasesCell, isHidden: true)
+            setCellVisibility(manageSubscriptionCell, isHidden: false)
+            
+            let premiumStatusText: String
+            if let secondsSinceExpiration = premiumManager.secondsSinceExpiration {
+                let timeFormatted = formatTrialTime(
+                    secondsSinceExpiration,
+                    allowedUnits: [.day, .hour, .minute],
+                    maxUnitCount: 1) ?? "?"
+                premiumStatusText = "Expired \(timeFormatted) ago. Please renew.".localized(comment: "Status: premium subscription has expired. For example: `Expired 1 day ago`")
+            } else {
+                assertionFailure()
+                premiumStatusText = "?"
+            }
+            premiumTrialCell.detailTextLabel?.text = ""
+            premiumStatusCell.detailTextLabel?.text = premiumStatusText
+            premiumStatusCell.detailTextLabel?.textColor = .errorMessage
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                self?.refreshPremiumStatus(animated: true)
+            }
         case .expired:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: true)
