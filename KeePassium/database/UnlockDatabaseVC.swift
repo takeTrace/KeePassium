@@ -148,7 +148,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     }
     
     @objc private func refreshPremiumStatus() {
-        getPremiumButton.isHidden = (PremiumManager.shared.status == .subscribed)
+        switch PremiumManager.shared.status {
+        case .initialGracePeriod, .expired:
+            getPremiumButton.isHidden = false
+        case .subscribed, .lapsed:
+            getPremiumButton.isHidden = true
+        }
     }
     
     /// Switch the UI depending on whether the master key is already known.

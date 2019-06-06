@@ -98,6 +98,19 @@ public class PremiumManager: NSObject {
         }
     }
     
+    // MARK: - Time interval constants
+    
+#if DEBUG
+    /// Time since first launch, when premium features are available in free version.
+    private let gracePeriodInSeconds: TimeInterval = 1 * 60
+
+    /// Time since subscription expiration, when premium features are still available.
+    private let lapsePeriodInSeconds: TimeInterval = 7 * 60
+#else
+    private let lapsePeriodInSeconds: TimeInterval = 1 * 24 * 60 * 60
+    private let gracePeriodInSeconds: TimeInterval = 3 * 24 * 60 * 60
+#endif
+
     // MARK: - Subscription status
     
     public enum Status {
@@ -105,7 +118,9 @@ public class PremiumManager: NSObject {
         case initialGracePeriod
         /// Active premium subscription
         case subscribed
-        /// Grace period expired, no premium purchased
+        /// Subscription recently expired, give the user a few days to renew
+        case lapsed
+        /// Grace/lapse period expired
         case expired
     }
     
@@ -141,15 +156,20 @@ public class PremiumManager: NSObject {
         }
         
         let previousStatus = status
-        if isSubscribed {
-            status = .subscribed
+        status = .expired
+        if let expiryDate = getPremiumExpiryDate() {
+            if expiryDate.timeIntervalSinceNow > 0 {
+                status = .subscribed
+            } else if Date.now.timeIntervalSince(expiryDate) < lapsePeriodInSeconds {
+                status = .lapsed
+            }
         } else {
+            // was never subscribed
             if gracePeriodSecondsRemaining > 0 {
                 status = .initialGracePeriod
-            } else {
-                status = .expired
             }
         }
+        
         if status != previousStatus {
             Diag.info("Premium subscription status changed [was: \(previousStatus), now: \(status)]")
             notifyStatusChanged()
@@ -193,13 +213,6 @@ public class PremiumManager: NSObject {
     }
     
     // MARK: - Grace period management
-
-    /// Time since first launch, when premium features are available in free version.
-    #if DEBUG
-        private let gracePeriodInSeconds: Double = 1 * 60
-    #else
-        private let gracePeriodInSeconds: Double = 5 * 24 * 60 * 60
-    #endif
     
     fileprivate enum UserDefaultsKey {
         static let gracePeriodUpgradeNoticeShownForFeatures =
@@ -210,6 +223,24 @@ public class PremiumManager: NSObject {
         let firstLaunchTimestamp = Settings.current.firstLaunchTimestamp
         let secondsFromFirstLaunch = abs(Date.now.timeIntervalSince(firstLaunchTimestamp))
         let secondsLeft = gracePeriodInSeconds - secondsFromFirstLaunch
+        return secondsLeft
+    }
+    
+    public var secondsUntilExpiration: Double? {
+        guard let expiryDate = getPremiumExpiryDate() else { return nil }
+        return expiryDate.timeIntervalSinceNow
+    }
+    
+    public var secondsSinceExpiration: Double? {
+        guard let secondsUntilExpiration = secondsUntilExpiration else { return nil }
+        return -secondsUntilExpiration
+    }
+    
+    public var lapsePeriodSecondsRemaining: Double? {
+        guard let secondsSinceExpiration = secondsSinceExpiration,
+            secondsSinceExpiration > 0 // is expired
+            else { return nil }
+        let secondsLeft = lapsePeriodInSeconds - secondsSinceExpiration
         return secondsLeft
     }
 
@@ -235,7 +266,7 @@ public class PremiumManager: NSObject {
     /// `feature` helps to avoid nagging about the same premium feature.
     public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
         switch status {
-        case .subscribed:
+        case .subscribed, .lapsed:
             return false
         case .expired:
             return true
