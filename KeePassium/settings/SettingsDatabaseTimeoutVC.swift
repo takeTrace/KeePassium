@@ -68,6 +68,7 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let timeout = Settings.DatabaseLockTimeout.allValues[indexPath.row]
         if Settings.current.isAllowedDatabaseLockTimeoutWhenExpired(timeout) {
             applyTimeoutAndDismiss(timeout)
