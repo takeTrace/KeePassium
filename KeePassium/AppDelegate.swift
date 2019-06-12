@@ -114,7 +114,8 @@ extension AppDelegate: WatchdogDelegate {
     }
     
     private var canUseBiometrics: Bool {
-        return isBiometricsAvailable() && Settings.current.isBiometricAppLockEnabled
+        let canUse = isBiometricsAvailable() && Settings.current.isBiometricAppLockEnabled
+        return PremiumManager.shared.falseIfExpired(canUse)
     }
     
     /// Shows the lock screen.
@@ -163,7 +164,8 @@ extension AppDelegate: WatchdogDelegate {
     /// Shows biometric auth.
     private func performBiometricUnlock() {
         assert(isBiometricsAvailable())
-        guard Settings.current.isBiometricAppLockEnabled else { return }
+        let isBiometricsEnabled = Settings.current.isBiometricAppLockEnabled
+        guard PremiumManager.shared.falseIfExpired(isBiometricsEnabled) else { return }
         guard !isBiometricAuthShown else { return }
         
         let context = LAContext()
