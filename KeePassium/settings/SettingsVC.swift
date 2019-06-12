@@ -102,125 +102,6 @@ class SettingsVC: UITableViewController, Refreshable {
         refreshPremiumStatus(animated: false)
     }
     
-    @objc private func refreshPremiumStatus(animated: Bool) {
-        let premiumManager = PremiumManager.shared
-        premiumManager.updateStatus()
-        switch premiumManager.status {
-        case .initialGracePeriod:
-            setCellVisibility(premiumTrialCell, isHidden: false)
-            setCellVisibility(premiumStatusCell, isHidden: true)
-            setCellVisibility(restorePurchasesCell, isHidden: false)
-            setCellVisibility(manageSubscriptionCell, isHidden: true)
-            
-            let secondsLeft = premiumManager.gracePeriodSecondsRemaining
-            let timeFormatted = formatTrialTime(
-                secondsLeft,
-                allowedUnits: [.day, .hour, .minute, .second],
-                maxUnitCount: 3) ?? "?"
-            premiumTrialCell.detailTextLabel?.text = "Free trial: \(timeFormatted) remaining".localized(comment: "Status: remaining time of free trial. For example: `Free trial: 2d 23h remaining`")
-            // make sure the countdown timer updates
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                self?.refreshPremiumStatus(animated: true)
-            }
-        case .subscribed:
-            setCellVisibility(premiumTrialCell, isHidden: true)
-            setCellVisibility(premiumStatusCell, isHidden: false)
-            setCellVisibility(restorePurchasesCell, isHidden: true)
-            setCellVisibility(manageSubscriptionCell, isHidden: false)
-            
-            let premiumStatusText: String
-            if let expiryDate = premiumManager.getPremiumExpiryDate() {
-                if expiryDate == .distantFuture {
-                    premiumStatusText = "Valid forever".localized(comment: "Status: validity period of once-and-forever premium")
-                } else {
-                    let expiryDateString = DateFormatter
-                        .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .short)
-                    premiumStatusText = "Next renewal on \(expiryDateString)".localized(comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 Jan 2050 12:34`")
-                }
-            } else {
-                assertionFailure()
-                premiumStatusText = "?"
-            }
-            premiumStatusCell.detailTextLabel?.text = premiumStatusText
-        case .lapsed:
-            setCellVisibility(premiumTrialCell, isHidden: false)
-            setCellVisibility(premiumStatusCell, isHidden: false)
-            setCellVisibility(restorePurchasesCell, isHidden: true)
-            setCellVisibility(manageSubscriptionCell, isHidden: false)
-            
-            let premiumStatusText: String
-            if let secondsSinceExpiration = premiumManager.secondsSinceExpiration {
-                let timeFormatted = formatTrialTime(
-                    secondsSinceExpiration,
-                    allowedUnits: [.day, .hour, .minute],
-                    maxUnitCount: 1) ?? "?"
-                premiumStatusText = "Expired \(timeFormatted) ago. Please renew.".localized(comment: "Status: premium subscription has expired. For example: `Expired 1 day ago`")
-            } else {
-                assertionFailure()
-                premiumStatusText = "?"
-            }
-            premiumTrialCell.detailTextLabel?.text = ""
-            premiumStatusCell.detailTextLabel?.text = premiumStatusText
-            premiumStatusCell.detailTextLabel?.textColor = .errorMessage
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                self?.refreshPremiumStatus(animated: true)
-            }
-        case .expired:
-            setCellVisibility(premiumTrialCell, isHidden: false)
-            setCellVisibility(premiumStatusCell, isHidden: true)
-            setCellVisibility(restorePurchasesCell, isHidden: false)
-            setCellVisibility(manageSubscriptionCell, isHidden: true)
-
-            if let subscriptionExpiryDate = premiumManager.getPremiumExpiryDate() {
-                // had a subscription, it expired
-                let secondsAgo = abs(subscriptionExpiryDate.timeIntervalSinceNow)
-                let timeFormatted = formatTrialTime(
-                    secondsAgo,
-                    allowedUnits: [.year, .month, .day, .hour, .minute, .second],
-                    maxUnitCount: 1,
-                    style: .full) ?? "?"
-                premiumTrialCell.detailTextLabel?.text = "Expired \(timeFormatted) ago".localized(comment: "Status: how long ago the premium subscription has expired. For example: `Expired 12 days ago`")
-            } else {
-                // had a grace period, it ended
-                let secondsAgo = abs(premiumManager.gracePeriodSecondsRemaining)
-                let timeFormatted = formatTrialTime(
-                    secondsAgo,
-                    allowedUnits: [.year, .month, .day, .hour, .minute, .second], //TODO: get rid of seconds
-                    maxUnitCount: 1,
-                    style: .full) ?? "?"
-                premiumTrialCell.detailTextLabel?.text = "Free trial ended \(timeFormatted) ago".localized(comment: "Status: how long ago the free trial (grace period) has expired. For example: `Free trial ended 12 days ago`")
-
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // TODO increase to 60
-                self?.refreshPremiumStatus(animated: true)
-            }
-        }
-        if animated {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        } else {
-            tableView.reloadData()
-        }
-    }
-    
-    /// Converts number of seconds to human-readable string, e.g. "2h 25m"
-    private func formatTrialTime(
-        _ interval: TimeInterval,
-        allowedUnits: NSCalendar.Unit = [.day, .hour, .minute, .second], //TODO: remove .second after debug
-        maxUnitCount: Int = 3,
-        style: DateComponentsFormatter.UnitsStyle = .abbreviated,
-        remaining: Bool = false
-        ) -> String?
-    {
-        let timeFormatter = DateComponentsFormatter()
-        timeFormatter.allowedUnits = allowedUnits
-        timeFormatter.collapsesLargestUnit = true
-        timeFormatter.includesTimeRemainingPhrase = remaining
-        timeFormatter.maximumUnitCount = maxUnitCount
-        timeFormatter.unitsStyle = style
-        return timeFormatter.string(from: interval)
-    }
-    
     /// Marks given cell as hidden/visible. The caller is responsible for refreshing the table.
     private func setCellVisibility(_ cell: UITableViewCell, isHidden: Bool) {
         cell.isHidden = isHidden
@@ -335,7 +216,7 @@ class SettingsVC: UITableViewController, Refreshable {
         refresh()
     }
     
-    // MARK: - Premium upgrades
+    // MARK: - Premium-related actions
     
     private var premiumCoordinator: PremiumCoordinator? // strong ref
     func didPressUpgradeToPremium() {
@@ -359,6 +240,123 @@ class SettingsVC: UITableViewController, Refreshable {
         // open Manage Subscriptions page in AppStore
         application.open(url, options: [:])
     }
+    
+    // MARK: - Premium status
+    
+    #if DEBUG
+    private let premiumRefreshInterval = 1.0
+    #else
+    private let premiumRefreshInterval = 10.0
+    #endif
+    
+    @objc private func refreshPremiumStatus(animated: Bool) {
+        let premiumManager = PremiumManager.shared
+        premiumManager.updateStatus()
+        switch premiumManager.status {
+        case .initialGracePeriod:
+            setCellVisibility(premiumTrialCell, isHidden: false)
+            setCellVisibility(premiumStatusCell, isHidden: true)
+            setCellVisibility(restorePurchasesCell, isHidden: false)
+            setCellVisibility(manageSubscriptionCell, isHidden: true)
+            
+            let secondsLeft = premiumManager.gracePeriodSecondsRemaining
+            let timeFormatted = DateComponentsFormatter.format(
+                secondsLeft,
+                allowedUnits: [.day, .hour, .minute, .second],
+                maxUnitCount: 2) ?? "?"
+            premiumTrialCell.detailTextLabel?.text = "Free trial: \(timeFormatted) remaining".localized(comment: "Status: remaining time of free trial. For example: `Free trial: 2d 23h remaining`")
+            // make sure the countdown timer updates
+            DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
+                [weak self] in
+                self?.refreshPremiumStatus(animated: false)
+            }
+        case .subscribed:
+            setCellVisibility(premiumTrialCell, isHidden: true)
+            setCellVisibility(premiumStatusCell, isHidden: false)
+            setCellVisibility(restorePurchasesCell, isHidden: true)
+            setCellVisibility(manageSubscriptionCell, isHidden: false)
+            
+            let premiumStatusText: String
+            if let expiryDate = premiumManager.getPremiumExpiryDate() {
+                if expiryDate == .distantFuture {
+                    premiumStatusText = "Valid forever".localized(comment: "Status: validity period of once-and-forever premium")
+                } else {
+                    #if DEBUG
+                    let expiryDateString = DateFormatter
+                        .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .short)
+                    #else
+                    let expiryDateString = DateFormatter
+                        .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .none)
+                    #endif
+                    premiumStatusText = "Next renewal on \(expiryDateString)".localized(comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 Jan 2050`")
+                }
+            } else {
+                assertionFailure()
+                premiumStatusText = "?"
+            }
+            premiumStatusCell.detailTextLabel?.text = premiumStatusText
+        case .lapsed:
+            setCellVisibility(premiumTrialCell, isHidden: false)
+            setCellVisibility(premiumStatusCell, isHidden: false)
+            setCellVisibility(restorePurchasesCell, isHidden: true)
+            setCellVisibility(manageSubscriptionCell, isHidden: false)
+            
+            let premiumStatusText: String
+            if let secondsSinceExpiration = premiumManager.secondsSinceExpiration {
+                let timeFormatted = DateComponentsFormatter.format(
+                    secondsSinceExpiration,
+                    allowedUnits: [.day, .hour, .minute],
+                    maxUnitCount: 1) ?? "?"
+                premiumStatusText = "Expired \(timeFormatted) ago. Please renew.".localized(comment: "Status: premium subscription has expired. For example: `Expired 1 day ago`")
+            } else {
+                assertionFailure()
+                premiumStatusText = "?"
+            }
+            premiumTrialCell.detailTextLabel?.text = ""
+            premiumStatusCell.detailTextLabel?.text = premiumStatusText
+            premiumStatusCell.detailTextLabel?.textColor = .errorMessage
+            DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
+                [weak self] in
+                self?.refreshPremiumStatus(animated: false)
+            }
+        case .expired:
+            setCellVisibility(premiumTrialCell, isHidden: false)
+            setCellVisibility(premiumStatusCell, isHidden: true)
+            setCellVisibility(restorePurchasesCell, isHidden: false)
+            setCellVisibility(manageSubscriptionCell, isHidden: true)
+            
+            if let subscriptionExpiryDate = premiumManager.getPremiumExpiryDate() {
+                // had a subscription, it expired
+                let secondsAgo = abs(subscriptionExpiryDate.timeIntervalSinceNow)
+                let timeFormatted = DateComponentsFormatter.format(
+                    secondsAgo,
+                    allowedUnits: [.year, .month, .day, .hour, .minute, .second], //TODO: get rid of seconds
+                    maxUnitCount: 1,
+                    style: .full) ?? "?"
+                premiumTrialCell.detailTextLabel?.text = "Expired \(timeFormatted) ago".localized(comment: "Status: how long ago the premium subscription has expired. For example: `Expired 12 days ago`")
+            } else {
+                // had a grace period, it ended
+                let secondsAgo = abs(premiumManager.gracePeriodSecondsRemaining)
+                let timeFormatted = DateComponentsFormatter.format(
+                    secondsAgo,
+                    allowedUnits: [.year, .month, .day, .hour, .minute, .second], //TODO: get rid of seconds
+                    maxUnitCount: 1,
+                    style: .full) ?? "?"
+                premiumTrialCell.detailTextLabel?.text = "Free trial ended \(timeFormatted) ago".localized(comment: "Status: how long ago the free trial (grace period) has expired. For example: `Free trial ended 12 days ago`")
+                
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
+                [weak self] in
+                self?.refreshPremiumStatus(animated: false)
+            }
+        }
+        if animated {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        } else {
+            tableView.reloadData()
+        }
+    }
 }
 
 // MARK: - SettingsObserver
@@ -373,5 +371,25 @@ extension SettingsVC: SettingsObserver {
 extension SettingsVC: PremiumCoordinatorDelegate {
     func didFinish(_ premiumCoordinator: PremiumCoordinator) {
         self.premiumCoordinator = nil
+    }
+}
+
+extension DateComponentsFormatter {
+    /// Converts number of seconds to human-readable string, e.g. "2h 25m"
+    static func format(
+        _ interval: TimeInterval,
+        allowedUnits: NSCalendar.Unit,
+        maxUnitCount: Int = 3,
+        style: DateComponentsFormatter.UnitsStyle = .abbreviated,
+        addRemainingPhrase: Bool = false
+        ) -> String?
+    {
+        let timeFormatter = DateComponentsFormatter()
+        timeFormatter.allowedUnits = allowedUnits
+        timeFormatter.collapsesLargestUnit = true
+        timeFormatter.includesTimeRemainingPhrase = addRemainingPhrase
+        timeFormatter.maximumUnitCount = maxUnitCount
+        timeFormatter.unitsStyle = style
+        return timeFormatter.string(from: interval)
     }
 }
