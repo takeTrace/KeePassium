@@ -11,15 +11,30 @@ import KeePassiumLib
 
 class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     private let cellID = "Cell"
+
+    private var premiumUpgradeHelper = PremiumUpgradeHelper()
     
     public static func make() -> UIViewController {
         return SettingsDatabaseTimeoutVC.instantiateFromStoryboard()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshPremiumStatus),
+            name: PremiumManager.statusUpdateNotification,
+            object: nil)
     }
     
     func refresh() {
         tableView.reloadData()
     }
 
+    @objc func refreshPremiumStatus() {
+        refresh()
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -44,19 +59,30 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
         let timeout = Settings.DatabaseLockTimeout.allValues[indexPath.row]
         cell.textLabel?.text = timeout.fullTitle
         cell.detailTextLabel?.text = timeout.description
-        if timeout == Settings.current.databaseLockTimeout {
+        if timeout == Settings.current.premiumDatabaseLockTimeout {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
         }
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let timeout = Settings.DatabaseLockTimeout.allValues[indexPath.row]
+        if Settings.current.isAllowedDatabaseLockTimeoutWhenExpired(timeout) {
+            applyTimeoutAndDismiss(timeout)
+        } else {
+            premiumUpgradeHelper.performActionOrOfferUpgrade(.canUseLongDatabaseTimeouts, in: self) {
+                [weak self] in
+                self?.applyTimeoutAndDismiss(timeout)
+            }
+        }
+    }
+    
+    private func applyTimeoutAndDismiss(_ timeout: Settings.DatabaseLockTimeout) {
         Settings.current.databaseLockTimeout = timeout
         Watchdog.shared.restart() // apply the change
-        refresh()
+        self.refresh()
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
         }
