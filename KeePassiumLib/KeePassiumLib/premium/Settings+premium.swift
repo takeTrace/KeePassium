@@ -1,13 +1,14 @@
+//  KeePassium Password Manager
+//  Copyright © 2018–2019 Andrei Popleteev <info@keepassium.com>
 //
-//  Settings+premium.swift
-//  KeePassiumLib
-//
-//  Created by Andrei Popleteev on 2019-06-12.
-//  Copyright © 2019 Andrei Popleteev. All rights reserved.
-//
+//  This program is free software: you can redistribute it and/or modify it
+//  under the terms of the GNU General Public License version 3 as published
+//  by the Free Software Foundation: https://www.gnu.org/licenses/).
+//  For commercial licensing, please contact the author.
 
 import Foundation
 
+/// Convenience helpers to enforce premium features
 public extension Settings {
     func isAllowedDatabaseLockTimeoutWhenExpired(_ timeout: Settings.DatabaseLockTimeout) -> Bool {
         switch timeout {
@@ -43,5 +44,26 @@ public extension Settings {
             // limit to 1 hour in free version
             return .after1hour
         }
+    }
+    
+    var premiumIsBiometricAppLockEnabled: Bool {
+        if PremiumManager.shared.status == .expired {
+            return false
+        }
+        return isBiometricAppLockEnabled
+    }
+    
+    var premiumIsKeepKeyFileAssociations: Bool {
+        if PremiumManager.shared.status == .expired {
+            return false
+        }
+        return isKeepKeyFileAssociations
+    }
+    
+    func premiumGetKeyFileForDatabase(databaseRef: URLReference) -> URLReference? {
+        if PremiumManager.shared.status == .expired {
+            return nil
+        }
+        return getKeyFileForDatabase(databaseRef: databaseRef)
     }
 }

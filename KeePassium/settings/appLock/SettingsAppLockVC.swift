@@ -83,11 +83,10 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
     func refresh() {
         let settings = Settings.current
         let isAppLockEnabled = settings.isAppLockEnabled
-        let premiumManager = PremiumManager.shared
         appLockEnabledSwitch.isOn = isAppLockEnabled
         appLockTimeoutCell.detailTextLabel?.text = settings.appLockTimeout.shortTitle
         lockDatabasesOnFailedPasscodeSwitch.isOn = settings.isLockAllDatabasesOnFailedPasscode
-        biometricsSwitch.isOn = premiumManager.falseIfExpired(settings.isBiometricAppLockEnabled)
+        biometricsSwitch.isOn = settings.premiumIsBiometricAppLockEnabled
         
         appLockTimeoutCell.setEnabled(isAppLockEnabled)
         lockDatabasesOnFailedPasscodeCell.setEnabled(isAppLockEnabled)
