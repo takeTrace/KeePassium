@@ -9,12 +9,12 @@
 /// Features reserved for the premium version.
 public enum PremiumFeature: Int {
     public static let all: [PremiumFeature] = [
-        .canEditDatabase,
-        .canUseMultipleDatabases,
-        .canUseBiometricAppLock,
-        .canRememberKeyFiles,
+        .canEditDatabase, // enforced
+        .canUseMultipleDatabases, // enforced
+        .canUseBiometricAppLock, // enforced
+        .canRememberKeyFiles, // enforced
         .canUseLongDatabaseTimeouts,
-        .canPreviewAttachments
+        .canPreviewAttachments // cannot enforce nicely
     ]
     
     /// Can unlock any added database (otherwise only one, with olders modification date)
