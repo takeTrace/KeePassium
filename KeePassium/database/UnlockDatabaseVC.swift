@@ -131,10 +131,8 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             showErrorMessage(databaseRef.info.errorMessage)
         }
         
-        let settings = Settings.current
-        let associatedKeyFileRef = PremiumManager.shared.nilIfExpired( // enforce premium
-            settings.getKeyFileForDatabase(databaseRef: databaseRef)
-        )
+        let associatedKeyFileRef = Settings.current
+            .premiumGetKeyFileForDatabase(databaseRef: databaseRef)
         if let associatedKeyFileRef = associatedKeyFileRef {
             // Stored reference can be from the main app (inaccessible),
             // so make sure 1) it is available, or at least 2) there is a same-name available file.
