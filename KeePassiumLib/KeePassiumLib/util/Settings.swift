@@ -110,8 +110,8 @@ public class Settings {
     public enum AppLockTimeout: Int {
         public static let allValues = [
             immediately, /* after5seconds,*/ after15seconds, after30seconds,
-            after1minute, after2minutes, after5minutes /*, never */]
-        case never = -1
+            after1minute, after2minutes, after5minutes]
+        case never = -1 // left for backward compatibility
         case immediately = 0
         case after5seconds = 5
         case after15seconds = 15
