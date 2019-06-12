@@ -176,7 +176,8 @@ public class Settings {
         public static let allValues = [
             immediately, /*after5seconds, after15seconds, */after30seconds,
             after1minute, after2minutes, after5minutes, after10minutes,
-            after30minutes, after1hour, never]
+            after30minutes, after1hour, after2hours, after4hours, after8hours,
+            after24hours, never]
         case never = -1
         case immediately = 0
         case after5seconds = 5
@@ -188,6 +189,10 @@ public class Settings {
         case after10minutes = 600
         case after30minutes = 1800
         case after1hour = 3600
+        case after2hours = 7200
+        case after4hours = 14400
+        case after8hours = 28800
+        case after24hours = 86400
 
         public var seconds: Int {
             return self.rawValue
