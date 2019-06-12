@@ -49,7 +49,7 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
     func refresh() {
         let settings = Settings.current
         rememberMasterKeysSwitch.isOn = settings.isRememberDatabaseKey
-        rememberUsedKeyFiles.isOn = settings.premiumIsKeepKeyFileAssociations
+        rememberUsedKeyFiles.isOn = settings.isKeepKeyFileAssociations
         databaseTimeoutCell.detailTextLabel?.text = settings.databaseLockTimeout.shortTitle
         lockDatabaseOnFailedPasscodeSwitch.isOn = settings.isLockAllDatabasesOnFailedPasscode
         clipboardTimeoutCell.detailTextLabel?.text = settings.clipboardTimeout.shortTitle
