@@ -613,7 +613,8 @@ extension MainCoordinator: WatchdogDelegate {
     }
     
     private func isBiometricAuthAvailable() -> Bool {
-        guard Settings.current.isBiometricAppLockEnabled else { return false }
+        let isBiometricsEnabled = Settings.current.isBiometricAppLockEnabled
+        guard PremiumManager.shared.falseIfExpired(isBiometricsEnabled) else { return false }
         let context = LAContext()
         let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
         return context.canEvaluatePolicy(policy, error: nil)
