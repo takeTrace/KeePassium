@@ -22,7 +22,7 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
     @IBOutlet weak var clipboardTimeoutCell: UITableViewCell!
     
     private var settingsNotifications: SettingsNotifications!
-    
+    private var premiumUpgradeHelper = PremiumUpgradeHelper()
     
     // MARK: - VC life cycle
     
@@ -30,6 +30,11 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         settingsNotifications = SettingsNotifications(observer: self)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshPremiumStatus),
+            name: PremiumManager.statusUpdateNotification,
+            object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,10 +50,15 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
 
     func refresh() {
         let settings = Settings.current
+        let premiumManager = PremiumManager.shared
         rememberMasterKeysSwitch.isOn = settings.isRememberDatabaseKey
         rememberUsedKeyFiles.isOn = settings.isKeepKeyFileAssociations
         databaseTimeoutCell.detailTextLabel?.text = settings.databaseLockTimeout.shortTitle
         clipboardTimeoutCell.detailTextLabel?.text = settings.clipboardTimeout.shortTitle
+    }
+    
+    @objc func refreshPremiumStatus() {
+        refresh()
     }
     
     // MARK: - Actions
@@ -76,8 +86,12 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
     }
     
     @IBAction func didToggleRememberUsedKeyFiles(_ sender: UISwitch) {
-        Settings.current.isKeepKeyFileAssociations = rememberUsedKeyFiles.isOn
-        refresh()
+        premiumUpgradeHelper.performActionOrOfferUpgrade(.canRememberKeyFiles, in: self) {
+            [weak self] in
+            guard let self = self else { return }
+            Settings.current.isKeepKeyFileAssociations = self.rememberUsedKeyFiles.isOn
+            self.refresh()
+        }
     }
     
     @IBAction func didPressClearKeyFileAssociations(_ sender: Any) {

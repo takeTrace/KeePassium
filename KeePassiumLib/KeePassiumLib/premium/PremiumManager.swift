@@ -545,3 +545,23 @@ extension PremiumManager: SKPaymentTransactionObserver {
         queue.finishTransaction(transaction)
     }
 }
+
+// MARK: Convenience helpers to enforce premium features
+
+extension PremiumManager {
+    /// For premium and grace-period states, returns the given value as-is.
+    /// If premium/grace expired, return `false`.
+    public func falseIfExpired(_ value: Bool) -> Bool {
+        guard status != .expired else {
+            return false
+        }
+        return value
+    }
+
+    public func nilIfExpired<T>(_ value: T?) -> T? {
+        guard status != .expired else {
+            return nil
+        }
+        return value
+    }
+}
