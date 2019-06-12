@@ -27,7 +27,7 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Settings.DatabaseCloseTimeout.allValues.count
+        return Settings.DatabaseLockTimeout.allValues.count
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -41,10 +41,10 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
         ) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
-        let timeout = Settings.DatabaseCloseTimeout.allValues[indexPath.row]
+        let timeout = Settings.DatabaseLockTimeout.allValues[indexPath.row]
         cell.textLabel?.text = timeout.fullTitle
         cell.detailTextLabel?.text = timeout.description
-        if timeout == Settings.current.databaseCloseTimeout {
+        if timeout == Settings.current.databaseLockTimeout {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -53,8 +53,8 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let timeout = Settings.DatabaseCloseTimeout.allValues[indexPath.row]
-        Settings.current.databaseCloseTimeout = timeout
+        let timeout = Settings.DatabaseLockTimeout.allValues[indexPath.row]
+        Settings.current.databaseLockTimeout = timeout
         Watchdog.shared.restart() // apply the change
         refresh()
         DispatchQueue.main.async {

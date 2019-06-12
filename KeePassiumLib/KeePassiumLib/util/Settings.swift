@@ -74,7 +74,7 @@ public class Settings {
         case lockAllDatabasesOnFailedPasscode
         case recentUserActivityTimestamp
         case appLockTimeout
-        case databaseCloseTimeout
+        case databaseLockTimeout
         case clipboardTimeout
 
         // Database content
@@ -172,7 +172,7 @@ public class Settings {
         }
     }
 
-    public enum DatabaseCloseTimeout: Int {
+    public enum DatabaseLockTimeout: Int {
         public static let allValues = [
             immediately, /*after5seconds, after15seconds, */after30seconds,
             after1minute, after2minutes, after5minutes, after10minutes,
@@ -201,9 +201,9 @@ public class Settings {
         public var fullTitle: String {
             switch self {
             case .never:
-                return NSLocalizedString("Never", comment: "One of the possible values of the 'Close Database Timeout' setting. This should be full description. Will be shown as 'Timeouts: Close Database: Never'")
+                return NSLocalizedString("Never", comment: "One of the possible values of the 'Database Lock Timeout' setting. This should be full description. Will be shown as 'Timeouts: Lock Database: Never'")
             case .immediately:
-                return NSLocalizedString("Immediately", comment: "One of the possible values of the 'Close Database Timeout' setting. This should be full description. Will be shown as 'Timeouts: Close Database: Immediately'")
+                return NSLocalizedString("Immediately", comment: "One of the possible values of the 'Database Lock Timeout' setting. This should be full description. Will be shown as 'Timeouts: Lock Database: Immediately'")
             default:
                 let formatter = DateComponentsFormatter()
                 formatter.allowedUnits = [.hour, .minute, .second]
@@ -220,9 +220,9 @@ public class Settings {
         public var shortTitle: String {
             switch self {
             case .never:
-                return NSLocalizedString("Never", comment: "One of the possible values of the 'Close Database Timeout' setting. This should be as a short version of 'Never'. Will be shown as 'Timeouts: Close Database: Never'")
+                return NSLocalizedString("Never", comment: "One of the possible values of the 'Database Lock Timeout' setting. This should be as a short version of 'Never'. Will be shown as 'Timeouts: Lock Database: Never'")
             case .immediately:
-                return NSLocalizedString("Immediately", comment: "One of the possible values of the 'Close Database Timeout' setting. This should be a short description of 'Immediately'. Will be shown as 'Timeouts: Close Database: Immediately'")
+                return NSLocalizedString("Immediately", comment: "One of the possible values of the 'Database Lock Timeout' setting. This should be a short description of 'Immediately'. Will be shown as 'Timeouts: Lock Database: Immediately'")
             default:
                 let formatter = DateComponentsFormatter()
                 formatter.allowedUnits = [.hour, .minute, .second]
@@ -776,24 +776,24 @@ public class Settings {
         }
     }
     
-    /// Timeout for automatically closing the database, in seconds.
-    public var databaseCloseTimeout: DatabaseCloseTimeout {
+    /// Timeout for automatically locking the database, in seconds.
+    public var databaseLockTimeout: DatabaseLockTimeout {
         get {
             if let rawValue = UserDefaults.appGroupShared
-                    .object(forKey: Keys.databaseCloseTimeout.rawValue) as? Int,
-                let timeout = DatabaseCloseTimeout(rawValue: rawValue)
+                    .object(forKey: Keys.databaseLockTimeout.rawValue) as? Int,
+                let timeout = DatabaseLockTimeout(rawValue: rawValue)
             {
                 return timeout
             }
-            return DatabaseCloseTimeout.after1hour
+            return DatabaseLockTimeout.after1hour
         }
         set {
-            let oldValue = databaseCloseTimeout
+            let oldValue = databaseLockTimeout
             UserDefaults.appGroupShared.set(
                 newValue.rawValue,
-                forKey: Keys.databaseCloseTimeout.rawValue)
+                forKey: Keys.databaseLockTimeout.rawValue)
             if newValue != oldValue {
-                postChangeNotification(changedKey: Keys.databaseCloseTimeout)
+                postChangeNotification(changedKey: Keys.databaseLockTimeout)
             }
         }
     }
