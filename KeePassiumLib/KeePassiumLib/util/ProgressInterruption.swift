@@ -10,12 +10,12 @@ import Foundation
 
 /// An exception thrown when a long-running operation is interrupted (for example, by the user).
 public enum ProgressInterruption: LocalizedError {
-    case cancelledByUser // the user pressed "cancel"
+    case cancelled(reason: ProgressEx.CancellationReason)
     
     public var errorDescription: String? {
         switch self {
-        case .cancelledByUser:
-            return NSLocalizedString("Cancelled by user", comment: "Error message when a long-running operation is cancelled by user")
+        case .cancelled(let reason):
+            return reason.localizedDescription
         }
     }
 }

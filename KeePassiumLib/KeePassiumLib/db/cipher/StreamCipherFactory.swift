@@ -25,10 +25,10 @@ internal enum ProtectedStreamAlgorithm: UInt32 {
 /// Stream cipher stub which simply returns original data.
 /// (Implementation of `ProtectedStreamAlgorithm.Null`)
 final internal class UselessStreamCipher: StreamCipher {
-    func encrypt(data: ByteArray, progress: Progress?) throws -> ByteArray {
+    func encrypt(data: ByteArray, progress: ProgressEx?) throws -> ByteArray {
         return data
     }
-    func decrypt(data: ByteArray, progress: Progress?) throws -> ByteArray {
+    func decrypt(data: ByteArray, progress: ProgressEx?) throws -> ByteArray {
         return data
     }
     func erase() {

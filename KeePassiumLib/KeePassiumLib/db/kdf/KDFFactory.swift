@@ -18,7 +18,7 @@ protocol KeyDerivationFunction {
     var defaultParams: KDFParams { get }
     
     /// Returns a fresh instance of key derivation progress
-    func initProgress() -> Progress
+    func initProgress() -> ProgressEx
 
     init()
     

@@ -241,7 +241,7 @@ public class Database1: Database {
             entries.append(entry)
             loadProgress.completedUnitCount += 1
             if loadProgress.isCancelled {
-                throw ProgressInterruption.cancelledByUser
+                throw ProgressInterruption.cancelled(reason: loadProgress.cancellationReason)
             }
         }
         Diag.info("Loaded \(groups.count) groups and \(entries.count) entries")
@@ -334,7 +334,7 @@ public class Database1: Database {
                 (entry as! Entry1).write(to: contentStream)
                 packingProgress.completedUnitCount += 1
                 if packingProgress.isCancelled {
-                    throw ProgressInterruption.cancelledByUser
+                    throw ProgressInterruption.cancelled(reason: packingProgress.cancellationReason)
                 }
             }
             Diag.debug("Writing meta-stream entries")
@@ -344,7 +344,7 @@ public class Database1: Database {
                 print("Wrote a meta-stream entry: \(metaEntry.notes)")
                 packingProgress.completedUnitCount += 1
                 if packingProgress.isCancelled {
-                    throw ProgressInterruption.cancelledByUser
+                    throw ProgressInterruption.cancelled(reason: packingProgress.cancellationReason)
                 }
             }
             contentStream.close()
