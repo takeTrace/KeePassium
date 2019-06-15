@@ -112,7 +112,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     override func didReceiveMemoryWarning() {
         Diag.error("Received a memory warning")
         DatabaseManager.shared.progress.cancel(reason: .lowMemoryWarning)
-        showErrorMessage(NSLocalizedString("Not enough memory to continue. This can happen with large databases or memory-demanding database settings (Argon2). Please contact us if you need help with this.", comment: "Message shown when the app runs out of memory."))
     }
     
     func refresh() {

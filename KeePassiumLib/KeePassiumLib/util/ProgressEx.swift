@@ -18,7 +18,7 @@ public class ProgressEx: Progress {
             case .userRequest:
                 return NSLocalizedString("Cancelled by user", comment: "Error message when a long-running operation was cancelled by user")
             case .lowMemoryWarning:
-                return NSLocalizedString("Not enough free memory, operation cancelled", comment: "Error message when a long-running operation was cancelled due to the lack of free memory (RAM)")
+                return NSLocalizedString("Not enough memory to continue.\nThis can happen with larger databases or too ambitious database settings (Argon2 memory parameter).", comment: "Error message when a long-running operation was cancelled due to the lack of free memory (RAM)")
             }
         }
     }
