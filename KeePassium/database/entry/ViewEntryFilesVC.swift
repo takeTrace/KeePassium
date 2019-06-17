@@ -292,7 +292,7 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
     private func addAttachment() {
         // once we are here, the user has confirmed replacing of the eventual KP1 attachment.
         let picker = UIDocumentPickerViewController(
-            documentTypes: FileType.publicDataUTIs,
+            documentTypes: FileType.attachmentUTIs,
             in: .import)
         picker.modalPresentationStyle = .formSheet
         picker.delegate = self
