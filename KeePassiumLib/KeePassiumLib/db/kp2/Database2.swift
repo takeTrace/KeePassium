@@ -193,6 +193,9 @@ public class Database2: Database {
                 Diag.debug("Inner header read OK")
             }
             
+            /// Twofish plugin for KeePass2 uses garbage padding, try to clean it up.
+            try removeGarbageAfterXML(data: xmlData) // throws `CryptoError`
+            
             // parse XML
             try load(xmlData: xmlData, warnings: warnings) // throws FormatError.parsingError, ProgressInterruption
             
@@ -410,6 +413,49 @@ public class Database2: Database {
         }
         readingProgress.completedUnitCount = readingProgress.totalUnitCount
         return blocksData
+    }
+
+    
+    /// Twofish plugin for KeePass2 introduces garbage padding after the XML.
+    /// This method cleans up any random data after the end of XML document.
+    ///
+    /// - Parameter data: data to be trimmed.
+    /// - Throws: `CryptoError`
+    private func removeGarbageAfterXML(data: ByteArray) throws {
+        guard header.dataCipher is TwofishDataCipher else { return }
+        
+        let finalXMLTagBytes = ("</" + Xml2.keePassFile + ">").arrayUsingUTF8StringEncoding
+        let finalTagSize = finalXMLTagBytes.count
+        guard data.count > finalTagSize else { return }
+        
+        let lastBytes = data.withBytes { $0[(data.count - finalTagSize)..<data.count] }
+        if lastBytes.elementsEqual(finalXMLTagBytes) {
+            // already ending with the final tag, no need to clean up
+            return
+        }
+        
+        // We expect up to `blockSize` bytes of garbage at the end. In reality, can be a bit more.
+        let searchFrom = data.count - finalTagSize - 2 * Twofish.blockSize
+        let searchTo = data.count - finalTagSize
+        guard searchFrom > 0 && searchTo > 0 else { return }
+        var closingTagIndex: Int? = nil
+        data.withBytes {
+            for i in searchFrom...searchTo {
+                let slice = $0[i..<(i + finalTagSize)]
+                if slice.elementsEqual(finalXMLTagBytes) {
+                    closingTagIndex = i
+                    break
+                }
+            }
+        }
+
+        guard let _closingTagIndex = closingTagIndex else {
+            // there was no closing XML tag found, we've got a problem
+            Diag.warning("Failed to remove padding from XML content")
+            throw CryptoError.paddingError(code: 100)
+        }
+        Diag.warning("Removed random padding from XML data")
+        data.trim(toCount: _closingTagIndex + finalTagSize)
     }
 
     /// Parses kp2 database XML content.

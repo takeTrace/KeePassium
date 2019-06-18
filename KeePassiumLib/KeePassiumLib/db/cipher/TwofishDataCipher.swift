@@ -19,8 +19,14 @@ final class TwofishDataCipher: DataCipher {
     
     private var progress = ProgressEx()
     
-    init() {
-        // left empty
+    /// Twofish plugin for KeePass2 pads with garbage instead of PKCS#7.
+    /// And our XML parser does not like trailing garbage...
+    /// If this flag is set, we will fallback to heuristics-based padding removal
+    /// (searching for the final "</KeePassFile>").
+    private let isPaddingLikelyMessedUp: Bool
+    
+    init(isPaddingLikelyMessedUp: Bool) {
+        self.isPaddingLikelyMessedUp = isPaddingLikelyMessedUp
     }
 
     func initProgress() -> ProgressEx {
@@ -41,6 +47,7 @@ final class TwofishDataCipher: DataCipher {
         progress.localizedDescription = NSLocalizedString("Encrypting", comment: "Status message")
         let twofish = Twofish(key: key, iv: iv)
         let dataClone = data.clone() //TODO: copying is redundant here
+        CryptoManager.addPadding(data: dataClone, blockSize: Twofish.blockSize)
         try twofish.encrypt(data: dataClone, progress: progress)
             // throws CryptoError.twofishError, ProgressInterruption
         return dataClone
@@ -61,6 +68,14 @@ final class TwofishDataCipher: DataCipher {
         let dataClone = encData.clone() //TODO: copying is redundant here
         try twofish.decrypt(data: dataClone, progress: progress)
             // throws CryptoError.twofishError, ProgressInterruption
+        
+        if isPaddingLikelyMessedUp {
+            // The padding can be garbage, so ignore any errors for now
+            // and postpone the clean-up to pre-XML-parsing phase
+            try? CryptoManager.removePadding(data: dataClone) // throws CryptoError
+        } else {
+            try CryptoManager.removePadding(data: dataClone) // throws CryptoError
+        }
         return dataClone
     }
 }
