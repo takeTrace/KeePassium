@@ -197,6 +197,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         searchController.dimsBackgroundDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
+        searchController.delegate = self
 
         definesPresentationContext = true
         searchController.searchResultsUpdater = self
@@ -795,3 +796,9 @@ extension ViewGroupVC: UISearchResultsUpdating {
     }
 }
 
+// MARK: - UISearchControllerDelegate
+extension ViewGroupVC: UISearchControllerDelegate {
+    public func didDismissSearchController(_ searchController: UISearchController) {
+        refresh()
+    }
+}
