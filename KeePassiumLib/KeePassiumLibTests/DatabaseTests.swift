@@ -119,7 +119,6 @@ class DatabaseTests: XCTestCase {
         XCTAssertNil(dbm.database)
     }
 
-    
     func testLoadingKP1_twofish_password() {
         let loadExpectation = XCTestExpectation(description: "DB loaded OK")
         let failExpectation = XCTestExpectation(description: "DB loading failed")
@@ -174,6 +173,39 @@ class DatabaseTests: XCTestCase {
         XCTAssert(db2.header.innerStreamAlgorithm == .Salsa20)
         XCTAssert(db2.header.formatVersion == .v3)
         XCTAssert(db2.header.kdf is AESKDF)
+        
+        dbt.close()
+        wait(for: [closeExpectation], timeout: 1.0)
+        XCTAssertNil(dbm.databaseRef)
+        XCTAssertNil(dbm.database)
+    }
+    
+    func testLoadingKP2v3_twofish_aesKdf_salsa20_nocomp() {
+        let loadExpectation = XCTestExpectation(description: "DB loaded OK")
+        let failExpectation = XCTestExpectation(description: "DB loading failed")
+        let saveExpectation = XCTestExpectation(description: "DB saving OK")
+        let closeExpectation = XCTestExpectation(description: "DB closed OK")
+        
+        let dbt = DatabaseTester(
+            load: loadExpectation,
+            fail: failExpectation,
+            save: saveExpectation,
+            close: closeExpectation)
+        dbt.load(dbFileName: "v3-aes-2fi-nocomp.kdbx", password: "demo", keyFileName: nil)
+        wait(for: [loadExpectation], timeout: 2.0)
+        
+        let dbm = DatabaseManager.shared
+        let db = dbm.database
+        let dbRef = dbm.databaseRef
+        XCTAssertNotNil(db)
+        XCTAssertNotNil(dbRef)
+        
+        let db2 = db as! Database2
+        XCTAssertFalse(db2.header.isCompressed)
+        XCTAssert(db2.header.innerStreamAlgorithm == .Salsa20)
+        XCTAssert(db2.header.formatVersion == .v3)
+        XCTAssert(db2.header.kdf is AESKDF)
+        XCTAssert(db2.header.dataCipher is TwofishDataCipher)
         
         dbt.close()
         wait(for: [closeExpectation], timeout: 1.0)
@@ -240,6 +272,39 @@ class DatabaseTests: XCTestCase {
         XCTAssert(db2.header.formatVersion == .v4)
         XCTAssert(db2.header.kdf is Argon2KDF)
 
+        dbt.close()
+        wait(for: [closeExpectation], timeout: 1.0)
+        XCTAssertNil(dbm.databaseRef)
+        XCTAssertNil(dbm.database)
+    }
+    
+    func testLoadingKP2v4_argon2_twofish_nocompression_password() {
+        let loadExpectation = XCTestExpectation(description: "DB loaded OK")
+        let failExpectation = XCTestExpectation(description: "DB loading failed")
+        let saveExpectation = XCTestExpectation(description: "DB saving OK")
+        let closeExpectation = XCTestExpectation(description: "DB closed OK")
+        
+        let dbt = DatabaseTester(
+            load: loadExpectation,
+            fail: failExpectation,
+            save: saveExpectation,
+            close: closeExpectation)
+        dbt.load(dbFileName: "v4-ar2-2fi-nocomp.kdbx", password: "demo", keyFileName: nil)
+        wait(for: [loadExpectation], timeout: 2.0)
+        
+        let dbm = DatabaseManager.shared
+        let db = dbm.database
+        let dbRef = dbm.databaseRef
+        XCTAssertNotNil(db)
+        XCTAssertNotNil(dbRef)
+        
+        let db2 = db as! Database2
+        XCTAssertFalse(db2.header.isCompressed)
+        XCTAssert(db2.header.innerStreamAlgorithm == .ChaCha20)
+        XCTAssert(db2.header.formatVersion == .v4)
+        XCTAssert(db2.header.kdf is Argon2KDF)
+        XCTAssert(db2.header.dataCipher is TwofishDataCipher)
+        
         dbt.close()
         wait(for: [closeExpectation], timeout: 1.0)
         XCTAssertNil(dbm.databaseRef)
