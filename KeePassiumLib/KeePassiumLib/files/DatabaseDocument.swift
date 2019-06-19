@@ -47,6 +47,12 @@ public class DatabaseDocument: UIDocument {
         })
     }
     
+    // Automatic reverting by the system causes internal inconsistencies and crashes,
+    // so we disable it until there is a smarter solution.
+    public override func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
+        completionHandler?(false)
+    }
+    
     override public func contents(forType typeName: String) throws -> Any {
         errorMessage = nil
         return encryptedData.asData
