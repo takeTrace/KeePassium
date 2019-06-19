@@ -342,6 +342,13 @@ final class Meta2: Eraseable {
         return backupGroup
     }
     
+    /// Resets the recycle bin group's UUID stored in Meta to zeros.
+    /// (To be called when the Recycle Bin group is about to be deleted.)
+    func resetRecycleBinGroupUUID() {
+        recycleBinGroupUUID = UUID.ZERO
+        self.recycleBinChangedTime = Date.now
+    }
+    
     /// - Throws: `ProgressInterruption`
     func toXml(streamCipher: StreamCipher) throws -> AEXMLElement {
         Diag.verbose("Generating XML: meta")

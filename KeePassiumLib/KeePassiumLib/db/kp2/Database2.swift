@@ -1126,6 +1126,10 @@ public class Database2: Database {
             // Delete the group and all its children permanently,
             // but mention them in the DeletedObjects list to facilitate synchronization.
             Diag.debug("Removing the group permanently.")
+            if group === getBackupGroup(createIfMissing: false) {
+                // We are deleting the backup group, so erase any mention of it from meta.
+                meta?.resetRecycleBinGroupUUID()
+            }
             addDeletedObject(uuid: group.uuid)
             subGroups.forEach { addDeletedObject(uuid: $0.uuid) }
             subEntries.forEach { addDeletedObject(uuid: $0.uuid) }
