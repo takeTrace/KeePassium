@@ -65,8 +65,8 @@
                                                     <action selector="didPressRestorePurchases:" destination="yXg-JJ-VAJ" eventType="touchUpInside" id="dYJ-LA-Gk6"/>
                                                 </connections>
                                             </button>
-                                            <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NtD-1H-0E8" userLabel="FooterView">
-                                                <rect key="frame" x="16" y="258.5" width="288" height="294"/>
+                                            <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="NtD-1H-0E8" userLabel="FooterView">
+                                                <rect key="frame" x="16" y="236.5" width="288" height="294"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rkk-oi-8fO" userLabel="FooterText">
                                                         <rect key="frame" x="0.0" y="0.0" width="288" height="214"/>
@@ -98,7 +98,7 @@ You can manage and cancel your subscriptions by going to your account settings o
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Dfd-LU-ij4" secondAttribute="bottom" constant="8" id="1BU-mj-MHY"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Dfd-LU-ij4" secondAttribute="bottom" constant="8" id="1BU-mj-MHY"/>
                                                     <constraint firstAttribute="trailing" secondItem="Rkk-oi-8fO" secondAttribute="trailing" id="7v4-3H-3AE"/>
                                                     <constraint firstItem="Rkk-oi-8fO" firstAttribute="leading" secondItem="NtD-1H-0E8" secondAttribute="leading" id="BIz-dn-3OT"/>
                                                     <constraint firstItem="Rkk-oi-8fO" firstAttribute="top" secondItem="NtD-1H-0E8" secondAttribute="top" id="FkY-aU-141"/>
