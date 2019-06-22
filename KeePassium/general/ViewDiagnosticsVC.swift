@@ -61,6 +61,12 @@ class ViewDiagnosticsVC: UITableViewController, Refreshable {
     func refresh() {
         items = Diag.itemsSnapshot()
         tableView.reloadData()
+        if items.count > 0 {
+            let lastRowIndexPath = IndexPath(row: items.count - 1, section: 0)
+            DispatchQueue.main.async { // strong ref
+                self.tableView.scrollToRow(at: lastRowIndexPath, at: .none, animated: true)
+            }
+        }
     }
     
     // MARK: Actions
