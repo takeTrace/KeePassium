@@ -48,9 +48,16 @@ public class EntryField: Eraseable {
         value.erase()
         isProtected = false
     }
+    
     /// Checks if the field name/value contains given `text`.
     public func matches(query: SearchQuery) -> Bool {
-        return name.localizedCaseInsensitiveContains(query.text) || value.localizedCaseInsensitiveContains(query.text)
+        if name.localizedCaseInsensitiveContains(query.text) {
+            return true
+        }
+        if !isProtected && value.localizedCaseInsensitiveContains(query.text) {
+            return true
+        }
+        return false
     }
 }
 

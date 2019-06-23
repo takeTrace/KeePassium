@@ -402,7 +402,7 @@ public class Entry2: Entry {
             return true
         }
         for field in fields {
-            if field.matches(query: query) && !field.isProtected {
+            if field.matches(query: query) {
                 return true
             }
         }
