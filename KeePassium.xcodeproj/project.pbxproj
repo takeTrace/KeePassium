@@ -70,6 +70,8 @@
 		75779864223023D3006671BD /* ProgressViewHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75779863223023D3006671BD /* ProgressViewHost.swift */; };
 		75779865223023D3006671BD /* ProgressViewHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75779863223023D3006671BD /* ProgressViewHost.swift */; };
 		75781A2D20CA3D7A00BE474F /* SettingsFileSortingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75781A2C20CA3D7A00BE474F /* SettingsFileSortingVC.swift */; };
+		7578487D22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578487C22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift */; };
+		7578487E22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578487C22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift */; };
 		757D336120EF382D000A47F0 /* SettingsDatabaseTimeoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757D336020EF382D000A47F0 /* SettingsDatabaseTimeoutVC.swift */; };
 		757D336320EF5081000A47F0 /* SettingsClipboardTimeoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757D336220EF5081000A47F0 /* SettingsClipboardTimeoutVC.swift */; };
 		757EF2F520EB3D1C0024AACD /* PasswordGeneratorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757EF2F420EB3D1C0024AACD /* PasswordGeneratorVC.swift */; };
@@ -252,6 +254,7 @@
 		756FF64320BAB20300FF890B /* UIColor+namedColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+namedColors.swift"; sourceTree = "<group>"; };
 		75779863223023D3006671BD /* ProgressViewHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewHost.swift; sourceTree = "<group>"; };
 		75781A2C20CA3D7A00BE474F /* SettingsFileSortingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFileSortingVC.swift; sourceTree = "<group>"; };
+		7578487C22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+demoEditActions.swift"; sourceTree = "<group>"; };
 		757D336020EF382D000A47F0 /* SettingsDatabaseTimeoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDatabaseTimeoutVC.swift; sourceTree = "<group>"; };
 		757D336220EF5081000A47F0 /* SettingsClipboardTimeoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClipboardTimeoutVC.swift; sourceTree = "<group>"; };
 		757EF2F420EB3D1C0024AACD /* PasswordGeneratorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorVC.swift; sourceTree = "<group>"; };
@@ -447,6 +450,7 @@
 				75C5C3752129DE0800CD7FE3 /* UIAlertController+extensions.swift */,
 				756FF64320BAB20300FF890B /* UIColor+namedColors.swift */,
 				755E9C4C20BE5DC200FD7C7A /* UIImage+extensions.swift */,
+				7578487C22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift */,
 				75C3801A217A0B76006F74C2 /* UIViewController+storyboard.swift */,
 				7542D2412129640F00C8A926 /* String+extensions.swift */,
 				7523F71C21C98D620025C706 /* SupportEmailComposer.swift */,
@@ -790,6 +794,7 @@
 				75CBAB9F21C1671F00B8AFE2 /* MainCoordinator.swift in Sources */,
 				75D3A3B121BAE66F00255FC3 /* DatabaseFileListCell.swift in Sources */,
 				7523F71521C94DD90025C706 /* DiagnosticsViewerVC.swift in Sources */,
+				7578487E22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift in Sources */,
 				75B24DBA21C3CADB003C9486 /* EntryFinderVC.swift in Sources */,
 				750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */,
 				757FB3CD21F9C50700F016FA /* ValidatingTextField.swift in Sources */,
@@ -885,6 +890,7 @@
 				75F4ACFC21776F4800B22D8B /* LString.swift in Sources */,
 				750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */,
 				75C94C5B20B4B8C2004FA29D /* ViewEntryVC.swift in Sources */,
+				7578487D22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift in Sources */,
 				75779864223023D3006671BD /* ProgressViewHost.swift in Sources */,
 				7596771E20FB36BD00E54827 /* SettingsAppTimeoutVC.swift in Sources */,
 				7546FBDB20C3AC5E00C5D834 /* main.swift in Sources */,
