@@ -590,7 +590,7 @@ public class Settings {
             let stored = UserDefaults.appGroupShared
                 .object(forKey: Keys.rememberDatabaseKey.rawValue)
                 as? Bool
-            return stored ?? false
+            return stored ?? true
         }
         set {
             updateAndNotify(
