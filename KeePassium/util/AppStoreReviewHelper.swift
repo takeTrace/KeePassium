@@ -14,7 +14,7 @@ class AppStoreReviewHelper {
     
     /// Opens AppStore page for reviewing the app
     static func writeReview() {
-        guard let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreID)&action=write-review") else {
+        guard let url = URL(string: "itms-apps://apps.apple.com/app/id\(appStoreID)&action=write-review") else {
             assertionFailure("Invalid AppStore URL")
             return
         }
