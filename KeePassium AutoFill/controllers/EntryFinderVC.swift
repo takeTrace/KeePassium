@@ -50,11 +50,19 @@ class EntryFinderVC: UITableViewController {
     private var searchHelper = SearchHelper()
     private var searchResults = SearchResults(exactMatch: [], partialMatch: [])
     private var searchController: UISearchController! // owned strong ref
+    private var manualSearchButton: UIBarButtonItem! // owned strong ref
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.clearsSelectionOnViewWillAppear = false
         setupSearch()
+
+        manualSearchButton = UIBarButtonItem(
+            barButtonSystemItem: .search,
+            target: self,
+            action: #selector(didPressManualSearch))
+        navigationItem.rightBarButtonItem = manualSearchButton
+
         refreshDatabaseName()
         updateSearchCriteria()
     }
@@ -217,6 +225,12 @@ class EntryFinderVC: UITableViewController {
             let selectedEntry = searchResults.partialMatch[iPartialResult].entries[indexPath.row].entry
             delegate?.entryFinder(self, didSelectEntry: selectedEntry)
         }
+    }
+    
+    @objc func didPressManualSearch(_ sender: Any) {
+        serviceIdentifiers.removeAll()
+        updateSearchCriteria()
+        searchController.searchBar.becomeFirstResponder()
     }
     
     @IBAction func didPressLockDatabase(_ sender: Any) {
