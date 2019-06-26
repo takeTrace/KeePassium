@@ -85,6 +85,7 @@ public class Settings {
 
         // Backup
         case backupDatabaseOnSave
+        case backupKeepingDuration
         
         // AutoFill crash watchdog
         case autoFillFinishedOK
@@ -298,6 +299,52 @@ public class Settings {
                 }
                 return result
             }
+        }
+    }
+    
+    /// Allowed age of backup files
+    public enum BackupKeepingDuration: Int {
+        public static let allValues: [BackupKeepingDuration] = [
+            .forever, _1year, _6months, _4weeks, _1week, _1day, _4hours, _1hour
+        ]
+        case _1hour = 3600
+        case _4hours = 14400
+        case _1day = 86400
+        case _1week = 604_800
+        case _4weeks = 2_419_200
+        case _6months = 15_552_000
+        case _1year = 31_536_000
+        case forever
+
+        public var seconds: TimeInterval {
+            switch self {
+            case .forever:
+                return TimeInterval.infinity
+            default:
+                return TimeInterval(self.rawValue)
+            }
+        }
+        
+        public var shortTitle: String {
+            switch self {
+            case .forever:
+                return NSLocalizedString("Forever", comment: "One of the possible values of the 'Keep Backup Files (Duration)' setting. Please keep it short. Will be shown as 'Keep Backup Files: Forever'")
+            default:
+                let formatter = DateComponentsFormatter()
+                formatter.allowedUnits = [.year, .month, .day, .hour]
+                formatter.collapsesLargestUnit = true
+                formatter.maximumUnitCount = 1
+                formatter.unitsStyle = .full
+                guard let result = formatter.string(from: TimeInterval(self.rawValue)) else {
+                    assertionFailure()
+                    return "?"
+                }
+                return result
+            }
+        }
+        
+        public var fullTitle: String {
+            return shortTitle
         }
     }
     
@@ -909,6 +956,27 @@ public class Settings {
         }
     }
     
+    /// Maximum allowed age of backup files
+    public var backupKeepingDuration: BackupKeepingDuration {
+        get {
+            if let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.backupKeepingDuration.rawValue) as? Int,
+                let timeout = BackupKeepingDuration(rawValue: stored)
+            {
+                return timeout
+            }
+            return BackupKeepingDuration.forever
+        }
+        set {
+            let oldValue = backupKeepingDuration
+            UserDefaults.appGroupShared.set(
+                newValue.rawValue,
+                forKey: Keys.backupKeepingDuration.rawValue)
+            if newValue != oldValue {
+                postChangeNotification(changedKey: Keys.backupKeepingDuration)
+            }
+        }
+    }
     // MARK: - AutoFill crash watchdog
     
     /// Is set to `false` while AutoFill is running,
