@@ -128,10 +128,36 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Backup" id="HjD-9G-X8p">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" tag="70" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="coD-Om-Vfm" imageView="NaE-pd-mUb" style="IBUITableViewCellStyleDefault" id="v6d-Ag-heE" userLabel="Data Backup Cell">
+                                        <rect key="frame" x="0.0" y="343.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="v6d-Ag-heE" id="EbI-MV-DyE">
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Automatic Backup" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="coD-Om-Vfm">
+                                                    <rect key="frame" x="60" y="0.0" width="225" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" name="PrimaryText"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="settings-backup-listitem" id="NaE-pd-mUb">
+                                                    <rect key="frame" x="16" y="7" width="29" height="29"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="tintColor" name="IconTint"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Support" id="cBS-jW-dHU">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" tag="70" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="QlM-VS-hle" detailTextLabel="RNK-fS-Fvx" imageView="LZW-Tf-LiZ" style="IBUITableViewCellStyleSubtitle" id="UmW-JW-qMs">
-                                        <rect key="frame" x="0.0" y="343.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="443.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UmW-JW-qMs" id="PAH-7H-PLZ">
                                             <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
@@ -160,7 +186,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="80" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="PpA-oZ-kr2" detailTextLabel="qhK-lw-bGy" imageView="khe-dH-O9L" style="IBUITableViewCellStyleSubtitle" id="LFP-f4-LpI" userLabel="Diagnostic Log Cell">
-                                        <rect key="frame" x="0.0" y="387.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="487.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LFP-f4-LpI" id="2mk-GN-MHl">
                                             <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
@@ -189,7 +215,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="80" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="c5H-hS-sU3" detailTextLabel="HYe-lP-dCp" imageView="MMj-kh-hkT" style="IBUITableViewCellStyleSubtitle" id="yxc-eD-Hxa">
-                                        <rect key="frame" x="0.0" y="431.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="531.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yxc-eD-Hxa" id="F9P-9O-w0c">
                                             <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
@@ -218,7 +244,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="80" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="DNo-Rs-0EP" imageView="zxE-9P-EpX" style="IBUITableViewCellStyleDefault" id="7mL-Oc-jtm">
-                                        <rect key="frame" x="0.0" y="475.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="575.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7mL-Oc-jtm" id="yww-UZ-yiW">
                                             <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
@@ -260,6 +286,7 @@
                         <outlet property="aboutAppCell" destination="7mL-Oc-jtm" id="TSR-A5-4oN"/>
                         <outlet property="appSafetyCell" destination="bPA-Wc-g4R" id="hjA-F2-UAv"/>
                         <outlet property="contactSupportCell" destination="UmW-JW-qMs" id="L9T-iS-tio"/>
+                        <outlet property="dataBackupCell" destination="v6d-Ag-heE" id="66r-rF-FlI"/>
                         <outlet property="dataSafetyCell" destination="rD3-1z-wKc" id="NOP-dI-5CW"/>
                         <outlet property="diagnosticLogCell" destination="LFP-f4-LpI" id="2yE-Si-hL6"/>
                         <outlet property="rateTheAppCell" destination="yxc-eD-Hxa" id="Zjt-Oz-jyK"/>
@@ -278,6 +305,7 @@
         <image name="help-about-listitem" width="29" height="29"/>
         <image name="search-listitem" width="29" height="29"/>
         <image name="settings-app-lock-listitem" width="29" height="29"/>
+        <image name="settings-backup-listitem" width="29" height="29"/>
         <image name="settings-database-protection-listitem" width="29" height="29"/>
         <namedColor name="AuxiliaryText">
             <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
