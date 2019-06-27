@@ -87,8 +87,9 @@ public class Settings {
         case backupDatabaseOnSave
         case backupKeepingDuration
         
-        // AutoFill crash watchdog
+        // AutoFill
         case autoFillFinishedOK
+        case copyTOTPOnAutoFill
         
         // Password generator
         case passwordGeneratorLength
@@ -977,7 +978,8 @@ public class Settings {
             }
         }
     }
-    // MARK: - AutoFill crash watchdog
+    
+    // MARK: - AutoFill
     
     /// Is set to `false` while AutoFill is running,
     /// and set to `true` only after a controlled/graceful finish.
@@ -999,6 +1001,22 @@ public class Settings {
             // `isAutoFillFinishedOK` is written just before a possible out of memory crash,
             // so we must make sure it has actually been written.
             UserDefaults.appGroupShared.synchronize()
+        }
+    }
+    
+    /// Whether to copy TOTP when auto-filling an entry.
+    public var isCopyTOTPOnAutoFill: Bool {
+        get {
+            let stored = UserDefaults.appGroupShared
+                .object(forKey: Keys.copyTOTPOnAutoFill.rawValue)
+                as? Bool
+            return stored ?? true
+        }
+        set {
+            updateAndNotify(
+                oldValue: isCopyTOTPOnAutoFill,
+                newValue: newValue,
+                key: .copyTOTPOnAutoFill)
         }
     }
 
