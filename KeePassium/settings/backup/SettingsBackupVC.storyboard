@@ -95,9 +95,9 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Periodic cleanup" footerTitle="Old backup files will be automatically deleted to free up some storage space." id="B3L-Dk-Uq3" userLabel="Backup Maintenance">
+                            <tableViewSection headerTitle="Periodic cleanup" footerTitle="KeePassium can automatically delete old backup files to free up some storage space." id="B3L-Dk-Uq3" userLabel="Backup Maintenance">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="G42-gR-eKm" detailTextLabel="PKe-6p-Ssr" imageView="Ohh-2R-oTa" style="IBUITableViewCellStyleValue1" id="ljV-dR-Ihl">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="G42-gR-eKm" detailTextLabel="PKe-6p-Ssr" imageView="Ohh-2R-oTa" style="IBUITableViewCellStyleValue1" id="ljV-dR-Ihl">
                                         <rect key="frame" x="0.0" y="278.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ljV-dR-Ihl" id="Apj-dQ-zIf">
