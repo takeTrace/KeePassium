@@ -12,16 +12,25 @@ import KeePassiumLib
 class SettingsAutoFillVC: UITableViewController {
 
     @IBOutlet weak var copyTOTPSwitch: UISwitch!
-    
+
+    private var settingsNotifications: SettingsNotifications!
+
     // MARK: - VC life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        settingsNotifications = SettingsNotifications(observer: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        settingsNotifications.startObserving()
         refresh()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        settingsNotifications.stopObserving()
+        super.viewWillDisappear(animated)
     }
     
     func refresh() {
@@ -32,6 +41,14 @@ class SettingsAutoFillVC: UITableViewController {
     
     @IBAction func didToggleCopyTOTP(_ sender: UISwitch) {
         Settings.current.isCopyTOTPOnAutoFill = copyTOTPSwitch.isOn
+        refresh()
+    }
+}
+
+// MARK: - SettingsObserver
+extension SettingsAutoFillVC: SettingsObserver {
+    func settingsDidChange(key: Settings.Keys) {
+        guard key != .recentUserActivityTimestamp else { return }
         refresh()
     }
 }
