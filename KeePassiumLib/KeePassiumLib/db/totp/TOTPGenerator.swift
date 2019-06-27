@@ -13,6 +13,18 @@ open class TOTPGeneratorFactory {
     public static let totpSeedFieldName = "TOTP Seed"
     public static let totpSettingsFieldName = "TOTP Settings"
     
+    /// Checks if the entry contains TOTP parameter field(s),
+    /// and uses them to return a configured `TOTPGenerator` instance.
+    public static func makeGenerator(for entry: Entry) -> TOTPGenerator? {
+        guard let seedField =
+            entry.getField(with: TOTPGeneratorFactory.totpSeedFieldName) else { return nil }
+        guard let settingsField =
+            entry.getField(with: TOTPGeneratorFactory.totpSettingsFieldName) else { return nil }
+        return TOTPGeneratorFactory.makeGenerator(
+            seed: seedField.value,
+            settings: settingsField.value)
+    }
+    
     /// Checks if `entry` contains TOTP parameter field(s),
     /// and uses them to return a configured `TOTPGenerator` instance.
     public static func makeGenerator(from fields: [EntryField]) -> TOTPGenerator? {
