@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		750433AF2274CDD5000FE96B /* DatabaseCreatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750433AE2274CDD5000FE96B /* DatabaseCreatorCoordinator.swift */; };
+		75065A3322C41B3A00958243 /* SettingsAutoFillVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75065A3222C41B3A00958243 /* SettingsAutoFillVC.storyboard */; };
+		75065A3522C41B5200958243 /* SettingsAutoFillVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75065A3422C41B5200958243 /* SettingsAutoFillVC.swift */; };
 		750C683220D767F6001A6AA0 /* EditEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C683120D767F6001A6AA0 /* EditEntryVC.swift */; };
 		750CFBC821BA9ACD00E62B09 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7550D231215D758800360E0C /* AuthenticationServices.framework */; };
 		750CFBCB21BA9ACD00E62B09 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */; };
@@ -204,6 +206,8 @@
 
 /* Begin PBXFileReference section */
 		750433AE2274CDD5000FE96B /* DatabaseCreatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCreatorCoordinator.swift; sourceTree = "<group>"; };
+		75065A3222C41B3A00958243 /* SettingsAutoFillVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsAutoFillVC.storyboard; sourceTree = "<group>"; };
+		75065A3422C41B5200958243 /* SettingsAutoFillVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAutoFillVC.swift; sourceTree = "<group>"; };
 		750C683120D767F6001A6AA0 /* EditEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEntryVC.swift; sourceTree = "<group>"; };
 		750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "KeePassium AutoFill.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
@@ -373,6 +377,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		75065A3122C41B2200958243 /* autoFill */ = {
+			isa = PBXGroup;
+			children = (
+				75065A3222C41B3A00958243 /* SettingsAutoFillVC.storyboard */,
+				75065A3422C41B5200958243 /* SettingsAutoFillVC.swift */,
+			);
+			path = autoFill;
+			sourceTree = "<group>";
+		};
 		750CFBC921BA9ACD00E62B09 /* KeePassium AutoFill */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,6 +404,7 @@
 		7546FBC420C1024200C5D834 /* settings */ = {
 			isa = PBXGroup;
 			children = (
+				75065A3122C41B2200958243 /* autoFill */,
 				75C3800F217A0497006F74C2 /* appLock */,
 				7578488722C16D7D00BBEF9A /* backup */,
 				7546FBC520C1027700C5D834 /* SettingsVC.swift */,
@@ -793,6 +807,7 @@
 				75C38045217A3204006F74C2 /* PlaceholderVC.storyboard in Resources */,
 				75C38017217A0750006F74C2 /* SettingsDatabaseTimeoutVC.storyboard in Resources */,
 				75C3800C217A02DD006F74C2 /* SettingsFileSortingVC.storyboard in Resources */,
+				75065A3322C41B3A00958243 /* SettingsAutoFillVC.storyboard in Resources */,
 				75C3803F217A281D006F74C2 /* UnlockDatabaseVC.storyboard in Resources */,
 				75C38019217A078D006F74C2 /* SettingsClipboardTimeoutVC.storyboard in Resources */,
 				752ED68B2235543F00C20D3E /* SettingsDataProtectionVC.storyboard in Resources */,
@@ -901,6 +916,7 @@
 				75B5FB7720D53EA700D402D9 /* ViewEntryFieldsVC.swift in Sources */,
 				75B3B7BC20EABD9D007E8FA9 /* PlaceholderVC.swift in Sources */,
 				7578488622C165C900BBEF9A /* SettingsBackupVC.swift in Sources */,
+				75065A3522C41B5200958243 /* SettingsAutoFillVC.swift in Sources */,
 				7546FBD920C3A3F600C5D834 /* Watchdog.swift in Sources */,
 				75CA73912144381200ADAD64 /* KeyboardLayoutConstraint.swift in Sources */,
 				757FB3CA21F8D34A00F016FA /* PasscodeInputVC.swift in Sources */,
