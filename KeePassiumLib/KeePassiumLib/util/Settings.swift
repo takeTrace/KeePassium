@@ -110,12 +110,19 @@ public class Settings {
     // MARK: - Internal types
     
     public enum AppLockTimeout: Int {
+        /// The start event of the timeout
+        public enum TriggerMode {
+            case userIdle
+            case appMinimized
+        }
+        
         public static let allValues = [
-            immediately, /* after5seconds,*/ after15seconds, after30seconds,
+            immediately, after3seconds, after15seconds, after30seconds,
             after1minute, after2minutes, after5minutes]
+        
         case never = -1 // left for backward compatibility
         case immediately = 0
-        case after5seconds = 5
+        case after3seconds = 3
         case after15seconds = 15
         case after30seconds = 30
         case after1minute = 60
@@ -124,6 +131,17 @@ public class Settings {
         
         public var seconds: Int {
             return self.rawValue
+        }
+        
+        public var triggerMode: TriggerMode {
+            switch self {
+            case .never,
+                 .immediately,
+                 .after3seconds:
+                return .appMinimized
+            default:
+                return .userIdle
+            }
         }
         
         public var fullTitle: String {
@@ -165,11 +183,11 @@ public class Settings {
             }
         }
         public var description: String? {
-            switch self {
-            case .immediately:
-                return NSLocalizedString("When leaving the app", comment: "A description for the 'Lock Application: Immediately'.")
-            default:
-                return nil
+            switch triggerMode {
+            case .appMinimized:
+                return NSLocalizedString("After leaving the app", comment: "A description for AppLock timeout trigger 'when the app is minimized'. For example: 'Lock Timeout: 3 seconds (After leaving the app)")
+            case .userIdle:
+                return NSLocalizedString("After last interaction", comment: "A description for AppLock timeout trigger event 'when the user is idle'. For example: 'Lock Timeout: 3 seconds (After last interaction)")
             }
         }
     }
