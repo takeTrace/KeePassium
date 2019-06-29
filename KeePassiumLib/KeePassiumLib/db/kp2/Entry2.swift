@@ -492,6 +492,9 @@ public class Entry2: Entry {
         Diag.verbose("Loading XML: entry times")
         let db = database as! Database2
         
+        // Some apps create empty-value expiryTime tags for non-expiring entries.
+        // So we validate the expiry time below, only after parsing all times.
+        var optionalExpiryTime: Date?
         for tag in xml.children {
             switch tag.name {
             case Xml2.lastModificationTime:
@@ -519,13 +522,18 @@ public class Entry2: Entry {
                 }
                 lastAccessTime = time
             case Xml2.expiryTime:
-                guard let time = db.xmlStringToDate(tag.value) else {
+                guard let tagValue = tag.value else {
+                    Diag.warning("Entry/Times/ExpiryTime is nil")
+                    optionalExpiryTime = nil // acceptable if canExpire value is/will be false
+                    continue
+                }
+                guard let time = db.xmlStringToDate(tagValue) else {
                     Diag.error("Cannot parse Entry/Times/ExpiryTime as Date")
                     throw Xml2.ParsingError.malformedValue(
                         tag: "Entry/Times/ExpiryTime",
-                        value: tag.value)
+                        value: tagValue)
                 }
-                expiryTime = time
+                optionalExpiryTime = time
             case Xml2.expires:
                 self.canExpire = Bool(string: tag.value)
             case Xml2.usageCount:
@@ -541,6 +549,21 @@ public class Entry2: Entry {
             default:
                 Diag.error("Unexpected XML tag in Entry/Times: \(tag.name)")
                 throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: "Entry/Times/*")
+            }
+        }
+        
+        if let expiryTime = optionalExpiryTime  {
+            self.expiryTime = expiryTime
+        } else {
+            if canExpire {
+                Diag.error("Parsed an entry that can expire, but Entry/Times/ExpiryTime is nil")
+                throw Xml2.ParsingError.malformedValue(
+                    tag: "Entry/Times/ExpiryTime",
+                    value: nil)
+            } else {
+                // The entry does not expire, so just set the missing expiry date
+                // to a reasonable value.
+                self.expiryTime = Date.distantFuture
             }
         }
     }
