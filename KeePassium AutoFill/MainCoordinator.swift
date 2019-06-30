@@ -521,6 +521,7 @@ extension MainCoordinator: EntryFinderDelegate {
 // MARK: - DiagnosticsViewerDelegate
 extension MainCoordinator: DiagnosticsViewerDelegate {
     func didPressCopy(in diagnosticsViewer: DiagnosticsViewerVC, text: String) {
+        Clipboard.general.insert(text: text, timeout: nil)
         let infoAlert = UIAlertController.make(
             title: nil,
             message: NSLocalizedString(
