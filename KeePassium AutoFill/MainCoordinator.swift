@@ -520,7 +520,7 @@ extension MainCoordinator: EntryFinderDelegate {
 
 // MARK: - DiagnosticsViewerDelegate
 extension MainCoordinator: DiagnosticsViewerDelegate {
-    func diagnosticsViewer(_ sender: DiagnosticsViewerVC, didCopyContents text: String) {
+    func didPressCopy(in diagnosticsViewer: DiagnosticsViewerVC, text: String) {
         let infoAlert = UIAlertController.make(
             title: nil,
             message: NSLocalizedString(
