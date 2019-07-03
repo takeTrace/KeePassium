@@ -32,10 +32,10 @@ class SettingsVC: UITableViewController, Refreshable {
     
     /// For static cells that can hide/appear dynamically
     private enum CellIndexPath {
-        static let premiumTrial = IndexPath(row: 0, section: 3)
-        static let premiumStatus = IndexPath(row: 1, section: 3)
-        static let restorePurchase = IndexPath(row: 2, section: 3)
-        static let manageSubscription = IndexPath(row: 3, section: 3)
+        static let premiumTrial = IndexPath(row: 0, section: 4)
+        static let premiumStatus = IndexPath(row: 1, section: 4)
+        static let restorePurchase = IndexPath(row: 2, section: 4)
+        static let manageSubscription = IndexPath(row: 3, section: 4)
     }
     /// Indices of hidden cells (for now set only in refreshPremiumStatus)
     private var hiddenIndexPaths = Set<IndexPath>()
