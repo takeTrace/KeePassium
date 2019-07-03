@@ -136,6 +136,9 @@ public class PremiumManager: NSObject {
         NotificationCenter.default.post(name: PremiumManager.statusUpdateNotification, object: self)
     }
 
+    /// Estimates app usage duration for non-subscribers
+    public let usageMonitor = UsageMonitor()
+    
     private override init() {
         super.init()
         updateStatus(allowSubscriptionExpiration: true)

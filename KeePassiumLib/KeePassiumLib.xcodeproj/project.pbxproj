@@ -14,6 +14,7 @@
 		750FA52422BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */; };
 		756B66F122D7C5E0003533E0 /* TOTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B66F022D7C5E0003533E0 /* TOTPTests.swift */; };
 		7538167E22B15FC7000FA4BD /* Settings+premium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7538167D22B15FC7000FA4BD /* Settings+premium.swift */; };
+		75384B9922CCB76800157598 /* UsageMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75384B9822CCB76800157598 /* UsageMonitor.swift */; };
 		75A26770228DAC440097C693 /* PremiumManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A2676F228DAC430097C693 /* PremiumManager.swift */; };
 		75A2677B229045A60097C693 /* PremiumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A2677A229045A60097C693 /* PremiumFeature.swift */; };
 		75C764E4226F475500025F8B /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D0C76A2174AF1F00C64C93 /* KeePassiumLib.framework */; };
@@ -148,6 +149,7 @@
 		750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v3-aes-2fi-nocomp.kdbx"; sourceTree = "<group>"; };
 		756B66F022D7C5E0003533E0 /* TOTPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPTests.swift; sourceTree = "<group>"; };
 		7538167D22B15FC7000FA4BD /* Settings+premium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+premium.swift"; sourceTree = "<group>"; };
+		75384B9822CCB76800157598 /* UsageMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageMonitor.swift; sourceTree = "<group>"; };
 		75A2676F228DAC430097C693 /* PremiumManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumManager.swift; sourceTree = "<group>"; };
 		75A2677A229045A60097C693 /* PremiumFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumFeature.swift; sourceTree = "<group>"; };
 		75C764DF226F475500025F8B /* KeePassiumLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeePassiumLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,6 +313,7 @@
 				75A2676F228DAC430097C693 /* PremiumManager.swift */,
 				75A2677A229045A60097C693 /* PremiumFeature.swift */,
 				7538167D22B15FC7000FA4BD /* Settings+premium.swift */,
+				75384B9822CCB76800157598 /* UsageMonitor.swift */,
 			);
 			path = premium;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				75F4ACEF217749DC00B22D8B /* UserDefaults+appGroupShared.swift in Sources */,
 				75F4ACDF2177469500B22D8B /* TemporaryFileURL.swift in Sources */,
 				75D09C412174F77000F7DEF2 /* Database1.swift in Sources */,
+				75384B9922CCB76800157598 /* UsageMonitor.swift in Sources */,
 				75F594B8221BDC51001729FD /* SettingsMigrator.swift in Sources */,
 				75D09C422174F77000F7DEF2 /* Header1.swift in Sources */,
 				75D09BD22174F76500F7DEF2 /* ChaCha20.swift in Sources */,
