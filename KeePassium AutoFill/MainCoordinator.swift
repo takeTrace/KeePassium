@@ -63,6 +63,9 @@ class MainCoordinator: NSObject, Coordinator {
                 animated: true,
                 completion: nil)
         }
+
+        PremiumManager.shared.usageMonitor.startInterval()
+
         rootController.present(pageController, animated: false, completion: nil)
         startMainFlow()
     }
@@ -86,6 +89,7 @@ class MainCoordinator: NSObject, Coordinator {
     func cleanup() {
         databaseManagerNotifications?.stopObserving()
         DatabaseManager.shared.closeDatabase(clearStoredKey: false)
+        PremiumManager.shared.usageMonitor.stopInterval()
     }
 
     /// Closes all view controllers and quits the extension.
