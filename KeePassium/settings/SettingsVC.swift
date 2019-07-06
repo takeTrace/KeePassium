@@ -251,6 +251,7 @@ class SettingsVC: UITableViewController, Refreshable {
     
     @objc private func refreshPremiumStatus(animated: Bool) {
         let premiumManager = PremiumManager.shared
+        premiumManager.usageMonitor.refresh()
         premiumManager.updateStatus()
         switch premiumManager.status {
         case .initialGracePeriod:
@@ -326,15 +327,18 @@ class SettingsVC: UITableViewController, Refreshable {
             setCellVisibility(restorePurchasesCell, isHidden: false)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             
-            let appUsageDuration = premiumManager.usageMonitor.getAppUsageDuration()
-            if appUsageDuration > 60.0 {
+            let appUsageDuration = premiumManager.usageMonitor.getAppUsageDuration(.perYear)
+            var usageLabelText: String? = nil
+            if appUsageDuration > 60.0,
                 let timeFormatted = DateComponentsFormatter.format(
                     appUsageDuration,
-                    allowedUnits: [.year, .month, .day, .hour, .minute],
+                    allowedUnits: [.hour, .minute],
                     maxUnitCount: 1,
-                    style: .full) ?? "?"
-                premiumTrialCell.detailTextLabel?.text = "App in use: \(timeFormatted)/month".localized(comment: "Status: how long the app has been used over the last 30 days. For example: `App in use: 22 minutes/month`")
+                    style: .brief)
+            {
+                usageLabelText = "Estimated app use: \(timeFormatted)/year".localized(comment: "Status: how long the app has been used during some time period. For example: `Estimated app use: 10 hr/year`")
             }
+            premiumTrialCell.detailTextLabel?.text = usageLabelText
             DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
                 [weak self] in
                 self?.refreshPremiumStatus(animated: false)
