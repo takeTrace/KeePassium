@@ -12,9 +12,9 @@ import Foundation
 public typealias DailyAppUsageHistory = [Int: TimeInterval]
 
 public class UsageMonitor {
-    private let appUseDurationKeyKey = "dailyAppUsageDuration"
     private var startTime: Date?
     
+    private let appUseDurationKey = "dailyAppUsageDuration"
     private let referenceDate = Date(timeIntervalSinceReferenceDate: 0.0)
     
     /// Number of history entries to keep (possibly sparse)
@@ -108,7 +108,7 @@ public class UsageMonitor {
     // MARK: - Persistant storage
     
     private func loadHistoryData() -> DailyAppUsageHistory {
-        guard let historyData = UserDefaults.appGroupShared.data(forKey: appUseDurationKeyKey) else {
+        guard let historyData = UserDefaults.appGroupShared.data(forKey: appUseDurationKey) else {
             // probably first launch, make a fresh history
             return DailyAppUsageHistory()
         }
@@ -124,7 +124,7 @@ public class UsageMonitor {
     
     private func saveHistoryData(_ history: DailyAppUsageHistory) {
         let historyData = NSKeyedArchiver.archivedData(withRootObject: history)
-        UserDefaults.appGroupShared.set(historyData, forKey: appUseDurationKeyKey)
+        UserDefaults.appGroupShared.set(historyData, forKey: appUseDurationKey)
         cachedUsageDurationNeedUpdate = true
     }
     
