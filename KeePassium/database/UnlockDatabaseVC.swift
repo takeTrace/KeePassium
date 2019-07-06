@@ -150,9 +150,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     
     @objc private func refreshPremiumStatus() {
         switch PremiumManager.shared.status {
-        case .initialGracePeriod, .expired:
+        case .initialGracePeriod,
+             .freeLightUse,
+             .freeHeavyUse:
             getPremiumButton.isHidden = false
-        case .subscribed, .lapsed:
+        case .subscribed,
+             .lapsed:
             getPremiumButton.isHidden = true
         }
     }

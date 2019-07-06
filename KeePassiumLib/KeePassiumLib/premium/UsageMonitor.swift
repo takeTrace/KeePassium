@@ -37,14 +37,26 @@ public class UsageMonitor {
         cleanupObsoleteData()
     }
     
+    private var isMonitoringEnabled: Bool {
+        switch PremiumManager.shared.status {
+        case .initialGracePeriod,
+             .subscribed:
+            return false
+        case .lapsed, // keeping count in case it will never be renewed
+             .freeLightUse,
+             .freeHeavyUse:
+            return true
+        }
+    }
+    
     /// Starts counting the time of a use interval.
     @objc public func startInterval() {
-        guard PremiumManager.shared.status != .subscribed else {
-            // already subscribed, no need to monitor the usage
+        if isMonitoringEnabled {
+            startTime = Date.now
+        } else {
+            // don't monitor
             startTime = nil
-            return
         }
-        startTime = Date.now
     }
     
     /// Stops counting the time of a use interval.

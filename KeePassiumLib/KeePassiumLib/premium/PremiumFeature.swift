@@ -35,4 +35,25 @@ public enum PremiumFeature: Int {
     /// Can edit entries and groups; otherwise read-only mode
     /// (nothing involving DB saving will be allowed)
     case canEditDatabase = 5
+    
+    /// Defines whether this premium feature may be used with given premium status.
+    ///
+    /// - Parameter status: status to check availability against
+    /// - Returns: true iff the feature can be used
+    public func isAvailable(in status: PremiumManager.Status) -> Bool {
+        switch self {
+        case .canUseMultipleDatabases:
+            return status == .subscribed || status == .lapsed
+        case .canUseBiometricAppLock:
+            return status != .freeHeavyUse
+        case .canUseLongDatabaseTimeouts:
+            return status == .subscribed || status == .lapsed
+        case .canPreviewAttachments:
+            return status != .freeHeavyUse
+        case .canRememberKeyFiles:
+            return true
+        case .canEditDatabase:
+            return true
+        }
+    }
 }

@@ -319,31 +319,21 @@ class SettingsVC: UITableViewController, Refreshable {
                 [weak self] in
                 self?.refreshPremiumStatus(animated: false)
             }
-        case .expired:
+        case .freeLightUse,
+             .freeHeavyUse:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: true)
             setCellVisibility(restorePurchasesCell, isHidden: false)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             
-            if let subscriptionExpiryDate = premiumManager.getPremiumExpiryDate() {
-                // had a subscription, it expired
-                let secondsAgo = abs(subscriptionExpiryDate.timeIntervalSinceNow)
+            let appUsageDuration = premiumManager.usageMonitor.getAppUsageDuration()
+            if appUsageDuration > 60.0 {
                 let timeFormatted = DateComponentsFormatter.format(
-                    secondsAgo,
-                    allowedUnits: [.year, .month, .day, .hour, .minute, .second], //TODO: get rid of seconds
+                    appUsageDuration,
+                    allowedUnits: [.year, .month, .day, .hour, .minute],
                     maxUnitCount: 1,
                     style: .full) ?? "?"
-                premiumTrialCell.detailTextLabel?.text = "Expired \(timeFormatted) ago".localized(comment: "Status: how long ago the premium subscription has expired. For example: `Expired 12 days ago`")
-            } else {
-                // had a grace period, it ended
-                let secondsAgo = abs(premiumManager.gracePeriodSecondsRemaining)
-                let timeFormatted = DateComponentsFormatter.format(
-                    secondsAgo,
-                    allowedUnits: [.year, .month, .day, .hour, .minute, .second], //TODO: get rid of seconds
-                    maxUnitCount: 1,
-                    style: .full) ?? "?"
-                premiumTrialCell.detailTextLabel?.text = "Free trial ended \(timeFormatted) ago".localized(comment: "Status: how long ago the free trial (grace period) has expired. For example: `Free trial ended 12 days ago`")
-                
+                premiumTrialCell.detailTextLabel?.text = "App in use: \(timeFormatted)/month".localized(comment: "Status: how long the app has been used over the last 30 days. For example: `App in use: 22 minutes/month`")
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
                 [weak self] in

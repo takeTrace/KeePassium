@@ -13,6 +13,7 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     private let cellID = "Cell"
 
     private var premiumUpgradeHelper = PremiumUpgradeHelper()
+    private var premiumStatus: PremiumManager.Status = .initialGracePeriod
     
     public static func make() -> UIViewController {
         return SettingsDatabaseTimeoutVC.instantiateFromStoryboard()
@@ -25,6 +26,7 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
             selector: #selector(refreshPremiumStatus),
             name: PremiumManager.statusUpdateNotification,
             object: nil)
+        refreshPremiumStatus()
     }
     
     func refresh() {
@@ -32,6 +34,7 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     }
 
     @objc func refreshPremiumStatus() {
+        premiumStatus = PremiumManager.shared.status
         refresh()
     }
     
@@ -70,13 +73,10 @@ class SettingsDatabaseTimeoutVC: UITableViewController, Refreshable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let timeout = Settings.DatabaseLockTimeout.allValues[indexPath.row]
-        if Settings.current.isAllowedDatabaseLockTimeoutWhenExpired(timeout) {
+        if Settings.current.isAvailable(timeout: timeout, for: premiumStatus) {
             applyTimeoutAndDismiss(timeout)
         } else {
-            premiumUpgradeHelper.performActionOrOfferUpgrade(.canUseLongDatabaseTimeouts, in: self) {
-                [weak self] in
-                self?.applyTimeoutAndDismiss(timeout)
-            }
+            premiumUpgradeHelper.offerUpgrade(.canUseLongDatabaseTimeouts, in: self)
         }
     }
     
