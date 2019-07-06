@@ -29,7 +29,7 @@ public class PremiumUpgradeHelper {
         in viewController: UIViewController,
         actionHandler: @escaping ()->Void)
     {
-        if feature.isAvailable(in: PremiumManager.shared.status) {
+        if PremiumManager.shared.isAvailable(feature: feature) {
             actionHandler()
         } else {
             offerUpgrade(feature, in: viewController)
