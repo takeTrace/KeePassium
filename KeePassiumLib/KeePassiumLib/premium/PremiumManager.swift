@@ -192,7 +192,7 @@ public class PremiumManager: NSObject {
             }
         }
         if !wasStatusSet { // ok, default to .free
-            let appUsage = usageMonitor.getAppUsageDuration()
+            let appUsage = usageMonitor.getAppUsageDuration(.perMonth)
             if appUsage < heavyUseThreshold {
                 status = .freeLightUse
             } else {

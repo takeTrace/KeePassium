@@ -12,9 +12,25 @@ import Foundation
 public typealias DailyAppUsageHistory = [Int: TimeInterval]
 
 public class UsageMonitor {
-    private var startTime: Date?
+    /// Defines the time interval for which to report the use duration.
+    public enum ReportType {
+        case perMonth
+        case perYear
+
+        fileprivate var scale: Double {
+            switch self {
+            case .perMonth:
+                return 1.0
+            case .perYear:
+                return 12.0
+            }
+        }
+    }
     
     private let appUseDurationKey = "dailyAppUsageDuration"
+    private var startTime: Date?
+
+    /// Start of time for statistics
     private let referenceDate = Date(timeIntervalSinceReferenceDate: 0.0)
     
     /// Number of history entries to keep (possibly sparse)
@@ -49,6 +65,8 @@ public class UsageMonitor {
         }
     }
     
+    // MARK: - Start/stop event handlers
+    
     /// Starts counting the time of a use interval.
     @objc public func startInterval() {
         if isMonitoringEnabled {
@@ -57,6 +75,14 @@ public class UsageMonitor {
             // don't monitor
             startTime = nil
         }
+    }
+    
+    /// Updates the time counter to account for the ongoing use.
+    public func refresh() {
+        guard startTime != nil else { return } // time monitoring is not active
+        
+        stopInterval()
+        startInterval()
     }
     
     /// Stops counting the time of a use interval.
@@ -75,11 +101,13 @@ public class UsageMonitor {
         Diag.verbose(String(format: "Usage time added: %.1f s", secondsElapsed))
     }
     
+    // MARK: - Stats reports
+    
     /// Returns app usage duration over the last `maxHistoryLength` days.
     /// Can be expensive, but results are cached for subsequent calls.
-    public func getAppUsageDuration() -> TimeInterval {
+    public func getAppUsageDuration(_ reportType: ReportType) -> TimeInterval {
         guard cachedUsageDurationNeedUpdate else {
-            return cachedUsageDuration
+            return cachedUsageDuration * reportType.scale
         }
 
         cachedUsageDuration = 0.0
@@ -91,7 +119,7 @@ public class UsageMonitor {
             guard dayIndex > from else { return }
             cachedUsageDuration += dayUsage
         }
-        return cachedUsageDuration
+        return cachedUsageDuration * reportType.scale
     }
     
     /// Converts the `date` to an index for the DailyUsageStatsHistory,
