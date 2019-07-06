@@ -145,4 +145,12 @@ public class UsageMonitor {
         Diag.debug("Usage stats trimmed from \(history.keys.count) to \(trimmedHistory.keys.count) entries")
         saveHistoryData(trimmedHistory)
     }
+    
+    #if DEBUG
+    /// Clears the daily usage statistics.
+    public func resetStats() {
+        let emptyHistory = DailyAppUsageHistory()
+        saveHistoryData(emptyHistory)
+    }
+    #endif
 }

@@ -162,6 +162,7 @@ public class PremiumManager: NSObject {
     /// Pretends the app was just installed: removes all traces of previous subscription.
     public func resetSubscription() {
         try? Keychain.shared.clearPremiumExpiryDate()
+        usageMonitor.resetStats()
         Settings.current.resetFirstLaunchTimestampToNow()
         updateStatus(allowSubscriptionExpiration: true)
     }
