@@ -216,11 +216,23 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
 //                sourceCell.imageView?.image = icon
 //            }
             exportController.delegate = self
-            Diag.info("Will present attachment")
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                if !self.exportController.presentPreview(animated: true) {
-                    Diag.verbose("Preview not available, showing menu")
+            let isPreviewAllowed = PremiumManager.shared.isAvailable(feature: .canPreviewAttachments)
+            if isPreviewAllowed {
+                Diag.info("Will present attachment")
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    if !self.exportController.presentPreview(animated: true) {
+                        Diag.verbose("Preview not available, showing menu")
+                        self.exportController.presentOptionsMenu(
+                            from: sourceCell.frame,
+                            in: self.tableView,
+                            animated: true)
+                    }
+                }
+            } else {
+                Diag.debug("Will export attachment")
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.exportController.presentOptionsMenu(
                         from: sourceCell.frame,
                         in: self.tableView,
