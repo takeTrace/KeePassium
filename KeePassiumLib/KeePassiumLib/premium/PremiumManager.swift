@@ -106,22 +106,28 @@ public class PremiumManager: NSObject {
 
     /// Time since subscription expiration, when premium features are still available.
     private let lapsePeriodInSeconds: TimeInterval = 7 * 60
+    
+    /// What is considered heavy use (over the UsageMonitor.maxHistoryLength period)
+    private let heavyUseThreshold: TimeInterval = 5 * 60
 #else
-    private let lapsePeriodInSeconds: TimeInterval = 1 * 24 * 60 * 60
-    private let gracePeriodInSeconds: TimeInterval = 3 * 24 * 60 * 60
+    private let gracePeriodInSeconds: TimeInterval = 2 * 24 * 60 * 60 // 2 days
+    private let lapsePeriodInSeconds: TimeInterval = 1 * 24 * 60 * 60 // 1 day
+    private let heavyUseThreshold: TimeInterval =         1 * 60 * 60 // 1 hour
 #endif
 
     // MARK: - Subscription status
     
     public enum Status {
-        /// The user launched the app but did not use any premium features yet
+        /// The user just launched the app recently
         case initialGracePeriod
         /// Active premium subscription
         case subscribed
         /// Subscription recently expired, give the user a few days to renew
         case lapsed
-        /// Grace/lapse period expired
-        case expired
+        /// No subscription, light use
+        case freeLightUse
+        /// No subscription, heavy use
+        case freeHeavyUse
     }
     
     /// Current subscription status
@@ -156,9 +162,6 @@ public class PremiumManager: NSObject {
     /// Pretends the app was just installed: removes all traces of previous subscription.
     public func resetSubscription() {
         try? Keychain.shared.clearPremiumExpiryDate()
-        UserDefaults.appGroupShared.removeObject(
-            forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures
-        )
         Settings.current.resetFirstLaunchTimestampToNow()
         updateStatus(allowSubscriptionExpiration: true)
     }
@@ -171,17 +174,28 @@ public class PremiumManager: NSObject {
         }
         
         let previousStatus = status
-        status = .expired
+        var wasStatusSet = false
         if let expiryDate = getPremiumExpiryDate() {
             if expiryDate.timeIntervalSinceNow > 0 {
                 status = .subscribed
+                wasStatusSet = true
             } else if Date.now.timeIntervalSince(expiryDate) < lapsePeriodInSeconds {
                 status = .lapsed
+                wasStatusSet = true
             }
         } else {
             // was never subscribed
             if gracePeriodSecondsRemaining > 0 {
                 status = .initialGracePeriod
+                wasStatusSet = true
+            }
+        }
+        if !wasStatusSet { // ok, default to .free
+            let appUsage = usageMonitor.getAppUsageDuration()
+            if appUsage < heavyUseThreshold {
+                status = .freeLightUse
+            } else {
+                status = .freeHeavyUse
             }
         }
         
@@ -229,11 +243,6 @@ public class PremiumManager: NSObject {
     
     // MARK: - Grace period management
     
-    fileprivate enum UserDefaultsKey {
-        static let gracePeriodUpgradeNoticeShownForFeatures =
-            "com.keepassium.premium.gracePeriodUpgradeNoticeShownForFeatures"
-    }
-    
     public var gracePeriodSecondsRemaining: Double {
         let firstLaunchTimestamp = Settings.current.firstLaunchTimestamp
         let secondsFromFirstLaunch = abs(Date.now.timeIntervalSince(firstLaunchTimestamp))
@@ -257,44 +266,6 @@ public class PremiumManager: NSObject {
             else { return nil }
         let secondsLeft = lapsePeriodInSeconds - secondsSinceExpiration
         return secondsLeft
-    }
-
-    /// Remembers that upgrade notice for the given `feature` has been shown.
-    /// Use `wasGracePeriodUpgradeNoticeShown` to read remembered value.
-    public func setGracePeriodUpgradeNoticeShown(for feature: PremiumFeature) {
-        var shownNotices = [Int]()
-        if let storedShownNotices = UserDefaults.appGroupShared.array(
-            forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures) as? [Int]
-        {
-            shownNotices = storedShownNotices
-        }
-        if !shownNotices.contains(feature.rawValue) {
-            shownNotices.append(feature.rawValue)
-            UserDefaults.appGroupShared.set(
-                shownNotices,
-                forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures)
-            updateStatus()
-        }
-    }
-    
-    /// True iff the app should offer an upgrade to premium.
-    /// `feature` helps to avoid nagging about the same premium feature.
-    public func shouldShowUpgradeNotice(for feature: PremiumFeature) -> Bool {
-        updateStatus()
-        switch status {
-        case .subscribed, .lapsed:
-            return false
-        case .expired:
-            return true
-        case .initialGracePeriod:
-            var shownNotices = [Int]()
-            if let storedShownNotices = UserDefaults.appGroupShared.array(
-                forKey: UserDefaultsKey.gracePeriodUpgradeNoticeShownForFeatures) as? [Int]
-            {
-                shownNotices = storedShownNotices
-            }
-            return !shownNotices.contains(feature.rawValue)
-        }
     }
 
     // MARK: - Available in-app products

@@ -17,6 +17,7 @@ public class PremiumUpgradeHelper {
         // left empty
     }
     
+    
     /// Checks premium status before permitting access to a premium feature.
     ///
     /// - Parameters:
@@ -28,77 +29,38 @@ public class PremiumUpgradeHelper {
         in viewController: UIViewController,
         actionHandler: @escaping ()->Void)
     {
-        let premiumManager = PremiumManager.shared
-        if premiumManager.shouldShowUpgradeNotice(for: feature) {
-            PremiumUpgradeHelper.showUpgradeNotice(
-                in: viewController,
-                for: feature,
-                premiumActionHandler: actionHandler,
-                upgradeActionHandler: { [weak self] in
-                    guard let self = self else { return }
-                    self.premiumCoordinator = PremiumCoordinator(
-                        presentingViewController: viewController
-                    )
-                    self.premiumCoordinator?.delegate = self
-                    self.premiumCoordinator?.start()
-                }
-            )
-            premiumManager.setGracePeriodUpgradeNoticeShown(for: feature)
-        } else {
+        if feature.isAvailable(in: PremiumManager.shared.status) {
             actionHandler()
+        } else {
+            offerUpgrade(feature, in: viewController)
         }
     }
-    
-    
-    /// Displays "Please upgrade" VC.
-    ///
-    /// - Parameters:
-    ///   - viewController: host VC to present the upgrade notice
-    ///   - feature: which premium feature was requested by the user
-    ///   - premiumActionHandler: called when the user choses "Continue"
-    ///   - upgradeActionHandler: called when the user chooses "Upgrade'
-    static func showUpgradeNotice(
-        in viewController: UIViewController,
-        for feature: PremiumFeature,
-        premiumActionHandler: @escaping (()->Void),
-        upgradeActionHandler: @escaping (()->Void))
-    {
-        var message = feature.upgradeNoticeText
-        let secondsInOneDay = 24 * 60 * 60.0
-        let graceTimeLeft = PremiumManager.shared.gracePeriodSecondsRemaining
-        if graceTimeLeft > secondsInOneDay {
-            Diag.debug(String(format: "Grace period left: %.0f s", graceTimeLeft))
-            // When less than a day left: don't invite to look around, but allow to use the feature.
-            let gracePeriodFooter = "No pressure, though. Feel free to look around for a few days.".localized(comment: "Footer added to `Upgrade to Premium` notice during the free trial/grace period.")
-            message = message + "\n\n" + gracePeriodFooter
-        }
         
+    public func offerUpgrade(_ feature: PremiumFeature, in viewController: UIViewController) {
         let alertVC = UIAlertController(
             title: feature.titleName,
-            message: message,
+            message: feature.upgradeNoticeText,
             preferredStyle: .alert)
         let upgradeAction = UIAlertAction(
-            title: "Upgrade to Premium".localized(comment: "Action in `Upgrade to Premium` dialog: show upgrade options"),
+            title: "Upgrade to Premium".localized(comment: "Action in `Upgrade to Premium` dialog, opens the upgrade options screen"),
             style: .default,
-            handler: { _ in upgradeActionHandler() }
-        )
-        let continueAction = UIAlertAction(
-            title: "Continue Free Trial".localized(comment: "Action in `Upgrade to Premium` dialog: continue free trial"),
-            style: .cancel,
-            handler: { _ in premiumActionHandler() }
+            handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.premiumCoordinator = PremiumCoordinator(
+                    presentingViewController: viewController
+                )
+                self.premiumCoordinator?.delegate = self
+                self.premiumCoordinator?.start()
+            }
         )
         let cancelAction = UIAlertAction(
             title: LString.actionCancel,
             style: .cancel,
             handler: nil
         )
-        if graceTimeLeft > 0 {
-            alertVC.addAction(upgradeAction)
-            alertVC.addAction(continueAction)
-        } else {
-            alertVC.addAction(upgradeAction)
-            alertVC.addAction(cancelAction)
-        }
+        alertVC.addAction(upgradeAction)
+        alertVC.addAction(cancelAction)
+        
         viewController.present(alertVC, animated: true, completion: nil)
     }
 }
