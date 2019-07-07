@@ -499,6 +499,7 @@ extension ChooseDatabaseVC: UIDocumentPickerDelegate {
             assertionFailure("Unexpected document picker mode")
         }
         processPendingFileOperations()
+        navigationController?.popToViewController(self, animated: true) // dismiss eventual WelcomeVC
     }
 }
 
@@ -517,6 +518,7 @@ extension ChooseDatabaseVC: DatabaseCreatorCoordinatorDelegate {
         presentedViewController?.dismiss(animated: true) { // strong self
             self.databaseCreatorCoordinator = nil
         }
+        navigationController?.popToViewController(self, animated: true) // dismiss eventual WelcomeVC
         Settings.current.startupDatabase = urlRef
         updateDetailView(onlyInTwoPaneMode: false)
     }
