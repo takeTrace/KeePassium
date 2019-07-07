@@ -31,7 +31,7 @@ class DatabaseChooserVC: UITableViewController, Refreshable {
     
     weak var delegate: DatabaseChooserDelegate?
     
-    private var databaseRefs: [URLReference] = []
+    private(set) var databaseRefs: [URLReference] = []
 
     // handles background refresh of file attributes
     private let fileInfoReloader = FileInfoReloader()

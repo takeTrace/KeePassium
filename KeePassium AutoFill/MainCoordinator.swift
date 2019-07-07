@@ -353,7 +353,15 @@ extension MainCoordinator: DatabaseChooserDelegate {
     
     func databaseChooserShouldAddDatabase(_ sender: DatabaseChooserVC) {
         watchdog.restart()
-        addDatabase()
+        if sender.databaseRefs.count > 0 {
+            if PremiumManager.shared.isAvailable(feature: .canUseMultipleDatabases) {
+                addDatabase()
+            } else {
+                offerPremiumUpgrade(from: sender, for: .canUseMultipleDatabases)
+            }
+        } else {
+            addDatabase()
+        }
     }
     
     func databaseChooser(_ sender: DatabaseChooserVC, didSelectDatabase urlRef: URLReference) {
