@@ -85,16 +85,8 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
     }
     
     @IBAction func didToggleRememberUsedKeyFiles(_ sender: UISwitch) {
-        // First we must refresh to enforce the expired status,
-        // but remember the original switch state to apply it in callback.
-        let isSwitchOn = sender.isOn
+        Settings.current.isKeepKeyFileAssociations = sender.isOn
         refresh()
-        premiumUpgradeHelper.performActionOrOfferUpgrade(.canRememberKeyFiles, in: self) {
-            [weak self] in
-            guard let self = self else { return }
-            Settings.current.isKeepKeyFileAssociations = isSwitchOn
-            self.refresh()
-        }
     }
     
     @IBAction func didPressClearKeyFileAssociations(_ sender: Any) {
