@@ -12,12 +12,16 @@ public extension Date {
     /// A readability-improving wrapper for `Date()`
     static var now: Date { return Date() }
     
-    /// Cached instance of date formatter, for better performance.
-    private static let iso8601DateFormatter = { () -> DateFormatter in
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        return dateFormatter
+    private static let iso8601DateFormatter = { () -> ISO8601DateFormatter in
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter
+    }()
+    
+    private static let iso8601DateFormatterWithFractionalSeconds = { () -> ISO8601DateFormatter in
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions =  [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
     }()
     
     /// Number of seconds between 0001-01-01 00:00 and 2001-01-01 00:00,
@@ -27,7 +31,12 @@ public extension Date {
     /// Creates date from an ISO8601-formatted string.
     init?(iso8601string string: String?) {
         guard let string = string else { return nil }
-        if let date = Date.iso8601DateFormatter.date(from:string) {
+        // ISO8601DateFormatter can be configured to either expect only integer seconds
+        // (and return nil if they are fractional), or to expect only fractional seconds
+        // (and return nil if they are integer). So we have to try both configurations.
+        if let date = Date.iso8601DateFormatter.date(from: string) {
+            self = date
+        } else if let date = Date.iso8601DateFormatterWithFractionalSeconds.date(from: string) {
             self = date
         } else {
             return nil
@@ -46,7 +55,7 @@ public extension Date {
     
     /// Returns the date as an ISO8601-formatted string
     func iso8601String() -> String {
-        return ISO8601DateFormatter().string(from: self)
+        return Date.iso8601DateFormatter.string(from: self)
     }
     
     /// Returns the date as Base64-encoded UInt64 of seconds since
