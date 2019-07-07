@@ -31,5 +31,9 @@
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use FaceID to unlock KeePassium</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>keepassium</string>
+	</array>
 </dict>
 </plist>

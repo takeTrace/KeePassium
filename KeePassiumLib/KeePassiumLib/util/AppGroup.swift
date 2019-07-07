@@ -12,6 +12,12 @@ public class AppGroup {
     /// App Group identifier string.
     public static let id = "group.com.keepassium"
     
+    /// Predefined app custom URL scheme
+    public static let appURLScheme = "keepassium"
+    
+    /// Predefined URL to start premium upgrade
+    public static let upgradeToPremiumURL = URL(string: appURLScheme + ":upgradeToPremium")! // ok to force-unwrap
+    
     // True when running in main app, false for app extensions.
     public static var isMainApp: Bool {
         return applicationShared != nil

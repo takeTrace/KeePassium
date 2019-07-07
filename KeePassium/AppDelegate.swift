@@ -56,11 +56,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Diag.info("Opened with URL: \(inputURL.redacted) [inPlace: \(isOpenInPlace)]")
         
-        // By now, we might not have the UI to show import progress or errors.
-        // So defer the operation until there is UI.
-        FileKeeper.shared.prepareToAddFile(
-            url: inputURL,
-            mode: isOpenInPlace ? .openInPlace : .import)
+        if inputURL.scheme != AppGroup.appURLScheme {
+            // By now, we might not have the UI to show import progress or errors.
+            // So defer the operation until there is UI.
+            FileKeeper.shared.prepareToAddFile(
+                url: inputURL,
+                mode: isOpenInPlace ? .openInPlace : .import)
+        }
         
         DatabaseManager.shared.closeDatabase(clearStoredKey: false)
         return true

@@ -34,7 +34,7 @@ public enum LString {
     public static let actionRemoveFile = NSLocalizedString("Remove", comment: "Action/button to remove file from the app (the file remains, but the app forgets about it)")
     public static let actionUnlock = NSLocalizedString("Unlock", comment: "Action/button to unlock the App Lock with passcode")
     public static let actionContactUs = NSLocalizedString("Contact Us", comment: "Action/button to write an email to support")
-    
+    public static let actionUpgradeToPremium = NSLocalizedString("Upgrade to Premium", comment: "Action/button to start choosing premium versions and possibly buying one")
 
     // Error/warning messages
     public static let titleError = NSLocalizedString("Error", comment: "Title of an error message notification")

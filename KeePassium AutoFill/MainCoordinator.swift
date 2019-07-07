@@ -293,6 +293,55 @@ class MainCoordinator: NSObject, Coordinator {
         vcs[vcs.count - 1] = entriesVC
         navigationController.setViewControllers(vcs, animated: true)
     }
+    
+    // MARK: - Premium upgrade
+    
+    func offerPremiumUpgrade(from viewController: UIViewController, for feature: PremiumFeature) {
+        let upgradeAlertVC = UIAlertController(
+            title: feature.titleName,
+            message: feature.upgradeNoticeText,
+            preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: LString.actionCancel, style: .cancel, handler: nil)
+        let upgradeAction = UIAlertAction( title: LString.actionUpgradeToPremium, style: .default) {
+            [weak self] (action) in
+            let isURLOpened = self?.openURL(AppGroup.upgradeToPremiumURL) ?? false
+            if !isURLOpened {
+                Diag.warning("Failed to open main app")
+                self?.showManualUpgradeMessage()
+            }
+        }
+        upgradeAlertVC.addAction(upgradeAction)
+        upgradeAlertVC.addAction(cancelAction)
+        viewController.present(upgradeAlertVC, animated: true, completion: nil)
+    }
+
+    /// Opens the given URL.
+    /// Its scheme must be listed in Info.plist/LSApplicationQueriesSchemes array.
+    /// (This method must have exactly this signature, so that compiler
+    /// does not complain about #selector line)
+    ///
+    /// - Parameter url: the URL to open
+    /// - Returns: true iff opening was successful
+    @objc func openURL(_ url: URL) -> Bool {
+        var responder: UIResponder? = rootController
+        while responder != nil {
+            guard let application = responder as? UIApplication else {
+                responder = responder?.next
+                continue
+            }
+            let result = application.perform(#selector(openURL(_:)), with: url)
+            return result != nil
+        }
+        return false
+    }
+    
+    func showManualUpgradeMessage() {
+        let manualUpgradeAlert = UIAlertController.make(
+            title: "Premium Upgrade".localized(comment: "Title of a message related to upgrading to the premium version"),
+            message: "To upgrade, please manually open KeePassium from your home screen.".localized(comment: "Message shown when AutoFill cannot automatically open the main app for upgrading to a premium version."),
+            cancelButtonTitle: LString.actionOK)
+        navigationController.present(manualUpgradeAlert, animated: true, completion: nil)
+    }
 }
 
 // MARK: - DatabaseChooserDelegate
