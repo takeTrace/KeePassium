@@ -42,7 +42,7 @@ public class PremiumUpgradeHelper {
             message: feature.upgradeNoticeText,
             preferredStyle: .alert)
         let upgradeAction = UIAlertAction(
-            title: "Upgrade to Premium".localized(comment: "Action in `Upgrade to Premium` dialog, opens the upgrade options screen"),
+            title: LString.actionUpgradeToPremium,
             style: .default,
             handler: { [weak self] _ in
                 guard let self = self else { return }
