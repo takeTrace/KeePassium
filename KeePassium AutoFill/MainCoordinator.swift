@@ -37,7 +37,7 @@ class MainCoordinator: NSObject, Coordinator {
             navigationOrientation: .horizontal,
             options: [:]
         )
-        navigationController = UINavigationController()
+        navigationController = LongPressAwareNavigationController()
         navigationController.view.backgroundColor = .clear
         watchdog = Watchdog.shared // init
         super.init()
@@ -488,8 +488,8 @@ extension MainCoordinator: UIDocumentPickerDelegate {
     }
 }
 
-// MARK: - UINavigationControllerDelegate
-extension MainCoordinator: UINavigationControllerDelegate {
+// MARK: - LongPressAwareNavigationControllerDelegate
+extension MainCoordinator: LongPressAwareNavigationControllerDelegate {
     func navigationController(
         _ navigationController: UINavigationController,
         willShow viewController: UIViewController,
@@ -503,6 +503,33 @@ extension MainCoordinator: UINavigationControllerDelegate {
             DatabaseManager.shared.closeDatabase(clearStoredKey: false)
 //            navigationController.popToRootViewController(animated: true)
         }
+    }
+    
+    func didLongPressLeftSide(in navigationController: LongPressAwareNavigationController) {
+        guard let topVC = navigationController.topViewController else { return }
+        guard topVC is DatabaseChooserVC
+            || topVC is KeyFileChooserVC
+            || topVC is DatabaseUnlockerVC
+            || topVC is EntryFinderVC
+            || topVC is FirstSetupVC else { return }
+        
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(
+            title: "Show Diagnostic Log".localized(comment: "Action/button to show internal diagnostic log"),
+            style: .default,
+            handler: { [weak self] _ in
+                self?.showDiagnostics()
+            }
+        ))
+        actionSheet.addAction(
+            UIAlertAction(title: LString.actionCancel, style: .cancel, handler: nil)
+        )
+
+        actionSheet.modalPresentationStyle = .popover
+        if let popover = actionSheet.popoverPresentationController {
+            popover.barButtonItem = navigationController.navigationItem.leftBarButtonItem
+        }
+        topVC.present(actionSheet, animated: true)
     }
 }
 

@@ -28,6 +28,7 @@
 		750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */; };
 		750CFC0B21BADBCB00E62B09 /* DatabaseChooserVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 750CFC0A21BADBCB00E62B09 /* DatabaseChooserVC.storyboard */; };
 		750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D127D20CF071600BE0CCE /* EditGroupVC.swift */; };
+		7514CC9F22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514CC9E22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift */; };
 		751BE253211C395D0071050A /* ViewDiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */; };
 		7523F71321C94C7F0025C706 /* DiagnosticsViewerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7523F71221C94C7F0025C706 /* DiagnosticsViewerVC.storyboard */; };
 		7523F71521C94DD90025C706 /* DiagnosticsViewerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7523F71421C94DD90025C706 /* DiagnosticsViewerVC.swift */; };
@@ -217,6 +218,7 @@
 		750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseChooserVC.swift; sourceTree = "<group>"; };
 		750CFC0A21BADBCB00E62B09 /* DatabaseChooserVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DatabaseChooserVC.storyboard; sourceTree = "<group>"; };
 		750D127D20CF071600BE0CCE /* EditGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupVC.swift; sourceTree = "<group>"; };
+		7514CC9E22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressAwareNavigationController.swift; sourceTree = "<group>"; };
 		751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDiagnosticsVC.swift; sourceTree = "<group>"; };
 		7523F71221C94C7F0025C706 /* DiagnosticsViewerVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DiagnosticsViewerVC.storyboard; sourceTree = "<group>"; };
 		7523F71421C94DD90025C706 /* DiagnosticsViewerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsViewerVC.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 			isa = PBXGroup;
 			children = (
 				75B24DD421C523AE003C9486 /* SearchHelper.swift */,
+				7514CC9E22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				750CFBCB21BA9ACD00E62B09 /* CredentialProviderViewController.swift in Sources */,
 				757FB3CF21F9C51C00F016FA /* UITextView+border.swift in Sources */,
 				75CBAB9F21C1671F00B8AFE2 /* MainCoordinator.swift in Sources */,
+				7514CC9F22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift in Sources */,
 				75D3A3B121BAE66F00255FC3 /* DatabaseFileListCell.swift in Sources */,
 				7523F71521C94DD90025C706 /* DiagnosticsViewerVC.swift in Sources */,
 				7578487E22C02A9100BBEF9A /* UITableViewCell+demoEditActions.swift in Sources */,
