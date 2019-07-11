@@ -12,6 +12,7 @@
 		7505E8D12236FA0F00E5202E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7505E8D02236FA0F00E5202E /* StringExtension.swift */; };
 		750FA52322BAD51B009C7B05 /* v4-ar2-2fi-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 750FA51E22BAD51B009C7B05 /* v4-ar2-2fi-nocomp.kdbx */; };
 		750FA52422BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */; };
+		756B66F122D7C5E0003533E0 /* TOTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B66F022D7C5E0003533E0 /* TOTPTests.swift */; };
 		75C764E4226F475500025F8B /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D0C76A2174AF1F00C64C93 /* KeePassiumLib.framework */; };
 		75C764EB226F493300025F8B /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C764EA226F493300025F8B /* CryptoTests.swift */; };
 		75C764ED226F6E0D00025F8B /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C764EC226F6E0D00025F8B /* DatabaseTests.swift */; };
@@ -142,6 +143,7 @@
 		7505E8D02236FA0F00E5202E /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		750FA51E22BAD51B009C7B05 /* v4-ar2-2fi-nocomp.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v4-ar2-2fi-nocomp.kdbx"; sourceTree = "<group>"; };
 		750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v3-aes-2fi-nocomp.kdbx"; sourceTree = "<group>"; };
+		756B66F022D7C5E0003533E0 /* TOTPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPTests.swift; sourceTree = "<group>"; };
 		75C764DF226F475500025F8B /* KeePassiumLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeePassiumLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75C764E3226F475500025F8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75C764EA226F493300025F8B /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				75C764EE226F6F3C00025F8B /* resources */,
 				75C764EA226F493300025F8B /* CryptoTests.swift */,
 				75C764EC226F6E0D00025F8B /* DatabaseTests.swift */,
+				756B66F022D7C5E0003533E0 /* TOTPTests.swift */,
 				75C764E3226F475500025F8B /* Info.plist */,
 			);
 			path = KeePassiumLibTests;
@@ -731,6 +734,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75C764ED226F6E0D00025F8B /* DatabaseTests.swift in Sources */,
+				756B66F122D7C5E0003533E0 /* TOTPTests.swift in Sources */,
 				75C764EB226F493300025F8B /* CryptoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
