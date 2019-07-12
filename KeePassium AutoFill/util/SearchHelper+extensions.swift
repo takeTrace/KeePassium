@@ -1,35 +1,30 @@
 //  KeePassium Password Manager
 //  Copyright © 2018–2019 Andrei Popleteev <info@keepassium.com>
-// 
+//
 //  This program is free software: you can redistribute it and/or modify it
 //  under the terms of the GNU General Public License version 3 as published
 //  by the Free Software Foundation: https://www.gnu.org/licenses/).
 //  For commercial licensing, please contact the author.
 
+
 import KeePassiumLib
 import AuthenticationServices
 
-struct ScoredEntry {
-    let entry: Entry
-    let similarityScore: Double
-}
-struct GroupedEntries {
-    var group: Group
-    var entries: [ScoredEntry]
-}
-struct SearchResults {
-    var exactMatch: [GroupedEntries]
-    var partialMatch: [GroupedEntries]
+
+struct FuzzySearchResults {
+    var exactMatch: SearchResults
+    var partialMatch: SearchResults
     
     var isEmpty: Bool { return exactMatch.isEmpty && partialMatch.isEmpty }
 }
 
-class SearchHelper {
+/// Adds AutoFill-specific search methods
+extension SearchHelper {
     
     func find(
         database: Database,
         serviceIdentifiers: [ASCredentialServiceIdentifier]
-        ) -> SearchResults
+        ) -> FuzzySearchResults
     {
         var relevantEntries = [ScoredEntry]()
         for si in serviceIdentifiers {
@@ -44,39 +39,13 @@ class SearchHelper {
         }
         let exactMatches = relevantEntries.filter { $0.similarityScore >= 0.99 }
         let partialMatches = relevantEntries.filter { $0.similarityScore < 0.99 }
-        let searchResults = SearchResults(
+        let searchResults = FuzzySearchResults(
             exactMatch: arrangeByGroups(scoredEntries: exactMatches),
             partialMatch: arrangeByGroups(scoredEntries: partialMatches)
         )
         return searchResults
     }
     
-    func find(database: Database, searchText: String) -> SearchResults {
-        let words = searchText.split(separator: " " as Character)
-        let query = SearchQuery(
-            includeSubgroups: true,
-            includeDeleted: false,
-            text: searchText,
-            textWords: words)
-        let scoredEntries = performSearch(in: database, query: query)
-        let searchResults = SearchResults(
-            exactMatch: arrangeByGroups(scoredEntries: scoredEntries),
-            partialMatch: [])
-        return searchResults
-    }
-    
-    /// Returns entries that correspond to given custom search `query`.
-    private func performSearch(in database: Database, query: SearchQuery) -> [ScoredEntry] {
-        var foundEntries: [Entry] = []
-        let foundCount = database.search(query: query, result: &foundEntries)
-        Diag.verbose("Found \(foundCount) entries using query")
-
-        let scoredEntries = foundEntries.map { entry in
-            return ScoredEntry(entry: entry, similarityScore: 1.0)
-        }
-        return scoredEntries
-    }
-
     /// Returns entries that correspond (somewhat) to the given `url`.
     private func performSearch(in database: Database, url: String) -> [ScoredEntry] {
         guard let url = URL(string: url) else { return [] }
@@ -109,7 +78,7 @@ class SearchHelper {
         Diag.verbose("Found \(relevantEntries.count) relevant entries [among \(allEntries.count)]")
         return relevantEntries
     }
-
+    
     /// Returns entries that correspond (somewhat) to the given `domain`.
     private func performSearch(in database: Database, domain: String) -> [ScoredEntry] {
         var allEntries = [Entry]()
@@ -140,30 +109,7 @@ class SearchHelper {
         Diag.verbose("Found \(relevantEntries.count) relevant entries [among \(allEntries.count)]")
         return relevantEntries
     }
-    
-    /// Arranges a flat list of entries into groups
-    public func arrangeByGroups(scoredEntries: [ScoredEntry]) -> [GroupedEntries] {
-        var results = [GroupedEntries]()
-        results.reserveCapacity(scoredEntries.count)
-        
-        // arrange found entries in group
-        for scoredEntry in scoredEntries {
-            guard let parentGroup = scoredEntry.entry.parent else { assertionFailure(); return [] }
-            var isInserted = false
-            for i in 0..<results.count {
-                if results[i].group === parentGroup {
-                    results[i].entries.append(scoredEntry)
-                    isInserted = true
-                    break
-                }
-            }
-            if !isInserted {
-                let newGroupResult = GroupedEntries(group: parentGroup, entries: [scoredEntry])
-                results.append(newGroupResult)
-            }
-        }
-        return results
-    }
+
     
     // MARK: - Similarity scoring methods
     
@@ -200,14 +146,14 @@ class SearchHelper {
                 .filter { !$0.isStandardField }
                 .map { (field) in
                     return field.value.localizedCaseInsensitiveContains(domain) ? 0.5 : 0.0
-                }
+            }
             return max(maxScoreSoFar, extraFieldScores.max() ?? 0.0)
         } else {
             // Entry 1
             return max(urlScore, titleScore, notesScore)
         }
     }
-
+    
     
     /// Estimates similarity score between two URLs.
     /// - Same URL -> 1.0
@@ -220,11 +166,11 @@ class SearchHelper {
         if url1 == url2 { return 1.0 }
         
         guard let host1 = url1.host?.localizedLowercase,
-              let host2 = url2.host?.localizedLowercase else { return 0.0 }
+            let host2 = url2.host?.localizedLowercase else { return 0.0 }
         if host1 == host2 {
             // equal hosts -> already 0.7
             // but let's also take into account similarity of the path components
-
+            
             guard url2.path.isNotEmpty else { return 0.7 }
             let lowercasePath1 = url1.path.localizedLowercase
             let lowercasePath2 = url2.path.localizedLowercase
@@ -252,7 +198,7 @@ class SearchHelper {
         
         // is entry URL similar to the `url`?
         let urlScore = howSimilar(url, with: URL(string: entry.url))
-         // does `url.host` occure inside entry title or notes?
+        // does `url.host` occure inside entry title or notes?
         let titleScore: Double
         let notesScore: Double
         
@@ -287,7 +233,7 @@ class SearchHelper {
             
             // check custom fields
             guard let urlHost = url.host,
-                  let urlDomain2 = url.domain2 else { return maxScoreSoFar }
+                let urlDomain2 = url.domain2 else { return maxScoreSoFar }
             let extraFieldScores: [Double] = entry2.fields
                 .filter { !$0.isStandardField }
                 .map { (field) in
@@ -298,7 +244,7 @@ class SearchHelper {
                     } else {
                         return 0.0
                     }
-                }
+            }
             return max(maxScoreSoFar, extraFieldScores.max() ?? 0.0)
         } else {
             // Entry 1
