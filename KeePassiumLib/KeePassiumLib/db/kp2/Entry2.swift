@@ -396,19 +396,6 @@ public class Entry2: Entry {
         usageCount += 1
     }
     
-    /// Search helper
-    override public func matches(query: SearchQuery) -> Bool {
-        if super.matches(query: query) {
-            return true
-        }
-        for field in fields {
-            if field.matches(query: query) {
-                return true
-            }
-        }
-        return false
-    }
-    
     /// Loads the entry from XML.
     /// - Throws: `Xml2.ParsingError`, `ProgressInterruption`
     func load(

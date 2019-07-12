@@ -303,26 +303,6 @@ public class Entry1: Entry {
         writeField(fieldID: .end, data: ByteArray())
     }
     
-    /// Checks if the entry matches given search `query`.
-    /// (That is, each query word is present in at least one of the fields
-    /// [title, user name, url, notes, attachment names].)
-    override public func matches(query: SearchQuery) -> Bool {
-        if super.matches(query: query) {
-            return true
-        }
-        guard let att = getAttachment() else {
-            return false
-        }
-        
-        // Check if every query word is in attachment name
-        for word in query.textWords {
-            if !att.name.contains(word) {
-                return false
-            }
-        }
-        return true
-    }
-    
     /// Makes a backup copy of the current values/state of the entry.
     /// For KP1 means copying the whole entry to the Backup group.
     override public func backupState() {
