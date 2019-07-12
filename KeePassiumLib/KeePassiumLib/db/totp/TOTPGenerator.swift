@@ -17,7 +17,7 @@ open class TOTPGeneratorFactory {
     
     // Google Auth (URI formatted) field and defaults
     enum URIFormat {
-        public static let fieldName = "OTP"
+        public static let fieldName = "otp"
         
         public static let scheme = "otpauth"
         public static let host = "totp"
