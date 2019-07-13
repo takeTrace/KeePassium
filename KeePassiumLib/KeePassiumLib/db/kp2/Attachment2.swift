@@ -79,9 +79,12 @@ public class Attachment2: Attachment {
                 throw Xml2.ParsingError.unexpectedTag(actual: tag.name, expected: "Entry/Binary/*")
             }
         }
-        guard let _name = name else {
-            Diag.error("Missing Entry/Binary/Name")
-            throw Xml2.ParsingError.malformedValue(tag: "Entry/Binary/Name", value: nil)
+        let _name = name ?? ""
+        if _name.isEmpty {
+            // This was reported to happen on old DBs and after KeePass Touch.
+            // We'll stub the name with an empty string, just to reach the integrity check
+            // which will finally handle this as a user-visible warning.
+            Diag.error("Missing Entry/Binary/Name, ignoring")
         }
         guard let _binary = binary else {
             Diag.error("Missing Entry/Binary/Value")

@@ -646,6 +646,10 @@ public class Database2: Database {
         var allEntries = [Entry]()
         root?.collectAllEntries(to: &allEntries)
         
+        // First of all, ensure all attachments have a name
+        maybeFixAttachmentNames(entries: allEntries, warnings: warnings)
+        
+        // Now, check all attachments have a binary and vice versa
         var usedIDs = Set<Binary2.ID>() // BinaryID referenced by entries
         allEntries.forEach { (entry) in
             insertAllAttachmentIDs(of: entry as! Entry2, into: &usedIDs)
@@ -696,6 +700,47 @@ public class Database2: Database {
                 .joined(separator: ", ")
             Diag.warning("Some entries refer to non-existent binaries [IDs: \(missingIDs)]")
         }
+    }
+    
+    /// Checks whether any of the `entries` have attachments with an empty name,
+    /// replaces such names with "?" and adds a corresponding message to `warnings`.
+    private func maybeFixAttachmentNames(entries: [Entry], warnings: DatabaseLoadingWarnings) {
+        /// Returns true iff something was fixed
+        func maybeFixAttachmentNames(entry: Entry2) -> Bool {
+            var isSomethingFixed = false
+            entry.attachments.forEach {
+                if $0.name.isEmpty {
+                    $0.name = "?" // make the name non-empty
+                    isSomethingFixed = true
+                }
+            }
+            return isSomethingFixed
+        }
+        
+        var affectedEntries = [Entry2]()
+        for entry in entries {
+            let entry2 = entry as! Entry2
+            let isEntryAffected = maybeFixAttachmentNames(entry: entry2)
+            let isHistoryAffected = entry2.history.reduce(false) { (result, historyEntry) in
+                return result || maybeFixAttachmentNames(entry: historyEntry)
+            }
+            if isEntryAffected || isHistoryAffected {
+                affectedEntries.append(entry2)
+            }
+        }
+        
+        if affectedEntries.isEmpty {
+            // no issues found
+            return
+        }
+        let listOfEntryNames = affectedEntries
+            .compactMap { $0.getGroupPath() + "/" + $0.title } // get names
+            .map { "\"\($0)\"" } // add surrounding quotes
+            .joined(separator: "\n ") // merge into a string
+        
+        let warningMessage = NSLocalizedString("Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n\(listOfEntryNames)", comment: "A warning about nameless attachments, shown after loading the database")
+        Diag.warning(warningMessage)
+        warnings.messages.append(warningMessage)
     }
     
     /// Checks if there are any (non-critically) misformatted custom fields,
