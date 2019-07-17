@@ -35,6 +35,7 @@ public class Keychain {
     }
     private let appPasscodeAccount = "appPasscode"
     private let premiumExpiryDateAccount = "premiumExpiryDate"
+    private let premiumProductAccount = "premiumProductID"
     
     private init() {
         // left empty
@@ -213,14 +214,18 @@ public class Keychain {
         try remove(service: .databaseKeys, account: nil)
     }
     
-    // MARK: - Premium-related routines
+    
+    // MARK: - Premium
     
     /// Sets premium expiry date to the given value
     ///
-    /// - Parameter newDate: new expiry date
+    /// - Parameter product: in-app product to which the expiry relates
+    /// - Parameter expiryDate: product's expiry date
     /// - Throws: `KeychainError`
-    public func setPremiumExpiryDate(to newDate: Date) throws {
-        let timestampBytes = UInt64(newDate.timeIntervalSinceReferenceDate).data
+    public func setPremiumExpiry(for product: InAppProduct, to expiryDate: Date) throws {
+        let timestampBytes = UInt64(expiryDate.timeIntervalSinceReferenceDate).data
+        let productID = product.rawValue.dataUsingUTF8StringEncoding
+        try set(service: .premium, account: premiumProductAccount, data: productID)
         try set(service: .premium, account: premiumExpiryDateAccount, data: timestampBytes.asData)
     }
     
@@ -247,5 +252,16 @@ public class Keychain {
             return nil
         }
         return Date(timeIntervalSinceReferenceDate: Double(timestamp))
+    }
+    
+    /// Returns the stored premium product identifier, if any.
+    ///
+    /// - Returns: in-app product identifier
+    /// - Throws: `KeychainError`
+    public func getPremiumProduct() throws -> InAppProduct? {
+        guard let data = try get(service: .premium, account: premiumProductAccount),
+            let productIDString = String(data: data, encoding: .utf8) else { return nil }
+        guard let product = InAppProduct(rawValue: productIDString) else { return nil }
+        return product
     }
 }
