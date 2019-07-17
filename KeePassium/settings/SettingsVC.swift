@@ -256,29 +256,35 @@ class SettingsVC: UITableViewController, Refreshable {
                 self?.refreshPremiumStatus(animated: false)
             }
         case .subscribed:
+            guard let expiryDate = premiumManager.getPremiumExpiryDate() else {
+                assertionFailure()
+                Diag.error("Subscribed, but no expiry date?")
+                premiumStatusCell.detailTextLabel?.text = "?"
+                return
+            }
+            guard let product = premiumManager.getPremiumProduct() else {
+                assertionFailure()
+                Diag.error("Subscribed, but no product info?")
+                premiumStatusCell.detailTextLabel?.text = "?"
+                return
+            }
+            
             setCellVisibility(premiumTrialCell, isHidden: true)
             setCellVisibility(premiumStatusCell, isHidden: false)
-            setCellVisibility(manageSubscriptionCell, isHidden: false)
+            setCellVisibility(manageSubscriptionCell, isHidden: !product.isSubscription)
             
-            let premiumStatusText: String
-            if let expiryDate = premiumManager.getPremiumExpiryDate() {
-                if expiryDate == .distantFuture {
-                    premiumStatusText = "Valid forever".localized(comment: "Status: validity period of once-and-forever premium")
-                } else {
-                    #if DEBUG
-                    let expiryDateString = DateFormatter
-                        .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .short)
-                    #else
-                    let expiryDateString = DateFormatter
-                        .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .none)
-                    #endif
-                    premiumStatusText = "Next renewal on \(expiryDateString)".localized(comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 Jan 2050`")
-                }
+            if expiryDate == .distantFuture {
+                premiumStatusCell.detailTextLabel?.text = "Valid forever".localized(comment: "Status: validity period of once-and-forever premium")
             } else {
-                assertionFailure()
-                premiumStatusText = "?"
+                #if DEBUG
+                let expiryDateString = DateFormatter
+                    .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .short)
+                #else
+                let expiryDateString = DateFormatter
+                    .localizedString(from: expiryDate, dateStyle: .medium, timeStyle: .none)
+                #endif
+                premiumStatusCell.detailTextLabel?.text = "Next renewal on \(expiryDateString)".localized(comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 Jan 2050`")
             }
-            premiumStatusCell.detailTextLabel?.text = premiumStatusText
         case .lapsed:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: false)
