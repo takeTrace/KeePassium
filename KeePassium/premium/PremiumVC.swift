@@ -57,10 +57,6 @@ class PremiumVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // make background image
-        view.backgroundColor = UIColor(patternImage: UIImage(asset: .backgroundPattern))
-        view.layer.isOpaque = false
         
         statusLabel.text = "Contacting AppStore...".localized(comment: "Status message before downloading available in-app purchases")
         activityIndcator.isHidden = false
