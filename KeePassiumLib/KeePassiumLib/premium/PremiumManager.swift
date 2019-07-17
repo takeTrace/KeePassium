@@ -33,13 +33,26 @@ public enum InAppProduct: String {
     case montlySubscription = "com.keepassium.ios.iap.subscription.1month"
     case yearlySubscription = "com.keepassium.ios.iap.subscription.1year"
     
-    var kind: Kind {
+    public var kind: Kind {
         return InAppProduct.kind(productIdentifier: self.rawValue)
     }
 
     /// Whether this product should be shown to the user
-    var isHidden: Bool {
+    public var isHidden: Bool {
         return InAppProduct.isHidden(productIdentifier: self.rawValue)
+    }
+    
+    /// True if the product is a recurring payment.
+    public var isSubscription: Bool {
+        switch self {
+        case .forever,
+             .foreverBetaSandbox,
+             .foreverThankYou:
+            return false
+        case .montlySubscription,
+             .yearlySubscription:
+            return true
+        }
     }
 
     public static func kind(productIdentifier: String) -> Kind {
