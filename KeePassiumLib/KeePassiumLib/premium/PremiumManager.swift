@@ -215,6 +215,16 @@ public class PremiumManager: NSObject {
         return false
     }
 
+    /// Returns the type of the purchased product (with the latest expiration).
+    public func getPremiumProduct() -> InAppProduct? {
+        do {
+            return try Keychain.shared.getPremiumProduct() // throws KeychainError
+        } catch {
+            Diag.error("Failed to get premium product info [message: \(error.localizedDescription)]")
+            return nil
+        }
+    }
+    
     /// Returns subscription expiry date (distantFuture for one-time purcahse),
     /// or `nil` if not subscribed.
     public func getPremiumExpiryDate() -> Date? {
@@ -228,11 +238,13 @@ public class PremiumManager: NSObject {
     
     /// Saves the given expiry date in keychain.
     ///
+    /// - Parameter product: the purchased product
     /// - Parameter expiryDate: new expiry date
     /// - Returns: true iff the new date saved successfully.
-    fileprivate func setPremiumExpiryDate(to expiryDate: Date) -> Bool {
+    fileprivate func setPremiumExpiry(for product: InAppProduct, to expiryDate: Date) -> Bool {
         do {
-            try Keychain.shared.setPremiumExpiryDate(to: expiryDate) // throws KeychainError
+            try Keychain.shared.setPremiumExpiry(for: product, to: expiryDate)
+                // throws KeychainError
             updateStatus()
             return true
         } catch {
@@ -493,7 +505,7 @@ extension PremiumManager: SKPaymentTransactionObserver {
         
         let oldExpiryDate = getPremiumExpiryDate()
         if newExpiryDate > (oldExpiryDate ?? Date.distantPast) {
-            let isNewDateSaved = setPremiumExpiryDate(to: newExpiryDate)
+            let isNewDateSaved = setPremiumExpiry(for: product, to: newExpiryDate)
             return isNewDateSaved
         } else {
             return true
