@@ -124,8 +124,8 @@ public class PremiumManager: NSObject {
     private let heavyUseThreshold: TimeInterval = 5 * 60
 #else
     private let gracePeriodInSeconds: TimeInterval = 2 * 24 * 60 * 60 // 2 days
-    private let lapsePeriodInSeconds: TimeInterval = 1 * 24 * 60 * 60 // 1 day
-    private let heavyUseThreshold: TimeInterval =         1 * 60 * 60 // 1 hour
+    private let lapsePeriodInSeconds: TimeInterval = 2 * 24 * 60 * 60 // 2 days
+    private let heavyUseThreshold: TimeInterval = 8 * 60 * 60 / 12 // 8 hours / year
 #endif
 
     // MARK: - Subscription status
