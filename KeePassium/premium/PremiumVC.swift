@@ -95,7 +95,7 @@ class PremiumVC: UIViewController {
 
             let button = makePurchaseButton()
             button.tag = index
-            button.setTitle(title, for: .normal)
+            button.setAttributedTitle(title, for: .normal)
             button.addTarget(self, action: #selector(didPressPurchaseButton), for: .touchUpInside)
             button.isHidden = true // needed for vertical-only animation later
             buttonStack.addArrangedSubview(button)
@@ -115,29 +115,50 @@ class PremiumVC: UIViewController {
     }
     
     /// Returns formatted text for product's purchase button
-    private func getActionText(for product: SKProduct) -> String {
+    private func getActionText(for product: SKProduct) -> NSAttributedString {
         let productKind = InAppProduct.kind(productIdentifier: product.productIdentifier)
+        let productTitle: String
+        let productPrice: String
         switch productKind {
         case .oneTime:
-            return "\(product.localizedPrice) once".localized(comment: "Product description/button to buy once-and-forever premium")
+            productTitle = "Lifetime".localized(comment: "Product description: once-and-forever premium")
+            productPrice = "\(product.localizedPrice) once".localized(comment: "Product price for once-and-forever premium")
         case .yearly:
-            return "\(product.localizedPrice) / year".localized(comment: "Product description/button to buy annual premium subscription")
+            productTitle = "1 year".localized(comment: "Product description: annual premium subscription")
+            productPrice = "\(product.localizedPrice) / year".localized(comment: "Product price for annual premium subscription")
         case .monthly:
-            return "\(product.localizedPrice) / month".localized(comment: "Product description/button to buy monthly premium subscription")
+            productTitle = "1 month".localized(comment: "Product description: monthly premium subscription")
+            productPrice = "\(product.localizedPrice) / month".localized(comment: "Product price for monthly premium subscription")
         case .other:
             assertionFailure("Should not be here")
-            return "\(product.localizedPrice)"
+            productTitle = ""
+            productPrice = "\(product.localizedPrice)"
         }
+        let attributedTitle = NSMutableAttributedString(
+            string: productTitle + "\n",
+            attributes: [
+                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)
+            ]
+        )
+        let attributedPrice = NSMutableAttributedString(
+            string: productPrice,
+            attributes: [
+                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline)
+            ]
+        )
+        attributedTitle.append(attributedPrice)
+        return attributedTitle
     }
     
     private func makePurchaseButton() -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 60.0).isActive = true
         button.setContentHuggingPriority(.required, for: .vertical)
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         button.backgroundColor = UIColor.actionTint
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         button.titleLabel?.textColor = UIColor.actionText
+        button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
         button.cornerRadius = 5.0
         return button
