@@ -76,7 +76,7 @@ class PremiumCoordinator {
                 self.premiumVC.showMessage(message)
                 return
             }
-            let productsToShow = products.sorted().filter {
+            let productsToShow = products.sorted().reversed().filter {
                 !InAppProduct.isHidden(productIdentifier: $0.productIdentifier)
             }
             self.isProductsRefreshed = true
