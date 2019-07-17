@@ -25,17 +25,15 @@ class SettingsVC: UITableViewController, Refreshable {
     
     @IBOutlet weak var premiumTrialCell: UITableViewCell!
     @IBOutlet weak var premiumStatusCell: UITableViewCell!
-    @IBOutlet weak var restorePurchasesCell: UITableViewCell!
     @IBOutlet weak var manageSubscriptionCell: UITableViewCell!
     
     private var settingsNotifications: SettingsNotifications!
     
     /// For static cells that can hide/appear dynamically
     private enum CellIndexPath {
-        static let premiumTrial = IndexPath(row: 0, section: 4)
-        static let premiumStatus = IndexPath(row: 1, section: 4)
-        static let restorePurchase = IndexPath(row: 2, section: 4)
-        static let manageSubscription = IndexPath(row: 3, section: 4)
+        static let premiumTrial = IndexPath(row: 0, section: 0)
+        static let premiumStatus = IndexPath(row: 1, section: 0)
+        static let manageSubscription = IndexPath(row: 2, section: 0)
     }
     /// Indices of hidden cells (for now set only in refreshPremiumStatus)
     private var hiddenIndexPaths = Set<IndexPath>()
@@ -111,8 +109,6 @@ class SettingsVC: UITableViewController, Refreshable {
                 hiddenIndexPaths.insert(CellIndexPath.premiumTrial)
             case premiumStatusCell:
                 hiddenIndexPaths.insert(CellIndexPath.premiumStatus)
-            case restorePurchasesCell:
-                hiddenIndexPaths.insert(CellIndexPath.restorePurchase)
             case manageSubscriptionCell:
                 hiddenIndexPaths.insert(CellIndexPath.manageSubscription)
             default:
@@ -124,8 +120,6 @@ class SettingsVC: UITableViewController, Refreshable {
                 hiddenIndexPaths.remove(CellIndexPath.premiumTrial)
             case premiumStatusCell:
                 hiddenIndexPaths.remove(CellIndexPath.premiumStatus)
-            case restorePurchasesCell:
-                hiddenIndexPaths.remove(CellIndexPath.restorePurchase)
             case manageSubscriptionCell:
                 hiddenIndexPaths.remove(CellIndexPath.manageSubscription)
             default:
@@ -171,8 +165,6 @@ class SettingsVC: UITableViewController, Refreshable {
             break // not interactive
         case premiumTrialCell:
             didPressUpgradeToPremium()
-        case restorePurchasesCell:
-            didPressRestorePurchses()
         case manageSubscriptionCell:
             didPressManageSubscription()
         case diagnosticLogCell:
@@ -226,13 +218,6 @@ class SettingsVC: UITableViewController, Refreshable {
         premiumCoordinator!.start()
     }
     
-    func didPressRestorePurchses() {
-        assert(premiumCoordinator == nil)
-        premiumCoordinator = PremiumCoordinator(presentingViewController: self)
-        premiumCoordinator!.delegate = self
-        premiumCoordinator!.start(tryRestoringPurchasesFirst: true)
-    }
-    
     func didPressManageSubscription() {
         guard let application = AppGroup.applicationShared,
             let url = URL(string: "itms-apps://apps.apple.com/account/subscriptions")
@@ -257,7 +242,6 @@ class SettingsVC: UITableViewController, Refreshable {
         case .initialGracePeriod:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: true)
-            setCellVisibility(restorePurchasesCell, isHidden: false)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             
             let secondsLeft = premiumManager.gracePeriodSecondsRemaining
@@ -274,7 +258,6 @@ class SettingsVC: UITableViewController, Refreshable {
         case .subscribed:
             setCellVisibility(premiumTrialCell, isHidden: true)
             setCellVisibility(premiumStatusCell, isHidden: false)
-            setCellVisibility(restorePurchasesCell, isHidden: true)
             setCellVisibility(manageSubscriptionCell, isHidden: false)
             
             let premiumStatusText: String
@@ -299,7 +282,6 @@ class SettingsVC: UITableViewController, Refreshable {
         case .lapsed:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: false)
-            setCellVisibility(restorePurchasesCell, isHidden: true)
             setCellVisibility(manageSubscriptionCell, isHidden: false)
             
             let premiumStatusText: String
@@ -324,7 +306,6 @@ class SettingsVC: UITableViewController, Refreshable {
              .freeHeavyUse:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: true)
-            setCellVisibility(restorePurchasesCell, isHidden: false)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             
             let appUsageDuration = premiumManager.usageMonitor.getAppUsageDuration(.perYear)
