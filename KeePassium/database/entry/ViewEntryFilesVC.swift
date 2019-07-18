@@ -96,6 +96,7 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
         if indexPath.row < entry.attachments.count {
             let att = entry.attachments[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: CellID.fileItem, for: indexPath)
+            cell.imageView?.image = att.getSystemIcon()
             cell.textLabel?.text = att.name
             cell.detailTextLabel?.text = ByteCountFormatter.string(
                 fromByteCount: Int64(att.size),
@@ -211,17 +212,20 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
                 // throws `GzipError`
             try uncompressedBytes.write(to: exportFileURL, options: [.completeFileProtection])
             exportController.url = exportFileURL
-            if let icon = exportController.icons.first {
-                sourceCell.imageView?.image = icon
-            }
+//            if let icon = exportController.icons.first {
+//                sourceCell.imageView?.image = icon
+//            }
             exportController.delegate = self
             Diag.info("Will present attachment")
-            if !exportController.presentPreview(animated: true) {
-                Diag.verbose("Preview not available, showing menu")
-                exportController.presentOptionsMenu(
-                    from: sourceCell.frame,
-                    in: tableView,
-                    animated: true)
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if !self.exportController.presentPreview(animated: true) {
+                    Diag.verbose("Preview not available, showing menu")
+                    self.exportController.presentOptionsMenu(
+                        from: sourceCell.frame,
+                        in: self.tableView,
+                        animated: true)
+                }
             }
         } catch {
             Diag.error("Failed to write attachment [reason: \(error.localizedDescription)]")
