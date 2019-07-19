@@ -20,6 +20,10 @@
 	<string>1.0.30</string>
 	<key>CFBundleVersion</key>
 	<string>30</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>keepassium</string>
+	</array>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSExtension</key>
@@ -31,9 +35,5 @@
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use FaceID to unlock KeePassium</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>keepassium</string>
-	</array>
 </dict>
 </plist>
