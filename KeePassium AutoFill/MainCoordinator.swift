@@ -629,6 +629,7 @@ extension MainCoordinator: WatchdogDelegate {
         let context = LAContext()
         let policy = LAPolicy.deviceOwnerAuthenticationWithBiometrics
         context.localizedFallbackTitle = "" // hide "Enter Password" fallback; nil won't work
+        context.localizedCancelTitle = "Enter Passcode".localized(comment: "Button to cancel TouchID/FaceID scanning and enter AppLock passcode instead.")
         
         Diag.debug("Biometric auth: showing request")
         context.evaluatePolicy(policy, localizedReason: LString.titleTouchID) {
