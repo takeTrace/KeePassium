@@ -10,11 +10,14 @@ import XCTest
 @testable import KeePassiumLib
 
 class TOTPTests: XCTestCase {
+    let seedString = "HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ"
     var seed: ByteArray!
     
     override func setUp() {
-        seed = ByteArray(bytes: base32Decode("HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ")!)
+        seed = ByteArray(bytes: base32Decode(seedString)!)
     }
+    
+    // MARK: - URI format
     
     func test1() {
         let uri = "otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=4&period=60"
@@ -115,6 +118,42 @@ class TOTPTests: XCTestCase {
     func testMisformat10() {
         let uri = "otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&digits=&period="
         let gen = TOTPGeneratorFactory.makeGenerator(uri: uri) as? TOTPGeneratorRFC6238
+        XCTAssertNil(gen)
+    }
+    
+    // MARK: - Split format
+
+    func testSplitFormat1() {
+        let gen = TOTPGeneratorFactory.makeGenerator(seed: seedString, settings: "33;6")
+            as? TOTPGeneratorRFC6238
+        if gen == nil { XCTFail(); return }
+        XCTAssert(gen!.seed == seed)
+        XCTAssert(gen!.length == 6)
+        XCTAssert(gen!.timeStep == 33)
+    }
+
+    func testSplitFormat2() {
+        let gen = TOTPGeneratorFactory.makeGenerator(seed: seedString, settings: "20;8;http://example.com")
+            as? TOTPGeneratorRFC6238
+        if gen == nil { XCTFail(); return }
+        XCTAssert(gen!.seed == seed)
+        XCTAssert(gen!.length == 8)
+        XCTAssert(gen!.timeStep == 20)
+    }
+
+    func testSplitMisformat1() {
+        let gen = TOTPGeneratorFactory.makeGenerator(seed: "not_a_valid_seed", settings: "20;6")
+            as? TOTPGeneratorRFC6238
+        XCTAssertNil(gen)
+    }
+    func testSplitMisformat2() {
+        let gen = TOTPGeneratorFactory.makeGenerator(seed: seedString, settings: "20;")
+            as? TOTPGeneratorRFC6238
+        XCTAssertNil(gen)
+    }
+    func testSplitMisformat3() {
+        let gen = TOTPGeneratorFactory.makeGenerator(seed: seedString, settings: "-1;8")
+            as? TOTPGeneratorRFC6238
         XCTAssertNil(gen)
     }
 }
