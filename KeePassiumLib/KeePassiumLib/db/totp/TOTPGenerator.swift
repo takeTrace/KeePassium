@@ -128,8 +128,10 @@ open class TOTPGeneratorFactory {
         }
         
         let settings = settingsString.split(separator: ";")
-        guard settings.count == 2 else {
-            Diag.warning("Unexpected TOTP settings number [expected: 2, got: \(settings.count)]")
+        if settings.count > 2 {
+            Diag.verbose("Found redundant TOTP settings, ignoring [expected: 2, got: \(settings.count)]")
+        } else if settings.count < 2 {
+            Diag.warning("Insufficient TOTP settings number [expected: 2, got: \(settings.count)]")
             return nil
         }
         guard let timeStep = Int(settings[0]) else {
