@@ -8,167 +8,6 @@
 
 import Foundation
 
-open class TOTPGeneratorFactory {
-    // Split TOTP fields (KeePassXC)
-    enum SplitFormat {
-        public static let seedFieldName = "TOTP Seed"
-        public static let settingsFieldName = "TOTP Settings"
-    }
-    
-    // Google Auth (URI formatted) field and defaults
-    enum URIFormat {
-        public static let fieldName = "otp"
-        
-        public static let scheme = "otpauth"
-        public static let host = "totp"
-        
-        public static let seedParam = "secret"
-        public static let timeStepParam = "period"
-        public static let lengthParam = "digits"
-        public static let algorithmParam = "algorithm"
-        
-        public static let defaultTimeStep = 30
-        public static let defaultLength = 6
-        public static let defaultAlgorithm = "SHA1"
-    }
-    
-    /// Checks if the entry contains TOTP parameter field(s),
-    /// and uses them to return a configured `TOTPGenerator` instance.
-    public static func makeGenerator(for entry: Entry) -> TOTPGenerator? {
-        return makeGenerator(from: entry.fields)
-    }
-    
-    /// Checks if `entry` contains TOTP parameter field(s),
-    /// and uses them to return a configured `TOTPGenerator` instance.
-    public static func makeGenerator(from fields: [EntryField]) -> TOTPGenerator? {
-        if let totpURIField = fields.first(where: { $0.name == URIFormat.fieldName }) {
-            return TOTPGeneratorFactory.makeGenerator(uri: totpURIField.value)
-        } else {
-            guard let seedField =
-                fields.first(where: { $0.name == SplitFormat.seedFieldName })
-                else { return nil }
-            guard let settingsField =
-                fields.first(where: { $0.name == SplitFormat.settingsFieldName })
-                else { return nil }
-            return TOTPGeneratorFactory.makeGenerator(
-                seed: seedField.value,
-                settings: settingsField.value)
-        }
-    }
-    
-    /// Parses given `uri` with TOTP parameters and returns a suitable instance of
-    /// `TOTPGenerator` (or `nil` if failed to parse parameters)
-    ///
-    /// - Parameters:
-    ///   - uri: TOTP parameters in Google Auth format
-    ///         (https://github.com/google/google-authenticator/wiki/Key-Uri-Format)
-    /// - Returns: initialized `TOTPGenerator` instance
-    public static func makeGenerator(uri uriString: String) -> TOTPGenerator? {
-        // otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30
-         guard let components = URLComponents(string: uriString),
-            components.scheme == URIFormat.scheme,
-            components.host == URIFormat.host,
-            let queryItems = components.queryItems else
-        {
-            Diag.warning("OTP URI has unexpected format")
-            return nil
-        }
-        
-        let params = queryItems.reduce(into: [String: String]()) { (result, item) in
-            result[item.name] = item.value
-        }
-        
-        // For TOTP, the only required parameter is secret
-        guard let seedString = params[URIFormat.seedParam],
-            let seedData = base32DecodeToData(seedString),
-            !seedData.isEmpty else
-        {
-            Diag.warning("OTP parameter cannot be parsed [parameter: \(URIFormat.seedParam)]")
-            return nil
-        }
-        
-        // algorithm must be either SHA1 or missing
-        if let algorithm = params[URIFormat.algorithmParam],
-            algorithm != URIFormat.defaultAlgorithm
-        {
-            Diag.warning("OTP algorithm is not supported [algorithm: \(algorithm)]")
-            return nil
-        }
-        // timeStep must be either a valid int or missing
-        guard let timeStep = Int(params[URIFormat.timeStepParam] ?? "\(URIFormat.defaultTimeStep)") else {
-            Diag.warning("OTP parameter cannot be parsed [parameter: \(URIFormat.timeStepParam)]")
-            return nil
-        }
-        // length must be either a valid int or missing
-        guard let length = Int(params[URIFormat.lengthParam] ?? "\(URIFormat.defaultLength)") else {
-            Diag.warning("OTP parameter cannot be parsed [parameter: \(URIFormat.lengthParam)]")
-            return nil
-        }
-        
-        return TOTPGeneratorRFC6238(
-            seed: ByteArray(data: seedData),
-            timeStep: timeStep,
-            length: length)
-    }
-    
-    /// Parses given TOTP parameters and returns a suitable instance of
-    /// `TOTPGenerator` (or `nil` if failed to parse parameters)
-    ///
-    /// - Parameters:
-    ///   - seed: string with TOTP secret/seed
-    ///   - settings: other TOTP settings, such as time step and number of digits
-    /// - Returns: initialized `TOTPGenerator` instance defined by the settings.
-    public static func makeGenerator(
-        seed seedString: String,
-        settings settingsString: String
-    ) -> TOTPGenerator? {
-        guard let seed = parseSeedString(seedString) else {
-            Diag.warning("Unrecognized TOTP seed format")
-            return nil
-        }
-        
-        let settings = settingsString.split(separator: ";")
-        if settings.count > 2 {
-            Diag.verbose("Found redundant TOTP settings, ignoring [expected: 2, got: \(settings.count)]")
-        } else if settings.count < 2 {
-            Diag.warning("Insufficient TOTP settings number [expected: 2, got: \(settings.count)]")
-            return nil
-        }
-        guard let timeStep = Int(settings[0]) else {
-            Diag.warning("Failed to parse TOTP time step as Int")
-            return nil
-        }
-        guard timeStep > 0 else {
-            Diag.warning("Invalid TOTP time step value: \(timeStep)")
-            return nil
-        }
-        
-        if let length = Int(settings[1]) {
-            return TOTPGeneratorRFC6238(seed: seed, timeStep: timeStep, length: length)
-        } else if settings[1] == TOTPGeneratorSteam.typeSymbol {
-            return TOTPGeneratorSteam(seed: seed, timeStep: timeStep)
-        } else {
-            Diag.warning("Unexpected TOTP size or type: '\(settings[1])'")
-            return nil
-        }
-    }
-    
-    static func parseSeedString(_ seedString: String) -> ByteArray? {
-        let cleanedSeedString = seedString
-            .replacingOccurrences(of: " ", with: "")
-            .replacingOccurrences(of: "=", with: "")
-        if let seedData = base32DecodeToData(cleanedSeedString) {
-            return ByteArray(data: seedData)
-        }
-        if let seedData = base32HexDecodeToData(cleanedSeedString) {
-            return ByteArray(data: seedData)
-        }
-        if let seedData = Data(base64Encoded: cleanedSeedString) {
-            return ByteArray(data: seedData)
-        }
-        return nil
-    }
-}
 
 public protocol TOTPGenerator: class {
     /// Fraction of TOTP's timeStep elapsed: `(now - timeOfGeneration) / timeStep`
@@ -207,8 +46,9 @@ public class TOTPGeneratorRFC6238: TOTPGenerator {
     
     public var elapsedTimeFraction: Float { return getElapsedTimeFraction(timeStep: timeStep) }
 
-    fileprivate init?(seed: ByteArray, timeStep: Int, length: Int) {
+    internal init?(seed: ByteArray, timeStep: Int, length: Int) {
         guard length >= 4 && length <= 8 else { return nil }
+        guard timeStep > 0 else { return nil }
         
         self.seed = seed
         self.timeStep = timeStep
@@ -238,7 +78,9 @@ public class TOTPGeneratorSteam: TOTPGenerator {
     private let timeStep: Int
     private let length = 5
 
-    fileprivate init?(seed: ByteArray, timeStep: Int) {
+    internal init?(seed: ByteArray, timeStep: Int) {
+        guard timeStep > 0 else { return nil }
+        
         self.seed = seed
         self.timeStep = timeStep
     }
