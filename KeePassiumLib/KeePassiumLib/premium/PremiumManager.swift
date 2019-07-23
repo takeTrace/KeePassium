@@ -40,8 +40,8 @@ public enum InAppProduct: String {
         case .forever:
             return false
         case .montlySubscription,
-             .yearlySubscription:
-            .yearlyBusinessSubscription:
+             .yearlySubscription,
+             .yearlyBusinessSubscription:
             return true
         }
     }
