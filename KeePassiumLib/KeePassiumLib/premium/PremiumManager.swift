@@ -12,7 +12,7 @@ import StoreKit
 /// Known predefined products
 public enum InAppProduct: String {
     /// General kind of product (single purchase, subscription, ...)
-    public enum Kind {
+    public enum Period {
         case oneTime
         case yearly
         case monthly
@@ -23,20 +23,17 @@ public enum InAppProduct: String {
         InAppProduct.forever.rawValue,
         InAppProduct.montlySubscription.rawValue,
         InAppProduct.yearlySubscription.rawValue,
+        InAppProduct.yearlyBusinessSubscription.rawValue]
     
     case forever = "com.keepassium.ios.iap.forever"
     case montlySubscription = "com.keepassium.ios.iap.subscription.1month"
     case yearlySubscription = "com.keepassium.ios.iap.subscription.1year"
+    case yearlyBusinessSubscription = "com.keepassium.ios.iap.subscription.1year.business"
     
-    public var kind: Kind {
-        return InAppProduct.kind(productIdentifier: self.rawValue)
+    public var period: Period {
+        return InAppProduct.period(productIdentifier: self.rawValue)
     }
 
-    /// Whether this product should be shown to the user
-    public var isHidden: Bool {
-        return InAppProduct.isHidden(productIdentifier: self.rawValue)
-    }
-    
     /// True if the product is a recurring payment.
     public var isSubscription: Bool {
         switch self {
@@ -44,11 +41,24 @@ public enum InAppProduct: String {
             return false
         case .montlySubscription,
              .yearlySubscription:
+            .yearlyBusinessSubscription:
             return true
         }
     }
+    
+    /// True iff this product comes with a priority (email) support
+    public var hasPrioritySupport: Bool {
+        switch self {
+        case .yearlyBusinessSubscription:
+            return true
+        case .forever,
+             .montlySubscription,
+             .yearlySubscription:
+            return false
+        }
+    }
 
-    public static func kind(productIdentifier: String) -> Kind {
+    public static func period(productIdentifier: String) -> Period {
         if productIdentifier.contains(".forever") {
             return .oneTime
         } else if productIdentifier.contains(".1year") {
@@ -475,7 +485,7 @@ extension PremiumManager: SKPaymentTransactionObserver {
     {
         let calendar = Calendar.current
         let newExpiryDate: Date
-        switch product.kind {
+        switch product.period {
         case .oneTime:
             newExpiryDate = Date.distantFuture
         case .yearly:
