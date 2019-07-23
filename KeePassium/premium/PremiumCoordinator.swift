@@ -76,11 +76,8 @@ class PremiumCoordinator {
                 self.premiumVC.showMessage(message)
                 return
             }
-            let productsToShow = products.sorted().reversed().filter {
-                !InAppProduct.isHidden(productIdentifier: $0.productIdentifier)
-            }
             self.isProductsRefreshed = true
-            self.premiumVC.setAvailableProducts(productsToShow)
+            self.premiumVC.setAvailableProducts(products)
         })
     }
     
@@ -88,25 +85,6 @@ class PremiumCoordinator {
         navigationController.dismiss(animated: animated) { [weak self] in
             guard let self = self else { return }
             self.delegate?.didFinish(self)
-        }
-    }
-}
-
-
-// MARK: - [SKProduct] sorting
-fileprivate let productSortOrder: [InAppProduct.Kind: Int] = [
-    .oneTime: 0, .yearly: 1, .monthly: 2, .other: 3
-]
-
-fileprivate extension Array where Element == SKProduct {
-    func sorted() -> [SKProduct] {
-        return self.sorted { (product1, product2) -> Bool in
-            let productKind1 = InAppProduct.kind(productIdentifier: product1.productIdentifier)
-            let productKind2 = InAppProduct.kind(productIdentifier: product2.productIdentifier)
-            let rank1 = productSortOrder[productKind1] ?? Int.max
-            let rank2 = productSortOrder[productKind2] ?? Int.max
-            let isProduct1BeforeProduct2 = rank1 > rank2
-            return isProduct1BeforeProduct2
         }
     }
 }

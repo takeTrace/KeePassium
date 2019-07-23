@@ -85,8 +85,15 @@ class PremiumVC: UIViewController {
     
     /// Sets products available for purchase.
     /// Must be called only once for the VC instance.
-    public func setAvailableProducts(_ products: [SKProduct]) {
+    public func setAvailableProducts(_ unsortedProducts: [SKProduct]) {
         assert(self.products == nil)
+        
+        // show expensive first
+        let products = unsortedProducts.sorted { (product1, product2) -> Bool in
+            let isP1BeforeP2 = product1.price.doubleValue > product2.price.doubleValue
+            return isP1BeforeP2
+        }
+        
         self.products = products
         purchaseButtons.removeAll()
         for index in 0..<products.count {
