@@ -20,16 +20,11 @@ public enum InAppProduct: String {
     }
 
     static let allKnownIDs: Set<String> = [
-        InAppProduct.foreverBetaSandbox.rawValue,
-        InAppProduct.foreverThankYou.rawValue,
         InAppProduct.forever.rawValue,
         InAppProduct.montlySubscription.rawValue,
-        InAppProduct.yearlySubscription.rawValue]
-    
-    case foreverBetaSandbox = "com.keepassium.ios.iap.foreverBeta.sandbox"
+        InAppProduct.yearlySubscription.rawValue,
     
     case forever = "com.keepassium.ios.iap.forever"
-    case foreverThankYou = "com.keepassium.ios.iap.forever.thankYou"
     case montlySubscription = "com.keepassium.ios.iap.subscription.1month"
     case yearlySubscription = "com.keepassium.ios.iap.subscription.1year"
     
@@ -45,9 +40,7 @@ public enum InAppProduct: String {
     /// True if the product is a recurring payment.
     public var isSubscription: Bool {
         switch self {
-        case .forever,
-             .foreverBetaSandbox,
-             .foreverThankYou:
+        case .forever:
             return false
         case .montlySubscription,
              .yearlySubscription:
@@ -66,14 +59,6 @@ public enum InAppProduct: String {
             assertionFailure("Should not be here")
             return .other
         }
-    }
-    
-    
-    /// Whether given product should be shown to the user
-    public static func isHidden(productIdentifier: String) -> Bool {
-        return productIdentifier.contains(".thankYou") ||
-            productIdentifier.contains(".hidden") ||
-            productIdentifier.contains(".test")
     }
 }
 
