@@ -198,6 +198,13 @@ class SettingsVC: UITableViewController, Refreshable {
         }
     }
     
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard section == 0 else {
+            return super.tableView(tableView, titleForFooterInSection: section)
+        }
+        return getAppUsageDescription()
+    }
+    
     // MARK: Actions
     @IBAction func doneButtonTapped(_ sender: Any) {
         dismissPopover(animated: true)
@@ -313,19 +320,7 @@ class SettingsVC: UITableViewController, Refreshable {
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: true)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
-            
-            let appUsageDuration = premiumManager.usageMonitor.getAppUsageDuration(.perYear)
-            var usageLabelText: String? = nil
-            if appUsageDuration > 60.0,
-                let timeFormatted = DateComponentsFormatter.format(
-                    appUsageDuration,
-                    allowedUnits: [.hour, .minute],
-                    maxUnitCount: 1,
-                    style: .brief)
-            {
-                usageLabelText = "Estimated app use: \(timeFormatted)/year".localized(comment: "Status: how long the app has been used during some time period. For example: `Estimated app use: 10 hr/year`")
-            }
-            premiumTrialCell.detailTextLabel?.text = usageLabelText
+            premiumTrialCell.detailTextLabel?.text = nil
             DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
                 [weak self] in
                 self?.refreshPremiumStatus(animated: false)
@@ -337,6 +332,28 @@ class SettingsVC: UITableViewController, Refreshable {
         } else {
             tableView.reloadData()
         }
+    }
+    
+    /// Returns a human-readable description of the usage stats.
+    private func getAppUsageDescription() -> String? {
+        let usageMonitor = PremiumManager.shared.usageMonitor
+        let monthlyUseDuration = usageMonitor.getAppUsageDuration(.perMonth)
+        let annualUseDuration = 12 * monthlyUseDuration
+        
+        guard monthlyUseDuration > 5 * 60.0 else { return nil }
+        guard let monthlyUsage = DateComponentsFormatter.format(
+                monthlyUseDuration,
+                allowedUnits: [.hour, .minute],
+                maxUnitCount: 1,
+                style: .full),
+            let annualUsage = DateComponentsFormatter.format(
+                annualUseDuration,
+                allowedUnits: [.hour, .minute],
+                maxUnitCount: 1,
+                style: .full)
+            else { return nil}
+        let appUsageDescription = "App being useful: \(monthlyUsage)/month, that is around \(annualUsage)/year.".localized(comment: "Status: how long the app has been used during some time period. For example: `App being useful: 1hr/month, about 12hr/year`")
+        return appUsageDescription
     }
 }
 
