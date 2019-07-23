@@ -123,51 +123,86 @@ class PremiumVC: UIViewController {
     
     /// Returns formatted text for product's purchase button
     private func getActionText(for product: SKProduct) -> NSAttributedString {
-        let productKind = InAppProduct.kind(productIdentifier: product.productIdentifier)
-        let productTitle: String
+        guard let iap = InAppProduct(rawValue: product.productIdentifier) else {
+            assertionFailure()
+            return NSAttributedString(string: "")
+        }
+        
         let productPrice: String
-        switch productKind {
+        switch iap.period {
         case .oneTime:
-            productTitle = "Lifetime".localized(comment: "Product description: once-and-forever premium")
             productPrice = "\(product.localizedPrice) once".localized(comment: "Product price for once-and-forever premium")
         case .yearly:
-            productTitle = "1 year".localized(comment: "Product description: annual premium subscription")
             productPrice = "\(product.localizedPrice) / year".localized(comment: "Product price for annual premium subscription")
         case .monthly:
-            productTitle = "1 month".localized(comment: "Product description: monthly premium subscription")
             productPrice = "\(product.localizedPrice) / month".localized(comment: "Product price for monthly premium subscription")
         case .other:
             assertionFailure("Should not be here")
-            productTitle = ""
             productPrice = "\(product.localizedPrice)"
         }
+
+        // Make the button title:
+        //        Product Title
+        //         $NN / year
+        //          footnote
+        
+        let buttonTitle = NSMutableAttributedString(string: "")
+        
+        // Title
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.paragraphSpacing = 0.0
+        titleParagraphStyle.alignment = .center
         let attributedTitle = NSMutableAttributedString(
-            string: productTitle + "\n",
+            string: product.localizedTitle,
             attributes: [
-                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)
+                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline),
+                NSAttributedString.Key.paragraphStyle: titleParagraphStyle
             ]
         )
+        buttonTitle.append(attributedTitle)
+        
+        // Description
+        if iap.hasPrioritySupport {
+            let prioritySupportDescription = "with priority support".localized(comment: "Description of a premium option. Lowercase. For example 'Business Premium with priority support'.")
+            let descriptionParagraphStyle = NSMutableParagraphStyle()
+            descriptionParagraphStyle.paragraphSpacingBefore = -3.0
+            descriptionParagraphStyle.alignment = .center
+            let attributedDescription = NSMutableAttributedString(
+                string: "\n" + prioritySupportDescription,
+                attributes: [
+                    NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
+                    NSAttributedString.Key.paragraphStyle: descriptionParagraphStyle
+                ]
+            )
+            buttonTitle.append(attributedDescription)
+        }
+        
+        // Price
+        let priceParagraphStyle = NSMutableParagraphStyle()
+        priceParagraphStyle.paragraphSpacingBefore = 3.0
+        priceParagraphStyle.alignment = .center
         let attributedPrice = NSMutableAttributedString(
-            string: productPrice,
+            string: "\n" + productPrice,
             attributes: [
-                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline)
+                NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline),
+                NSAttributedString.Key.paragraphStyle: priceParagraphStyle
             ]
         )
-        attributedTitle.append(attributedPrice)
-        return attributedTitle
+        buttonTitle.append(attributedPrice)
+
+        return buttonTitle
     }
     
     private func makePurchaseButton() -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 60.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 66).isActive = true
         button.setContentHuggingPriority(.required, for: .vertical)
         button.backgroundColor = UIColor.actionTint
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         button.titleLabel?.textColor = UIColor.actionText
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
-        button.cornerRadius = 5.0
+        button.cornerRadius = 10.0
         return button
     }
     
