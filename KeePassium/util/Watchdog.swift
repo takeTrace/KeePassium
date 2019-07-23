@@ -105,6 +105,10 @@ class Watchdog {
     }
     
     @objc private func appWillResignActive(_ notification: Notification) {
+        willResignActive()
+    }
+    
+    internal func willResignActive() {
         print("App will resign active")
         guard let delegate = delegate else { return }
         delegate.showAppCover(self)

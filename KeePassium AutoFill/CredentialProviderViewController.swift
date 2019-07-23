@@ -27,6 +27,21 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         mainCoordinator?.start()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Watchdog.shared.willResignActive()
+        mainCoordinator?.cleanup()
+        DispatchQueue.main.async {
+            // The docs say that extension is killed once it returns.
+            // In practice, however, since iOS 12.3 the extension is simply sent to background
+            // for a while. If re-called soon enough, it will be restored with the previous state.
+            // This seriously interferes with the initial assumptions (no DB open, watchdog stopped)
+            //
+            // So we enforce the documentation and make sure the extension actually quits.
+            exit(0)
+        }
+    }
+    
     func dismiss() {
         self.extensionContext.cancelRequest(withError:
             NSError(
