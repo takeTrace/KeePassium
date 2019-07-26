@@ -518,7 +518,6 @@ extension UnlockDatabaseVC: FileKeeperObserver {
 extension UnlockDatabaseVC: PremiumCoordinatorDelegate {
     func didUpgradeToPremium(in premiumCoordinator: PremiumCoordinator) {
         refresh()
-        //TODO hurray
     }
     
     func didFinish(_ premiumCoordinator: PremiumCoordinator) {
