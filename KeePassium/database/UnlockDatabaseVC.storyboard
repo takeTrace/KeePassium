@@ -105,6 +105,20 @@
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" returnKeyType="continue" secureTextEntry="YES" textContentType="password"/>
                                                     </textField>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Fake User Name Field for AutoFill" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rb4-4d-9A9">
+                                                        <rect key="frame" x="0.0" y="43" width="1" height="1"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="bz8-xB-a9q"/>
+                                                            <constraint firstAttribute="width" constant="1" id="cJE-f5-fOt"/>
+                                                        </constraints>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" textContentType="username"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="NO"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="854-YG-tHO" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="44" width="280" height="2"/>
                                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -127,10 +141,12 @@
                                                     <constraint firstItem="mYY-hP-3vH" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leadingMargin" id="11G-x2-VCX"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="2QP-BY-ymU"/>
                                                     <constraint firstItem="CuN-tE-lAG" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leadingMargin" id="7YG-AI-dEZ"/>
+                                                    <constraint firstItem="Rb4-4d-9A9" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leading" id="8G5-w2-EBj"/>
                                                     <constraint firstAttribute="width" priority="750" constant="280" id="FqB-Kn-Heq"/>
                                                     <constraint firstAttribute="trailingMargin" secondItem="CuN-tE-lAG" secondAttribute="trailing" id="O1R-4o-zHz"/>
                                                     <constraint firstItem="854-YG-tHO" firstAttribute="leading" secondItem="3xv-vB-0Jn" secondAttribute="leading" id="ayP-z8-IdO"/>
                                                     <constraint firstAttribute="bottom" secondItem="mYY-hP-3vH" secondAttribute="bottom" id="bSg-bu-ElE"/>
+                                                    <constraint firstItem="854-YG-tHO" firstAttribute="top" secondItem="Rb4-4d-9A9" secondAttribute="bottom" id="igJ-N8-90q"/>
                                                     <constraint firstItem="CuN-tE-lAG" firstAttribute="top" secondItem="3xv-vB-0Jn" secondAttribute="top" id="kvI-is-rJb"/>
                                                     <constraint firstItem="854-YG-tHO" firstAttribute="top" secondItem="CuN-tE-lAG" secondAttribute="bottom" id="sZa-3K-Joh"/>
                                                     <constraint firstItem="mYY-hP-3vH" firstAttribute="top" secondItem="854-YG-tHO" secondAttribute="bottom" id="v62-wO-G2n"/>
