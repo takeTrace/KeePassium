@@ -56,6 +56,7 @@ public class Settings {
     public static let current = Settings()
     
     public enum Keys: String {
+        case testEnvironment
         case settingsVersion
         case firstLaunchTimestamp
         
@@ -576,6 +577,9 @@ public class Settings {
     
     // MARK: - Internal
     
+    /// True iff running in simulator or in TestFlight.
+    public private(set) var isTestEnvironment: Bool
+    
     /// True iff the app has never been launched before.
     public var isFirstLaunch: Bool { return _isFirstLaunch }
     
@@ -594,7 +598,7 @@ public class Settings {
             }
         }
     }
-
+    
     /// Timestamp when the app was first launched (since install)
     public var firstLaunchTimestamp: Date {
         get {
@@ -1182,6 +1186,16 @@ public class Settings {
     
     private var _isFirstLaunch: Bool
     private init() {
+        if AppGroup.isMainApp {
+            let lastPathComp = Bundle.main.appStoreReceiptURL?.lastPathComponent
+            isTestEnvironment = lastPathComp == "sandboxReceipt"
+            UserDefaults.appGroupShared.set(isTestEnvironment, forKey: Keys.testEnvironment.rawValue)
+        } else {
+            isTestEnvironment = UserDefaults.appGroupShared
+                .object(forKey: Keys.testEnvironment.rawValue) as? Bool
+                ?? false
+        }
+
         let versionInfo = UserDefaults.appGroupShared
             .object(forKey: Keys.settingsVersion.rawValue) as? Int
         _isFirstLaunch = (versionInfo == nil)
