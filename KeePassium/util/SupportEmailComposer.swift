@@ -31,23 +31,15 @@ class SupportEmailComposer: NSObject {
     ///     includeDiagnostics: whether to include detailed diagnostic info.
     ///     completion: called once the email has been saved or sent.
     static func show(includeDiagnostics: Bool, completion: CompletionHandler?=nil) {
-        guard let infoDict = Bundle.main.infoDictionary else {
-            Diag.error("Bundle.main.infoDictionary is nil?!")
-            return
-        }
-        let appName = infoDict["CFBundleDisplayName"] as? String ?? "KeePassium"
-        let appVersion = infoDict["CFBundleShortVersionString"] as? String ?? "_0.0"
-        let buildVersion = infoDict["CFBundleVersion"] as? String ?? ""
         let subject, content: String
         if includeDiagnostics {
-            subject = "\(appName) \(appVersion).\(buildVersion) - Problem"
+            subject = "\(AppInfo.description) - Problem"
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
             content = LString.emailTemplateDescribeTheProblemHere +
                 "\n\n----- Diagnostic Info -----\n" +
-                "\(appName) \(appVersion).\(buildVersion)\n" +
                 Diag.toString()
         } else {
-            subject = "\(appName) \(appVersion).\(buildVersion) - Support Request"
+            subject = "\(AppInfo.description) - Support Request"
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
             content = ""
         }
