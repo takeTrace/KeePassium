@@ -45,8 +45,20 @@ class ProtectedTextField: ValidatingTextField {
         toggleButton.accessibilityLabel = "Show Password".localized(comment: "Button to make password visible as plain-text")
         self.rightView = toggleButton
         self.rightViewMode = .always
+        
+        // hide everything when leaving to background
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(resetVisibility(_:)),
+            name: UIApplication.willResignActiveNotification,
+            object: nil)
     }
 
+    @objc
+    func resetVisibility(_ sender: Any) {
+        isSecureTextEntry = true
+    }
+    
     @objc
     func toggleVisibility(_ sender: Any) {
         isSecureTextEntry = !isSecureTextEntry
