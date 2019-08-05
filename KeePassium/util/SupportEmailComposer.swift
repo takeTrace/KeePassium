@@ -33,15 +33,16 @@ class SupportEmailComposer: NSObject {
     static func show(includeDiagnostics: Bool, completion: CompletionHandler?=nil) {
         let subject, content: String
         if includeDiagnostics {
-            subject = "\(AppInfo.description) - Problem"
+            subject = "\(AppInfo.name) - Problem"
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
             content = LString.emailTemplateDescribeTheProblemHere +
                 "\n\n----- Diagnostic Info -----\n" +
-                Diag.toString()
+                Diag.toString() +
+                "\n\n\(AppInfo.description)"
         } else {
-            subject = "\(AppInfo.description) - Support Request"
+            subject = "\(AppInfo.name) - Support Request"
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
-            content = ""
+            content = "\n\n\(AppInfo.description)"
         }
         
         let instance = SupportEmailComposer(subject: subject, content: content,
