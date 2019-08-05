@@ -43,6 +43,7 @@ class MainCoordinator: NSObject, Coordinator {
         super.init()
 
         SettingsMigrator.processAppLaunch(with: Settings.current)
+        Diag.info(AppInfo.description)
 
         navigationController.delegate = self
         watchdog.delegate = self

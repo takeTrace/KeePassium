@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         AppGroup.applicationShared = application
         SettingsMigrator.processAppLaunch(with: Settings.current)
+        Diag.info(AppInfo.description)
         PremiumManager.shared.startObservingTransactions()
         
         // First thing first, cover the app to avoid flashing any content.
