@@ -31,9 +31,9 @@ class AppInfo {
 
     public static var description: String {
         if Settings.current.isTestEnvironment {
-            return "\(name) v\(version).\(build) (beta)"
+            return "\(name) v\(version).\(build) beta (iOS \(UIDevice.current.systemVersion))"
         } else {
-            return "\(name) v\(version).\(build)"
+            return "\(name) v\(version).\(build) (iOS \(UIDevice.current.systemVersion))"
         }
     }
 }
