@@ -251,17 +251,16 @@ class SettingsVC: UITableViewController, Refreshable {
             setCellVisibility(premiumStatusCell, isHidden: true)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             
-            let secondsLeft = premiumManager.gracePeriodSecondsRemaining
-            let timeFormatted = DateComponentsFormatter.format(
-                secondsLeft,
-                allowedUnits: [.day, .hour, .minute, .second],
-                maxUnitCount: 2) ?? "?"
-            premiumTrialCell.detailTextLabel?.text = "Free trial: \(timeFormatted) remaining".localized(comment: "Status: remaining time of free trial. For example: `Free trial: 2d 23h remaining`")
-            // make sure the countdown timer updates
-            DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
-                [weak self] in
-                self?.refreshPremiumStatus(animated: false)
+            if Settings.current.isTestEnvironment {
+                let secondsLeft = premiumManager.gracePeriodSecondsRemaining
+                let timeFormatted = DateComponentsFormatter.format(
+                    secondsLeft,
+                    allowedUnits: [.day, .hour, .minute, .second],
+                    maxUnitCount: 2) ?? "?"
+                Diag.debug("Initial setup period: \(timeFormatted) remaining")
             }
+            // nothing to display in production
+            premiumTrialCell.detailTextLabel?.text = nil
         case .subscribed:
             guard let expiryDate = premiumManager.getPremiumExpiryDate() else {
                 assertionFailure()
@@ -311,26 +310,24 @@ class SettingsVC: UITableViewController, Refreshable {
             premiumTrialCell.detailTextLabel?.text = ""
             premiumStatusCell.detailTextLabel?.text = premiumStatusText
             premiumStatusCell.detailTextLabel?.textColor = .errorMessage
-            DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
-                [weak self] in
-                self?.refreshPremiumStatus(animated: false)
-            }
         case .freeLightUse,
              .freeHeavyUse:
             setCellVisibility(premiumTrialCell, isHidden: false)
             setCellVisibility(premiumStatusCell, isHidden: true)
             setCellVisibility(manageSubscriptionCell, isHidden: true)
             premiumTrialCell.detailTextLabel?.text = nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
-                [weak self] in
-                self?.refreshPremiumStatus(animated: false)
-            }
         }
+        
         if animated {
             tableView.beginUpdates()
             tableView.endUpdates()
         } else {
             tableView.reloadData()
+        }
+        // Schedule periodic refresh
+        DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
+            [weak self] in
+            self?.refreshPremiumStatus(animated: false)
         }
     }
     
