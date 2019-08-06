@@ -13,6 +13,7 @@ class AboutVC: UITableViewController {
     @IBOutlet weak var contactSupportCell: UITableViewCell!
     @IBOutlet weak var writeReviewCell: UITableViewCell!
     @IBOutlet weak var debugInfoCell: UITableViewCell!
+    @IBOutlet weak var versionLabel: UILabel!
     
     static func make() -> UIViewController {
         let vc = AboutVC.instantiateFromStoryboard()
@@ -23,6 +24,12 @@ class AboutVC: UITableViewController {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
+        
+        if Settings.current.isTestEnvironment {
+            versionLabel.text = "v\(AppInfo.version).\(AppInfo.build) beta"
+        } else {
+            versionLabel.text = "v\(AppInfo.version).\(AppInfo.build)"
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
