@@ -44,7 +44,7 @@ class AboutVC: UITableViewController {
         case contactSupportCell:
             SupportEmailComposer.show(includeDiagnostics: false, completion: nil)
         case writeReviewCell:
-            AppStoreReviewHelper.writeReview()
+            AppStoreHelper.writeReview()
         case debugInfoCell:
             resetAutoFillCleanExitFlag()
         default:

@@ -173,7 +173,7 @@ class SettingsVC: UITableViewController, Refreshable {
         case contactSupportCell:
             SupportEmailComposer.show(includeDiagnostics: false)
         case rateTheAppCell:
-            AppStoreReviewHelper.writeReview()
+            AppStoreHelper.writeReview()
         case aboutAppCell:
             let aboutVC = AboutVC.make()
             show(aboutVC, sender: self)

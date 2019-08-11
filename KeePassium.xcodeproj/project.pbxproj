@@ -165,7 +165,7 @@
 		75CBABA521C1C2D100B8AFE2 /* FileInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529310C21ADA46C00E4B0D2 /* FileInfoVC.swift */; };
 		75CBABA621C1C2DB00B8AFE2 /* FileInfoVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7529310A21ADA44C00E4B0D2 /* FileInfoVC.storyboard */; };
 		75CD363F21521FAF0018AF46 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75CD363E21521FAE0018AF46 /* LocalAuthentication.framework */; };
-		75CD364121537A320018AF46 /* AppStoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD364021537A310018AF46 /* AppStoreReviewHelper.swift */; };
+		75CD364121537A320018AF46 /* AppStoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CD364021537A310018AF46 /* AppStoreHelper.swift */; };
 		75CFBE2821C2BDC60029A80A /* DatabaseUnlockerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75CFBE2721C2BDC60029A80A /* DatabaseUnlockerVC.storyboard */; };
 		75CFBE2A21C2BDDF0029A80A /* DatabaseUnlockerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFBE2921C2BDDF0029A80A /* DatabaseUnlockerVC.swift */; };
 		75CFBE2D21C2FE340029A80A /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CACC20BD18320056C969 /* UIView+extension.swift */; };
@@ -353,7 +353,7 @@
 		75CBABA021C16CD000B8AFE2 /* FirstSetupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstSetupVC.swift; sourceTree = "<group>"; };
 		75CBABA221C16D8E00B8AFE2 /* FirstSetupVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FirstSetupVC.storyboard; sourceTree = "<group>"; };
 		75CD363E21521FAE0018AF46 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
-		75CD364021537A310018AF46 /* AppStoreReviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreReviewHelper.swift; sourceTree = "<group>"; };
+		75CD364021537A310018AF46 /* AppStoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreHelper.swift; sourceTree = "<group>"; };
 		75CFBE2721C2BDC60029A80A /* DatabaseUnlockerVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DatabaseUnlockerVC.storyboard; sourceTree = "<group>"; };
 		75CFBE2921C2BDDF0029A80A /* DatabaseUnlockerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUnlockerVC.swift; sourceTree = "<group>"; };
 		75D1674921464333005E33C3 /* AboutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutVC.swift; sourceTree = "<group>"; };
@@ -523,7 +523,7 @@
 				75C3801A217A0B76006F74C2 /* UIViewController+storyboard.swift */,
 				7542D2412129640F00C8A926 /* String+extensions.swift */,
 				7523F71C21C98D620025C706 /* SupportEmailComposer.swift */,
-				75CD364021537A310018AF46 /* AppStoreReviewHelper.swift */,
+				75CD364021537A310018AF46 /* AppStoreHelper.swift */,
 				75C11F1D22208D6B0042FB2B /* LAContext+biometrics.swift */,
 				75DDB5E3228BF88C0018A50F /* FileInfoReloader.swift */,
 				75B24DD421C523AE003C9486 /* SearchHelper.swift */,
@@ -979,7 +979,7 @@
 				75E371942108CA08002602BD /* ProgressOverlay.swift in Sources */,
 				75C11F1E22208D6B0042FB2B /* LAContext+biometrics.swift in Sources */,
 				7561850520E0379F00EEFAEE /* ValidatingTextView.swift in Sources */,
-				75CD364121537A320018AF46 /* AppStoreReviewHelper.swift in Sources */,
+				75CD364121537A320018AF46 /* AppStoreHelper.swift in Sources */,
 				75B5FB7720D53EA700D402D9 /* ViewEntryFieldsVC.swift in Sources */,
 				75A2677D22904E0D0097C693 /* PremiumFeature+extension.swift in Sources */,
 				75B3B7BC20EABD9D007E8FA9 /* PlaceholderVC.swift in Sources */,
