@@ -64,6 +64,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         // hide the hidden labels
         watchdogTimeoutLabel.alpha = 0.0
         errorMessagePanel.alpha = 0.0
+        errorMessagePanel.isHidden = true
 
         // Fix UIKeyboardAssistantBar constraints warnings for secure input field
         passwordField.inputAssistantItem.leadingBarButtonGroups = []
@@ -219,6 +220,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             options: .curveEaseIn,
             animations: {
                 [weak self] in
+                self?.errorMessagePanel.isHidden = false
                 self?.errorMessagePanel.alpha = 1.0
             },
             completion: {
@@ -238,6 +240,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
                 animations: {
                     [weak self] in
                     self?.errorMessagePanel.alpha = 0.0
+                    self?.errorMessagePanel.isHidden = true
                 },
                 completion: {
                     [weak self] (finished) in

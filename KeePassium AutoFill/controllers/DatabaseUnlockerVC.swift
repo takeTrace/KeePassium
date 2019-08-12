@@ -46,6 +46,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
         view.layer.isOpaque = false
         
         errorMessagePanel.alpha = 0.0
+        errorMessagePanel.isHidden = true
         
         refresh()
         
@@ -72,6 +73,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
             animations: {
                 [weak self] in
                 self?.errorMessagePanel.alpha = 1.0
+                self?.errorMessagePanel.isHidden = false
             },
             completion: {
                 [weak self] (finished) in
@@ -89,6 +91,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
                 animations: {
                     [weak self] in
                     self?.errorMessagePanel.alpha = 0.0
+                    self?.errorMessagePanel.isHidden = true
                 },
                 completion: {
                     [weak self] (finished) in
@@ -97,6 +100,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
             )
         } else {
             errorMessagePanel.alpha = 0.0
+            errorMessagePanel.isHidden = true
             errorMessageLabel.text = " "
         }
     }
