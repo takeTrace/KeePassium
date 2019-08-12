@@ -236,12 +236,15 @@ extension SearchHelper {
             }
             
             // check custom fields
+            let urlString = url.absoluteString
             guard let urlHost = url.host,
                 let urlDomain2 = url.domain2 else { return maxScoreSoFar }
             let extraFieldScores: [Double] = entry2.fields
                 .filter { !$0.isStandardField }
                 .map { (field) in
-                    if field.value.localizedCaseInsensitiveContains(urlHost) {
+                    if field.value.localizedCaseInsensitiveContains(urlString) {
+                        return 1.0
+                    } else if field.value.localizedCaseInsensitiveContains(urlHost) {
                         return 0.5
                     } else if field.value.localizedCaseInsensitiveContains(urlDomain2) {
                         return 0.3
