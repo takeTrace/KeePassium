@@ -22,6 +22,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     @IBOutlet private weak var databaseIconImage: UIImageView!
     @IBOutlet weak var masterKeyKnownLabel: UILabel!
     @IBOutlet weak var getPremiumButton: UIButton!
+    @IBOutlet weak var announcementButton: UIButton!
     
     public var databaseRef: URLReference! {
         didSet {
@@ -75,6 +76,8 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             target: nil,
             action: nil)
         navigationItem.backBarButtonItem = lockDatabaseButton
+        
+        refreshNews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,7 +147,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
                 setKeyFile(urlRef: availableKeyFileRef)
             }
         }
-        
+        refreshNews()
         refreshInputMode()
     }
     
@@ -175,6 +178,28 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         if !inputPanel.isHidden {
             passwordField.becomeFirstResponder()
         }
+    }
+    
+    // MARK: - In-app news announcements
+    
+    private var newsItem: NewsItem?
+    
+    /// Sets visibility and content of the announcement button
+    private func refreshNews() {
+        let nc = NewsCenter.shared
+        if let newsItem = nc.getTopItem() {
+            announcementButton.titleLabel?.numberOfLines = 0
+            announcementButton.setTitle(newsItem.title, for: .normal)
+            announcementButton.isHidden = false
+            self.newsItem = newsItem
+        } else {
+            announcementButton.isHidden = true
+            self.newsItem = nil
+        }
+    }
+
+    @IBAction func didPressAnouncementButton(_ sender: Any) {
+        newsItem?.show(in: self)
     }
     
     // MARK: - Showing/hiding various messagess

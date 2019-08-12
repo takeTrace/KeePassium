@@ -402,6 +402,10 @@ extension MainCoordinator: DatabaseUnlockerDelegate {
         watchdog.restart()
         tryToUnlockDatabase(database: database, password: password, keyFile: keyFile)
     }
+    
+    func didPressNewsItem(in databaseUnlocker: DatabaseUnlockerVC, newsItem: NewsItem) {
+        newsItem.show(in: databaseUnlocker)
+    }
 }
 
 // MARK: - KeyFileChooserDelegate

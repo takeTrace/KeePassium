@@ -15,6 +15,7 @@ protocol DatabaseUnlockerDelegate: class {
         database: URLReference,
         password: String,
         keyFile: URLReference?)
+    func didPressNewsItem(in databaseUnlocker: DatabaseUnlockerVC, newsItem: NewsItem)
 }
 
 class DatabaseUnlockerVC: UIViewController, Refreshable {
@@ -27,6 +28,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     @IBOutlet weak var inputPanel: UIView!
     @IBOutlet weak var passwordField: ProtectedTextField!
     @IBOutlet weak var keyFileField: UITextField!
+    @IBOutlet weak var announcementButton: UIButton!
     
     weak var coordinator: MainCoordinator?
     weak var delegate: DatabaseUnlockerDelegate?
@@ -105,6 +107,8 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     
     func refresh() {
         guard isViewLoaded else { return }
+        refreshNews()
+        
         guard let dbRef = databaseRef else {
             databaseLocationIconImage.image = nil
             databaseFileNameLabel.text = ""
@@ -187,6 +191,24 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     }
 
     
+    // MARK: - In-app news announcements
+    
+    private var newsItem: NewsItem?
+    
+    /// Sets visibility and content of the announcement button
+    private func refreshNews() {
+        let nc = NewsCenter.shared
+        if let newsItem = nc.getTopItem() {
+            announcementButton.titleLabel?.numberOfLines = 0
+            announcementButton.setTitle(newsItem.title, for: .normal)
+            announcementButton.isHidden = false
+            self.newsItem = newsItem
+        } else {
+            announcementButton.isHidden = true
+            self.newsItem = nil
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func didPressErrorDetailsButton(_ sender: Any) {
@@ -203,6 +225,11 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
             password: passwordField.text ?? "",
             keyFile: keyFileRef)
         passwordField.text = "" 
+    }
+    
+    @IBAction func didPressAnouncementButton(_ sender: Any) {
+        guard let newsItem = newsItem else { return }
+        delegate?.didPressNewsItem(in: self, newsItem: newsItem)
     }
 }
 
