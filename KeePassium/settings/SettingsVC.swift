@@ -190,8 +190,8 @@ class SettingsVC: UITableViewController, Refreshable {
         switch cell {
 #if DEBUG
         case premiumStatusCell, premiumTrialCell:
-            PremiumManager.shared.resetSubscription()
-            refreshPremiumStatus(animated: true)
+            didPressUpgradeToPremium()
+            refreshPremiumStatus()
 #endif
         default:
             assertionFailure() // should not be here
