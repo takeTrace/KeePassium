@@ -146,6 +146,7 @@ class EditEntrySingleLineCell:
             titleLabel.text = field?.visibleName
             textField.text = field?.value
             textField.isSecureTextEntry = field?.isProtected ?? false
+            textField.accessibilityLabel = field?.visibleName
         }
     }
     override func awakeFromNib() {
@@ -196,6 +197,7 @@ class EditEntrySingleLineProtectedCell:
             titleLabel.text = field?.visibleName
             textField.text = field?.value
             textField.isSecureTextEntry = field?.isProtected ?? false
+            textField.accessibilityLabel = field?.visibleName
             randomizeButton.isHidden = (field?.internalName != EntryField.password)
         }
     }
