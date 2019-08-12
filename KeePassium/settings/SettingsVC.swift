@@ -61,7 +61,7 @@ class SettingsVC: UITableViewController, Refreshable {
             selector: #selector(refreshPremiumStatus),
             name: PremiumManager.statusUpdateNotification,
             object: nil)
-        refreshPremiumStatus(animated: false)
+        refreshPremiumStatus()
         #if DEBUG
         premiumStatusCell.accessoryType = .detailButton
         premiumTrialCell.accessoryType = .detailButton
@@ -97,7 +97,7 @@ class SettingsVC: UITableViewController, Refreshable {
                 "App Lock, passcode, timeout",
                 comment: "Settings: subtitle of the `App Protection` section when biometric auth is not available.")
         }
-        refreshPremiumStatus(animated: false)
+        refreshPremiumStatus()
     }
     
     /// Marks given cell as hidden/visible. The caller is responsible for refreshing the table.
@@ -246,7 +246,7 @@ class SettingsVC: UITableViewController, Refreshable {
     private let premiumRefreshInterval = 10.0
     #endif
     
-    @objc private func refreshPremiumStatus(animated: Bool) {
+    @objc private func refreshPremiumStatus() {
         let premiumManager = PremiumManager.shared
         premiumManager.usageMonitor.refresh()
         premiumManager.updateStatus()
@@ -327,16 +327,13 @@ class SettingsVC: UITableViewController, Refreshable {
             premiumTrialCell.detailTextLabel?.text = nil
         }
         
-        if animated {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        } else {
-            tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
         // Schedule periodic refresh
         DispatchQueue.main.asyncAfter(deadline: .now() + premiumRefreshInterval) {
             [weak self] in
-            self?.refreshPremiumStatus(animated: false)
+            self?.refreshPremiumStatus()
         }
     }
     
