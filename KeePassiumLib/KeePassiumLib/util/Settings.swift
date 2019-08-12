@@ -1186,6 +1186,9 @@ public class Settings {
     
     private var _isFirstLaunch: Bool
     private init() {
+        #if DEBUG
+        isTestEnvironment = true
+        #else
         if AppGroup.isMainApp {
             let lastPathComp = Bundle.main.appStoreReceiptURL?.lastPathComponent
             isTestEnvironment = lastPathComp == "sandboxReceipt"
@@ -1195,7 +1198,8 @@ public class Settings {
                 .object(forKey: Keys.testEnvironment.rawValue) as? Bool
                 ?? false
         }
-
+        #endif
+        
         let versionInfo = UserDefaults.appGroupShared
             .object(forKey: Keys.settingsVersion.rawValue) as? Int
         _isFirstLaunch = (versionInfo == nil)
