@@ -48,7 +48,7 @@ extension SearchHelper {
     
     /// Returns entries that correspond (somewhat) to the given `url`.
     private func performSearch(in database: Database, url: String) -> [ScoredEntry] {
-        guard let url = URL(string: url) else { return [] }
+        guard let url = URL.guessFrom(malformedString: url) else { return [] }
         
         var allEntries = [Entry]()
         guard let rootGroup = database.root else { return [] }
@@ -128,13 +128,15 @@ extension SearchHelper {
     
     /// Returns a similarity score of the given `domain` in the given `entry`.
     private func getSimilarity(domain: String, entry: Entry) -> Double {
-        let urlScore = howSimilar(domain: domain, with: URL(string: entry.url))
+        let urlScore = howSimilar(domain: domain, with: URL.guessFrom(malformedString: entry.url))
         let titleScore = entry.title.localizedCaseInsensitiveContains(domain) ? 0.8 : 0.0
         let notesScore = entry.notes.localizedCaseInsensitiveContains(domain) ? 0.5 : 0.0
         
         if let entry2 = entry as? Entry2 {
             // Entry 2
-            let altURLScore = howSimilar(domain: domain, with: URL(string: entry2.overrideURL))
+            let altURLScore = howSimilar(
+                domain: domain,
+                with: URL.guessFrom(malformedString: entry2.overrideURL))
             let maxScoreSoFar = max(urlScore, titleScore, notesScore, altURLScore)
             if maxScoreSoFar >= 0.5 {
                 // further checks won't improve the score, so let's save our time
@@ -197,7 +199,7 @@ extension SearchHelper {
         // - `url.host` occurs inside custom field values -> 0.6
         
         // is entry URL similar to the `url`?
-        let urlScore = howSimilar(url, with: URL(string: entry.url))
+        let urlScore = howSimilar(url, with: URL.guessFrom(malformedString: entry.url))
         // does `url.host` occure inside entry title or notes?
         let titleScore: Double
         let notesScore: Double
@@ -224,7 +226,9 @@ extension SearchHelper {
         
         if let entry2 = entry as? Entry2 {
             // Entry 2
-            let altURLScore = howSimilar(url, with: URL(string: entry2.overrideURL))
+            let altURLScore = howSimilar(
+                url,
+                with: URL.guessFrom(malformedString: entry2.overrideURL))
             let maxScoreSoFar = max(urlScore, titleScore, notesScore, altURLScore)
             if maxScoreSoFar >= 0.5 {
                 // further checks won't improve the score, so let's save our time
@@ -250,5 +254,24 @@ extension SearchHelper {
             // Entry 1
             return max(urlScore, titleScore, notesScore)
         }
+    }
+}
+
+fileprivate extension URL {
+    /// Creates a URL from a potentially ill-formed string (such as host-only)
+    static func guessFrom(malformedString string: String?) -> URL? {
+        guard let string = string else { return nil }
+        
+        if let wellFormedURL = URL(string: string), let _ = wellFormedURL.scheme {
+            // parsed and has non-empty scheme => considered OK
+            return wellFormedURL
+        }
+        // there was no scheme, try a fake one
+        guard let fakeSchemeURL = URL(string: "https://" + string),
+            let _ = fakeSchemeURL.host else {
+                // no host even with fake scheme => cannot do anything else
+                return nil
+        }
+        return fakeSchemeURL
     }
 }
