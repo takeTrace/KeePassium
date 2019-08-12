@@ -18,12 +18,9 @@ public enum InAppProduct: String {
         case monthly
         case other
     }
-
-    static let allKnownIDs: Set<String> = [
-        InAppProduct.forever.rawValue,
-        InAppProduct.montlySubscription.rawValue,
-        InAppProduct.yearlySubscription.rawValue,
-        InAppProduct.yearlyBusinessSubscription.rawValue]
+    
+    /// Not for purchase: internal premium status for TestFlight/debug builds.
+    case betaForever = "com.keepassium.ios.iap.beta.forever"
     
     case forever = "com.keepassium.ios.iap.forever"
     case montlySubscription = "com.keepassium.ios.iap.subscription.1month"
@@ -37,7 +34,8 @@ public enum InAppProduct: String {
     /// True if the product is a recurring payment.
     public var isSubscription: Bool {
         switch self {
-        case .forever:
+        case .forever,
+             .betaForever:
             return false
         case .montlySubscription,
              .yearlySubscription,
@@ -52,6 +50,7 @@ public enum InAppProduct: String {
         case .yearlyBusinessSubscription:
             return true
         case .forever,
+             .betaForever,
              .montlySubscription,
              .yearlySubscription:
             return false
@@ -225,6 +224,15 @@ public class PremiumManager: NSObject {
 
     /// Returns the type of the purchased product (with the latest expiration).
     public func getPremiumProduct() -> InAppProduct? {
+        #if DEBUG
+        return InAppProduct.betaForever // temporary premium for debug
+        #else
+        if Settings.current.isTestEnvironment {
+            // TestFlight only, not a local debug build
+            return InAppProduct.betaForever
+        }
+        #endif
+
         do {
             return try Keychain.shared.getPremiumProduct() // throws KeychainError
         } catch {
@@ -236,6 +244,15 @@ public class PremiumManager: NSObject {
     /// Returns subscription expiry date (distantFuture for one-time purcahse),
     /// or `nil` if not subscribed.
     public func getPremiumExpiryDate() -> Date? {
+        #if DEBUG
+        return Date.distantFuture // temporary premium for debug
+        #else
+        if Settings.current.isTestEnvironment {
+            // TestFlight only, not a local debug build
+            return Date.distantFuture
+        }
+        #endif
+        
         do {
             return try Keychain.shared.getPremiumExpiryDate() // throws KeychainError
         } catch {
@@ -299,7 +316,11 @@ public class PremiumManager: NSObject {
     // MARK: - Available in-app products
     
     public fileprivate(set) var availableProducts: [SKProduct]?
-    private let knownProductIDs = InAppProduct.allKnownIDs
+    private let purchaseableProductIDs = Set<String>([
+        InAppProduct.forever.rawValue,
+        InAppProduct.montlySubscription.rawValue,
+        InAppProduct.yearlySubscription.rawValue,
+        InAppProduct.yearlyBusinessSubscription.rawValue])
     
     private var productsRequest: SKProductsRequest?
 
@@ -311,7 +332,7 @@ public class PremiumManager: NSObject {
         productsRequest?.cancel()
         productsRequestHandler = completionHandler
         
-        productsRequest = SKProductsRequest(productIdentifiers: Set<String>(knownProductIDs))
+        productsRequest = SKProductsRequest(productIdentifiers: purchaseableProductIDs)
         productsRequest!.delegate = self
         productsRequest!.start()
     }

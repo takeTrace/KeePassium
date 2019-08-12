@@ -285,7 +285,11 @@ class SettingsVC: UITableViewController, Refreshable {
             setCellVisibility(manageSubscriptionCell, isHidden: !product.isSubscription)
             
             if expiryDate == .distantFuture {
-                premiumStatusCell.detailTextLabel?.text = "Valid forever".localized(comment: "Status: validity period of once-and-forever premium")
+                if Settings.current.isTestEnvironment {
+                    premiumStatusCell.detailTextLabel?.text = "Beta testing" // do not localize
+                } else {
+                    premiumStatusCell.detailTextLabel?.text = "Valid forever".localized(comment: "Status: validity period of once-and-forever premium")
+                }
             } else {
                 #if DEBUG
                 let expiryDateString = DateFormatter
