@@ -202,7 +202,12 @@ class SettingsVC: UITableViewController, Refreshable {
         guard section == 0 else {
             return super.tableView(tableView, titleForFooterInSection: section)
         }
-        return getAppUsageDescription()
+        
+        if PremiumManager.shared.usageMonitor.isEnabled {
+            return getAppUsageDescription()
+        } else {
+            return nil
+        }
     }
     
     // MARK: Actions
