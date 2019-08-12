@@ -305,15 +305,20 @@ class MainCoordinator: NSObject, Coordinator {
         let cancelAction = UIAlertAction(title: LString.actionCancel, style: .cancel, handler: nil)
         let upgradeAction = UIAlertAction( title: LString.actionUpgradeToPremium, style: .default) {
             [weak self] (action) in
-            let isURLOpened = self?.openURL(AppGroup.upgradeToPremiumURL) ?? false
-            if !isURLOpened {
-                Diag.warning("Failed to open main app")
-                self?.showManualUpgradeMessage()
-            }
+            self?.showUpgradeOptions(from: viewController)
         }
         upgradeAlertVC.addAction(upgradeAction)
         upgradeAlertVC.addAction(cancelAction)
         viewController.present(upgradeAlertVC, animated: true, completion: nil)
+    }
+    
+    /// Opens main app upgrade screen, or suggests the user to open the main app manually.
+    func showUpgradeOptions(from viewController: UIViewController) {
+        guard openURL(AppGroup.upgradeToPremiumURL) else {
+            Diag.warning("Failed to open main app")
+            showManualUpgradeMessage()
+            return
+        }
     }
 
     /// Opens the given URL.
