@@ -28,26 +28,51 @@ final class Header2: Eraseable {
         case hashMismatch // header's hash does not match its after-header copy
         case hmacMismatch // header's HMAC does not match its after-header copy
         case corruptedField(fieldName: String)
+        
         public var errorDescription: String? {
             switch self {
             case .readingError:
-                return NSLocalizedString("Header reading error. DB file corrupted?", comment: "Error message when reading database header")
+                return NSLocalizedString("Header reading error. DB file corrupt?", comment: "Error message when reading database header")
             case .wrongSignature:
                 return NSLocalizedString("Wrong file signature. Not a KeePass database?", comment: "Error message when opening a database")
             case .unsupportedFileVersion(let version):
-                return NSLocalizedString("Unsupported database format version: \(version).", comment: "Error message when opening a database")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Unsupported database format version: %@.",
+                        comment: "Error message when opening a database. [version: String]"),
+                    [version])
             case .unsupportedDataCipher(let uuidHexString):
-                return NSLocalizedString("Unsupported data cipher: \(uuidHexString.prefix(32))", comment: "Error message")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Unsupported data cipher: %@",
+                        comment: "Error message [uuidHexString: String]"),
+                    [uuidHexString.prefix(32)])
             case .unsupportedStreamCipher(let id):
-                return NSLocalizedString("Unsupported inner stream cipher (ID \(id).", comment: "Error message when opening a database")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Unsupported inner stream cipher (ID %d)",
+                        comment: "Error message when opening a database. [id: UInt32]"),
+                    [id])
             case .unsupportedKDF(let uuid):
-                return NSLocalizedString("Unsupported KDF: \(uuid.uuidString)", comment: "Error message")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Unsupported KDF: %@",
+                        comment: "Error message [uuidString: String]"),
+                    [uuid.uuidString])
             case .unknownCompressionAlgorithm:
                 return NSLocalizedString("Unknown compression algorithm.", comment: "Error message when opening a database")
             case .binaryUncompressionError(let reason):
-                return NSLocalizedString("Failed to uncompress attachment data: \(reason)", comment: "Error message when saving a database")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Failed to uncompress attachment data: %@",
+                        comment: "Error message when saving a database [reason: String]"),
+                    [reason])
             case .corruptedField(let fieldName):
-                return NSLocalizedString("Header field \(fieldName) is corrupted.", comment: "Error message, with the name of problematic field")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Header field %@ is corrupted.",
+                        comment: "Error message, with the name of problematic field. [fieldName: String]"),
+                    [fieldName])
             case .hashMismatch:
                 return NSLocalizedString("Header hash mismatch. DB file corrupt?", comment: "Error message")
             case .hmacMismatch:

@@ -11,10 +11,15 @@ import Foundation
 public enum KeychainError: LocalizedError {
     case generic(code: Int)
     case unexpectedFormat
+    
     public var errorDescription: String? {
         switch self {
         case .generic(let code):
-            return NSLocalizedString("Keychain error (code \(code)) ", comment: "Generic error message about system keychain, with an error code.")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Keychain error (code %d) ",
+                    comment: "Generic error message about system keychain. [errorCode: Int]"),
+                [code])
         case .unexpectedFormat:
             return NSLocalizedString("Keychain error: unexpected data format", comment: "Error message about system keychain.")
         }

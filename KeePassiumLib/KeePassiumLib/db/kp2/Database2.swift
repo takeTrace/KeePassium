@@ -37,17 +37,37 @@ public class Database2: Database {
             case .prematureDataEnd:
                 return NSLocalizedString("Unexpected end of file. Corrupted file?", comment: "Error message")
             case .negativeBlockSize(let blockIndex):
-                return NSLocalizedString("Corrupted database file (negative block #\(blockIndex) size)", comment: "Error message")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Corrupted database file (block %d has negative size)",
+                        comment: "Error message [blockIndex: Int]"),
+                    [blockIndex])
             case .parsingError(let reason):
-                return NSLocalizedString("Cannot parse database. \(reason)", comment: "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Cannot parse database. %s",
+                        comment: "Error message. Parsing refers to the analysis/understanding of file content. [reason: String]"),
+                    [reason])
             case .blockIDMismatch:
                 return NSLocalizedString("Unexpected block ID.", comment: "Error message: wrong ID of a data block")
             case .blockHashMismatch(let blockIndex):
-                return NSLocalizedString("Block #\(blockIndex) hash mismatch.", comment: "Error message: hash(checksum) of a data block is wrong")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Corrupted database file (hash mismatch in block %d)",
+                        comment: "Error message: hash(checksum) of a data block is wrong. [blockIndex: Int]"),
+                    [blockIndex])
             case .blockHMACMismatch(let blockIndex):
-                return NSLocalizedString("Block #\(blockIndex) HMAC mismatch.", comment: "Error message: HMAC value (kind of checksum) of a data block is wrong")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Corrupted database file (HMAC mismatch in block %d)",
+                        comment: "Error message: HMAC value (kind of checksum) of a data block is wrong. [blockIndex: Int]"),
+                    [blockIndex])
             case .compressionError(let reason):
-                return NSLocalizedString("Gzip error: \(reason)", comment: "Generic error message about Gzip compression algorithm")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Gzip error: %@",
+                        comment: "Error message about Gzip compression algorithm. [reason: String]"),
+                    [reason])
             }
         }
     }
@@ -220,7 +240,12 @@ public class Database2: Database {
             throw DatabaseError.loadError(reason: error.localizedDescription)
         } catch let error as GzipError {
             Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
-            throw DatabaseError.loadError(reason: NSLocalizedString("Error unpacking database (\(error.message))", comment: "Error message. Unpacking is decompression of compressed data."))
+            let reason = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Error unpacking database: %@",
+                    comment: "Error message about Gzip compression algorithm. [errorMessage: String]"),
+                [error.localizedDescription])
+            throw DatabaseError.loadError(reason: reason)
         }
         // ProgressInterruption is passed up the call stack.
         // Catch-all for any missed cases is also there.
@@ -667,7 +692,11 @@ public class Database2: Database {
         if unusedBinaries.count > 0 {
             // some binaries are not referenced
             let lastUsedAppName = warnings.databaseGenerator ?? ""
-            let warningMessage = NSLocalizedString("The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (\(lastUsedAppName)). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.", comment: "A warning about unused attachments after loading the database.")
+            let warningMessage = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (%@). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.",
+                    comment: "A warning about unused attachments after loading the database. [lastUsedAppName: String]"),
+                [lastUsedAppName])
             warnings.messages.append(warningMessage)
             
             let unusedIDs = unusedBinaries
@@ -691,7 +720,11 @@ public class Database2: Database {
                 .joined(separator: "\n ") // merge into a string
             
             let lastUsedAppName = warnings.databaseGenerator ?? ""
-            let warningMessage = NSLocalizedString("Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (\(lastUsedAppName)). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: \(attachmentNames)", comment: "A warning about missing attachments after loading the database.")
+            let warningMessage = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (%@). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: %@",
+                    comment: "A warning about missing attachments after loading the database. [lastUsedAppName: String, attachmentNames: String]"),
+                [lastUsedAppName, attachmentNames])
             warnings.messages.append(warningMessage)
 
             // may not log attachment names, but IDs are generic enough
@@ -738,7 +771,11 @@ public class Database2: Database {
             .map { "\"\($0)\"" } // add surrounding quotes
             .joined(separator: "\n ") // merge into a string
         
-        let warningMessage = NSLocalizedString("Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n\(listOfEntryNames)", comment: "A warning about nameless attachments, shown after loading the database")
+        let warningMessage = String.localizedStringWithFormat(
+            NSLocalizedString(
+                "Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n%@",
+                comment: "A warning about nameless attachments, shown after loading the database. [listOfEntryNames: String]"),
+            [listOfEntryNames])
         Diag.warning(warningMessage)
         warnings.messages.append(warningMessage)
     }
@@ -761,7 +798,11 @@ public class Database2: Database {
         let entryPaths = problematicEntries
             .map { entry in "'\(entry.title)' in '\(entry.getGroupPath())'" }
             .joined(separator: "\n")
-        let warningMessage = NSLocalizedString("Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n\(entryPaths)", comment: "A warning about misformatted custom fields after loading the database.")
+        let warningMessage = String.localizedStringWithFormat(
+            NSLocalizedString(
+                "Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n%@",
+                comment: "A warning about misformatted custom fields after loading the database. [entryPaths: String]"),
+            [entryPaths])
         warnings.messages.append(warningMessage)
     }
     
@@ -947,11 +988,19 @@ public class Database2: Database {
             throw DatabaseError.saveError(reason: error.localizedDescription)
         } catch let error as GzipError {
             Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
-            let errMsg = NSLocalizedString("Data compression error: \(error.localizedDescription)", comment: "Error message")
+            let errMsg = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Data compression error: %@",
+                    comment: "Error message [errorDescription: String]"),
+                [error.localizedDescription])
             throw DatabaseError.saveError(reason: errMsg)
         } catch let error as CryptoError {
             Diag.error("Crypto error [reason: \(error.localizedDescription)]")
-            let errMsg = NSLocalizedString("Encryption error: \(error.localizedDescription)", comment: "Error message")
+            let errMsg = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Encryption error: %@",
+                    comment: "Error message [errorDescription: String]"),
+                [error.localizedDescription])
             throw DatabaseError.saveError(reason: errMsg)
         }
     }
@@ -1013,7 +1062,11 @@ public class Database2: Database {
                 Diag.verbose("Gzip compression OK")
             } catch let error as GzipError {
                 Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
-                let errMsg = NSLocalizedString("Data compression error: \(error.localizedDescription)", comment: "Error message")
+                let errMsg = String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Data compression error: %@",
+                        comment: "Error message [errorDescription: String]"),
+                    [error.localizedDescription])
                 throw DatabaseError.saveError(reason: errMsg)
             }
         } else {
@@ -1044,7 +1097,12 @@ public class Database2: Database {
             Diag.verbose("Encryption OK")
         } catch let error as CryptoError {
             Diag.error("Crypto error [message: \(error.localizedDescription)]")
-            let errMsg = NSLocalizedString("Encryption error: \(error.localizedDescription)", comment: "Error message")
+            let errMsg = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Encryption error: %@",
+                    comment: "Error message [errorDescription: String]"),
+                [error.localizedDescription])
+
             throw DatabaseError.saveError(reason: errMsg)
         }
     }

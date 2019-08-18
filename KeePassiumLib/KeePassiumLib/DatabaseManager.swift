@@ -852,7 +852,7 @@ fileprivate class DatabaseLoader {
             )
                 // throws DatabaseError, ProgressInterruption
             Diag.info("Database loaded OK")
-            progress.localizedDescription = NSLocalizedString("Done", comment: "Status message: operation completed")
+            progress.localizedDescription = NSLocalizedString("[Database/Unlock] Done", comment: "Status message: operation completed")
             completion(dbDoc, dbRef)
             stopObservingProgress()
             notifier.notifyDatabaseDidLoad(database: dbRef, warnings: warnings)

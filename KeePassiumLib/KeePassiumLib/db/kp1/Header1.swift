@@ -31,13 +31,21 @@ class Header1 {
         public var errorDescription: String? {
             switch self {
             case .readingError:
-                return NSLocalizedString("Header reading error. DB file corrupted?", comment: "Error message when reading database header")
+                return NSLocalizedString("Header reading error. DB file corrupt?", comment: "Error message when reading database header")
             case .wrongSignature:
                 return NSLocalizedString("Wrong file signature. Not a KeePass database?", comment: "Error message when opening a database")
             case .unsupportedFileVersion(let version):
-                return NSLocalizedString("Unsupported database format version: \(version).", comment: "Error message when opening a database")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Unsupported database format version: %@.",
+                        comment: "Error message when opening a database. [version: String]"),
+                    [version])
             case .unsupportedDataCipher(let flags):
-                return NSLocalizedString("Unsupported cipher. (Code: \(flags.asHexString)).", comment: "Error message. AES and Twofish are cipher names.")
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "Unsupported cipher. (Code: %@)",
+                        comment: "Error message. AES and Twofish are cipher names. [flagsHexString: String]"),
+                    [flags.asHexString])
             }
         }
     }

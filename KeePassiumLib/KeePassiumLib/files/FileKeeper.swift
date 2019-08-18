@@ -15,11 +15,23 @@ public enum FileKeeperError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .openError(let reason):
-            return NSLocalizedString("Failed to open file. Reason: \(reason)", comment: "Error message")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Failed to open file. Reason: %@",
+                    comment: "Error message [reason: String]"),
+                [reason])
         case .importError(let reason):
-            return NSLocalizedString("File import error. Reason: \(reason)", comment: "Error message")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Failed to import file. Reason: %@",
+                    comment: "Error message [reason: String]"),
+                [reason])
         case .removalError(let reason):
-            return NSLocalizedString("Failed to remove file. Reason: \(reason)", comment: "Error message")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Failed to remove file. Reason: %@",
+                    comment: "Error message [reason: String]"),
+                [reason])
         }
     }
 }

@@ -55,7 +55,7 @@ final class Argon2KDF: KeyDerivationFunction {
     
     func initProgress() -> ProgressEx {
         progress = ProgressEx()
-        progress.localizedDescription = NSLocalizedString("Master key processing", comment: "Status message: processing of the master key is in progress")
+        progress.localizedDescription = NSLocalizedString("Processing the master key", comment: "Status message: processing of the master key is in progress")
         return progress
     }
     

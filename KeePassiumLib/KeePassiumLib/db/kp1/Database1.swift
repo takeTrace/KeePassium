@@ -21,15 +21,25 @@ public class Database1: Database {
         public var errorDescription: String? {
             switch self {
             case .prematureDataEnd:
-                return NSLocalizedString("Unexpected end of file. Corrupted DB file?", comment: "Error message")
+                return NSLocalizedString(
+                    "Unexpected end of file. Corrupted database file?",
+                    comment: "Error message")
             case .corruptedField(let fieldName):
                 if fieldName != nil {
-                    return NSLocalizedString("Error parsing field \(fieldName!). Corrupted DB file?", comment: "Error message, with the name of problematic field")
+                    return String.localizedStringWithFormat(
+                        NSLocalizedString(
+                            "Error parsing field %@. Corrupted database file?",
+                            comment: "Error message [fieldName: String]"),
+                        [fieldName!])
                 } else {
-                    return NSLocalizedString("Database file is corrupted.", comment: "Error message")
+                    return NSLocalizedString(
+                        "Database file is corrupted.",
+                        comment: "Error message")
                 }
             case .orphanedEntry:
-                return NSLocalizedString("Found an entry outside any group. Corrupted DB file?", comment: "Error message")
+                return NSLocalizedString(
+                    "Found an entry outside any group. Corrupted DB file?",
+                    comment: "Error message")
             }
         }
     }
@@ -210,7 +220,9 @@ public class Database1: Database {
         
         let loadProgress = ProgressEx()
         loadProgress.totalUnitCount = Int64(header.groupCount + header.entryCount)
-        loadProgress.localizedDescription = NSLocalizedString("Parsing content", comment: "Status message: processing the content of a database")
+        loadProgress.localizedDescription = NSLocalizedString(
+            "Parsing content",
+            comment: "Status message: processing the content of a database")
         self.progress.addChild(loadProgress, withPendingUnitCount: ProgressSteps.parsing)
         
         // load all groups
@@ -322,7 +334,9 @@ public class Database1: Database {
             
             let packingProgress = ProgressEx()
             packingProgress.totalUnitCount = Int64(groups.count + entries.count + metaStreamEntries.count)
-            packingProgress.localizedDescription = NSLocalizedString("Packing the content", comment: "Status message: collecting database items into a single package")
+            packingProgress.localizedDescription = NSLocalizedString(
+                "Packing the content",
+                comment: "Status message: collecting database items into a single package")
             progress.addChild(packingProgress, withPendingUnitCount: ProgressSteps.packing)
             Diag.debug("Packing the content")
             // write groups and entries in a buffer
