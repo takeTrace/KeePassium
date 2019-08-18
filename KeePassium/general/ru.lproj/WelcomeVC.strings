@@ -1,0 +1,9 @@
+/* Class = "UIViewController"; title = "Welcome"; ObjectID = "1Nc-wz-Yqq"; */
+"1Nc-wz-Yqq.title" = "Welcome";
+
+/* Class = "UIButton"; normalTitle = "Create New Database"; ObjectID = "4wh-8O-5Ch"; */
+"4wh-8O-5Ch.normalTitle" = "Create New Database";
+
+/* Class = "UIButton"; normalTitle = "Add Existing Database"; ObjectID = "ZKW-2f-Xkz"; */
+"ZKW-2f-Xkz.normalTitle" = "Add Existing Database";
+

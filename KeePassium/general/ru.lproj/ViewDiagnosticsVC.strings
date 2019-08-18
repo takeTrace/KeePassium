@@ -1,0 +1,18 @@
+/* Class = "UINavigationItem"; title = "Diagnostic Info"; ObjectID = "1D0-qD-Wj1"; */
+"1D0-qD-Wj1.title" = "Diagnostic Info";
+
+/* Class = "UILabel"; text = "(Diagnostic message)"; ObjectID = "dZz-Nc-6Cx"; */
+"dZz-Nc-6Cx.text" = "(Diagnostic message)";
+
+/* Class = "UIBarButtonItem"; title = "Clear"; ObjectID = "icR-uK-cyC"; */
+"icR-uK-cyC.title" = "Clear";
+
+/* Class = "UITableViewController"; title = "Diagnostic Info"; ObjectID = "Nez-AA-Sck"; */
+"Nez-AA-Sck.title" = "Diagnostic Info";
+
+/* Class = "UILabel"; text = "(file:line:function)"; ObjectID = "p9T-RU-hRQ"; */
+"p9T-RU-hRQ.text" = "(file:line:function)";
+
+/* Class = "UIBarButtonItem"; title = "Contact Support"; ObjectID = "uAJ-Ui-Jkx"; */
+"uAJ-Ui-Jkx.title" = "Contact Support";
+

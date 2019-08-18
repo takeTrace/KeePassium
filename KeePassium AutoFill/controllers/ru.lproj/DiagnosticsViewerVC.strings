@@ -1,0 +1,12 @@
+/* Class = "UITableViewController"; title = "Diagnostics"; ObjectID = "0Kw-mv-5gO"; */
+"0Kw-mv-5gO.title" = "Diagnostics";
+
+/* Class = "UINavigationItem"; title = "Diagnostics"; ObjectID = "Ura-k4-GXq"; */
+"Ura-k4-GXq.title" = "Diagnostics";
+
+/* Class = "UILabel"; text = "(Diagnostic message)"; ObjectID = "vlS-RX-RUW"; */
+"vlS-RX-RUW.text" = "(Diagnostic message)";
+
+/* Class = "UILabel"; text = "(file:line:function)"; ObjectID = "VTC-44-cgF"; */
+"VTC-44-cgF.text" = "(file:line:function)";
+

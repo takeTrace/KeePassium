@@ -1,0 +1,39 @@
+/* Class = "UILabel"; text = "• KeePass by Dominik Reichl (https://keepass.info)\n• Feather icons by Cole Bemis (MIT licence, https://feathericons.com) • Ionicons by Ionic (MIT license, http://ionicons.com)\n• Linecons by Andrian Valeanu (https://designmodo.com/linecons-free/)\n• Fancy deboss pattern by Daniel Beaton (CC BY 3.0, http://subtlepatterns.com)\n• System settings icon by Vicons Design (CC BY 3.0, http://vicons.superatic.com)\n• AEXML by Marko Tadić(MIT license, https://github.com/tadija/AEXML) • Rijndael implementation by Szymon Stefanek (public domain)\n• Argon2 by Daniel Dinu, Dmitry Khovratovich, Jean-Philippe Aumasson, and Samuel Neves (CC0 license, https://github.com/P-H-C/phc-winner-argon2)\n• ChaCha20 & Salsa20 implementation by D. J. Bernstein (public domain, https://cr.yp.to/salsa20.html)\n• Twofish implementation by Niels Ferguson (available under its own very permissive  license, http://www.cartotype.com/downloads/twofish/twofish.cpp).\n• GzipSwift by 1024jp (MIT license, https://github.com/1024jp/GzipSwift)\n• Base32 for Swift by Norio Nomura (MIT license, https://github.com/norio-nomura/Base32)\n• KeyboardLayoutConstraint by James Tang (MIT license, https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift)"; ObjectID = "4FH-1C-Kl7"; */
+"4FH-1C-Kl7.text" = "• KeePass by Dominik Reichl (https://keepass.info)\n• Feather icons by Cole Bemis (MIT licence, https://feathericons.com) • Ionicons by Ionic (MIT license, http://ionicons.com)\n• Linecons by Andrian Valeanu (https://designmodo.com/linecons-free/)\n• Fancy deboss pattern by Daniel Beaton (CC BY 3.0, http://subtlepatterns.com)\n• System settings icon by Vicons Design (CC BY 3.0, http://vicons.superatic.com)\n• AEXML by Marko Tadić(MIT license, https://github.com/tadija/AEXML) • Rijndael implementation by Szymon Stefanek (public domain)\n• Argon2 by Daniel Dinu, Dmitry Khovratovich, Jean-Philippe Aumasson, and Samuel Neves (CC0 license, https://github.com/P-H-C/phc-winner-argon2)\n• ChaCha20 & Salsa20 implementation by D. J. Bernstein (public domain, https://cr.yp.to/salsa20.html)\n• Twofish implementation by Niels Ferguson (available under its own very permissive  license, http://www.cartotype.com/downloads/twofish/twofish.cpp).\n• GzipSwift by 1024jp (MIT license, https://github.com/1024jp/GzipSwift)\n• Base32 for Swift by Norio Nomura (MIT license, https://github.com/norio-nomura/Base32)\n• KeyboardLayoutConstraint by James Tang (MIT license, https://github.com/MengTo/Spring/blob/master/Spring/KeyboardLayoutConstraint.swift)";
+
+/* Class = "UITableViewSection"; headerTitle = "Feedback"; ObjectID = "7bL-fQ-OUc"; */
+"7bL-fQ-OUc.headerTitle" = "Feedback";
+
+/* Class = "UILabel"; text = "KeePassium does not collect any personal or analytical data nor share it with anyone."; ObjectID = "9wt-nj-TZW"; */
+"9wt-nj-TZW.text" = "KeePassium does not collect any personal or analytical data nor share it with anyone.";
+
+/* Class = "UILabel"; text = "Do you like what you see?"; ObjectID = "AMd-x7-PDa"; */
+"AMd-x7-PDa.text" = "Do you like what you see?";
+
+/* Class = "UILabel"; text = "©2019 Andrei Popleteev"; ObjectID = "bmf-Ed-H4x"; */
+"bmf-Ed-H4x.text" = "©2019 Andrei Popleteev";
+
+/* Class = "UITableViewSection"; headerTitle = "Privacy Policy"; ObjectID = "JbR-nf-D9o"; */
+"JbR-nf-D9o.headerTitle" = "Privacy Policy";
+
+/* Class = "UILabel"; text = "Any questions? We have answers."; ObjectID = "jzd-La-4YT"; */
+"jzd-La-4YT.text" = "Any questions? We have answers.";
+
+/* Class = "UITableViewSection"; headerTitle = "Credits"; ObjectID = "muG-xI-muo"; */
+"muG-xI-muo.headerTitle" = "Credits";
+
+/* Class = "UITableViewController"; title = "About"; ObjectID = "NLN-lQ-bh5"; */
+"NLN-lQ-bh5.title" = "About";
+
+/* Class = "UILabel"; text = "Contact Support"; ObjectID = "TOl-DA-gYc"; */
+"TOl-DA-gYc.text" = "Contact Support";
+
+/* Class = "UILabel"; text = "Leave an App Store review."; ObjectID = "uiw-Qh-pNp"; */
+"uiw-Qh-pNp.text" = "Leave an App Store review.";
+
+/* Class = "UILabel"; text = "(v1.0.123)"; ObjectID = "vDg-fF-8ty"; */
+"vDg-fF-8ty.text" = "(v1.0.123)";
+
+/* Class = "UILabel"; text = "KeePassium"; ObjectID = "Wuj-Uw-baK"; */
+"Wuj-Uw-baK.text" = "KeePassium";
+

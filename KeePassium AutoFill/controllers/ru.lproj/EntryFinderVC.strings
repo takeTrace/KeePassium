@@ -1,0 +1,18 @@
+/* Class = "UILabel"; text = "Entry Name"; ObjectID = "1xY-Ij-CPq"; */
+"1xY-Ij-CPq.text" = "Entry Name";
+
+/* Class = "UITableViewController"; title = "Entries"; ObjectID = "14C-rX-ove"; */
+"14C-rX-ove.title" = "Entries";
+
+/* Class = "UIBarButtonItem"; title = "Lock Database"; ObjectID = "dPB-bK-tzh"; */
+"dPB-bK-tzh.title" = "Lock Database";
+
+/* Class = "UILabel"; text = "Sorry, there is nothing suitable."; ObjectID = "NSB-dG-jRN"; */
+"NSB-dG-jRN.text" = "Sorry, there is nothing suitable.";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "weo-eb-woU"; */
+"weo-eb-woU.text" = "Subtitle";
+
+/* Class = "UILabel"; text = "Related Entries"; ObjectID = "yLY-eZ-iAh"; */
+"yLY-eZ-iAh.text" = "Related Entries";
+

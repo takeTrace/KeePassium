@@ -1,0 +1,15 @@
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "hYP-f0-K1s"; */
+"hYP-f0-K1s.placeholder" = "Password";
+
+/* Class = "UINavigationItem"; title = "Change Master Key"; ObjectID = "JKD-iF-iwA"; */
+"JKD-iF-iwA.title" = "Change Master Key";
+
+/* Class = "UILabel"; text = "(Database file name)"; ObjectID = "lzF-lh-Cod"; */
+"lzF-lh-Cod.text" = "(Database file name)";
+
+/* Class = "UITextField"; placeholder = "No Key File"; ObjectID = "M9Q-v8-e6Q"; */
+"M9Q-v8-e6Q.placeholder" = "No Key File";
+
+/* Class = "UIViewController"; title = "Change Master Key"; ObjectID = "Ymj-cN-i1q"; */
+"Ymj-cN-i1q.title" = "Change Master Key";
+

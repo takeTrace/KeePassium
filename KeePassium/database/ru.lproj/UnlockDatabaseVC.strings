@@ -1,0 +1,33 @@
+/* Class = "UIButton"; normalTitle = "(news)"; ObjectID = "APT-2C-WiG"; */
+"APT-2C-WiG.normalTitle" = "(news)";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "CuN-tE-lAG"; */
+"CuN-tE-lAG.placeholder" = "Password";
+
+/* Class = "UILabel"; text = "(Error message)"; ObjectID = "d2U-7y-vCm"; */
+"d2U-7y-vCm.text" = "(Error message)";
+
+/* Class = "UIViewController"; title = "Unlock Database"; ObjectID = "eAa-Z5-pdq"; */
+"eAa-Z5-pdq.title" = "Unlock Database";
+
+/* Class = "UILabel"; text = "Database was closed by a timer."; ObjectID = "epu-yU-Lyg"; */
+"epu-yU-Lyg.text" = "Database was closed by a timer.";
+
+/* Class = "UIButton"; normalTitle = "Upgrade to Premium"; ObjectID = "i6N-fq-JbM"; */
+"i6N-fq-JbM.normalTitle" = "Upgrade to Premium";
+
+/* Class = "UILabel"; text = "Will use the remembered master key."; ObjectID = "K3Y-ON-C19"; */
+"K3Y-ON-C19.text" = "Will use the remembered master key.";
+
+/* Class = "UIButton"; normalTitle = "Unlock"; ObjectID = "l45-hq-1lr"; */
+"l45-hq-1lr.normalTitle" = "Unlock";
+
+/* Class = "UILabel"; text = "(Database file name)"; ObjectID = "LsQ-5N-nP3"; */
+"LsQ-5N-nP3.text" = "(Database file name)";
+
+/* Class = "UITextField"; placeholder = "No Key File"; ObjectID = "mYY-hP-3vH"; */
+"mYY-hP-3vH.placeholder" = "No Key File";
+
+/* Class = "UITextField"; placeholder = "Fake User Name Field for AutoFill"; ObjectID = "Rb4-4d-9A9"; */
+"Rb4-4d-9A9.placeholder" = "Fake User Name Field for AutoFill";
+

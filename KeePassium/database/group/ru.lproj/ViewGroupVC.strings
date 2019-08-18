@@ -1,0 +1,27 @@
+/* Class = "UILabel"; text = "(Subtitle)"; ObjectID = "5Db-9q-PM7"; */
+"5Db-9q-PM7.text" = "(Subtitle)";
+
+/* Class = "UILabel"; text = "(Group Name)"; ObjectID = "7uR-HK-1Dd"; */
+"7uR-HK-1Dd.text" = "(Group Name)";
+
+/* Class = "UILabel"; text = "(Subtitle)"; ObjectID = "A8h-F7-ipn"; */
+"A8h-F7-ipn.text" = "(Subtitle)";
+
+/* Class = "UILabel"; text = "(Entry Name)"; ObjectID = "OjW-aR-wD3"; */
+"OjW-aR-wD3.text" = "(Entry Name)";
+
+/* Class = "UILabel"; text = "This group is empty"; ObjectID = "QXa-eN-7am"; */
+"QXa-eN-7am.text" = "This group is empty";
+
+/* Class = "UITableViewController"; title = "View Group"; ObjectID = "Rxg-rI-fqC"; */
+"Rxg-rI-fqC.title" = "View Group";
+
+/* Class = "UILabel"; text = "No entries found"; ObjectID = "tpA-i1-ah8"; */
+"tpA-i1-ah8.text" = "No entries found";
+
+/* Class = "UILabel"; text = "(nItems)"; ObjectID = "ttY-yZ-yRg"; */
+"ttY-yZ-yRg.text" = "(nItems)";
+
+/* Class = "UILabel"; text = "(Entry Title)"; ObjectID = "yQP-VD-gVT"; */
+"yQP-VD-gVT.text" = "(Entry Title)";
+

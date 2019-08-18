@@ -1,0 +1,30 @@
+/* Class = "UILabel"; text = "Database File Name"; ObjectID = "2iK-ct-ygq"; */
+"2iK-ct-ygq.text" = "Database File Name";
+
+/* Class = "UINavigationItem"; title = "(Create Database)"; ObjectID = "dhd-je-Doc"; */
+"dhd-je-Doc.title" = "(Create Database)";
+
+/* Class = "UIButton"; normalTitle = "Save Database"; ObjectID = "h6C-CG-RVI"; */
+"h6C-CG-RVI.normalTitle" = "Save Database";
+
+/* Class = "UITextField"; placeholder = "No Key File"; ObjectID = "pvt-FS-0Yx"; */
+"pvt-FS-0Yx.placeholder" = "No Key File";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "uHk-Yt-mBh"; */
+"uHk-Yt-mBh.placeholder" = "Password";
+
+/* Class = "UILabel"; text = "Master Key"; ObjectID = "VjQ-di-Ilx"; */
+"VjQ-di-Ilx.text" = "Master Key";
+
+/* Class = "UILabel"; text = "(Error message)"; ObjectID = "wb0-s2-V8n"; */
+"wb0-s2-V8n.text" = "(Error message)";
+
+/* Class = "UITextField"; placeholder = "e.g. MyPasswords"; ObjectID = "XNL-lc-2Ti"; */
+"XNL-lc-2Ti.placeholder" = "e.g. MyPasswords";
+
+/* Class = "UITextField"; text = "MyPasswords"; ObjectID = "XNL-lc-2Ti"; */
+"XNL-lc-2Ti.text" = "MyPasswords";
+
+/* Class = "UILabel"; text = "Will use kdbx4 format (Argon2+ChaCha20)"; ObjectID = "XVR-1N-ywy"; */
+"XVR-1N-ywy.text" = "Will use kdbx4 format (Argon2+ChaCha20)";
+

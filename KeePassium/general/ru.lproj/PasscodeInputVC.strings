@@ -1,0 +1,21 @@
+/* Class = "UILabel"; text = "Enter passcode"; ObjectID = "3mQ-t6-0ty"; */
+"3mQ-t6-0ty.text" = "Enter passcode";
+
+/* Class = "UIButton"; normalTitle = "(Switch to passphrase)"; ObjectID = "f5U-FH-tld"; */
+"f5U-FH-tld.normalTitle" = "(Switch to passphrase)";
+
+/* Class = "UIButton"; normalTitle = "(Unlock / Save)"; ObjectID = "i2Z-Q7-JRa"; */
+"i2Z-Q7-JRa.normalTitle" = "(Unlock / Save)";
+
+/* Class = "UIViewController"; title = "Unlock KeePassium"; ObjectID = "KmH-Rg-WCs"; */
+"KmH-Rg-WCs.title" = "Unlock KeePassium";
+
+/* Class = "UINavigationItem"; title = "Unlock KeePassium"; ObjectID = "P3J-3c-ucU"; */
+"P3J-3c-ucU.title" = "Unlock KeePassium";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "z0x-Rz-Nfj"; */
+"z0x-Rz-Nfj.normalTitle" = "Cancel";
+
+/* Class = "UITextField"; placeholder = "Passcode"; ObjectID = "ZTd-Zj-qAs"; */
+"ZTd-Zj-qAs.placeholder" = "Passcode";
+
