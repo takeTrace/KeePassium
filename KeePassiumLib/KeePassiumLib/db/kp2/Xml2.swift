@@ -25,22 +25,28 @@ internal struct Xml2 {
             case .xmlError(let details):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "XML error: %@",
+                        "[Database2/Xml2/ParsingError] XML error: %@",
+                        value: "XML error: %@",
                         comment: "Generic error while parsing XML. [errorDetails: String]"),
                     [details])
             case .notKeePassDocument:
-                return NSLocalizedString("Not a KeePass XML", comment: "Error message about XML parsing")
+                return NSLocalizedString(
+                    "[Database2/Xml2/ParsingError] Not a KeePass XML",
+                    value: "Not a KeePass XML",
+                    comment: "Error message about XML parsing")
             case .unexpectedTag(let actual, let expected):
                 if let expected = expected {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
-                            "Unexpected tag '%@' (instead of '%@')",
+                            "[Database2/Xml2/ParsingError] Unexpected tag '%@' (instead of '%@')",
+                            value: "Unexpected tag '%@' (instead of '%@')",
                             comment: "Error message about XML parsing. [actualTag: String, expectedTag: String]"),
                         [actual, expected])
                 } else {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
-                            "Unexpected tag '%@'",
+                            "[Database2/Xml2/ParsingError] Unexpected tag '%@'",
+                            value: "Unexpected tag '%@'",
                             comment: "Error message about XML parsing. [actualTag: String]"),
                         [actual])
                 }
@@ -48,14 +54,16 @@ internal struct Xml2 {
                 if let value = value {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
-                            "Malformed value '%@' in %@",
-                            comment: "Error message about XML parsing [value: String, tag: String]"),
+                            "[Database2/Xml2/ParsingError] Malformed value '%@' in %@",
+                            value: "Malformed value '%@' in %@",
+                            comment: "Error message about XML parsing. [value: String, tag: String]"),
                         [value, tag])
                 } else {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
-                            "Nil value in %@",
-                            comment: "Error message about XML parsing [tag: String]"),
+                            "[Database2/Xml2/ParsingError] Nil value in %@",
+                            value: "Nil value in %@",
+                            comment: "Error message about XML parsing. [tag: String]"),
                         [tag])
                 }
             }

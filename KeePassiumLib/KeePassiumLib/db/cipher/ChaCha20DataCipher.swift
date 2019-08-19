@@ -29,14 +29,22 @@ final class ChaCha20DataCipher: DataCipher {
     
     /// - Throws: `ProgressInterruption`
     func encrypt(plainText: ByteArray, key: ByteArray, iv: ByteArray) throws -> ByteArray {
-        progress.localizedDescription = NSLocalizedString("Encrypting", comment: "Status message")
+        progress.localizedDescription = NSLocalizedString(
+            "[Cipher/Progress] Encrypting",
+            value: "Encrypting",
+            comment: "Progress status")
+        
         let chacha20 = ChaCha20(key: key, iv: iv)
         return try chacha20.encrypt(data: plainText, progress: progress) // throws ProgressInterruption
     }
     
     /// - Throws: `ProgressInterruption`
     func decrypt(cipherText: ByteArray, key: ByteArray, iv: ByteArray) throws -> ByteArray {
-        progress.localizedDescription = NSLocalizedString("Decrypting", comment: "Status message")
+        progress.localizedDescription = NSLocalizedString(
+            "[Cipher/Progress] Decrypting",
+            value: "Decrypting",
+            comment: "Progress status")
+        
         let chacha20 = ChaCha20(key: key, iv: iv)
         return try chacha20.decrypt(data: cipherText, progress: progress) // throws ProgressInterruption
     }

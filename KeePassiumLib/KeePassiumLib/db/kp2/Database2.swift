@@ -35,37 +35,48 @@ public class Database2: Database {
         public var errorDescription: String? {
             switch self {
             case .prematureDataEnd:
-                return NSLocalizedString("Unexpected end of file. Corrupted file?", comment: "Error message")
+                return NSLocalizedString(
+                    "[Database2/FormatError] Unexpected end of file. Corrupted file?",
+                    value: "Unexpected end of file. Corrupted file?",
+                    comment: "Error message")
             case .negativeBlockSize(let blockIndex):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Corrupted database file (block %d has negative size)",
+                        "[Database2/FormatError] Corrupted database file (block %d has negative size)",
+                        value: "Corrupted database file (block %d has negative size)",
                         comment: "Error message [blockIndex: Int]"),
                     [blockIndex])
             case .parsingError(let reason):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Cannot parse database. %s",
+                        "[Database2/FormatError] Cannot parse database. %s",
+                        value: "Cannot parse database. %s",
                         comment: "Error message. Parsing refers to the analysis/understanding of file content. [reason: String]"),
                     [reason])
             case .blockIDMismatch:
-                return NSLocalizedString("Unexpected block ID.", comment: "Error message: wrong ID of a data block")
+                return NSLocalizedString(
+                    "[Database2/FormatError] Unexpected block ID.",
+                    value: "Unexpected block ID.",
+                    comment: "Error message: wrong ID of a data block")
             case .blockHashMismatch(let blockIndex):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Corrupted database file (hash mismatch in block %d)",
+                        "[Database2/FormatError] Corrupted database file (hash mismatch in block %d)",
+                        value: "Corrupted database file (hash mismatch in block %d)",
                         comment: "Error message: hash(checksum) of a data block is wrong. [blockIndex: Int]"),
                     [blockIndex])
             case .blockHMACMismatch(let blockIndex):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Corrupted database file (HMAC mismatch in block %d)",
+                        "[Database2/FormatError] Corrupted database file (HMAC mismatch in block %d)",
+                        value: "Corrupted database file (HMAC mismatch in block %d)",
                         comment: "Error message: HMAC value (kind of checksum) of a data block is wrong. [blockIndex: Int]"),
                     [blockIndex])
             case .compressionError(let reason):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Gzip error: %@",
+                        "[Database2/FormatError] Gzip error: %@",
+                        value: "Gzip error: %@",
                         comment: "Error message about Gzip compression algorithm. [reason: String]"),
                     [reason])
             }
@@ -160,7 +171,11 @@ public class Database2: Database {
         Diag.info("Loading KP2 database")
         progress.completedUnitCount = 0
         progress.totalUnitCount = ProgressSteps.all
-        progress.localizedAdditionalDescription = NSLocalizedString("Loading database", comment: "Progress bar status")
+        progress.localizedAdditionalDescription = NSLocalizedString(
+            "[Database2/Progress] Loading database",
+            value: "Loading database",
+            comment: "Progress bar status")
+        
         do {
             // read header
             try header.read(data: dbFileData) // throws HeaderError
@@ -242,7 +257,8 @@ public class Database2: Database {
             Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
             let reason = String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Error unpacking database: %@",
+                    "[Database2/Loading/Error] Error unpacking database: %@",
+                    value: "Error unpacking database: %@",
                     comment: "Error message about Gzip compression algorithm. [errorMessage: String]"),
                 [error.localizedDescription])
             throw DatabaseError.loadError(reason: reason)
@@ -317,7 +333,10 @@ public class Database2: Database {
         let allBlocksData = ByteArray(capacity: blockBytesCount)
         let readingProgress = ProgressEx()
         readingProgress.totalUnitCount = Int64(blockBytesCount)
-        readingProgress.localizedAdditionalDescription = NSLocalizedString("Reading database content", comment: "Status message")
+        readingProgress.localizedAdditionalDescription = NSLocalizedString(
+            "[Database2/Progress] Reading database content",
+            value: "Reading database content",
+            comment: "Progress bar status")
         progress.addChild(readingProgress, withPendingUnitCount: ProgressSteps.readingBlocks)
         var blockIndex: UInt64 = 0
         while true {
@@ -397,7 +416,10 @@ public class Database2: Database {
         var blockID: UInt32 = 0
         let readingProgress = ProgressEx()
         readingProgress.totalUnitCount = Int64(decryptedData.count - startData.count)
-        readingProgress.localizedAdditionalDescription = NSLocalizedString("Reading database content", comment: "Status message")
+        readingProgress.localizedAdditionalDescription = NSLocalizedString(
+            "[Database2/Progress] Reading database content",
+            value: "Reading database content",
+            comment: "Progress bar status")
         progress.addChild(readingProgress, withPendingUnitCount: ProgressSteps.readingBlocks)
         while(true) {
             guard let inBlockID: UInt32 = decryptedStream.readUInt32() else {
@@ -694,7 +716,8 @@ public class Database2: Database {
             let lastUsedAppName = warnings.databaseGenerator ?? ""
             let warningMessage = String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (%@). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.",
+                    "[Database2/Loading/Warning/unusedAttachments]",
+                    value: "The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (%@). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.",
                     comment: "A warning about unused attachments after loading the database. [lastUsedAppName: String]"),
                 [lastUsedAppName])
             warnings.messages.append(warningMessage)
@@ -722,7 +745,8 @@ public class Database2: Database {
             let lastUsedAppName = warnings.databaseGenerator ?? ""
             let warningMessage = String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (%@). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: %@",
+                    "[Database2/Loading/Warning/missingBinaries]",
+                    value: "Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (%@). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: %@",
                     comment: "A warning about missing attachments after loading the database. [lastUsedAppName: String, attachmentNames: String]"),
                 [lastUsedAppName, attachmentNames])
             warnings.messages.append(warningMessage)
@@ -773,7 +797,8 @@ public class Database2: Database {
         
         let warningMessage = String.localizedStringWithFormat(
             NSLocalizedString(
-                "Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n%@",
+                "[Database2/Loading/Warning/namelessAttachments]",
+                value: "Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n%@",
                 comment: "A warning about nameless attachments, shown after loading the database. [listOfEntryNames: String]"),
             [listOfEntryNames])
         Diag.warning(warningMessage)
@@ -800,7 +825,8 @@ public class Database2: Database {
             .joined(separator: "\n")
         let warningMessage = String.localizedStringWithFormat(
             NSLocalizedString(
-                "Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n%@",
+                "[Database2/Loading/Warning/namelessCustomFields]",
+                value: "Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n%@",
                 comment: "A warning about misformatted custom fields after loading the database. [entryPaths: String]"),
             [entryPaths])
         warnings.messages.append(warningMessage)
@@ -990,16 +1016,18 @@ public class Database2: Database {
             Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
             let errMsg = String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Data compression error: %@",
-                    comment: "Error message [errorDescription: String]"),
+                    "[Database2/Saving/Error] Data compression error: %@",
+                    value: "Data compression error: %@",
+                    comment: "Error message while saving a database. [errorDescription: String]"),
                 [error.localizedDescription])
             throw DatabaseError.saveError(reason: errMsg)
         } catch let error as CryptoError {
             Diag.error("Crypto error [reason: \(error.localizedDescription)]")
             let errMsg = String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Encryption error: %@",
-                    comment: "Error message [errorDescription: String]"),
+                    "[Database2/Saving/Error] Encryption error: %@",
+                    value: "Encryption error: %@",
+                    comment: "Error message while saving a database. [errorDescription: String]"),
                 [error.localizedDescription])
             throw DatabaseError.saveError(reason: errMsg)
         }
@@ -1015,7 +1043,10 @@ public class Database2: Database {
         
         let writeProgress = ProgressEx()
         writeProgress.totalUnitCount = Int64(data.count)
-        writeProgress.localizedAdditionalDescription = NSLocalizedString("Writing encrypted blocks", comment: "Status message")
+        writeProgress.localizedAdditionalDescription = NSLocalizedString(
+            "[Database2/Progress] Writing encrypted blocks",
+            value: "Writing encrypted blocks",
+            comment: "Progress bar status")
         progress.addChild(writeProgress, withPendingUnitCount: ProgressSteps.writingBlocks)
         
         Diag.verbose("\(data.count) bytes to write")
@@ -1064,8 +1095,9 @@ public class Database2: Database {
                 Diag.error("Gzip error [kind: \(error.kind), message: \(error.message)]")
                 let errMsg = String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Data compression error: %@",
-                        comment: "Error message [errorDescription: String]"),
+                        "[Database2/Saving/Error] Data compression error: %@",
+                        value: "Data compression error: %@",
+                        comment: "Error message while saving a database. [errorDescription: String]"),
                     [error.localizedDescription])
                 throw DatabaseError.saveError(reason: errMsg)
             }
@@ -1099,8 +1131,9 @@ public class Database2: Database {
             Diag.error("Crypto error [message: \(error.localizedDescription)]")
             let errMsg = String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Encryption error: %@",
-                    comment: "Error message [errorDescription: String]"),
+                    "[Database2/Saving/Error] Encryption error: %@",
+                    value: "Encryption error: %@",
+                    comment: "Error message while saving a database. [errorDescription: String]"),
                 [error.localizedDescription])
 
             throw DatabaseError.saveError(reason: errMsg)
@@ -1115,7 +1148,10 @@ public class Database2: Database {
         var blockStart: Int = 0
         var blockID: UInt32 = 0
         let writingProgress = ProgressEx()
-        writingProgress.localizedAdditionalDescription = NSLocalizedString("Writing encrypted blocks", comment: "Status message")
+        writingProgress.localizedAdditionalDescription = NSLocalizedString(
+            "[Database2/Progress] Writing encrypted blocks",
+            value: "Writing encrypted blocks",
+            comment: "Progress bar status")
         writingProgress.totalUnitCount = Int64(inData.count)
         progress.addChild(writingProgress, withPendingUnitCount: ProgressSteps.writingBlocks)
         while blockStart != inData.count {

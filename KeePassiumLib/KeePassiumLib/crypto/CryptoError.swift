@@ -22,49 +22,57 @@ public enum CryptoError: LocalizedError {
         case .invalidKDFParam(let kdfName, let paramName):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid KDF parameter: %@ - %@. File corrupt?",
+                    "[CryptoError] Invalid KDF parameter: %@ - %@. File corrupt?",
+                    value: "Invalid KDF parameter: %@ - %@. File corrupt?",
                     comment: "Error message about key derivation function (KDF) parameters. [kdfName: String, paramName: String]"),
                 [kdfName, paramName])
         case .paddingError(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid data padding (code %d). File corrupt?",
+                    "[CryptoError] Invalid data padding (code %d). File corrupt?",
+                    value: "Invalid data padding (code %d). File corrupt?",
                     comment: "Error message about PKCS7 padding. [errorCode: Int]"),
                 [code])
         case .aesInitError(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "AES initialization error (code %d)",
+                    "[CryptoError] AES initialization error (code %d)",
+                    value: "AES initialization error (code %d)",
                     comment: "Error message about AES cipher. [errorCode: Int]"),
                 [code])
         case .aesEncryptError(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "AES encryption error (code %d)",
+                    "[CryptoError] AES encryption error (code %d)",
+                    value: "AES encryption error (code %d)",
                     comment: "Error message about AES cipher. [errorCode: Int]"),
                 [code])
         case .aesDecryptError(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "AES decryption error (code %d)",
+                    "[CryptoError] AES decryption error (code %d)",
+                    value: "AES decryption error (code %d)",
                     comment: "Error message about AES cipher. [errorCode: Int]"),
                 [code])
         case .argon2Error(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Argon2 hashing error (code %d)",
+                    "[CryptoError] Argon2 hashing error (code %d)",
+                    value: "Argon2 hashing error (code %d)",
                     comment: "Error message about Argon2 hashing function. [errorCode: Int]"),
                 [code])
         case .twofishError(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Twofish cipher error (code %d)",
+                    "[CryptoError] Twofish cipher error (code %d)",
+                    value: "Twofish cipher error (code %d)",
                     comment: "Error message about Twofish cipher. [errorCode: Int]"),
                 [code])
         case .rngError(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Random number generator error (code %d)",
+                    "[CryptoError] Random number generator error (code %d)",
+                    value: "Random number generator error (code %d)",
                     comment: "Error message about random number generator. [errorCode: Int]"),
                 [code])
         }

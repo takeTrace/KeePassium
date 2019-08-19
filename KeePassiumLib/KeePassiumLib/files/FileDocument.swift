@@ -13,7 +13,10 @@ public class FileDocument: UIDocument {
     public enum InternalError: LocalizedError {
         case generic
         public var errorDescription: String? {
-            return NSLocalizedString("Unexpected file error, please contact us.", comment: "A very generic error message")
+            return NSLocalizedString(
+                "[FileDocument] Unexpected file error, please contact us.",
+                value: "Unexpected file error, please contact us.",
+                comment: "A very generic error message")
         }
     }
     

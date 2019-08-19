@@ -58,7 +58,10 @@ class PremiumVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        statusLabel.text = "Contacting AppStore...".localized(comment: "Status message before downloading available in-app purchases")
+        statusLabel.text = NSLocalizedString(
+            "[Premium/Upgrade/Progress] Contacting AppStore...",
+            value: "Contacting AppStore...",
+            comment: "Status message when downloading available in-app purchases")
         activityIndcator.isHidden = false
         restorePurchasesButton.isHidden = !allowRestorePurchases
         footerView.isHidden = true
@@ -131,11 +134,26 @@ class PremiumVC: UIViewController {
         let productPrice: String
         switch iap.period {
         case .oneTime:
-            productPrice = "\(product.localizedPrice) once".localized(comment: "Product price for once-and-forever premium")
+            productPrice = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "[Premium/Upgrade/price] %@ once",
+                    value: "%@ once",
+                    comment: "Product price for once-and-forever premium. [localizedPrice: String]"),
+                [product.localizedPrice])
         case .yearly:
-            productPrice = "\(product.localizedPrice) / year".localized(comment: "Product price for annual premium subscription")
+            productPrice = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "[Premium/Upgrade/price] %@ / year",
+                    value: "%@ / year",
+                    comment: "Product price for annual premium subscription. [localizedPrice: String]"),
+                [product.localizedPrice])
         case .monthly:
-            productPrice = "\(product.localizedPrice) / month".localized(comment: "Product price for monthly premium subscription")
+            productPrice = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "[Premium/Upgrade/price] %@ / month",
+                    value: "%@ / month",
+                    comment: "Product price for monthly premium subscription. [localizedPrice: String]"),
+                [product.localizedPrice])
         case .other:
             assertionFailure("Should not be here")
             productPrice = "\(product.localizedPrice)"
@@ -163,7 +181,10 @@ class PremiumVC: UIViewController {
         
         // Description
         if iap.hasPrioritySupport {
-            let prioritySupportDescription = "with priority support".localized(comment: "Description of a premium option. Lowercase. For example 'Business Premium with priority support'.")
+            let prioritySupportDescription = NSLocalizedString(
+                "[Premium/Upgrade/description] with priority support",
+                value: "with priority support",
+                comment: "Description of a premium option. Lowercase. For example 'Business Premium / with priority support'.")
             let descriptionParagraphStyle = NSMutableParagraphStyle()
             descriptionParagraphStyle.paragraphSpacingBefore = -3.0
             descriptionParagraphStyle.alignment = .center
@@ -221,7 +242,11 @@ class PremiumVC: UIViewController {
             }
         }
         if isPurchasing {
-            showMessage("Contacting AppStore...".localized(comment: "Status: transaction related to in-app purchase (not necessarily a purchase) is in progress"))
+            showMessage(NSLocalizedString(
+                "[Premium/Upgrade/Progress] Contacting AppStore...",
+                value: "Contacting AppStore...",
+                comment: "Status message when downloading available in-app purchases")
+            )
             UIView.animate(withDuration: 0.3) {
                 self.activityIndcator.isHidden = false
             }

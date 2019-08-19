@@ -1,30 +1,30 @@
 /* Class = "UILabel"; text = "Database File Name"; ObjectID = "2iK-ct-ygq"; */
-"2iK-ct-ygq.text" = "Database File Name";
+"2iK-ct-ygq.text" = "Название Файла";
 
 /* Class = "UINavigationItem"; title = "(Create Database)"; ObjectID = "dhd-je-Doc"; */
 "dhd-je-Doc.title" = "(Create Database)";
 
 /* Class = "UIButton"; normalTitle = "Save Database"; ObjectID = "h6C-CG-RVI"; */
-"h6C-CG-RVI.normalTitle" = "Save Database";
+"h6C-CG-RVI.normalTitle" = "Сохранить Базу Данных";
 
 /* Class = "UITextField"; placeholder = "No Key File"; ObjectID = "pvt-FS-0Yx"; */
-"pvt-FS-0Yx.placeholder" = "No Key File";
+"pvt-FS-0Yx.placeholder" = "Без Ключевого Файла";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "uHk-Yt-mBh"; */
-"uHk-Yt-mBh.placeholder" = "Password";
+"uHk-Yt-mBh.placeholder" = "Пароль";
 
 /* Class = "UILabel"; text = "Master Key"; ObjectID = "VjQ-di-Ilx"; */
-"VjQ-di-Ilx.text" = "Master Key";
+"VjQ-di-Ilx.text" = "Мастер ключ";
 
 /* Class = "UILabel"; text = "(Error message)"; ObjectID = "wb0-s2-V8n"; */
 "wb0-s2-V8n.text" = "(Error message)";
 
 /* Class = "UITextField"; placeholder = "e.g. MyPasswords"; ObjectID = "XNL-lc-2Ti"; */
-"XNL-lc-2Ti.placeholder" = "e.g. MyPasswords";
+"XNL-lc-2Ti.placeholder" = "например, МоиПароли";
 
 /* Class = "UITextField"; text = "MyPasswords"; ObjectID = "XNL-lc-2Ti"; */
-"XNL-lc-2Ti.text" = "MyPasswords";
+"XNL-lc-2Ti.text" = "МоиПароли";
 
 /* Class = "UILabel"; text = "Will use kdbx4 format (Argon2+ChaCha20)"; ObjectID = "XVR-1N-ywy"; */
-"XVR-1N-ywy.text" = "Will use kdbx4 format (Argon2+ChaCha20)";
+"XVR-1N-ywy.text" = "Будет использован формат kdbx4 (Argon2+ChaCha20)";
 

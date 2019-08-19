@@ -17,11 +17,15 @@ public enum KeychainError: LocalizedError {
         case .generic(let code):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Keychain error (code %d) ",
+                    "[KeychainError/generic] Keychain error (code %d) ",
+                    value: "Keychain error (code %d) ",
                     comment: "Generic error message about system keychain. [errorCode: Int]"),
                 [code])
         case .unexpectedFormat:
-            return NSLocalizedString("Keychain error: unexpected data format", comment: "Error message about system keychain.")
+            return NSLocalizedString(
+                "[KeychainError/unexpectedFormat] Keychain error: unexpected data format",
+                value: "Keychain error: unexpected data format",
+                comment: "Error message about system keychain.")
         }
     }
 }

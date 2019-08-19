@@ -31,19 +31,27 @@ class Header1 {
         public var errorDescription: String? {
             switch self {
             case .readingError:
-                return NSLocalizedString("Header reading error. DB file corrupt?", comment: "Error message when reading database header")
+                return NSLocalizedString(
+                    "[Database1/Header1/Error] Header reading error. DB file corrupt?",
+                    value: "Header reading error. DB file corrupt?",
+                    comment: "Error message when reading database header")
             case .wrongSignature:
-                return NSLocalizedString("Wrong file signature. Not a KeePass database?", comment: "Error message when opening a database")
+                return NSLocalizedString(
+                    "[Database1/Header1/Error] Wrong file signature. Not a KeePass database?",
+                    value: "Wrong file signature. Not a KeePass database?",
+                    comment: "Error message when opening a database")
             case .unsupportedFileVersion(let version):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Unsupported database format version: %@.",
+                        "[Database1/Header1/Error] Unsupported database format version: %@.",
+                        value: "Unsupported database format version: %@.",
                         comment: "Error message when opening a database. [version: String]"),
                     [version])
             case .unsupportedDataCipher(let flags):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "Unsupported cipher. (Code: %@)",
+                        "[Database1/Header1/Error] Unsupported cipher. (Code: %@)",
+                        value: "Unsupported cipher. (Code: %@)",
                         comment: "Error message. AES and Twofish are cipher names. [flagsHexString: String]"),
                     [flags.asHexString])
             }

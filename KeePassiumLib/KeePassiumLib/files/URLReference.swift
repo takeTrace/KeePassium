@@ -48,13 +48,25 @@ public class URLReference: Equatable, Codable {
         public var description: String {
             switch self {
             case .internalDocuments:
-                return NSLocalizedString("Local (in-app copy)", comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
+                return NSLocalizedString(
+                    "[URLReference/Location] Local (in-app copy)",
+                    value: "Local (in-app copy)",
+                    comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
             case .internalInbox:
-                return NSLocalizedString("Local (in-app copy): Inbox", comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
+                return NSLocalizedString(
+                    "[URLReference/Location] Local (in-app copy): Inbox",
+                    value: "Local (in-app copy): Inbox",
+                    comment: "Human-readable file location. 'Local' means the file is inside app sandbox, 'Inbox' is a special directory for files that are being imported.")
             case .internalBackup:
-                return NSLocalizedString("Local (in-app copy): Backup", comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
+                return NSLocalizedString(
+                    "[URLReference/Location] Local (in-app copy): Backup",
+                    value: "Local (in-app copy): Backup",
+                    comment: "Human-readable file location. 'Local' means the file is inside app sandbox. 'Backup' is a dedicated directory for database backup files.")
             case .external:
-                return NSLocalizedString("Another App / Cloud Storage", comment: "Human-readable file location. The file is situated in some other app or in cloud storage.")
+                return NSLocalizedString(
+                    "[URLReference/Location] Another App / Cloud Storage",
+                    value: "Another App / Cloud Storage",
+                    comment: "Human-readable file location. The file is situated in some other app or in cloud storage.")
             }
         }
     }

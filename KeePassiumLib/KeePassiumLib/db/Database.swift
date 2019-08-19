@@ -19,11 +19,20 @@ public enum DatabaseError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .loadError:
-            return NSLocalizedString("Cannot open database", comment: "Error message while opening a database")
+            return NSLocalizedString(
+                "[DatabaseError] Cannot open database",
+                value: "Cannot open database",
+                comment: "Error message while opening a database")
         case .invalidKey:
-            return NSLocalizedString("Invalid password or key file", comment: "Error message: user provided a wrong master key for decryption.")
+            return NSLocalizedString(
+                "[DatabaseError] Invalid password or key file",
+                value: "Invalid password or key file",
+                comment: "Error message: user provided a wrong master key for decryption.")
         case .saveError:
-            return NSLocalizedString("Cannot save database", comment: "Error message while saving a database")
+            return NSLocalizedString(
+                "[DatabaseError] Cannot save database",
+                value: "Cannot save database",
+                comment: "Error message while saving a database")
         }
     }
     public var failureReason: String? {

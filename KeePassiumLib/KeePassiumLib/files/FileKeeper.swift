@@ -17,19 +17,22 @@ public enum FileKeeperError: LocalizedError {
         case .openError(let reason):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Failed to open file. Reason: %@",
+                    "[FileKeeper] Failed to open file. Reason: %@",
+                    value: "Failed to open file. Reason: %@",
                     comment: "Error message [reason: String]"),
                 [reason])
         case .importError(let reason):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Failed to import file. Reason: %@",
+                    "[FileKeeper] Failed to import file. Reason: %@",
+                    value: "Failed to import file. Reason: %@",
                     comment: "Error message [reason: String]"),
                 [reason])
         case .removalError(let reason):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Failed to remove file. Reason: %@",
+                    "[FileKeeper] Failed to remove file. Reason: %@",
+                    value: "Failed to remove file. Reason: %@",
                     comment: "Error message [reason: String]"),
                 [reason])
         }
@@ -352,7 +355,10 @@ public class FileKeeper {
 
         guard sourceURL.isFileURL else {
             Diag.error("Tried to import a non-file URL: \(sourceURL.redacted)")
-            let messageNotAFileURL = NSLocalizedString("Not a file URL", comment: "Error message: tried to import URL which does not point to a file")
+            let messageNotAFileURL = NSLocalizedString(
+                "[FileKeeper] Not a file URL",
+                value: "Not a file URL",
+                comment: "Error message: tried to import URL which does not point to a file")
             switch openMode {
             case .import:
                 let importError = FileKeeperError.importError(reason: messageNotAFileURL)
