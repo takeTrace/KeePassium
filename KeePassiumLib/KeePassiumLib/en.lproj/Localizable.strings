@@ -7,27 +7,6 @@
 /* Status message: operation completed */
 "[Database/Unlock] Done" = "Done";
 
-/* A sorting option for a list of files, by file creation date. Example: 'Sort Order: Creation Date (Oldest First)' */
-"[FileList/SortOrder/longTitle] Creation Date (Oldest First)" = "Creation Date (Oldest First)";
-
-/* A sorting option for a list of files, by file creation date. Example: 'Sort Order: Creation Date (Recent First)' */
-"[FileList/SortOrder/longTitle] Creation Date (Recent First)" = "Creation Date (Recent First)";
-
-/* A sorting option for a list of files, by file's last modification date. Example: 'Sort Order: Modification Date (Oldest First)' */
-"[FileList/SortOrder/longTitle] Modification Date (Oldest First)" = "Modification Date (Oldest First)";
-
-/* A sorting option for a list of files, by file's last modification date. Example: 'Sort Order: Modification Date (Recent First)' */
-"[FileList/SortOrder/longTitle] Modification Date (Recent First)" = "Modification Date (Recent First)";
-
-/* A sorting option for a list of files, by file name. Example: 'Sort Order: Name (A..Z)' */
-"[FileList/SortOrder/longTitle] Name (A..Z)" = "Name (A..Z)";
-
-/* A sorting option for a list of files, by file name. Example: 'Sort Order: Name (Z..A)' */
-"[FileList/SortOrder/longTitle] Name (Z..A)" = "Name (Z..A)";
-
-/* A sorting option for a list of files. Example: 'Sort Order: No Sorting' */
-"[FileList/SortOrder/longTitle] No Sorting" = "No Sorting";
-
 /* An option in Group Viewer settings. Refers fo the most recent time when the entry was modified. Will be shown as 'Entry Subtitle: Last Modified Date'. */
 "[GroupViewer/EntryList/EntrySubtitle/longTitle] Last Modified Date" = "Last Modified Date";
 
@@ -45,27 +24,6 @@
 
 /* An option in Group Viewer settings. It refers to login information rather than person's name. Will be shown as 'Entry Subtitle: User Name'. */
 "[GroupViewer/EntryList/EntrySubtitle/longTitle] User Name" = "User Name";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: By Creation Date (New..Old)' */
-"[GroupViewer/SortOrder/longTitle] By Creation Date (New..Old)" = "By Creation Date (New..Old)";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: By Creation Date (Old..New)' */
-"[GroupViewer/SortOrder/longTitle] By Creation Date (Old..New)" = "By Creation Date (Old..New)";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: By Modification Date (New..Old)' */
-"[GroupViewer/SortOrder/longTitle] By Modification Date (New..Old)" = "By Modification Date (New..Old)";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: By Modification Date (Old..New)' */
-"[GroupViewer/SortOrder/longTitle] By Modification Date (Old..New)" = "By Modification Date (Old..New)";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: By Title (A..Z)' */
-"[GroupViewer/SortOrder/longTitle] By Title (A..Z)" = "By Title (A..Z)";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: By Title (Z..A)' */
-"[GroupViewer/SortOrder/longTitle] By Title (Z..A)" = "By Title (Z..A)";
-
-/* An option in Group Viewer settings. Example: 'Sort Order: No Sorting' */
-"[GroupViewer/SortOrder/longTitle] No Sorting" = "No Sorting";
 
 /* A description/subtitle for Settings/AppLockTimeout options that trigger when the user has been idle for a while. For example: 'AppLock Timeout: 3 seconds (After last interaction) */
 "[Settings/AppLockTimeout/description] After last interaction" = "After last interaction";

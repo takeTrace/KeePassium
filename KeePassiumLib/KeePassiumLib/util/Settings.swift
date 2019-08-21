@@ -482,37 +482,37 @@ public class Settings {
             switch self {
             case .noSorting:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] No Sorting",
+                    "[GroupSortOrder/longTitle] No Sorting",
                     value: "No Sorting",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: No Sorting'")
             case .nameAsc:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] By Title (A..Z)",
+                    "[GroupSortOrder/longTitle] By Title (A..Z)",
                     value: "By Title (A..Z)",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: By Title (A..Z)'")
             case .nameDesc:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] By Title (Z..A)",
+                    "[GroupSortOrder/longTitle] By Title (Z..A)",
                     value: "By Title (Z..A)",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: By Title (Z..A)'")
             case .creationTimeAsc:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] By Creation Date (Old..New)",
+                    "[GroupSortOrder/longTitle] By Creation Date (Old..New)",
                     value: "By Creation Date (Old..New)",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: By Creation Date (Old..New)'")
             case .creationTimeDesc:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] By Creation Date (New..Old)",
+                    "[GroupSortOrder/longTitle] By Creation Date (New..Old)",
                     value: "By Creation Date (New..Old)",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: By Creation Date (New..Old)'")
             case .modificationTimeAsc:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] By Modification Date (Old..New)",
+                    "[GroupSortOrder/longTitle] By Modification Date (Old..New)",
                     value: "By Modification Date (Old..New)",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: By Modification Date (Old..New)'")
             case .modificationTimeDesc:
                 return NSLocalizedString(
-                    "[Settings/GroupSortOrder/longTitle] By Modification Date (New..Old)",
+                    "[GroupSortOrder/longTitle] By Modification Date (New..Old)",
                     value: "By Modification Date (New..Old)",
                     comment: "An option in Group Viewer settings. Example: 'Sort Order: By Modification Date (New..Old)'")
             }
@@ -576,37 +576,37 @@ public class Settings {
             switch self {
             case .noSorting:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] No Sorting",
+                    "[FilesSortOrder/longTitle] No Sorting",
                     value: "No Sorting",
                     comment: "A sorting option for a list of files. Example: 'Sort Order: No Sorting'")
             case .nameAsc:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] Name (A..Z)",
+                    "[FilesSortOrder/longTitle] Name (A..Z)",
                     value: "Name (A..Z)",
                     comment: "A sorting option for a list of files, by file name. Example: 'Sort Order: Name (A..Z)'")
             case .nameDesc:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] Name (Z..A)",
+                    "[FilesSortOrder/longTitle] Name (Z..A)",
                     value: "Name (Z..A)",
                     comment: "A sorting option for a list of files, by file name. Example: 'Sort Order: Name (Z..A)'")
             case .creationTimeAsc:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] Creation Date (Oldest First)",
+                    "[FilesSortOrder/longTitle] Creation Date (Oldest First)",
                     value: "Creation Date (Oldest First)",
                     comment: "A sorting option for a list of files, by file creation date. Example: 'Sort Order: Creation Date (Oldest First)'")
             case .creationTimeDesc:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] Creation Date (Recent First)",
+                    "[FilesSortOrder/longTitle] Creation Date (Recent First)",
                     value: "Creation Date (Recent First)",
                     comment: "A sorting option for a list of files, by file creation date. Example: 'Sort Order: Creation Date (Recent First)'")
             case .modificationTimeAsc:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] Modification Date (Oldest First)",
+                    "[FilesSortOrder/longTitle] Modification Date (Oldest First)",
                     value: "Modification Date (Oldest First)",
                     comment: "A sorting option for a list of files, by file's last modification date. Example: 'Sort Order: Modification Date (Oldest First)'")
             case .modificationTimeDesc:
                 return NSLocalizedString(
-                    "[Settings/FilesSortOrder/longTitle] Modification Date (Recent First)",
+                    "[FilesSortOrder/longTitle] Modification Date (Recent First)",
                     value: "Modification Date (Recent First)",
                     comment: "A sorting option for a list of files, by file's last modification date. Example: 'Sort Order: Modification Date (Recent First)'")
             }
@@ -650,12 +650,12 @@ public class Settings {
             switch self {
             case .numeric:
                 return NSLocalizedString(
-                    "[Settings/AppLock/PasscodeKeyboardType/title] Numeric",
+                    "[AppLock/Passcode/KeyboardType/title] Numeric",
                     value: "Numeric",
                     comment: "Type of keyboard to show for App Lock passcode: digits only (PIN code).")
             case .alphanumeric:
                 return NSLocalizedString(
-                    "[Settings/AppLock/PasscodeKeyboardType/title] Alphanumeric",
+                    "[AppLock/Passcode/KeyboardType/title] Alphanumeric",
                     value: "Alphanumeric",
                     comment: "Type of keyboard to show for App Lock passcode: letters and digits.")
             }
