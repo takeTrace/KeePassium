@@ -46,8 +46,10 @@ final class TwofishDataCipher: DataCipher {
         
         progress.localizedDescription = NSLocalizedString(
             "[Cipher/Progress] Encrypting",
+            bundle: Bundle.framework,
             value: "Encrypting",
             comment: "Progress status")
+        
         let twofish = Twofish(key: key, iv: iv)
         let dataClone = data.clone() //TODO: copying is redundant here
         CryptoManager.addPadding(data: dataClone, blockSize: Twofish.blockSize)
@@ -67,6 +69,7 @@ final class TwofishDataCipher: DataCipher {
         assert(iv.count == self.initialVectorSize)
         progress.localizedDescription = NSLocalizedString(
             "[Cipher/Progress] Decrypting",
+            bundle: Bundle.framework,
             value: "Decrypting",
             comment: "Progress status")
         

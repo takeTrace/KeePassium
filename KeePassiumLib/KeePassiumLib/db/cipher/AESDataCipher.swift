@@ -38,6 +38,7 @@ final class AESDataCipher: DataCipher {
         assert(iv.count == kCCBlockSizeAES128)
         progress.localizedDescription = NSLocalizedString(
             "[Cipher/Progress] Encrypting",
+            bundle: Bundle.framework,
             value: "Encrypting",
             comment: "Progress status")
         
@@ -93,6 +94,7 @@ final class AESDataCipher: DataCipher {
         
         progress.localizedDescription = NSLocalizedString(
             "[Cipher/Progress] Decrypting",
+            bundle: Bundle.framework,
             value: "Decrypting",
             comment: "Progress status")
         

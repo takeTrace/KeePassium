@@ -31,6 +31,7 @@ final class ChaCha20DataCipher: DataCipher {
     func encrypt(plainText: ByteArray, key: ByteArray, iv: ByteArray) throws -> ByteArray {
         progress.localizedDescription = NSLocalizedString(
             "[Cipher/Progress] Encrypting",
+            bundle: Bundle.framework,
             value: "Encrypting",
             comment: "Progress status")
         
@@ -42,6 +43,7 @@ final class ChaCha20DataCipher: DataCipher {
     func decrypt(cipherText: ByteArray, key: ByteArray, iv: ByteArray) throws -> ByteArray {
         progress.localizedDescription = NSLocalizedString(
             "[Cipher/Progress] Decrypting",
+            bundle: Bundle.framework,
             value: "Decrypting",
             comment: "Progress status")
         

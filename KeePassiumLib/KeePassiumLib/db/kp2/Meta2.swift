@@ -344,6 +344,7 @@ final class Meta2: Eraseable {
         backupGroup.uuid = UUID()
         backupGroup.name = NSLocalizedString(
             "[Database2/backupGroupName] Recycle Bin",
+            bundle: Bundle.framework,
             value: "Recycle Bin",
             comment: "Name of a group which contains deleted entries")
         backupGroup.iconID = IconID.trashBin

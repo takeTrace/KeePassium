@@ -14,6 +14,7 @@
 		750FA52422BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */; };
 		751E0CDF2309A3420088BB10 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 751E0CDD2309A3420088BB10 /* Localizable.strings */; };
 		751E0D66230D11FD0088BB10 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 751E0D64230D11FD0088BB10 /* InfoPlist.strings */; };
+		751E0D68230D12660088BB10 /* Bundle+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751E0D67230D12660088BB10 /* Bundle+extensions.swift */; };
 		7538167E22B15FC7000FA4BD /* Settings+premium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7538167D22B15FC7000FA4BD /* Settings+premium.swift */; };
 		75384B9922CCB76800157598 /* UsageMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75384B9822CCB76800157598 /* UsageMonitor.swift */; };
 		7558700722E5857C00E1DD89 /* TOTPGeneratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7558700622E5857C00E1DD89 /* TOTPGeneratorFactory.swift */; };
@@ -153,6 +154,7 @@
 		751E0CDE2309A3420088BB10 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		751E0D63230B49190088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		751E0D65230D11FD0088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		751E0D67230D12660088BB10 /* Bundle+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+extensions.swift"; sourceTree = "<group>"; };
 		7538167D22B15FC7000FA4BD /* Settings+premium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+premium.swift"; sourceTree = "<group>"; };
 		75384B9822CCB76800157598 /* UsageMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageMonitor.swift; sourceTree = "<group>"; };
 		7558700622E5857C00E1DD89 /* TOTPGeneratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPGeneratorFactory.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				75F4ACED217749DB00B22D8B /* UserDefaults+appGroupShared.swift */,
 				75F4ACF221774A6300B22D8B /* URL+extensions.swift */,
 				75F4ACE92177485D00B22D8B /* Weak.swift */,
+				751E0D67230D12660088BB10 /* Bundle+extensions.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -808,6 +811,7 @@
 				75D09C232174F77000F7DEF2 /* Database2.swift in Sources */,
 				75D09C2F2174F77000F7DEF2 /* Date+extension.swift in Sources */,
 				75D09C2E2174F77000F7DEF2 /* UUID+extension.swift in Sources */,
+				751E0D68230D12660088BB10 /* Bundle+extensions.swift in Sources */,
 				75D09C312174F77000F7DEF2 /* Eraser.swift in Sources */,
 				75D09BDE2174F76500F7DEF2 /* ref.c in Sources */,
 				75D09C202174F77000F7DEF2 /* Header2.swift in Sources */,

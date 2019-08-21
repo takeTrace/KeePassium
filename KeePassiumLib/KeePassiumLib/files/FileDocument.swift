@@ -15,6 +15,7 @@ public class FileDocument: UIDocument {
         public var errorDescription: String? {
             return NSLocalizedString(
                 "[FileDocument] Unexpected file error, please contact us.",
+                bundle: Bundle.framework,
                 value: "Unexpected file error, please contact us.",
                 comment: "A very generic error message")
         }

@@ -18,12 +18,14 @@ public enum KeychainError: LocalizedError {
             return String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[KeychainError/generic] Keychain error (code %d) ",
+                    bundle: Bundle.framework,
                     value: "Keychain error (code %d) ",
                     comment: "Generic error message about system keychain. [errorCode: Int]"),
                 code)
         case .unexpectedFormat:
             return NSLocalizedString(
                 "[KeychainError/unexpectedFormat] Keychain error: unexpected data format",
+                bundle: Bundle.framework,
                 value: "Keychain error: unexpected data format",
                 comment: "Error message about system keychain.")
         }

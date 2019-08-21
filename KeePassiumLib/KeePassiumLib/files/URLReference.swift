@@ -50,21 +50,25 @@ public class URLReference: Equatable, Codable {
             case .internalDocuments:
                 return NSLocalizedString(
                     "[URLReference/Location] Local copy",
+                    bundle: Bundle.framework,
                     value: "Local copy",
                     comment: "Human-readable file location: the file is on device, inside the app sandbox. Example: 'File Location: Local copy'")
             case .internalInbox:
                 return NSLocalizedString(
                     "[URLReference/Location] Internal inbox",
+                    bundle: Bundle.framework,
                     value: "Internal inbox",
                     comment: "Human-readable file location: the file is on device, inside the app sandbox. 'Inbox' is a special directory for files that are being imported. Can be also 'Internal import'. Example: 'File Location: Internal inbox'")
             case .internalBackup:
                 return NSLocalizedString(
                     "[URLReference/Location] Internal backup",
+                    bundle: Bundle.framework,
                     value: "Internal backup",
                     comment: "Human-readable file location: the file is on device, inside the app sandbox. 'Backup' is a dedicated directory for database backup files. Example: 'File Location: Internal backup'")
             case .external:
                 return NSLocalizedString(
                     "[URLReference/Location] Cloud storage / Another app",
+                    bundle: Bundle.framework,
                     value: "Cloud storage / Another app",
                     comment: "Human-readable file location. The file is situated either online / in cloud storage, or on the same device, but in some other app. Example: 'File Location: Cloud storage / Another app'")
             }

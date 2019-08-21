@@ -37,12 +37,14 @@ public class Database2: Database {
             case .prematureDataEnd:
                 return NSLocalizedString(
                     "[Database2/FormatError] Unexpected end of file. Corrupted file?",
+                    bundle: Bundle.framework,
                     value: "Unexpected end of file. Corrupted file?",
                     comment: "Error message")
             case .negativeBlockSize(let blockIndex):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Corrupted database file (block %d has negative size)",
+                        bundle: Bundle.framework,
                         value: "Corrupted database file (block %d has negative size)",
                         comment: "Error message [blockIndex: Int]"),
                     blockIndex)
@@ -50,18 +52,21 @@ public class Database2: Database {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Cannot parse database. %s",
+                        bundle: Bundle.framework,
                         value: "Cannot parse database. %s",
                         comment: "Error message. Parsing refers to the analysis/understanding of file content. [reason: String]"),
                     reason)
             case .blockIDMismatch:
                 return NSLocalizedString(
                     "[Database2/FormatError] Unexpected block ID.",
+                    bundle: Bundle.framework,
                     value: "Unexpected block ID.",
                     comment: "Error message: wrong ID of a data block")
             case .blockHashMismatch(let blockIndex):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Corrupted database file (hash mismatch in block %d)",
+                        bundle: Bundle.framework,
                         value: "Corrupted database file (hash mismatch in block %d)",
                         comment: "Error message: hash(checksum) of a data block is wrong. [blockIndex: Int]"),
                     blockIndex)
@@ -69,6 +74,7 @@ public class Database2: Database {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Corrupted database file (HMAC mismatch in block %d)",
+                        bundle: Bundle.framework,
                         value: "Corrupted database file (HMAC mismatch in block %d)",
                         comment: "Error message: HMAC value (kind of checksum) of a data block is wrong. [blockIndex: Int]"),
                     blockIndex)
@@ -76,6 +82,7 @@ public class Database2: Database {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Gzip error: %@",
+                        bundle: Bundle.framework,
                         value: "Gzip error: %@",
                         comment: "Error message about Gzip compression algorithm. [reason: String]"),
                     reason)
@@ -173,6 +180,7 @@ public class Database2: Database {
         progress.totalUnitCount = ProgressSteps.all
         progress.localizedAdditionalDescription = NSLocalizedString(
             "[Database2/Progress] Loading database",
+            bundle: Bundle.framework,
             value: "Loading database",
             comment: "Progress bar status")
         
@@ -258,6 +266,7 @@ public class Database2: Database {
             let reason = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Database2/Loading/Error] Error unpacking database: %@",
+                    bundle: Bundle.framework,
                     value: "Error unpacking database: %@",
                     comment: "Error message about Gzip compression algorithm. [errorMessage: String]"),
                 error.localizedDescription)
@@ -335,6 +344,7 @@ public class Database2: Database {
         readingProgress.totalUnitCount = Int64(blockBytesCount)
         readingProgress.localizedAdditionalDescription = NSLocalizedString(
             "[Database2/Progress] Reading database content",
+            bundle: Bundle.framework,
             value: "Reading database content",
             comment: "Progress bar status")
         progress.addChild(readingProgress, withPendingUnitCount: ProgressSteps.readingBlocks)
@@ -418,6 +428,7 @@ public class Database2: Database {
         readingProgress.totalUnitCount = Int64(decryptedData.count - startData.count)
         readingProgress.localizedAdditionalDescription = NSLocalizedString(
             "[Database2/Progress] Reading database content",
+            bundle: Bundle.framework,
             value: "Reading database content",
             comment: "Progress bar status")
         progress.addChild(readingProgress, withPendingUnitCount: ProgressSteps.readingBlocks)
@@ -717,6 +728,7 @@ public class Database2: Database {
             let warningMessage = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Database2/Loading/Warning/unusedAttachments]",
+                    bundle: Bundle.framework,
                     value: "The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (%@). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.",
                     comment: "A warning about unused attachments after loading the database. [lastUsedAppName: String]"),
                 lastUsedAppName)
@@ -746,6 +758,7 @@ public class Database2: Database {
             let warningMessage = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Database2/Loading/Warning/missingBinaries]",
+                    bundle: Bundle.framework,
                     value: "Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (%@). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: %@",
                     comment: "A warning about missing attachments after loading the database. [lastUsedAppName: String, attachmentNames: String]"),
                 lastUsedAppName,
@@ -799,6 +812,7 @@ public class Database2: Database {
         let warningMessage = String.localizedStringWithFormat(
             NSLocalizedString(
                 "[Database2/Loading/Warning/namelessAttachments]",
+                bundle: Bundle.framework,
                 value: "Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n%@",
                 comment: "A warning about nameless attachments, shown after loading the database. [listOfEntryNames: String]"),
             listOfEntryNames)
@@ -827,6 +841,7 @@ public class Database2: Database {
         let warningMessage = String.localizedStringWithFormat(
             NSLocalizedString(
                 "[Database2/Loading/Warning/namelessCustomFields]",
+                bundle: Bundle.framework,
                 value: "Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n%@",
                 comment: "A warning about misformatted custom fields after loading the database. [entryPaths: String]"),
             entryPaths)
@@ -1018,6 +1033,7 @@ public class Database2: Database {
             let errMsg = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Database2/Saving/Error] Data compression error: %@",
+                    bundle: Bundle.framework,
                     value: "Data compression error: %@",
                     comment: "Error message while saving a database. [errorDescription: String]"),
                 error.localizedDescription)
@@ -1027,6 +1043,7 @@ public class Database2: Database {
             let errMsg = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Database2/Saving/Error] Encryption error: %@",
+                    bundle: Bundle.framework,
                     value: "Encryption error: %@",
                     comment: "Error message while saving a database. [errorDescription: String]"),
                 error.localizedDescription)
@@ -1046,6 +1063,7 @@ public class Database2: Database {
         writeProgress.totalUnitCount = Int64(data.count)
         writeProgress.localizedAdditionalDescription = NSLocalizedString(
             "[Database2/Progress] Writing encrypted blocks",
+            bundle: Bundle.framework,
             value: "Writing encrypted blocks",
             comment: "Progress bar status")
         progress.addChild(writeProgress, withPendingUnitCount: ProgressSteps.writingBlocks)
@@ -1097,6 +1115,7 @@ public class Database2: Database {
                 let errMsg = String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/Saving/Error] Data compression error: %@",
+                        bundle: Bundle.framework,
                         value: "Data compression error: %@",
                         comment: "Error message while saving a database. [errorDescription: String]"),
                     error.localizedDescription)
@@ -1133,6 +1152,7 @@ public class Database2: Database {
             let errMsg = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Database2/Saving/Error] Encryption error: %@",
+                    bundle: Bundle.framework,
                     value: "Encryption error: %@",
                     comment: "Error message while saving a database. [errorDescription: String]"),
                 error.localizedDescription)
@@ -1151,6 +1171,7 @@ public class Database2: Database {
         let writingProgress = ProgressEx()
         writingProgress.localizedAdditionalDescription = NSLocalizedString(
             "[Database2/Progress] Writing encrypted blocks",
+            bundle: Bundle.framework,
             value: "Writing encrypted blocks",
             comment: "Progress bar status")
         writingProgress.totalUnitCount = Int64(inData.count)

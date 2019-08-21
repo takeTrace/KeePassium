@@ -43,6 +43,7 @@ class AESKDF: KeyDerivationFunction {
         progress = ProgressEx()
         progress.localizedDescription = NSLocalizedString(
             "[KDF/Progress] Processing the master key",
+            bundle: Bundle.framework,
             value: "Processing the master key",
             comment: "Status message: processing of the master key is in progress")
         return progress

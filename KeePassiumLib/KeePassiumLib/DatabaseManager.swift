@@ -223,6 +223,7 @@ public class DatabaseManager {
                 Diag.error("Password and key file are both empty")
                 errorHandler(NSLocalizedString(
                     "[Database/Unlock/Error] Password and key file are both empty.",
+                    bundle: Bundle.framework,
                     value: "Password and key file are both empty.",
                     comment: "Error message"))
                 return
@@ -244,6 +245,7 @@ public class DatabaseManager {
                     Diag.error("Failed to open key file [error: \(error.localizedDescription)]")
                     errorHandler(NSLocalizedString(
                         "[Database/Unlock/Error] Failed to open key file",
+                        bundle: Bundle.framework,
                         value: "Failed to open key file",
                         comment: "Error message")
                     )
@@ -252,6 +254,7 @@ public class DatabaseManager {
                 Diag.error("Failed to open key file [error: \(error.localizedDescription)]")
                 errorHandler(NSLocalizedString(
                     "[Database/Unlock/Error] Failed to open key file",
+                    bundle: Bundle.framework,
                     value: "Failed to open key file",
                     comment: "Error message")
                 )
@@ -738,6 +741,7 @@ fileprivate class DatabaseLoader {
                 isCancelled: progress.isCancelled,
                 message: NSLocalizedString(
                     "[Database/Load/Error] Cannot find database file",
+                    bundle: Bundle.framework,
                     value: "Cannot find database file",
                     comment: "Error message"),
                 reason: error.localizedDescription)
@@ -748,6 +752,7 @@ fileprivate class DatabaseLoader {
         let dbDoc = DatabaseDocument(fileURL: dbURL)
         progress.status = NSLocalizedString(
             "[Database/Progress] Loading database file...",
+            bundle: Bundle.framework,
             value: "Loading database file...",
             comment: "Progress bar status")
         dbDoc.open(
@@ -763,6 +768,7 @@ fileprivate class DatabaseLoader {
                     isCancelled: self.progress.isCancelled,
                     message: NSLocalizedString(
                         "[Database/Load/Error] Cannot open database file",
+                        bundle: Bundle.framework,
                         value: "Cannot open database file",
                         comment: "Error message"),
                     reason: errorMessage)
@@ -783,6 +789,7 @@ fileprivate class DatabaseLoader {
                 isCancelled: progress.isCancelled,
                 message: NSLocalizedString(
                     "[Database/Load/Error] Unrecognized database format",
+                    bundle: Bundle.framework,
                     value: "Unrecognized database format",
                     comment: "Error message"),
                 reason: nil)
@@ -804,6 +811,7 @@ fileprivate class DatabaseLoader {
             //TODO: maybe replace with DatabaseManager.createCompositeKey
             progress.localizedDescription = NSLocalizedString(
                 "[Database/Progress] Loading key file...",
+                bundle: Bundle.framework,
                 value: "Loading key file...",
                 comment: "Progress status")
             
@@ -818,6 +826,7 @@ fileprivate class DatabaseLoader {
                     isCancelled: progress.isCancelled,
                     message: NSLocalizedString(
                         "[Database/Load/Error] Cannot find key file",
+                        bundle: Bundle.framework,
                         value: "Cannot find key file",
                         comment: "Error message"),
                     reason: error.localizedDescription)
@@ -839,6 +848,7 @@ fileprivate class DatabaseLoader {
                         isCancelled: self.progress.isCancelled,
                         message: NSLocalizedString(
                             "[Database/Load/Error] Cannot open key file",
+                            bundle: Bundle.framework,
                             value: "Cannot open key file",
                             comment: "Error message"),
                         reason: error.localizedDescription)
@@ -863,6 +873,7 @@ fileprivate class DatabaseLoader {
                 database: dbRef,
                 message: NSLocalizedString(
                     "[Database/Load/Error] Please provide at least a password or a key file",
+                    bundle: Bundle.framework,
                     value: "Please provide at least a password or a key file",
                     comment: "Error shown when both master password and key file are empty"))
             endBackgroundTask()
@@ -888,6 +899,7 @@ fileprivate class DatabaseLoader {
             Diag.info("Database loaded OK")
             progress.localizedDescription = NSLocalizedString(
                 "[Database/Progress] Done",
+                bundle: Bundle.framework,
                 value: "Done",
                 comment: "Progress status: finished loading database")
             completion(dbDoc, dbRef)

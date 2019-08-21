@@ -18,6 +18,7 @@ public enum FileKeeperError: LocalizedError {
             return String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[FileKeeper] Failed to open file. Reason: %@",
+                    bundle: Bundle.framework,
                     value: "Failed to open file. Reason: %@",
                     comment: "Error message [reason: String]"),
                 reason)
@@ -25,6 +26,7 @@ public enum FileKeeperError: LocalizedError {
             return String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[FileKeeper] Failed to import file. Reason: %@",
+                    bundle: Bundle.framework,
                     value: "Failed to import file. Reason: %@",
                     comment: "Error message [reason: String]"),
                 reason)
@@ -32,6 +34,7 @@ public enum FileKeeperError: LocalizedError {
             return String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[FileKeeper] Failed to delete file. Reason: %@",
+                    bundle: Bundle.framework,
                     value: "Failed to delete file. Reason: %@",
                     comment: "Error message [reason: String]"),
                 reason)
@@ -357,6 +360,7 @@ public class FileKeeper {
             Diag.error("Tried to import a non-file URL: \(sourceURL.redacted)")
             let messageNotAFileURL = NSLocalizedString(
                 "[FileKeeper] Not a file URL",
+                bundle: Bundle.framework,
                 value: "Not a file URL",
                 comment: "Error message: tried to import URL which does not point to a file")
             switch openMode {

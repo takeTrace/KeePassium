@@ -23,6 +23,7 @@ public class Database1: Database {
             case .prematureDataEnd:
                 return NSLocalizedString(
                     "[Database1/FormatError] Unexpected end of file. Corrupted database file?",
+                    bundle: Bundle.framework,
                     value: "Unexpected end of file. Corrupted database file?",
                     comment: "Error message")
             case .corruptedField(let fieldName):
@@ -30,18 +31,21 @@ public class Database1: Database {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
                             "[Database1/FormatError] Error parsing field %@. Corrupted database file?",
+                            bundle: Bundle.framework,
                             value: "Error parsing field %@. Corrupted database file?",
                             comment: "Error message [fieldName: String]"),
                         fieldName!)
                 } else {
                     return NSLocalizedString(
                         "[Database1/FormatError] Database file is corrupted.",
+                        bundle: Bundle.framework,
                         value: "Database file is corrupted.",
                         comment: "Error message")
                 }
             case .orphanedEntry:
                 return NSLocalizedString(
                     "[Database1/FormatError] Found an entry outside any group. Corrupted DB file?",
+                    bundle: Bundle.framework,
                     value: "Found an entry outside any group. Corrupted DB file?",
                     comment: "Error message")
             }
@@ -226,6 +230,7 @@ public class Database1: Database {
         loadProgress.totalUnitCount = Int64(header.groupCount + header.entryCount)
         loadProgress.localizedDescription = NSLocalizedString(
             "[Database1/Progress] Parsing content",
+            bundle: Bundle.framework,
             value: "Parsing content",
             comment: "Status message: processing the content of a database")
         self.progress.addChild(loadProgress, withPendingUnitCount: ProgressSteps.parsing)
@@ -341,6 +346,7 @@ public class Database1: Database {
             packingProgress.totalUnitCount = Int64(groups.count + entries.count + metaStreamEntries.count)
             packingProgress.localizedDescription = NSLocalizedString(
                 "[Database1/Progress] Packing the content",
+                bundle: Bundle.framework,
                 value: "Packing the content",
                 comment: "Status message: collecting database items into a single package")
             progress.addChild(packingProgress, withPendingUnitCount: ProgressSteps.packing)
