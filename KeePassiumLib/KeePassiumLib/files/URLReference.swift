@@ -49,24 +49,24 @@ public class URLReference: Equatable, Codable {
             switch self {
             case .internalDocuments:
                 return NSLocalizedString(
-                    "[URLReference/Location] Local (in-app copy)",
-                    value: "Local (in-app copy)",
-                    comment: "Human-readable file location. 'Local' means the file is inside app sandbox.")
+                    "[URLReference/Location] Local copy",
+                    value: "Local copy",
+                    comment: "Human-readable file location: the file is on device, inside the app sandbox. Example: 'File Location: Local copy'")
             case .internalInbox:
                 return NSLocalizedString(
-                    "[URLReference/Location] Local (in-app copy): Inbox",
-                    value: "Local (in-app copy): Inbox",
-                    comment: "Human-readable file location. 'Local' means the file is inside app sandbox, 'Inbox' is a special directory for files that are being imported.")
+                    "[URLReference/Location] Internal inbox",
+                    value: "Internal inbox",
+                    comment: "Human-readable file location: the file is on device, inside the app sandbox. 'Inbox' is a special directory for files that are being imported. Can be also 'Internal import'. Example: 'File Location: Internal inbox'")
             case .internalBackup:
                 return NSLocalizedString(
-                    "[URLReference/Location] Local (in-app copy): Backup",
-                    value: "Local (in-app copy): Backup",
-                    comment: "Human-readable file location. 'Local' means the file is inside app sandbox. 'Backup' is a dedicated directory for database backup files.")
+                    "[URLReference/Location] Internal backup",
+                    value: "Internal backup",
+                    comment: "Human-readable file location: the file is on device, inside the app sandbox. 'Backup' is a dedicated directory for database backup files. Example: 'File Location: Internal backup'")
             case .external:
                 return NSLocalizedString(
-                    "[URLReference/Location] Another App / Cloud Storage",
-                    value: "Another App / Cloud Storage",
-                    comment: "Human-readable file location. The file is situated in some other app or in cloud storage.")
+                    "[URLReference/Location] Cloud storage / Another app",
+                    value: "Cloud storage / Another app",
+                    comment: "Human-readable file location. The file is situated either online / in cloud storage, or on the same device, but in some other app. Example: 'File Location: Cloud storage / Another app'")
             }
         }
     }
