@@ -153,7 +153,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
                     "[Database/Opened/Warning/lastEdited] Database was last edited by: %@",
                     value: "Database was last edited by: %@",
                     comment: "Status message: name of the app that was last to write/create the database file. [lastUsedAppName: String]"),
-                [lastUsedAppName])
+                lastUsedAppName)
         let message = warnings.messages.joined(separator: "\n\n") + "\n\n" + footerLine
         
         let alert = UIAlertController(

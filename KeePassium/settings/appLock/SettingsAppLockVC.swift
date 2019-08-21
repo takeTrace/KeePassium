@@ -79,7 +79,7 @@ class SettingsAppLockVC: UITableViewController, Refreshable {
                 "[Settings/AppLock/Biometric/title] Use %@",
                 value: "Use %@",
                 comment: "Settings switch: whether AppLock is allowed to use Touch ID/Face ID. Example: 'Use Touch ID'. [biometryTypeName: String]"),
-            [biometryTypeName])
+            biometryTypeName)
         biometricsIcon.image = context.biometryType.icon
     }
     

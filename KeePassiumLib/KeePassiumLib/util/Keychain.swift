@@ -20,7 +20,7 @@ public enum KeychainError: LocalizedError {
                     "[KeychainError/generic] Keychain error (code %d) ",
                     value: "Keychain error (code %d) ",
                     comment: "Generic error message about system keychain. [errorCode: Int]"),
-                [code])
+                code)
         case .unexpectedFormat:
             return NSLocalizedString(
                 "[KeychainError/unexpectedFormat] Keychain error: unexpected data format",

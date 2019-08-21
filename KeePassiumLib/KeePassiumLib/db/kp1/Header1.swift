@@ -46,14 +46,14 @@ class Header1 {
                         "[Database1/Header1/Error] Unsupported database format version: %@.",
                         value: "Unsupported database format version: %@.",
                         comment: "Error message when opening a database. [version: String]"),
-                    [version])
+                    version)
             case .unsupportedDataCipher(let flags):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database1/Header1/Error] Unsupported cipher. (Code: %@)",
                         value: "Unsupported cipher. (Code: %@)",
-                        comment: "Error message. AES and Twofish are cipher names. [flagsHexString: String]"),
-                    [flags.asHexString])
+                        comment: "Error message. [flagsHexString: String]"),
+                    flags.asHexString)
             }
         }
     }

@@ -47,28 +47,28 @@ final class Header2: Eraseable {
                         "[Database2/Header2/Error] Unsupported database format version: %@.",
                         value: "Unsupported database format version: %@.",
                         comment: "Error message when opening a database. [version: String]"),
-                    [version])
+                    version)
             case .unsupportedDataCipher(let uuidHexString):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/Header2/Error] Unsupported data cipher: %@",
                         value: "Unsupported data cipher: %@",
                         comment: "Error message. [uuidHexString: String]"),
-                    [uuidHexString.prefix(32)])
+                    uuidHexString.prefix(32).localizedUppercase)
             case .unsupportedStreamCipher(let id):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/Header2/Error] Unsupported inner stream cipher (ID %d)",
                         value: "Unsupported inner stream cipher (ID %d)",
                         comment: "Error message when opening a database. [id: UInt32]"),
-                    [id])
+                    id)
             case .unsupportedKDF(let uuid):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/Header2/Error] Unsupported KDF: %@",
                         value: "Unsupported KDF: %@",
                         comment: "Error message about Key Derivation Function. [uuidString: String]"),
-                    [uuid.uuidString])
+                    uuid.uuidString)
             case .unknownCompressionAlgorithm:
                 return NSLocalizedString(
                     "[Database2/Header2/Error] Unknown compression algorithm.",
@@ -80,14 +80,14 @@ final class Header2: Eraseable {
                         "[Database2/Header2/Error] Failed to uncompress attachment data: %@",
                         value: "Failed to uncompress attachment data: %@",
                         comment: "Error message when saving a database. [reason: String]"),
-                    [reason])
+                    reason)
             case .corruptedField(let fieldName):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/Header2/Error] Header field %@ is corrupted.",
                         value: "Header field %@ is corrupted.",
                         comment: "Error message, with the name of problematic field. [fieldName: String]"),
-                    [fieldName])
+                    fieldName)
             case .hashMismatch:
                 return NSLocalizedString(
                     "[Database2/Header2/Error] Header hash mismatch. DB file corrupt?",

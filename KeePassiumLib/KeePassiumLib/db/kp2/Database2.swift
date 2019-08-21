@@ -45,14 +45,14 @@ public class Database2: Database {
                         "[Database2/FormatError] Corrupted database file (block %d has negative size)",
                         value: "Corrupted database file (block %d has negative size)",
                         comment: "Error message [blockIndex: Int]"),
-                    [blockIndex])
+                    blockIndex)
             case .parsingError(let reason):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Cannot parse database. %s",
                         value: "Cannot parse database. %s",
                         comment: "Error message. Parsing refers to the analysis/understanding of file content. [reason: String]"),
-                    [reason])
+                    reason)
             case .blockIDMismatch:
                 return NSLocalizedString(
                     "[Database2/FormatError] Unexpected block ID.",
@@ -64,21 +64,21 @@ public class Database2: Database {
                         "[Database2/FormatError] Corrupted database file (hash mismatch in block %d)",
                         value: "Corrupted database file (hash mismatch in block %d)",
                         comment: "Error message: hash(checksum) of a data block is wrong. [blockIndex: Int]"),
-                    [blockIndex])
+                    blockIndex)
             case .blockHMACMismatch(let blockIndex):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Corrupted database file (HMAC mismatch in block %d)",
                         value: "Corrupted database file (HMAC mismatch in block %d)",
                         comment: "Error message: HMAC value (kind of checksum) of a data block is wrong. [blockIndex: Int]"),
-                    [blockIndex])
+                    blockIndex)
             case .compressionError(let reason):
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "[Database2/FormatError] Gzip error: %@",
                         value: "Gzip error: %@",
                         comment: "Error message about Gzip compression algorithm. [reason: String]"),
-                    [reason])
+                    reason)
             }
         }
     }
@@ -260,7 +260,7 @@ public class Database2: Database {
                     "[Database2/Loading/Error] Error unpacking database: %@",
                     value: "Error unpacking database: %@",
                     comment: "Error message about Gzip compression algorithm. [errorMessage: String]"),
-                [error.localizedDescription])
+                error.localizedDescription)
             throw DatabaseError.loadError(reason: reason)
         }
         // ProgressInterruption is passed up the call stack.
@@ -719,7 +719,7 @@ public class Database2: Database {
                     "[Database2/Loading/Warning/unusedAttachments]",
                     value: "The database contains some attachments that are not used in any entry. Most likely, they have been forgotten by the last used app (%@). However, this can also be a sign of data corruption. \nPlease make sure to have a backup of your database before changing anything.",
                     comment: "A warning about unused attachments after loading the database. [lastUsedAppName: String]"),
-                [lastUsedAppName])
+                lastUsedAppName)
             warnings.messages.append(warningMessage)
             
             let unusedIDs = unusedBinaries
@@ -748,7 +748,8 @@ public class Database2: Database {
                     "[Database2/Loading/Warning/missingBinaries]",
                     value: "Attachments of some entries are missing data. This is a sign of database corruption, most likely by the last used app (%@). KeePassium will preserve the empty attachments, but cannot restore them. You should restore your database from a backup copy. \n\nMissing attachments: %@",
                     comment: "A warning about missing attachments after loading the database. [lastUsedAppName: String, attachmentNames: String]"),
-                [lastUsedAppName, attachmentNames])
+                lastUsedAppName,
+                attachmentNames)
             warnings.messages.append(warningMessage)
 
             // may not log attachment names, but IDs are generic enough
@@ -800,7 +801,7 @@ public class Database2: Database {
                 "[Database2/Loading/Warning/namelessAttachments]",
                 value: "Some entries have attachments without a name. This is a sign of previous database corruption.\n\n Please review attached files in the following entries (and their history):\n%@",
                 comment: "A warning about nameless attachments, shown after loading the database. [listOfEntryNames: String]"),
-            [listOfEntryNames])
+            listOfEntryNames)
         Diag.warning(warningMessage)
         warnings.messages.append(warningMessage)
     }
@@ -828,7 +829,7 @@ public class Database2: Database {
                 "[Database2/Loading/Warning/namelessCustomFields]",
                 value: "Some entries have custom field(s) with empty names. This can be a sign of data corruption. Please check these entries:\n\n%@",
                 comment: "A warning about misformatted custom fields after loading the database. [entryPaths: String]"),
-            [entryPaths])
+            entryPaths)
         warnings.messages.append(warningMessage)
     }
     
@@ -1019,7 +1020,7 @@ public class Database2: Database {
                     "[Database2/Saving/Error] Data compression error: %@",
                     value: "Data compression error: %@",
                     comment: "Error message while saving a database. [errorDescription: String]"),
-                [error.localizedDescription])
+                error.localizedDescription)
             throw DatabaseError.saveError(reason: errMsg)
         } catch let error as CryptoError {
             Diag.error("Crypto error [reason: \(error.localizedDescription)]")
@@ -1028,7 +1029,7 @@ public class Database2: Database {
                     "[Database2/Saving/Error] Encryption error: %@",
                     value: "Encryption error: %@",
                     comment: "Error message while saving a database. [errorDescription: String]"),
-                [error.localizedDescription])
+                error.localizedDescription)
             throw DatabaseError.saveError(reason: errMsg)
         }
     }
@@ -1098,7 +1099,7 @@ public class Database2: Database {
                         "[Database2/Saving/Error] Data compression error: %@",
                         value: "Data compression error: %@",
                         comment: "Error message while saving a database. [errorDescription: String]"),
-                    [error.localizedDescription])
+                    error.localizedDescription)
                 throw DatabaseError.saveError(reason: errMsg)
             }
         } else {
@@ -1134,7 +1135,7 @@ public class Database2: Database {
                     "[Database2/Saving/Error] Encryption error: %@",
                     value: "Encryption error: %@",
                     comment: "Error message while saving a database. [errorDescription: String]"),
-                [error.localizedDescription])
+                error.localizedDescription)
 
             throw DatabaseError.saveError(reason: errMsg)
         }

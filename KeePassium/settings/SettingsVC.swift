@@ -94,7 +94,7 @@ class SettingsVC: UITableViewController, Refreshable {
                     "[Settings/AppLock/subtitle] App Lock, %@, timeout",
                     value: "App Lock, %@, timeout",
                     comment: "Settings: subtitle of the `App Protection` section. biometryTypeName will be either 'Touch ID' or 'Face ID'. [biometryTypeName: String]"),
-                [biometryTypeName])
+                biometryTypeName)
         } else {
             appSafetyCell.detailTextLabel?.text =
                 NSLocalizedString(
@@ -305,7 +305,7 @@ class SettingsVC: UITableViewController, Refreshable {
                         "[Premium/status] Next renewal on %@",
                         value: "Next renewal on %@",
                         comment: "Status: scheduled renewal date of a premium subscription. For example: `Next renewal on 1 Jan 2050`. [expiryDateString: String]"),
-                    [expiryDateString])
+                    expiryDateString)
             }
         case .lapsed:
             setCellVisibility(premiumTrialCell, isHidden: false)
@@ -323,7 +323,7 @@ class SettingsVC: UITableViewController, Refreshable {
                         "[Premium/status] Expired %@ ago. Please renew.",
                         value: "Expired %@ ago. Please renew.",
                         comment: "Status: premium subscription has expired. For example: `Expired 1 day ago`. [timeFormatted: String, includes the time unit (day, hour, minute)]"),
-                    [timeFormatted])
+                    timeFormatted)
             } else {
                 assertionFailure()
                 premiumStatusText = "?"
@@ -372,7 +372,8 @@ class SettingsVC: UITableViewController, Refreshable {
                 "[Premium/usage] App being useful: %@/month, that is around %@/year.",
                 value: "App being useful: %@/month, that is around %@/year.",
                 comment: "Status: how long the app has been used during some time period. For example: `App being useful: 1hr/month, about 12hr/year`. [monthlyUsage: String, annualUsage: String — already include the time unit (hours, minutes)]"),
-            [monthlyUsage, annualUsage])
+            monthlyUsage,
+            annualUsage)
         return appUsageDescription
     }
 }

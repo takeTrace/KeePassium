@@ -28,7 +28,7 @@ internal struct Xml2 {
                         "[Database2/Xml2/ParsingError] XML error: %@",
                         value: "XML error: %@",
                         comment: "Generic error while parsing XML. [errorDetails: String]"),
-                    [details])
+                    details)
             case .notKeePassDocument:
                 return NSLocalizedString(
                     "[Database2/Xml2/ParsingError] Not a KeePass XML",
@@ -41,14 +41,15 @@ internal struct Xml2 {
                             "[Database2/Xml2/ParsingError] Unexpected tag '%@' (instead of '%@')",
                             value: "Unexpected tag '%@' (instead of '%@')",
                             comment: "Error message about XML parsing. [actualTag: String, expectedTag: String]"),
-                        [actual, expected])
+                        actual,
+                        expected)
                 } else {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
                             "[Database2/Xml2/ParsingError] Unexpected tag '%@'",
                             value: "Unexpected tag '%@'",
                             comment: "Error message about XML parsing. [actualTag: String]"),
-                        [actual])
+                        actual)
                 }
             case .malformedValue(let tag, let value):
                 if let value = value {
@@ -57,14 +58,15 @@ internal struct Xml2 {
                             "[Database2/Xml2/ParsingError] Malformed value '%@' in %@",
                             value: "Malformed value '%@' in %@",
                             comment: "Error message about XML parsing. [value: String, tag: String]"),
-                        [value, tag])
+                        value,
+                        tag)
                 } else {
                     return String.localizedStringWithFormat(
                         NSLocalizedString(
                             "[Database2/Xml2/ParsingError] Nil value in %@",
                             value: "Nil value in %@",
                             comment: "Error message about XML parsing. [tag: String]"),
-                        [tag])
+                        tag)
                 }
             }
         }

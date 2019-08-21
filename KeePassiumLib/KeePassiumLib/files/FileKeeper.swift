@@ -20,21 +20,21 @@ public enum FileKeeperError: LocalizedError {
                     "[FileKeeper] Failed to open file. Reason: %@",
                     value: "Failed to open file. Reason: %@",
                     comment: "Error message [reason: String]"),
-                [reason])
+                reason)
         case .importError(let reason):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[FileKeeper] Failed to import file. Reason: %@",
                     value: "Failed to import file. Reason: %@",
                     comment: "Error message [reason: String]"),
-                [reason])
+                reason)
         case .removalError(let reason):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "[FileKeeper] Failed to remove file. Reason: %@",
-                    value: "Failed to remove file. Reason: %@",
+                    "[FileKeeper] Failed to delete file. Reason: %@",
+                    value: "Failed to delete file. Reason: %@",
                     comment: "Error message [reason: String]"),
-                [reason])
+                reason)
         }
     }
 }

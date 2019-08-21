@@ -164,7 +164,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
                     "[Database/Unlock] Key file error: %@",
                     value: "Key file error: %@",
                     comment: "Error message related to key file. [errorDetails: String]"),
-                [errorDetails])
+                errorDetails)
             Diag.warning(errorMessage)
             showErrorMessage(text: errorMessage)
             keyFileField.text = ""

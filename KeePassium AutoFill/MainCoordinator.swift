@@ -525,7 +525,7 @@ extension MainCoordinator: UIDocumentPickerDelegate {
                         "[Database/Add] Selected file \"%@\" does not look like a database.",
                         value: "Selected file \"%@\" does not look like a database.",
                         comment: "Warning when trying to add a random file as a database. [fileName: String]"),
-                    [fileName]),
+                    fileName),
                 cancelButtonTitle: LString.actionOK)
             navigationController.present(errorAlert, animated: true, completion: nil)
             return

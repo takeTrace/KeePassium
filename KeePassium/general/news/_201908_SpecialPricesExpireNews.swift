@@ -40,7 +40,7 @@ class _201908_SpecialPricesExpireNews: NewsItem {
             "[News/2019/08/SpecialPricesExpire/title] Early bird promo ends %@",
             value: "Early bird promo ends %@",
             comment: "Title of an announcement [expiryDateFormatted: String]"),
-        [formattedDateUntil])
+        formattedDateUntil)
     
     func show(in viewController: UIViewController) {
         #if AUTOFILL_EXT

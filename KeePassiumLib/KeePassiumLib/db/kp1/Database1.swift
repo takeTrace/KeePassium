@@ -32,7 +32,7 @@ public class Database1: Database {
                             "[Database1/FormatError] Error parsing field %@. Corrupted database file?",
                             value: "Error parsing field %@. Corrupted database file?",
                             comment: "Error message [fieldName: String]"),
-                        [fieldName!])
+                        fieldName!)
                 } else {
                     return NSLocalizedString(
                         "[Database1/FormatError] Database file is corrupted.",

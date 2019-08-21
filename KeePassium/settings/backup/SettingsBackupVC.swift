@@ -55,7 +55,7 @@ class SettingsBackupVC: UITableViewController {
                     "[Settings/Backup] Delete ALL Backup Files (%d)",
                     value: "Delete ALL Backup Files (%d)",
                     comment: "Action to delete all backup files from the app. `ALL` is in capitals as a highlight. [backupFileCount: Int]"),
-                [backupFileCount])
+                backupFileCount)
             deleteAllBackupsButton.setTitle(buttonTitle, for: .normal)
         } else {
             deleteAllBackupsButton.isEnabled = false

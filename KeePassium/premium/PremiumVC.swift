@@ -139,21 +139,21 @@ class PremiumVC: UIViewController {
                     "[Premium/Upgrade/price] %@ once",
                     value: "%@ once",
                     comment: "Product price for once-and-forever premium. [localizedPrice: String]"),
-                [product.localizedPrice])
+                product.localizedPrice)
         case .yearly:
             productPrice = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Premium/Upgrade/price] %@ / year",
                     value: "%@ / year",
                     comment: "Product price for annual premium subscription. [localizedPrice: String]"),
-                [product.localizedPrice])
+                product.localizedPrice)
         case .monthly:
             productPrice = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "[Premium/Upgrade/price] %@ / month",
                     value: "%@ / month",
                     comment: "Product price for monthly premium subscription. [localizedPrice: String]"),
-                [product.localizedPrice])
+                product.localizedPrice)
         case .other:
             assertionFailure("Should not be here")
             productPrice = "\(product.localizedPrice)"
