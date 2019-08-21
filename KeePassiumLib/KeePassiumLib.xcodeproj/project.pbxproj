@@ -13,6 +13,7 @@
 		750FA52322BAD51B009C7B05 /* v4-ar2-2fi-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 750FA51E22BAD51B009C7B05 /* v4-ar2-2fi-nocomp.kdbx */; };
 		750FA52422BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx in Resources */ = {isa = PBXBuildFile; fileRef = 750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */; };
 		751E0CDF2309A3420088BB10 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 751E0CDD2309A3420088BB10 /* Localizable.strings */; };
+		751E0D66230D11FD0088BB10 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 751E0D64230D11FD0088BB10 /* InfoPlist.strings */; };
 		7538167E22B15FC7000FA4BD /* Settings+premium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7538167D22B15FC7000FA4BD /* Settings+premium.swift */; };
 		75384B9922CCB76800157598 /* UsageMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75384B9822CCB76800157598 /* UsageMonitor.swift */; };
 		7558700722E5857C00E1DD89 /* TOTPGeneratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7558700622E5857C00E1DD89 /* TOTPGeneratorFactory.swift */; };
@@ -150,6 +151,8 @@
 		750FA51E22BAD51B009C7B05 /* v4-ar2-2fi-nocomp.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v4-ar2-2fi-nocomp.kdbx"; sourceTree = "<group>"; };
 		750FA51F22BAD51B009C7B05 /* v3-aes-2fi-nocomp.kdbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "v3-aes-2fi-nocomp.kdbx"; sourceTree = "<group>"; };
 		751E0CDE2309A3420088BB10 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		751E0D63230B49190088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		751E0D65230D11FD0088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7538167D22B15FC7000FA4BD /* Settings+premium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+premium.swift"; sourceTree = "<group>"; };
 		75384B9822CCB76800157598 /* UsageMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageMonitor.swift; sourceTree = "<group>"; };
 		7558700622E5857C00E1DD89 /* TOTPGeneratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPGeneratorFactory.swift; sourceTree = "<group>"; };
@@ -586,6 +589,7 @@
 				75D09BAD2174F3E600F7DEF2 /* KeePassiumLib.m */,
 				75D09BAC2174F3E600F7DEF2 /* KeePassiumLib.modulemap */,
 				75D0C76E2174AF1F00C64C93 /* Info.plist */,
+				751E0D64230D11FD0088BB10 /* InfoPlist.strings */,
 				751E0CDD2309A3420088BB10 /* Localizable.strings */,
 			);
 			path = KeePassiumLib;
@@ -751,6 +755,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75D09BDD2174F76500F7DEF2 /* LICENSE in Resources */,
+				751E0D66230D11FD0088BB10 /* InfoPlist.strings in Resources */,
 				751E0CDF2309A3420088BB10 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -886,8 +891,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				751E0CDE2309A3420088BB10 /* en */,
+				751E0D63230B49190088BB10 /* ru */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		751E0D64230D11FD0088BB10 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				751E0D65230D11FD0088BB10 /* ru */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
