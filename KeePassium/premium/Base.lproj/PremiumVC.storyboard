@@ -14,7 +14,7 @@
         <!--Premium-->
         <scene sceneID="jVP-0t-Asp">
             <objects>
-                <viewController storyboardIdentifier="PremiumVC" title="Preimum" id="yXg-JJ-VAJ" userLabel="Premium" customClass="PremiumVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PremiumVC" id="yXg-JJ-VAJ" userLabel="Premium" customClass="PremiumVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZaF-vV-wvb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -23,84 +23,15 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="836"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfw-Sq-XAv" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1046.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IZs-4j-RVF" userLabel="BenefitsStack">
-                                                <rect key="frame" x="8" y="8" width="304" height="585"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8j-ph-twJ" userLabel="Multiple databases" customClass="PremiumBenefitView" customModule="KeePassium" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="304" height="82.5"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" name="IconTint"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Sync with the team"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="subtitle" value="Add multiple databases and quickly switch between them."/>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="premium-benefit-multidb"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WcX-dB-0Lm" userLabel="Save your time" customClass="PremiumBenefitView" customModule="KeePassium" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="90.5" width="304" height="122.5"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" name="IconTint"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Save your time and fingers"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="subtitle" value="Tired of typing your master password? Keep your database open longer and unlock it with one tap."/>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="premium-benefit-db-timeout"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U1O-1B-cBy" userLabel="Preview" customClass="PremiumBenefitView" customModule="KeePassium" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="221" width="304" height="122.5"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" name="IconTint"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Preview without a trace"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="subtitle">
-                                                                <string key="value">Preview attached files directly in KeePassium and leave no traces in other apps. (Works with images, documents, archives and more.)</string>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="premium-benefit-preview"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fX6-b1-2er" userLabel="Support" customClass="PremiumBenefitView" customModule="KeePassium" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="351.5" width="304" height="122.5"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" name="IconTint"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Talk to support that cares"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="subtitle" value="Community support means no obligations. With premium, get answers and solutions directly from the developer."/>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="premium-benefit-support"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I7N-iA-RqT" userLabel="Maintenance" customClass="PremiumBenefitView" customModule="KeePassium" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="482" width="304" height="103"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="tintColor" name="IconTint"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Protect the future"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="subtitle" value="Keep KeePassium shiny and available to everyone who needs security without ads."/>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="premium-benefit-shiny"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                </subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IZs-4j-RVF" userLabel="BenefitsStack">
+                                                <rect key="frame" x="8" y="8" width="304" height="103"/>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Lb7-tD-p8f" userLabel="ButtonStack">
-                                                <rect key="frame" x="20" y="617" width="280" height="55.5"/>
+                                            <stackView opaque="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" ambiguous="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Lb7-tD-p8f" userLabel="ButtonStack">
+                                                <rect key="frame" x="20" y="135" width="280" height="55.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Status/error text)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOe-GX-YWy">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="{Status/error text}" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOe-GX-YWy">
                                                         <rect key="frame" x="0.0" y="0.0" width="280" height="19.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                         <color key="textColor" name="AuxiliaryText"/>
@@ -114,16 +45,16 @@
                                                     <constraint firstAttribute="width" constant="280" id="zgA-gr-Ksr"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yss-Xu-2XK">
-                                                <rect key="frame" x="92" y="688.5" width="136" height="32"/>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yss-Xu-2XK">
+                                                <rect key="frame" x="92" y="206.5" width="136" height="32"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <state key="normal" title="Restore Purchases"/>
                                                 <connections>
                                                     <action selector="didPressRestorePurchases:" destination="yXg-JJ-VAJ" eventType="touchUpInside" id="dYJ-LA-Gk6"/>
                                                 </connections>
                                             </button>
-                                            <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="NtD-1H-0E8" userLabel="FooterView">
-                                                <rect key="frame" x="16" y="736.5" width="288" height="294"/>
+                                            <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NtD-1H-0E8" userLabel="FooterView">
+                                                <rect key="frame" x="16" y="254.5" width="288" height="294"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rkk-oi-8fO" userLabel="FooterText">
                                                         <rect key="frame" x="0.0" y="0.0" width="288" height="214"/>
@@ -135,6 +66,9 @@ You can manage and cancel your subscriptions by going to your account settings o
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                         <color key="textColor" name="AuxiliaryText"/>
                                                         <nil key="highlightedColor"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Standard conditions text mandated by Apple."/>
+                                                        </attributedString>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ujr-9f-eco">
                                                         <rect key="frame" x="78" y="222" width="132" height="28"/>
@@ -215,6 +149,7 @@ You can manage and cancel your subscriptions by going to your account settings o
                     <size key="freeformSize" width="320" height="900"/>
                     <connections>
                         <outlet property="activityIndcator" destination="D4c-jF-xBI" id="U77-eW-OL6"/>
+                        <outlet property="benefitsStackView" destination="IZs-4j-RVF" id="gND-iI-xev"/>
                         <outlet property="buttonStack" destination="Lb7-tD-p8f" id="zrA-M9-QPV"/>
                         <outlet property="cancelButton" destination="Agm-4c-8eT" id="Na8-Ut-sRm"/>
                         <outlet property="contentView" destination="pfw-Sq-XAv" id="RUD-ic-Xhd"/>
@@ -231,16 +166,8 @@ You can manage and cancel your subscriptions by going to your account settings o
         </scene>
     </scenes>
     <resources>
-        <image name="premium-benefit-db-timeout" width="29" height="29"/>
-        <image name="premium-benefit-multidb" width="29" height="29"/>
-        <image name="premium-benefit-preview" width="29" height="29"/>
-        <image name="premium-benefit-shiny" width="29" height="29"/>
-        <image name="premium-benefit-support" width="29" height="29"/>
         <namedColor name="AuxiliaryText">
             <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </namedColor>
-        <namedColor name="IconTint">
-            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

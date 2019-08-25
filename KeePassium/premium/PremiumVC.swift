@@ -31,6 +31,7 @@ class PremiumVC: UIViewController {
     }
     
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var benefitsStackView: UIStackView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var buttonStack: UIStackView!
     @IBOutlet weak var activityIndcator: UIActivityIndicatorView!
@@ -65,6 +66,70 @@ class PremiumVC: UIViewController {
         activityIndcator.isHidden = false
         restorePurchasesButton.isHidden = !allowRestorePurchases
         footerView.isHidden = true
+        
+        setupBenefitsView()
+    }
+    
+    private func setupBenefitsView() {
+        let multiDatabaseBenefit = PremiumBenefitView(frame: CGRect.zero) // will auto-size
+        multiDatabaseBenefit.image = UIImage(asset: .premiumBenefitMultiDB)
+        multiDatabaseBenefit.title = NSLocalizedString(
+            "[Premium/Benefits/MultiDB/title]",
+            value: "Sync with the team",
+            comment: "Title of a premium feature")
+        multiDatabaseBenefit.subtitle = NSLocalizedString(
+            "[Premium/Benefits/MultiDB/details]",
+            value: "Add multiple databases and quickly switch between them.",
+            comment: "Explanation of the premium feature")
+        benefitsStackView.addArrangedSubview(multiDatabaseBenefit)
+        
+        let databaseTimeoutBenefit = PremiumBenefitView(frame: CGRect.zero)
+        databaseTimeoutBenefit.image = UIImage(asset: .premiumBenefitDBTimeout)
+        databaseTimeoutBenefit.title = NSLocalizedString(
+            "[Premium/Benefits/DatabaseTimeout/title]",
+            value: "Save your time",
+            comment: "Title of a premium feature")
+        databaseTimeoutBenefit.subtitle = NSLocalizedString(
+            "[Premium/Benefits/DatabaseTimeout/details]",
+            value: "Tired of typing your master password? Keep your database open longer and unlock it with one tap.",
+            comment: "Explanation of the premium feature")
+        benefitsStackView.addArrangedSubview(databaseTimeoutBenefit)
+        
+        let previewBenefit = PremiumBenefitView(frame: CGRect.zero)
+        previewBenefit.image = UIImage(asset: .premiumBenefitPreview)
+        previewBenefit.title = NSLocalizedString(
+            "[Premium/Benefits/AttachmentPreview/title]",
+            value: "Preview without a trace",
+            comment: "Title of a premium feature")
+        previewBenefit.subtitle = NSLocalizedString(
+            "[Premium/Benefits/AttachmentPreview/details]",
+            value: "Preview attached files directly in KeePassium and leave no traces in other apps. (Works with images, documents, archives and more.)",
+            comment: "Explanation of the premium feature")
+        benefitsStackView.addArrangedSubview(previewBenefit)
+        
+        let supportBenefit = PremiumBenefitView(frame: CGRect.zero)
+        supportBenefit.image = UIImage(asset: .premiumBenefitSupport)
+        supportBenefit.title = NSLocalizedString(
+            "[Premium/Benefits/Support/title]",
+            value: "Talk to support that cares",
+            comment: "Title of a premium feature")
+        supportBenefit.subtitle = NSLocalizedString(
+            "[Premium/Benefits/Support/details]",
+            value: "Community support means no obligations. With premium, get answers and solutions directly from the developer.",
+            comment: "Explanation of the premium feature")
+        benefitsStackView.addArrangedSubview(supportBenefit)
+        
+        let maintenanceBenefit = PremiumBenefitView(frame: CGRect.zero)
+        maintenanceBenefit.image = UIImage(asset: .premiumBenefitShiny)
+        maintenanceBenefit.title = NSLocalizedString(
+            "[Premium/Benefits/Maintenance/title]",
+            value: "Keep it shiny",
+            comment: "Title of a premium feature")
+        maintenanceBenefit.subtitle = NSLocalizedString(
+            "[Premium/Benefits/Maintenance/details]",
+            value: "Keep KeePassium improved, maintained and without ads.",
+            comment: "Explanation of the premium feature")
+        benefitsStackView.addArrangedSubview(maintenanceBenefit)
     }
     
     // MARK: - Error message routines
