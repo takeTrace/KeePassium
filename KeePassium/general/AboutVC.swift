@@ -12,7 +12,6 @@ import KeePassiumLib
 class AboutVC: UITableViewController {
     @IBOutlet weak var contactSupportCell: UITableViewCell!
     @IBOutlet weak var writeReviewCell: UITableViewCell!
-    @IBOutlet weak var debugInfoCell: UITableViewCell!
     @IBOutlet weak var versionLabel: UILabel!
     
     static func make() -> UIViewController {
@@ -32,11 +31,6 @@ class AboutVC: UITableViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refresh()
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let selectedCell = tableView.cellForRow(at: indexPath) else { return }
@@ -45,22 +39,8 @@ class AboutVC: UITableViewController {
             SupportEmailComposer.show(includeDiagnostics: false, completion: nil)
         case writeReviewCell:
             AppStoreHelper.writeReview()
-        case debugInfoCell:
-            resetAutoFillCleanExitFlag()
         default:
             break
         } 
-    }
-    
-    /// For user-side debug
-    /// TODO: remove in release
-    private func resetAutoFillCleanExitFlag() {
-        Settings.current.isAutoFillFinishedOK = true
-        refresh()
-    }
-    
-    // TODO: remove in release
-    private func refresh() {
-        debugInfoCell.textLabel?.text = "AutoFill finished OK: \(Settings.current.isAutoFillFinishedOK)"
     }
 }
