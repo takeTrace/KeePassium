@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--(Create Database)-->
+        <!--Create Database-->
         <scene sceneID="NYj-y7-B3J">
             <objects>
-                <viewController storyboardIdentifier="DatabaseCreatorVC" id="Nri-WU-XVv" customClass="DatabaseCreatorVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DatabaseCreatorVC" id="Nri-WU-XVv" userLabel="Create Database" customClass="DatabaseCreatorVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6fp-OI-Lt3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -31,7 +31,7 @@
                                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="747" translatesAutoresizingMaskIntoConstraints="NO" id="udd-lE-iHF" userLabel="Error Message Panel">
                                                         <rect key="frame" x="0.0" y="0.0" width="304" height="50"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" text="(Error message)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb0-s2-V8n">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" text="{Error message}" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb0-s2-V8n">
                                                                 <rect key="frame" x="8" y="15.5" width="250" height="19.5"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
@@ -41,6 +41,7 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNa-R0-f67">
                                                                 <rect key="frame" x="266" y="10" width="38" height="30"/>
+                                                                <accessibility key="accessibilityConfiguration" label="Show Diagnostics"/>
                                                                 <color key="tintColor" name="ActionTint"/>
                                                                 <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
                                                                 <connections>
@@ -91,6 +92,9 @@
                                                         <color key="textColor" name="PrimaryText"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Default name for a new database."/>
+                                                        </attributedString>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -111,6 +115,9 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" name="PrimaryText"/>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Common title for the password/key file fields."/>
+                                                </attributedString>
                                             </label>
                                             <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="sgR-8q-2o9" userLabel="MasterKeyPanel">
                                                 <rect key="frame" x="20" y="181" width="280" height="90"/>
@@ -123,6 +130,9 @@
                                                         <color key="textColor" name="PrimaryText"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" returnKeyType="continue" secureTextEntry="YES" textContentType="password"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Placeholder: master password of the database"/>
+                                                        </attributedString>
                                                     </textField>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uHi-ew-m8P" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="44" width="280" height="2"/>
@@ -139,6 +149,9 @@
                                                         <color key="textColor" name="PrimaryText"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Placeholder: don't use key file (should match the No Key File option in key file picker)."/>
+                                                        </attributedString>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -165,7 +178,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h6C-CG-RVI" userLabel="Continue">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h6C-CG-RVI" userLabel="Save Database">
                                                 <rect key="frame" x="20" y="287" width="280" height="44"/>
                                                 <color key="backgroundColor" name="ActionTint"/>
                                                 <constraints>
@@ -174,6 +187,9 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="tintColor" name="ActionText"/>
                                                 <state key="normal" title="Save Database"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Action: save the new database (will show a file picker dialog)."/>
+                                                </attributedString>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                         <real key="value" value="5"/>
@@ -188,6 +204,9 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" name="DisabledText"/>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Hint about the default format of new databases."/>
+                                                </attributedString>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -244,7 +263,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="(Create Database)" id="dhd-je-Doc" userLabel="Navigation Item">
+                    <navigationItem key="navigationItem" title="{Create Database}" id="dhd-je-Doc" userLabel="Navigation Item">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bF0-WL-fcK">
                             <connections>
                                 <action selector="didPressCancel:" destination="Nri-WU-XVv" id="Ka8-8T-ycb"/>

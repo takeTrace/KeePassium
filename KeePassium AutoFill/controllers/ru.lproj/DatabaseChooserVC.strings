@@ -1,18 +1,15 @@
-/* Class = "UIBarButtonItem"; title = "Add Database"; ObjectID = "CbK-f7-To5"; */
-"CbK-f7-To5.title" = "Добавить Базу Данных";
 
-/* Class = "UILabel"; text = "No recent databases"; ObjectID = "fXt-kp-oSe"; */
-"fXt-kp-oSe.text" = "Здесь пока пусто";
-
-/* Class = "UILabel"; text = "(Title)"; ObjectID = "gs3-2C-fts"; */
-"gs3-2C-fts.text" = "Title";
-
-/* Class = "UITableViewController"; title = "Databases"; ObjectID = "sfT-SG-IdV"; */
-"sfT-SG-IdV.title" = "Базы данных";
-
-/* Class = "UILabel"; text = "(Subtitle)"; ObjectID = "wKG-yp-SZt"; */
-"wKG-yp-SZt.text" = "Subtitle";
+/* Class = "UIBarButtonItem"; title = "Add Database"; ObjectID = "CbK-f7-To5"; Note = "Action"; */
+"CbK-f7-To5.title" = "Добавить Базу Паролей";
 
 /* Class = "UINavigationItem"; title = "Databases"; ObjectID = "Zun-me-VzS"; */
-"Zun-me-VzS.title" = "Базы данных";
+"Zun-me-VzS.title" = "Базы Паролей";
 
+/* Class = "UILabel"; text = "No recent databases"; ObjectID = "fXt-kp-oSe"; */
+"fXt-kp-oSe.text" = "Пока здесь пусто";
+
+/* Class = "UILabel"; text = "{Database File Name}"; ObjectID = "gs3-2C-fts"; */
+"gs3-2C-fts.text" = "{Database File Name}";
+
+/* Class = "UILabel"; text = "{File Attributes}"; ObjectID = "wKG-yp-SZt"; */
+"wKG-yp-SZt.text" = "{File Attributes}";

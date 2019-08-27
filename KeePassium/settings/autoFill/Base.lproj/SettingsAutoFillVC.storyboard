@@ -34,6 +34,9 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" name="PrimaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Step 1"/>
+                                                    </attributedString>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="autofill-setup-1" id="aKY-W7-zTh">
                                                     <rect key="frame" x="16" y="5" width="29" height="29"/>
@@ -56,6 +59,9 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" name="PrimaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Step 2. Must match system's translation."/>
+                                                    </attributedString>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="autofill-setup-2" id="cHS-w1-daC">
                                                     <rect key="frame" x="16" y="5" width="29" height="29"/>
@@ -78,6 +84,9 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" name="PrimaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Step 3. Must match system's translation."/>
+                                                    </attributedString>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="autofill-setup-3" id="5dv-Pe-Dyy">
                                                     <rect key="frame" x="16" y="5" width="29" height="29"/>
@@ -108,6 +117,9 @@
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Step 4. Must match system's translation."/>
+                                            </attributedString>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="checkmark" indentationWidth="10" textLabel="caI-eV-WlU" imageView="xx5-4P-3bA" rowHeight="40" style="IBUITableViewCellStyleDefault" id="CMk-6u-wue">
@@ -130,6 +142,9 @@
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Step 5"/>
+                                            </attributedString>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                     </tableViewCell>
@@ -144,11 +159,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy OTP to clipboard" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="go1-Nt-isQ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Copy OTP to clipboard" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="go1-Nt-isQ">
                                                     <rect key="frame" x="61" y="12" width="186" height="20.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" name="PrimaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Title of an option: copy one-time password to clipboard when using AutoFill"/>
+                                                    </attributedString>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x6e-9m-Rum">
                                                     <rect key="frame" x="255" y="6.5" width="51" height="31"/>
@@ -166,10 +184,12 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="go1-Nt-isQ" firstAttribute="centerY" secondItem="vYX-KL-3FJ" secondAttribute="centerY" id="CgV-BV-hgy"/>
+                                                <constraint firstItem="go1-Nt-isQ" firstAttribute="centerY" secondItem="vYX-KL-3FJ" secondAttribute="centerY" priority="750" id="CgV-BV-hgy"/>
                                                 <constraint firstItem="8Ep-US-vGn" firstAttribute="leading" secondItem="vYX-KL-3FJ" secondAttribute="leadingMargin" id="JSb-Kx-wW1"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="go1-Nt-isQ" secondAttribute="bottom" id="Peb-eZ-xbH"/>
                                                 <constraint firstItem="8Ep-US-vGn" firstAttribute="centerY" secondItem="vYX-KL-3FJ" secondAttribute="centerY" id="XTs-fU-gP7"/>
                                                 <constraint firstItem="go1-Nt-isQ" firstAttribute="leading" secondItem="8Ep-US-vGn" secondAttribute="trailing" constant="16" id="jq1-2u-a5c"/>
+                                                <constraint firstItem="go1-Nt-isQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vYX-KL-3FJ" secondAttribute="topMargin" id="nGq-Kv-Ll8"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="x6e-9m-Rum" secondAttribute="trailing" id="nmm-gW-Yqf"/>
                                                 <constraint firstItem="x6e-9m-Rum" firstAttribute="centerY" secondItem="vYX-KL-3FJ" secondAttribute="centerY" id="p7O-Dv-DOa"/>
                                                 <constraint firstItem="x6e-9m-Rum" firstAttribute="leading" secondItem="go1-Nt-isQ" secondAttribute="trailing" constant="8" id="tcc-Op-en5"/>

@@ -1,21 +1,21 @@
-/* Class = "UILabel"; text = "(Database file name)"; ObjectID = "66o-BC-gwg"; */
-"66o-BC-gwg.text" = "(Database file name)";
+
+/* Class = "UILabel"; text = "{Database file name}"; ObjectID = "66o-BC-gwg"; */
+"66o-BC-gwg.text" = "{Database file name}";
 
 /* Class = "UIButton"; normalTitle = "Unlock"; ObjectID = "89h-8b-LRO"; */
-"89h-8b-LRO.normalTitle" = "Unlock";
-
-/* Class = "UIViewController"; title = "Unlock Database"; ObjectID = "bxv-kR-0w1"; */
-"bxv-kR-0w1.title" = "Unlock Database";
-
-/* Class = "UILabel"; text = "(Error message)"; ObjectID = "dID-zL-AtZ"; */
-"dID-zL-AtZ.text" = "(Error message)";
+"89h-8b-LRO.normalTitle" = "Открыть";
 
 /* Class = "UITextField"; placeholder = "No Key File"; ObjectID = "Dnl-vm-GMg"; */
-"Dnl-vm-GMg.placeholder" = "No Key File";
-
-/* Class = "UIButton"; normalTitle = "(news)"; ObjectID = "hrv-DG-D6F"; */
-"hrv-DG-D6F.normalTitle" = "(news)";
+"Dnl-vm-GMg.placeholder" = "Без Ключевого Файла";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "U6j-Ph-AWS"; */
-"U6j-Ph-AWS.placeholder" = "Password";
+"U6j-Ph-AWS.placeholder" = "Пароль";
 
+/* Class = "UIViewController"; title = "Unlock Database"; ObjectID = "bxv-kR-0w1"; */
+"bxv-kR-0w1.title" = "Открыть Базу Паролей";
+
+/* Class = "UILabel"; text = "{Error message}"; ObjectID = "dID-zL-AtZ"; */
+"dID-zL-AtZ.text" = "{Error message}";
+
+/* Class = "UIButton"; normalTitle = "{News announcement}"; ObjectID = "hrv-DG-D6F"; */
+"hrv-DG-D6F.normalTitle" = "{News announcement}";

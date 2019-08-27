@@ -1,18 +1,15 @@
-/* Class = "UITableViewController"; title = "Choose Key File"; ObjectID = "7UR-Z0-niB"; */
-"7UR-Z0-niB.title" = "Choose Key File";
+
+/* Class = "UILabel"; text = "Use only password"; ObjectID = "Ftb-fa-Dvb"; Note = "Explanation of the default option in key file picker: don't use key files."; */
+"Ftb-fa-Dvb.text" = "Использовать только пароль";
+
+/* Class = "UILabel"; text = "{Key File Name}"; ObjectID = "Ktf-IB-C0F"; */
+"Ktf-IB-C0F.text" = "{Key File Name}";
 
 /* Class = "UINavigationItem"; title = "Choose Key File"; ObjectID = "dAQ-9p-8Y9"; */
-"dAQ-9p-8Y9.title" = "Choose Key File";
+"dAQ-9p-8Y9.title" = "Ключевые Файлы";
 
-/* Class = "UILabel"; text = "Use only password"; ObjectID = "Ftb-fa-Dvb"; */
-"Ftb-fa-Dvb.text" = "Use only password";
+/* Class = "UILabel"; text = "No Key File"; ObjectID = "tGm-oo-awN"; Note = "Title of the default option in key file picker: don't use key files."; */
+"tGm-oo-awN.text" = "Без Ключевого Файла";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "Ktf-IB-C0F"; */
-"Ktf-IB-C0F.text" = "Title";
-
-/* Class = "UILabel"; text = "No Key File"; ObjectID = "tGm-oo-awN"; */
-"tGm-oo-awN.text" = "No Key File";
-
-/* Class = "UILabel"; text = "Subtitle"; ObjectID = "uIl-XD-DTW"; */
-"uIl-XD-DTW.text" = "Subtitle";
-
+/* Class = "UILabel"; text = "{Key File Attribute}"; ObjectID = "uIl-XD-DTW"; */
+"uIl-XD-DTW.text" = "{Key File Attribute}";

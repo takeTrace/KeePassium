@@ -28,7 +28,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APT-2C-WiG" userLabel="Announcement Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="159" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <state key="normal" title="(news)"/>
+                                                <state key="normal" title="{news}"/>
                                                 <connections>
                                                     <action selector="didPressAnouncementButton:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="GMp-M3-1uX"/>
                                                 </connections>
@@ -37,6 +37,11 @@
                                                 <rect key="frame" x="0.0" y="33" width="159" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <state key="normal" title="Upgrade to Premium"/>
+                                                <attributedString key="userComments">
+                                                    <fragment>
+                                                        <string key="content">Action: open upgrade screen. Please avoid money-related words like 'buy' or 'purchase'.  If there is no good translation for the 'Upgrade' call for action, it's ok to replace it with 'get', or even reduce the phrase to  'Premium'.</string>
+                                                    </fragment>
+                                                </attributedString>
                                                 <connections>
                                                     <action selector="didPressUpgradeToPremium:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="i0V-29-l6q"/>
                                                 </connections>
@@ -49,7 +54,7 @@
                                             <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1da-3k-RQm" userLabel="Error Message Panel">
                                                 <rect key="frame" x="0.0" y="0.0" width="304" height="50"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Error message)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2U-7y-vCm">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="{Error message}" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2U-7y-vCm">
                                                         <rect key="frame" x="8" y="0.0" width="117" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
@@ -59,8 +64,12 @@
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrD-QC-R8N">
                                                         <rect key="frame" x="133" y="10" width="171" height="30"/>
+                                                        <accessibility key="accessibilityConfiguration" label="Show Diagnostics"/>
                                                         <color key="tintColor" name="ActionTint"/>
                                                         <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Action to show detailed diagnostics about the current error."/>
+                                                        </attributedString>
                                                         <connections>
                                                             <action selector="didPressErrorDetails:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="edS-Y9-GT3"/>
                                                         </connections>
@@ -96,7 +105,7 @@
                                                     <constraint firstAttribute="height" constant="29" id="rUf-rV-WA6"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="(Database file name)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsQ-5N-nP3">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="{Database file name}" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsQ-5N-nP3">
                                                 <rect key="frame" x="37" y="0.0" width="150.5" height="29"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" name="PrimaryText"/>
@@ -130,8 +139,11 @@
                                                         <color key="textColor" name="PrimaryText"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" returnKeyType="continue" secureTextEntry="YES" textContentType="password"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Placeholder: database password"/>
+                                                        </attributedString>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Fake User Name Field for AutoFill" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rb4-4d-9A9">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="{Fake User Name Field for AutoFill}" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rb4-4d-9A9">
                                                         <rect key="frame" x="0.0" y="43" width="1" height="1"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
@@ -160,6 +172,9 @@
                                                         <color key="textColor" name="PrimaryText"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="Placeholder: don't use key file (should match the No Key File option in key file picker)."/>
+                                                        </attributedString>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -208,6 +223,9 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" name="AuxiliaryText"/>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Hint shown below the Unlock button, when not asking for master password/key file."/>
+                                                </attributedString>
                                             </label>
                                         </subviews>
                                         <constraints>
@@ -220,6 +238,9 @@
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" name="AuxiliaryText"/>
                                         <nil key="highlightedColor"/>
+                                        <attributedString key="userComments">
+                                            <fragment content="Notification message shown by database lock timer."/>
+                                        </attributedString>
                                     </label>
                                 </subviews>
                                 <constraints>
@@ -254,6 +275,9 @@
                         <viewLayoutGuide key="safeArea" id="fjp-FI-lys"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <attributedString key="userComments">
+                        <fragment content="Title of the database unlocker dialog."/>
+                    </attributedString>
                     <connections>
                         <outlet property="KeyFileField" destination="mYY-hP-3vH" id="e2c-j0-r8o"/>
                         <outlet property="announcementButton" destination="APT-2C-WiG" id="xym-OS-G5j"/>

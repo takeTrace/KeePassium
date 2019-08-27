@@ -13,7 +13,7 @@
         <!--Databases-->
         <scene sceneID="ZB8-UY-hSW">
             <objects>
-                <tableViewController storyboardIdentifier="ChooseDatabaseVC" title="Databases" id="vWt-yt-cgE" customClass="ChooseDatabaseVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ChooseDatabaseVC" id="vWt-yt-cgE" customClass="ChooseDatabaseVC" customModule="KeePassium" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="R2f-V7-oLa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -32,6 +32,9 @@
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" name="DisabledText"/>
                                             <nil key="highlightedColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Placeholder shown when there are no database files available"/>
+                                            </attributedString>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
@@ -43,15 +46,15 @@
                                     <rect key="frame" x="0.0" y="0.0" width="327" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="WaS-AB-IgR">
-                                            <rect key="frame" x="60" y="5" width="33.5" height="20.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="{Database File Name}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="WaS-AB-IgR">
+                                            <rect key="frame" x="60" y="5" width="165" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" name="PrimaryText"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="JX7-iv-1Ow">
-                                            <rect key="frame" x="60" y="25.5" width="44" height="14.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="{File Attributes}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="JX7-iv-1Ow">
+                                            <rect key="frame" x="60" y="25.5" width="88.5" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" name="AuxiliaryText"/>
@@ -74,9 +77,12 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <toolbarItems>
-                        <barButtonItem image="sort-order-toolbar" id="lnO-nD-gvh" userLabel="Sort Order Button Item">
+                        <barButtonItem image="sort-order-toolbar" id="lnO-nD-gvh" userLabel="Sort Order">
+                            <attributedString key="userComments">
+                                <fragment content="Action: show sorting settings of database files"/>
+                            </attributedString>
                             <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Sorting Order"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Sort Order" localized="YES"/>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="YES"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
@@ -84,9 +90,12 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Yyg-IS-vi0"/>
-                        <barButtonItem image="settings-toolbar" id="oee-CI-r2x" userLabel="Settings Button Item">
+                        <barButtonItem image="settings-toolbar" id="oee-CI-r2x" userLabel="Settings">
+                            <attributedString key="userComments">
+                                <fragment content="Action: show app settings"/>
+                            </attributedString>
                             <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Settings"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Settings" localized="YES"/>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="YES"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
@@ -96,8 +105,11 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Databases" id="UI0-Lh-wTj">
                         <barButtonItem key="leftBarButtonItem" image="help-about-toolbar" id="2o3-sG-Pcm" userLabel="Help Bar Button">
+                            <attributedString key="userComments">
+                                <fragment content="Action: show help pages (at the moment shows the About screen)"/>
+                            </attributedString>
                             <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Help"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Help" localized="YES"/>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="YES"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
@@ -105,10 +117,16 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add Database" image="create-item-toolbar" id="qPq-UR-uZs">
+                            <attributedString key="userComments">
+                                <fragment content="Action: add database (either an existing file or create a new one)"/>
+                            </attributedString>
                             <connections>
                                 <action selector="didPressAddDatabase:" destination="vWt-yt-cgE" id="s1g-VK-Lau"/>
                             </connections>
                         </barButtonItem>
+                        <attributedString key="userComments">
+                            <fragment content="Title of the database picker list"/>
+                        </attributedString>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>

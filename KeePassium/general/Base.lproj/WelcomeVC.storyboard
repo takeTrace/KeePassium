@@ -91,6 +91,9 @@ You can have multiple databases, for example to separate work, family and person
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2Wz-10-DQk"/>
                     </view>
+                    <attributedString key="userComments">
+                        <fragment content="Onboarding screen shown on first launch"/>
+                    </attributedString>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JbU-iK-nKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

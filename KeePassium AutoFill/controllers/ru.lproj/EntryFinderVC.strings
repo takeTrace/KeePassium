@@ -1,18 +1,18 @@
-/* Class = "UILabel"; text = "Entry Name"; ObjectID = "1xY-Ij-CPq"; */
-"1xY-Ij-CPq.text" = "Entry Name";
 
-/* Class = "UITableViewController"; title = "Entries"; ObjectID = "14C-rX-ove"; */
-"14C-rX-ove.title" = "Entries";
+/* Class = "UITableViewController"; title = "{Database Name}"; ObjectID = "14C-rX-ove"; */
+"14C-rX-ove.title" = "{Database Name}";
 
-/* Class = "UIBarButtonItem"; title = "Lock Database"; ObjectID = "dPB-bK-tzh"; */
-"dPB-bK-tzh.title" = "Lock Database";
+/* Class = "UILabel"; text = "{Entry Title}"; ObjectID = "1xY-Ij-CPq"; */
+"1xY-Ij-CPq.text" = "{Entry Title}";
 
-/* Class = "UILabel"; text = "Sorry, there is nothing suitable."; ObjectID = "NSB-dG-jRN"; */
-"NSB-dG-jRN.text" = "Sorry, there is nothing suitable.";
+/* Class = "UILabel"; text = "Nothing suitable found."; ObjectID = "NSB-dG-jRN"; Note = "Placeholder text for empty search results."; */
+"NSB-dG-jRN.text" = "Ничего не найдено.";
 
-/* Class = "UILabel"; text = "Subtitle"; ObjectID = "weo-eb-woU"; */
-"weo-eb-woU.text" = "Subtitle";
+/* Class = "UIBarButtonItem"; title = "Lock Database"; ObjectID = "dPB-bK-tzh"; Note = "Action "; */
+"dPB-bK-tzh.title" = "Закрыть Базу Паролей";
 
-/* Class = "UILabel"; text = "Related Entries"; ObjectID = "yLY-eZ-iAh"; */
-"yLY-eZ-iAh.text" = "Related Entries";
+/* Class = "UILabel"; text = "{Entry Subtitle}"; ObjectID = "weo-eb-woU"; */
+"weo-eb-woU.text" = "{Entry Subtitle}";
 
+/* Class = "UILabel"; text = "Related Entries"; ObjectID = "yLY-eZ-iAh"; Note = "Title of a list of entries similar to (but not exactly matching) the search query."; */
+"yLY-eZ-iAh.text" = "Похожие Записи";

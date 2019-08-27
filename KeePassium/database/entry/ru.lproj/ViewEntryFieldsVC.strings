@@ -1,12 +1,9 @@
-/* Class = "UILabel"; text = "Field Name"; ObjectID = "46A-ga-B85"; */
-"46A-ga-B85.text" = "Field Name";
 
-/* Class = "UITextView"; text = "Lorem ipsum."; ObjectID = "Lyz-4O-dvw"; */
-"Lyz-4O-dvw.text" = "Lorem ipsum.";
+/* Class = "UILabel"; text = "{Field Name}"; ObjectID = "46A-ga-B85"; */
+"46A-ga-B85.text" = "{Field Name}";
 
-/* Class = "UITableViewController"; title = "Entry Info"; ObjectID = "QNf-to-6jj"; */
-"QNf-to-6jj.title" = "Entry Info";
+/* Class = "UITextView"; text = "{Field Value}"; ObjectID = "Lyz-4O-dvw"; */
+"Lyz-4O-dvw.text" = "{Field Value}";
 
-/* Class = "UILabel"; text = "Copied"; ObjectID = "vLP-Zc-bUc"; */
-"vLP-Zc-bUc.text" = "Copied";
-
+/* Class = "UILabel"; text = "Copied"; ObjectID = "vLP-Zc-bUc"; Note = "Confirmation message: field value has been copied to clipboard."; */
+"vLP-Zc-bUc.text" = "Скопировано";
