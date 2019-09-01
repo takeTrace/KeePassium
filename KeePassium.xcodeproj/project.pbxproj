@@ -277,8 +277,8 @@
 		751E0D3C2309B01A0088BB10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/DiagnosticsViewerVC.storyboard; sourceTree = "<group>"; };
 		751E0D3E2309B04E0088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BetaTransitionVC.strings; sourceTree = "<group>"; };
 		751E0D412309B04F0088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ChooseIconVC.strings; sourceTree = "<group>"; };
-		751E0D442309B04F0088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WelcomeVC.strings; sourceTree = "<group>"; };
 		751E0D5B2309B0520088BB10 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/CrashReportVC.strings; sourceTree = "<group>"; };
+		75209D73231B1C760010E142 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WelcomeVC.strings; sourceTree = "<group>"; };
 		7523F71421C94DD90025C706 /* DiagnosticsViewerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsViewerVC.swift; sourceTree = "<group>"; };
 		7523F71C21C98D620025C706 /* SupportEmailComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportEmailComposer.swift; sourceTree = "<group>"; };
 		7529310C21ADA46C00E4B0D2 /* FileInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInfoVC.swift; sourceTree = "<group>"; };
@@ -1417,7 +1417,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				755B863A23054FC700E9FC83 /* Base */,
-				751E0D442309B04F0088BB10 /* ru */,
+				75209D73231B1C760010E142 /* ru */,
 			);
 			name = WelcomeVC.storyboard;
 			sourceTree = "<group>";
