@@ -29,6 +29,9 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="159" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <state key="normal" title="{news}"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="#bc-ignore!"/>
+                                                </attributedString>
                                                 <connections>
                                                     <action selector="didPressAnouncementButton:" destination="eAa-Z5-pdq" eventType="touchUpInside" id="GMp-M3-1uX"/>
                                                 </connections>
@@ -61,6 +64,9 @@
                                                         <color key="textColor" name="WarningText"/>
                                                         <nil key="highlightedColor"/>
                                                         <size key="shadowOffset" width="1" height="1"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="#bc-ignore!"/>
+                                                        </attributedString>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrD-QC-R8N">
                                                         <rect key="frame" x="133" y="10" width="171" height="30"/>
@@ -110,6 +116,9 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" name="PrimaryText"/>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="#bc-ignore!"/>
+                                                </attributedString>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -143,7 +152,7 @@
                                                             <fragment content="Placeholder: database password"/>
                                                         </attributedString>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="{Fake User Name Field for AutoFill}" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rb4-4d-9A9">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rb4-4d-9A9" userLabel="Fake UserName Field for AutoFill (GitHub #41)">
                                                         <rect key="frame" x="0.0" y="43" width="1" height="1"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>

@@ -38,6 +38,9 @@
                                                                 <color key="textColor" name="WarningText"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <size key="shadowOffset" width="1" height="1"/>
+                                                                <attributedString key="userComments">
+                                                                    <fragment content="#bc-ignore!"/>
+                                                                </attributedString>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNa-R0-f67">
                                                                 <rect key="frame" x="266" y="10" width="38" height="30"/>
@@ -269,6 +272,9 @@
                                 <action selector="didPressCancel:" destination="Nri-WU-XVv" id="Ka8-8T-ycb"/>
                             </connections>
                         </barButtonItem>
+                        <attributedString key="userComments">
+                            <fragment content="#bc-ignore!"/>
+                        </attributedString>
                     </navigationItem>
                     <connections>
                         <outlet property="continueButton" destination="h6C-CG-RVI" id="JS8-PM-Ysp"/>

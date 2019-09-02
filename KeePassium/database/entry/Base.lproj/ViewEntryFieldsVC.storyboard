@@ -39,6 +39,9 @@
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                             <color key="textColor" name="PrimaryText"/>
                                             <nil key="highlightedColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                         </label>
                                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ag-qF-itI">
                                             <rect key="frame" x="16" y="37.5" width="288" height="31.5"/>
@@ -48,6 +51,9 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="#bc-ignore!"/>
+                                                    </attributedString>
                                                 </textView>
                                             </subviews>
                                             <constraints>

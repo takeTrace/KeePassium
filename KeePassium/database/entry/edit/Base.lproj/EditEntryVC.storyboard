@@ -44,6 +44,9 @@
                                             <color key="textColor" name="PrimaryText"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Entry title" localized="YES"/>
                                             </userDefinedRuntimeAttributes>
@@ -98,6 +101,9 @@
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                             <color key="textColor" name="PrimaryText"/>
                                             <nil key="highlightedColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="NO"/>
                                             </userDefinedRuntimeAttributes>
@@ -110,6 +116,9 @@
                                             <color key="textColor" name="PrimaryText"/>
                                             <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="16"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -149,6 +158,9 @@
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                             <color key="textColor" name="PrimaryText"/>
                                             <nil key="highlightedColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="NO"/>
                                             </userDefinedRuntimeAttributes>
@@ -161,6 +173,9 @@
                                             <color key="textColor" name="PrimaryText"/>
                                             <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="16"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                         </textField>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z2C-wo-jYf">
                                             <rect key="frame" x="278" y="7" width="81" height="32"/>
@@ -219,6 +234,9 @@
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                             <color key="textColor" name="PrimaryText"/>
                                             <nil key="highlightedColor"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9e5-bz-qOo" customClass="ValidatingTextView" customModule="KeePassium" customModuleProvider="target">
                                             <rect key="frame" x="16" y="39.5" width="343" height="102.5"/>
@@ -230,6 +248,9 @@
                                             <color key="textColor" name="PrimaryText"/>
                                             <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="16"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                         </textView>
                                     </subviews>
                                     <constraints>
@@ -269,6 +290,9 @@
                                             <color key="textColor" name="PrimaryText"/>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Custom field name" localized="YES"/>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="YES"/>
@@ -284,6 +308,9 @@
                                             <color key="textColor" name="PrimaryText"/>
                                             <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="16"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="Custom field value" localized="YES"/>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isAccessibilityElement" value="YES"/>

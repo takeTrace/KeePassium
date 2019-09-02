@@ -28,6 +28,9 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="174" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <state key="normal" title="{News announcement}"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="#bc-ignore!"/>
+                                                </attributedString>
                                                 <connections>
                                                     <action selector="didPressAnouncementButton:" destination="bxv-kR-0w1" eventType="touchUpInside" id="N4V-ip-Rzi"/>
                                                 </connections>
@@ -47,6 +50,9 @@
                                                         <color key="textColor" name="WarningText"/>
                                                         <nil key="highlightedColor"/>
                                                         <size key="shadowOffset" width="1" height="1"/>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="#bc-ignore!"/>
+                                                        </attributedString>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnT-Je-y2j" userLabel="Error Details Button">
                                                         <rect key="frame" x="133" y="10" width="38" height="30"/>
@@ -90,6 +96,9 @@
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                         <color key="textColor" name="PrimaryText"/>
                                         <nil key="highlightedColor"/>
+                                        <attributedString key="userComments">
+                                            <fragment content="#bc-ignore!"/>
+                                        </attributedString>
                                     </label>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Q5g-RY-uXD" userLabel="InputPanel">
                                         <rect key="frame" x="20" y="229" width="280" height="90"/>

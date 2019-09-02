@@ -132,6 +132,9 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="#bc-ignore!"/>
+                                                    </attributedString>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="settings-backup-duration-listitem" id="Ohh-2R-oTa">
                                                     <rect key="frame" x="16" y="7" width="29" height="29"/>
@@ -153,6 +156,9 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="tintColor" name="DestructiveTint"/>
                                                     <state key="normal" title="{Delete ALL Backup Files (1)}"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="#bc-ignore!"/>
+                                                    </attributedString>
                                                     <connections>
                                                         <action selector="didPressDeleteAllBackupFiles:" destination="nSy-3u-0xW" eventType="touchUpInside" id="6hJ-fX-5bk"/>
                                                     </connections>

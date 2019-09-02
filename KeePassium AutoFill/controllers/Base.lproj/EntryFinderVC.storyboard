@@ -62,12 +62,18 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" name="PrimaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="#bc-ignore!"/>
+                                                    </attributedString>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{Entry Subtitle}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="weo-eb-woU">
                                                     <rect key="frame" x="0.0" y="20.5" width="243" height="14.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="#bc-ignore!"/>
+                                                    </attributedString>
                                                 </label>
                                             </subviews>
                                         </stackView>
@@ -105,6 +111,9 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="EjY-Ch-YkM"/>
                     </toolbarItems>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <attributedString key="userComments">
+                        <fragment content="#bc-ignore!"/>
+                    </attributedString>
                     <connections>
                         <outlet property="separatorView" destination="sx0-Sw-ZEC" id="8wD-mr-bhz"/>
                     </connections>
