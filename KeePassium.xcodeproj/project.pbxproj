@@ -229,6 +229,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		75007565231D1ACA007CC2F1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/KeyFileChooserVC.strings; sourceTree = "<group>"; };
 		750433AE2274CDD5000FE96B /* DatabaseCreatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCreatorCoordinator.swift; sourceTree = "<group>"; };
 		75065A3422C41B5200958243 /* SettingsAutoFillVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAutoFillVC.swift; sourceTree = "<group>"; };
 		750C683120D767F6001A6AA0 /* EditEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEntryVC.swift; sourceTree = "<group>"; };
@@ -243,7 +244,6 @@
 		751B99AE2315B4EF002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DatabaseChooserVC.strings; sourceTree = "<group>"; };
 		751B99B22315B56D002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DatabaseUnlockerVC.strings; sourceTree = "<group>"; };
 		751B99B62315B736002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EntryFinderVC.strings; sourceTree = "<group>"; };
-		751B99B82315C72C002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/KeyFileChooserVC.strings; sourceTree = "<group>"; };
 		751B99BA2315C778002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DiagnosticsViewerVC.strings; sourceTree = "<group>"; };
 		751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDiagnosticsVC.swift; sourceTree = "<group>"; };
 		751E0CE72309AE5D0088BB10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingsDataProtectionVC.storyboard; sourceTree = "<group>"; };
@@ -1347,7 +1347,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				751E0D392309B0120088BB10 /* Base */,
-				751B99B82315C72C002AA609 /* ru */,
+				75007565231D1ACA007CC2F1 /* ru */,
 			);
 			name = KeyFileChooserVC.storyboard;
 			sourceTree = "<group>";
