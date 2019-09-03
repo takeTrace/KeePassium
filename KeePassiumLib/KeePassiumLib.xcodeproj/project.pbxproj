@@ -685,6 +685,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75D0C77E2174AF2000C64C93 /* Build configuration list for PBXNativeTarget "KeePassiumLib" */;
 			buildPhases = (
+				7500756B231E6ED4007CC2F1 /* BartyCrouch */,
 				75D0C7652174AF1F00C64C93 /* Headers */,
 				75D0C7662174AF1F00C64C93 /* Sources */,
 				75D0C7672174AF1F00C64C93 /* Frameworks */,
@@ -764,6 +765,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7500756B231E6ED4007CC2F1 /* BartyCrouch */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = BartyCrouch;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which bartycrouch > /dev/null; then\n  #bartycrouch update -x\n  bartycrouch lint -x\nelse\n  echo \"warning: BartyCrouch not installed, download it from https://github.com/Flinesoft/BartyCrouch\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		75C764DB226F475500025F8B /* Sources */ = {
