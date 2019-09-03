@@ -61,9 +61,6 @@
 /* Progress status */
 "[Database/Progress] Loading key file..." = "Загрузка ключевого файла...";
 
-/* Status message: operation completed */
-"[Database/Unlock] Done" = "Готово";
-
 /* Error message */
 "[Database/Unlock/Error] Failed to open key file" = "Не удалось открыть ключевой файл";
 
@@ -271,24 +268,6 @@
 /* An option in Group Viewer settings. Example: 'Sort Order: No Sorting' */
 "[GroupSortOrder/longTitle] No Sorting" = "Не сортировать";
 
-/* An option in Group Viewer settings. Refers fo the most recent time when the entry was modified. Will be shown as 'Entry Subtitle: Last Modified Date'. */
-"[GroupViewer/EntryList/EntrySubtitle/longTitle] Last Modified Date" = "Дата Изменения";
-
-/* An option in Group Viewer settings. Will be shown as 'Entry Subtitle: None', meanining that no entry details will be shown in any lists. */
-"[GroupViewer/EntryList/EntrySubtitle/longTitle] None" = "Ничего";
-
-/* An option in Group Viewer settings. Refers to comments/notes field of the entry. Will be shown as 'Entry Subtitle: Notes'. */
-"[GroupViewer/EntryList/EntrySubtitle/longTitle] Notes" = "Заметки";
-
-/* An option in Group Viewer settings. Will be shown as 'Entry Subtitle: Password'. */
-"[GroupViewer/EntryList/EntrySubtitle/longTitle] Password" = "Пароль";
-
-/* An option in Group Viewer settings. Will be shown as 'Entry Subtitle: URL'. */
-"[GroupViewer/EntryList/EntrySubtitle/longTitle] URL" = "URL";
-
-/* An option in Group Viewer settings. It refers to login information rather than person's name. Will be shown as 'Entry Subtitle: User Name'. */
-"[GroupViewer/EntryList/EntrySubtitle/longTitle] User Name" = "Имя";
-
 /* Status message: processing of the master key is in progress */
 "[KDF/Progress] Processing the master key" = "Подготовка мастер-ключа";
 
@@ -321,9 +300,6 @@
 
 /* An option in Settings. Will be shown as 'App Lock: Timeout: Never' */
 "[Settings/AppLockTimeout/shortTitle] Never" = "Никогда";
-
-/* An option in Settings. Please keep it short. Will be shown as 'Keep Backup Files: Forever' */
-"[Settings/Backup/BackupKeepingDuration/shortTitle] Forever" = "Вечно";
 
 /* An option in Settings. Please keep it short. Will be shown as 'Keep Backup Files: Forever' */
 "[Settings/BackupKeepingDuration/shortTitle] Forever" = "Вечно";
