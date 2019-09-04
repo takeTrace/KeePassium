@@ -96,6 +96,10 @@
 		755B863523054FBF00E9FC83 /* ViewDiagnosticsVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755B863723054FBF00E9FC83 /* ViewDiagnosticsVC.storyboard */; };
 		755B863823054FC700E9FC83 /* WelcomeVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755B863B23054FC700E9FC83 /* WelcomeVC.storyboard */; };
 		755B863923054FC700E9FC83 /* WelcomeVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755B863B23054FC700E9FC83 /* WelcomeVC.storyboard */; };
+		755E7D99232008300010E199 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755E7D97232008300010E199 /* InfoPlist.strings */; };
+		755E7D9C232008300010E199 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755E7D9A232008300010E199 /* InfoPlist.strings */; };
+		755E7D9F232008300010E199 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755E7D9D232008300010E199 /* Localizable.strings */; };
+		755E7DA2232008300010E199 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755E7DA0232008300010E199 /* Localizable.strings */; };
 		755E9C4D20BE5DC200FD7C7A /* UIImage+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9C4C20BE5DC200FD7C7A /* UIImage+extensions.swift */; };
 		7561850320E033DB00EEFAEE /* WatchdogAwareTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7561850220E033DB00EEFAEE /* WatchdogAwareTextView.swift */; };
 		7561850520E0379F00EEFAEE /* ValidatingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7561850420E0379F00EEFAEE /* ValidatingTextView.swift */; };
@@ -229,7 +233,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		75007565231D1ACA007CC2F1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/KeyFileChooserVC.strings; sourceTree = "<group>"; };
 		750433AE2274CDD5000FE96B /* DatabaseCreatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCreatorCoordinator.swift; sourceTree = "<group>"; };
 		75065A3422C41B5200958243 /* SettingsAutoFillVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAutoFillVC.swift; sourceTree = "<group>"; };
 		750C683120D767F6001A6AA0 /* EditEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEntryVC.swift; sourceTree = "<group>"; };
@@ -317,6 +320,11 @@
 		755B863323054FAD00E9FC83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PasscodeInputVC.storyboard; sourceTree = "<group>"; };
 		755B863623054FBF00E9FC83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ViewDiagnosticsVC.storyboard; sourceTree = "<group>"; };
 		755B863A23054FC700E9FC83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/WelcomeVC.storyboard; sourceTree = "<group>"; };
+		755E7D98232008300010E199 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		755E7D9B232008300010E199 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		755E7D9E232008300010E199 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		755E7DA1232008300010E199 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		755E7DA4232019770010E199 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/KeyFileChooserVC.strings; sourceTree = "<group>"; };
 		755E9C4C20BE5DC200FD7C7A /* UIImage+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extensions.swift"; sourceTree = "<group>"; };
 		7561850220E033DB00EEFAEE /* WatchdogAwareTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogAwareTextView.swift; sourceTree = "<group>"; };
 		7561850420E0379F00EEFAEE /* ValidatingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatingTextView.swift; sourceTree = "<group>"; };
@@ -478,6 +486,8 @@
 				750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */,
 				750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */,
 				750CFBCF21BA9ACD00E62B09 /* Info.plist */,
+				755E7D9D232008300010E199 /* Localizable.strings */,
+				755E7D97232008300010E199 /* InfoPlist.strings */,
 				750CFBD021BA9ACD00E62B09 /* KeePassium_AutoFill.entitlements */,
 			);
 			path = "KeePassium AutoFill";
@@ -555,6 +565,8 @@
 				754BF0892082A6BD00E3A292 /* Assets.xcassets */,
 				756D15602129AFB60052C728 /* KeePassium.entitlements */,
 				754BF08E2082A6BD00E3A292 /* Info.plist */,
+				755E7DA0232008300010E199 /* Localizable.strings */,
+				755E7D9A232008300010E199 /* InfoPlist.strings */,
 			);
 			path = KeePassium;
 			sourceTree = "<group>";
@@ -880,6 +892,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				751E0D322309AFF30088BB10 /* DatabaseUnlockerVC.storyboard in Resources */,
+				755E7D99232008300010E199 /* InfoPlist.strings in Resources */,
 				751E0D2F2309AFED0088BB10 /* DatabaseChooserVC.storyboard in Resources */,
 				755B863223054FAD00E9FC83 /* PasscodeInputVC.storyboard in Resources */,
 				751E0D352309AFFC0088BB10 /* EntryFinderVC.storyboard in Resources */,
@@ -888,6 +901,7 @@
 				75802632222EBC3800F4525F /* ProgressVC.storyboard in Resources */,
 				750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */,
 				755B863923054FC700E9FC83 /* WelcomeVC.storyboard in Resources */,
+				755E7D9F232008300010E199 /* Localizable.strings in Resources */,
 				751E0D292309AFE50088BB10 /* CrashReportVC.storyboard in Resources */,
 				751E0D2C2309AFE90088BB10 /* FirstSetupVC.storyboard in Resources */,
 				751E0D382309B0120088BB10 /* KeyFileChooserVC.storyboard in Resources */,
@@ -904,6 +918,7 @@
 				755B862E23054FA200E9FC83 /* AboutVC.storyboard in Resources */,
 				754BF08D2082A6BD00E3A292 /* LaunchScreen.storyboard in Resources */,
 				751E0CEF2309AE920088BB10 /* SettingsBackupVC.storyboard in Resources */,
+				755E7DA2232008300010E199 /* Localizable.strings in Resources */,
 				751E0D162309AF5D0088BB10 /* ChooseKeyFileVC.storyboard in Resources */,
 				75ED42A92313C20A003DE72E /* SettingsItemListVC.storyboard in Resources */,
 				751E0D222309AFAC0088BB10 /* ChooseIconVC.storyboard in Resources */,
@@ -915,6 +930,7 @@
 				751E0D192309AF620088BB10 /* ChangeMasterKeyVC.storyboard in Resources */,
 				751E0D072309AF250088BB10 /* ViewEntryVC.storyboard in Resources */,
 				751E0D1F2309AF6B0088BB10 /* DatabaseCreatorVC.storyboard in Resources */,
+				755E7D9C232008300010E199 /* InfoPlist.strings in Resources */,
 				755B862B23054F9900E9FC83 /* BetaTransitionVC.storyboard in Resources */,
 				755B863823054FC700E9FC83 /* WelcomeVC.storyboard in Resources */,
 				751E0CFB2309AF0D0088BB10 /* ViewGroupVC.storyboard in Resources */,
@@ -1369,7 +1385,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				751E0D392309B0120088BB10 /* Base */,
-				75007565231D1ACA007CC2F1 /* ru */,
+				755E7DA4232019770010E199 /* ru */,
 			);
 			name = KeyFileChooserVC.storyboard;
 			sourceTree = "<group>";
@@ -1442,6 +1458,38 @@
 				75209D73231B1C760010E142 /* ru */,
 			);
 			name = WelcomeVC.storyboard;
+			sourceTree = "<group>";
+		};
+		755E7D97232008300010E199 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				755E7D98232008300010E199 /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		755E7D9A232008300010E199 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				755E7D9B232008300010E199 /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		755E7D9D232008300010E199 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				755E7D9E232008300010E199 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		755E7DA0232008300010E199 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				755E7DA1232008300010E199 /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		75ED428B23132A80003DE72E /* SettingsAppTimeoutVC.storyboard */ = {

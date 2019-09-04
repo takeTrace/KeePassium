@@ -1,18 +1,12 @@
-
 /* Class = "UILabel"; text = "No Key File"; ObjectID = "9UZ-FK-v73"; */
 "9UZ-FK-v73.text" = "Без Ключевого Файла";
-
-/* Class = "UIBarButtonItem"; title = "Add Key File"; ObjectID = "Lod-RE-tcd"; */
-"Lod-RE-tcd.title" = "Добавить Ключевой Файл";
-
-/* Class = "UILabel"; text = "{Key File Name}"; ObjectID = "Ogf-UL-toa"; */
-"Ogf-UL-toa.text" = "{Key File Name}";
 
 /* Class = "UILabel"; text = "Use only password"; ObjectID = "leO-vH-qBX"; */
 "leO-vH-qBX.text" = "Использовать только пароль";
 
+/* Class = "UIBarButtonItem"; title = "Add Key File"; ObjectID = "Lod-RE-tcd"; */
+"Lod-RE-tcd.title" = "Добавить Ключевой Файл";
+
 /* Class = "UINavigationItem"; title = "Key Files"; ObjectID = "r85-yz-wYI"; */
 "r85-yz-wYI.title" = "Ключевые Файлы";
 
-/* Class = "UILabel"; text = "{Timestamp}"; ObjectID = "tfp-aH-pIM"; */
-"tfp-aH-pIM.text" = "{Timestamp}";

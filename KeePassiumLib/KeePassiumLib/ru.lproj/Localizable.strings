@@ -89,7 +89,7 @@
 "[Database1/Header1/Error] Unsupported database format version: %@." = "Неподдерживаемая версия формата базы: %@.";
 
 /* Error message when opening a database */
-"[Database1/Header1/Error] Wrong file signature. Not a KeePass database?" = "Неверная сигнатура файла. Это точно база паролей KeePass? ";
+"[Database1/Header1/Error] Wrong file signature. Not a KeePass database?" = "Неверная сигнатура файла. Это точно база паролей KeePass?";
 
 /* Status message: collecting database items into a single package */
 "[Database1/Progress] Packing the content" = "Упаковка данных";
@@ -149,7 +149,7 @@
 "[Database2/Header2/Error] Unsupported inner stream cipher (ID %d)" = "Неподдерживаемый поточный шифр (ID %d)";
 
 /* Error message about Key Derivation Function. [uuidString: String] */
-"[Database2/Header2/Error] Unsupported KDF: %@" = "Неподдерживаемая функция формирования ключа (KDF): %@";
+"[Database2/Header2/Error] Unsupported KDF: %@" = "Незнакомая функция формирования ключа (KDF): %@";
 
 /* Error message when opening a database */
 "[Database2/Header2/Error] Wrong file signature. Not a KeePass database?" = "Неверная сигнатура файла. Это точно база KeePass?";
@@ -188,7 +188,7 @@
 "[Database2/Xml2/ParsingError] Malformed value '%@' in %@" = "Непонятное значение ‘%1$@’ в теге %2$@";
 
 /* Error message about XML parsing. [tag: String] */
-"[Database2/Xml2/ParsingError] Nil value in %@" = "Nil-значение в теге %@";
+"[Database2/Xml2/ParsingError] Nil value in %@" = "Обнаружено значение \"nil\" в теге %@";
 
 /* Error message about XML parsing */
 "[Database2/Xml2/ParsingError] Not a KeePass XML" = "XML не соответствует формату KeePass";
@@ -197,7 +197,7 @@
 "[Database2/Xml2/ParsingError] Unexpected tag '%@'" = "Неожиданный тег ‘%@‘";
 
 /* Error message about XML parsing. [actualTag: String, expectedTag: String] */
-"[Database2/Xml2/ParsingError] Unexpected tag '%@' (instead of '%@')" = "Неожиданный тег ‘%@‘ (вместо ‘%2$@‘)";
+"[Database2/Xml2/ParsingError] Unexpected tag '%@' (instead of '%@')" = "Неожиданный тег ‘%1$@‘ (вместо ‘%2$@‘)";
 
 /* Generic error while parsing XML. [errorDetails: String] */
 "[Database2/Xml2/ParsingError] XML error: %@" = "Ошибка XML: %@";
@@ -272,7 +272,7 @@
 "[KDF/Progress] Processing the master key" = "Подготовка мастер-ключа";
 
 /* Generic error message about system keychain. [errorCode: Int] */
-"[KeychainError/generic] Keychain error (code %d) " = "Ошибка при работе со Связкой Ключей (код %d)";
+"[KeychainError/generic] Keychain error (code %d) " = "Ошибка при работе со Связкой Ключей (код %d) ";
 
 /* Error message about system keychain. */
 "[KeychainError/unexpectedFormat] Keychain error: unexpected data format" = "Ошибка при работе со Связкой Ключей: неожиданный формат данных";
@@ -287,7 +287,7 @@
 "[Settings/AppLockTimeout/description] After last interaction" = "После бездействия";
 
 /* A description/subtitle for Settings/AppLock/Timeout options that trigger when the app is minimized. For example: 'AppLock Timeout: 3 seconds (After leaving the app) */
-"[Settings/AppLockTimeout/description] After leaving the app" = "После сворачивания приложения";
+"[Settings/AppLockTimeout/description] After leaving the app" = "После выхода из приложения";
 
 /* An option in Settings. Will be shown as 'App Lock: Timeout: Immediately' */
 "[Settings/AppLockTimeout/fullTitle] Immediately" = "Немедленно";
@@ -311,7 +311,7 @@
 "[Settings/ClipboardTimeout/shortTitle] Never" = "Никогда";
 
 /* A description/subtitle for the 'DatabaseLockTimeout: Immediately'. */
-"[Settings/DatabaseLockTimeout/description] When leaving the app" = "При сворачивании приложения";
+"[Settings/DatabaseLockTimeout/description] When leaving the app" = "При выходе из приложения";
 
 /* An option in Settings. Will be shown as 'Database Lock: Timeout: Immediately' */
 "[Settings/DatabaseLockTimeout/fullTitle] Immediately" = "Немедленно";

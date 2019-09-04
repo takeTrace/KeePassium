@@ -1,18 +1,12 @@
-
 /* Class = "UILabel"; text = "Enter passcode"; ObjectID = "3mQ-t6-0ty"; Note = "Call for action above the passcode text field"; */
 "3mQ-t6-0ty.text" = "Введите код доступа";
 
 /* Class = "UINavigationItem"; title = "Unlock KeePassium"; ObjectID = "P3J-3c-ucU"; */
 "P3J-3c-ucU.title" = "Открыть KeePassium";
 
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "z0x-Rz-Nfj"; */
+"z0x-Rz-Nfj.normalTitle" = "Отмена";
+
 /* Class = "UITextField"; placeholder = "Passcode"; ObjectID = "ZTd-Zj-qAs"; Note = "Placeholder text in the AppLock passcode field"; */
 "ZTd-Zj-qAs.placeholder" = "Код доступа";
 
-/* Class = "UIButton"; normalTitle = "{Switch to passphrase}"; ObjectID = "f5U-FH-tld"; */
-"f5U-FH-tld.normalTitle" = "{Switch to passphrase}";
-
-/* Class = "UIButton"; normalTitle = "{Unlock / Save}"; ObjectID = "i2Z-Q7-JRa"; */
-"i2Z-Q7-JRa.normalTitle" = "{Unlock / Save}";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "z0x-Rz-Nfj"; */
-"z0x-Rz-Nfj.normalTitle" = "Отмена";

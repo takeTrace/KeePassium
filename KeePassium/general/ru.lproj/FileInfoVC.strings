@@ -1,9 +1,3 @@
-
 /* Class = "UITableViewController"; title = "File Info"; ObjectID = "Cu8-bv-TEu"; */
 "Cu8-bv-TEu.title" = "Информация о файле";
 
-/* Class = "UILabel"; text = "{Field Name}"; ObjectID = "UOt-iw-18Z"; */
-"UOt-iw-18Z.text" = "{Field Name}";
-
-/* Class = "UILabel"; text = "{Field Value Il1O0}"; ObjectID = "qlF-up-4bN"; */
-"qlF-up-4bN.text" = "{Field Value Il1O0}";
