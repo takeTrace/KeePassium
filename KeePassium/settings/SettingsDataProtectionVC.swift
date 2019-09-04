@@ -74,11 +74,11 @@ class SettingsDataProtectionVC: UITableViewController, Refreshable {
                 title: NSLocalizedString(
                     "[Settings/ClearMasterKeys/Cleared/title] Cleared",
                     value: "Cleared",
-                    comment: "Title of the success message for `Remove Master Keys` button"),
+                    comment: "Title of the success message for `Clear Master Keys` button"),
                 message: NSLocalizedString(
-                    "[Settings/ClearMasterKeys/Cleared/text] All master keys have been removed.",
-                    value: "All master keys have been removed.",
-                    comment: "Text of the success message for `Remove Master Keys` button"),
+                    "[Settings/ClearMasterKeys/Cleared/text] All master keys have been deleted.",
+                    value: "All master keys have been deleted.",
+                    comment: "Text of the success message for `Clear Master Keys` button"),
                 cancelButtonTitle: LString.actionOK)
             present(confirmationAlert, animated: true, completion: nil)
         } catch {
