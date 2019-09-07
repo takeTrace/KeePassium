@@ -114,6 +114,8 @@
 		75679AD622FD98C900372301 /* _201908_SpecialPricesExpireNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75679AD422FD98C900372301 /* _201908_SpecialPricesExpireNews.swift */; };
 		756AE9D320CF8B5E00995846 /* ChooseIconVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AE9D220CF8B5E00995846 /* ChooseIconVC.swift */; };
 		756FF64420BAB20300FF890B /* UIColor+namedColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756FF64320BAB20300FF890B /* UIColor+namedColors.swift */; };
+		7573FD8B2321664F00DCDA5A /* MultilineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573FD8A2321664F00DCDA5A /* MultilineButton.swift */; };
+		7573FD8C2321664F00DCDA5A /* MultilineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573FD8A2321664F00DCDA5A /* MultilineButton.swift */; };
 		7575B24722D846B900B84B3F /* SearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B24DD421C523AE003C9486 /* SearchHelper.swift */; };
 		7575B24922D8476300B84B3F /* SearchHelper+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7575B24822D8476300B84B3F /* SearchHelper+extensions.swift */; };
 		757687DE21940CEB00305F97 /* KeePassiumLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEC2222175292C0034334B /* KeePassiumLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -336,6 +338,7 @@
 		756AE9D220CF8B5E00995846 /* ChooseIconVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseIconVC.swift; sourceTree = "<group>"; };
 		756D15602129AFB60052C728 /* KeePassium.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KeePassium.entitlements; sourceTree = "<group>"; };
 		756FF64320BAB20300FF890B /* UIColor+namedColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+namedColors.swift"; sourceTree = "<group>"; };
+		7573FD8A2321664F00DCDA5A /* MultilineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineButton.swift; sourceTree = "<group>"; };
 		7575B24822D8476300B84B3F /* SearchHelper+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHelper+extensions.swift"; sourceTree = "<group>"; };
 		75779863223023D3006671BD /* ProgressViewHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewHost.swift; sourceTree = "<group>"; };
 		75781A2C20CA3D7A00BE474F /* SettingsFileSortingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFileSortingVC.swift; sourceTree = "<group>"; };
@@ -725,6 +728,7 @@
 				758BF0DC20D220B300897C83 /* WatchdogAwareTextField.swift */,
 				7561850220E033DB00EEFAEE /* WatchdogAwareTextView.swift */,
 				7548BC1721B07BFE001B00E9 /* ProtectedTextField.swift */,
+				7573FD8A2321664F00DCDA5A /* MultilineButton.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -1001,6 +1005,7 @@
 				750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */,
 				757FB3CD21F9C50700F016FA /* ValidatingTextField.swift in Sources */,
 				75DDB5E5228BF88C0018A50F /* FileInfoReloader.swift in Sources */,
+				7573FD8C2321664F00DCDA5A /* MultilineButton.swift in Sources */,
 				750CFBD921BAD7FF00E62B09 /* Refreshable.swift in Sources */,
 				757FB3D021F9C52600F016FA /* UITableViewCell+extension.swift in Sources */,
 				75CFBE2A21C2BDDF0029A80A /* DatabaseUnlockerVC.swift in Sources */,
@@ -1100,6 +1105,7 @@
 				753C23CE22FEADA700C30A71 /* BetaTransitionVC.swift in Sources */,
 				75A26776228F02C80097C693 /* PremiumCoordinator.swift in Sources */,
 				757FB3CA21F8D34A00F016FA /* PasscodeInputVC.swift in Sources */,
+				7573FD8B2321664F00DCDA5A /* MultilineButton.swift in Sources */,
 				75A26774228E7D200097C693 /* PremiumVC.swift in Sources */,
 				7546FBC120BFB8DD00C5D834 /* WelcomeVC.swift in Sources */,
 				758D8E902274D2BE00644FA6 /* DatabaseCreatorVC.swift in Sources */,
