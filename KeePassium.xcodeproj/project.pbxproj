@@ -365,6 +365,49 @@
 		75A26775228F02C70097C693 /* PremiumCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumCoordinator.swift; sourceTree = "<group>"; };
 		75A26777228F4E820097C693 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		75A2677C22904E0D0097C693 /* PremiumFeature+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PremiumFeature+extension.swift"; sourceTree = "<group>"; };
+		75AC534B2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		75AC534C2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		75AC534D2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		75AC534E2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		75AC534F2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/FileInfoVC.strings; sourceTree = "<group>"; };
+		75AC53502326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ChangeMasterKeyVC.strings; sourceTree = "<group>"; };
+		75AC53512326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/KeyFileChooserVC.strings; sourceTree = "<group>"; };
+		75AC53522326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ViewEntryFieldsVC.strings; sourceTree = "<group>"; };
+		75AC53532326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/CrashReportVC.strings; sourceTree = "<group>"; };
+		75AC53542326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/EditEntryVC.strings; sourceTree = "<group>"; };
+		75AC53552326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsAppLockVC.strings; sourceTree = "<group>"; };
+		75AC53562326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsBackupVC.strings; sourceTree = "<group>"; };
+		75AC53572326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ChooseDatabaseVC.strings; sourceTree = "<group>"; };
+		75AC53582326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ChooseIconVC.strings; sourceTree = "<group>"; };
+		75AC53592326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsFileSortingVC.strings; sourceTree = "<group>"; };
+		75AC535A2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsDataProtectionVC.strings; sourceTree = "<group>"; };
+		75AC535B2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/EditGroupVC.strings; sourceTree = "<group>"; };
+		75AC535C2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/UnlockDatabaseVC.strings; sourceTree = "<group>"; };
+		75AC535D2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ViewEntryVC.strings; sourceTree = "<group>"; };
+		75AC535E2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/DiagnosticsViewerVC.strings; sourceTree = "<group>"; };
+		75AC535F2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/BetaTransitionVC.strings; sourceTree = "<group>"; };
+		75AC53602326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsDatabaseTimeoutVC.strings; sourceTree = "<group>"; };
+		75AC53612326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/EntryFinderVC.strings; sourceTree = "<group>"; };
+		75AC53622326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ViewGroupVC.strings; sourceTree = "<group>"; };
+		75AC53632326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsItemListVC.strings; sourceTree = "<group>"; };
+		75AC53642326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ChooseKeyFileVC.strings; sourceTree = "<group>"; };
+		75AC53652326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsAppTimeoutVC.strings; sourceTree = "<group>"; };
+		75AC53662326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/DatabaseChooserVC.strings; sourceTree = "<group>"; };
+		75AC53672326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsAutoFillVC.strings; sourceTree = "<group>"; };
+		75AC53682326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AboutVC.strings; sourceTree = "<group>"; };
+		75AC53692326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ViewEntryFilesVC.strings; sourceTree = "<group>"; };
+		75AC536A2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/FirstSetupVC.strings; sourceTree = "<group>"; };
+		75AC536B2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ViewEntryHistoryVC.strings; sourceTree = "<group>"; };
+		75AC536C2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ViewDiagnosticsVC.strings; sourceTree = "<group>"; };
+		75AC536D2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/WelcomeVC.strings; sourceTree = "<group>"; };
+		75AC536E2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/DatabaseCreatorVC.strings; sourceTree = "<group>"; };
+		75AC536F2326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PremiumVC.strings; sourceTree = "<group>"; };
+		75AC53702326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsVC.strings; sourceTree = "<group>"; };
+		75AC53712326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/DatabaseUnlockerVC.strings; sourceTree = "<group>"; };
+		75AC53722326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsClipboardTimeoutVC.strings; sourceTree = "<group>"; };
+		75AC53732326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordGeneratorVC.strings; sourceTree = "<group>"; };
+		75AC53742326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasscodeInputVC.strings; sourceTree = "<group>"; };
+		75AC53752326FE6E000AA4FB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SettingsBackupTimeoutPickerVC.strings; sourceTree = "<group>"; };
 		75AC53762326FF7E000AA4FB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		75AC53772326FF7E000AA4FB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		75AC53782326FF7E000AA4FB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -925,6 +968,7 @@
 				en,
 				Base,
 				ru,
+				nl,
 				"zh-Hant",
 			);
 			mainGroup = 754BF0722082A6BD00E3A292;
@@ -1199,6 +1243,7 @@
 			children = (
 				751E0CE72309AE5D0088BB10 /* Base */,
 				75ED42AF2313C267003DE72E /* ru */,
+				75AC535A2326FE6E000AA4FB /* nl */,
 				75AC53852326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsDataProtectionVC.storyboard;
@@ -1209,6 +1254,7 @@
 			children = (
 				751E0CEA2309AE860088BB10 /* Base */,
 				75ED429C2313A3C2003DE72E /* ru */,
+				75AC53592326FE6E000AA4FB /* nl */,
 				75AC53842326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsFileSortingVC.storyboard;
@@ -1219,6 +1265,7 @@
 			children = (
 				751E0CED2309AE8D0088BB10 /* Base */,
 				75ED429A2313A1E5003DE72E /* ru */,
+				75AC53702326FE6E000AA4FB /* nl */,
 				75AC539B2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsVC.storyboard;
@@ -1229,6 +1276,7 @@
 			children = (
 				751E0CF02309AE920088BB10 /* Base */,
 				75ED429123133C1B003DE72E /* ru */,
+				75AC53562326FE6E000AA4FB /* nl */,
 				75AC53812326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsBackupVC.storyboard;
@@ -1239,6 +1287,7 @@
 			children = (
 				751E0CF32309AEB00088BB10 /* Base */,
 				75ED42882312EEC4003DE72E /* ru */,
+				75AC53552326FE6E000AA4FB /* nl */,
 				75AC53802326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsAppLockVC.storyboard;
@@ -1249,6 +1298,7 @@
 			children = (
 				751E0CF62309AEBB0088BB10 /* Base */,
 				75ED428623126D5A003DE72E /* ru */,
+				75AC53672326FE6E000AA4FB /* nl */,
 				75AC53922326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsAutoFillVC.storyboard;
@@ -1259,6 +1309,7 @@
 			children = (
 				751E0CF92309AEF90088BB10 /* Base */,
 				75ED42842312688E003DE72E /* ru */,
+				75AC536F2326FE6E000AA4FB /* nl */,
 				75AC539A2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = PremiumVC.storyboard;
@@ -1269,6 +1320,7 @@
 			children = (
 				751E0CFC2309AF0D0088BB10 /* Base */,
 				75ED424F230EF352003DE72E /* ru */,
+				75AC53622326FE6E000AA4FB /* nl */,
 				75AC538D2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ViewGroupVC.storyboard;
@@ -1279,6 +1331,7 @@
 			children = (
 				751E0CFF2309AF150088BB10 /* Base */,
 				75ED425E230F4503003DE72E /* ru */,
+				75AC535B2326FE6E000AA4FB /* nl */,
 				75AC53862326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = EditGroupVC.storyboard;
@@ -1289,6 +1342,7 @@
 			children = (
 				751E0D022309AF1B0088BB10 /* Base */,
 				75ED4260230F46AE003DE72E /* ru */,
+				75AC53542326FE6E000AA4FB /* nl */,
 				75AC537F2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = EditEntryVC.storyboard;
@@ -1299,6 +1353,7 @@
 			children = (
 				751E0D052309AF210088BB10 /* Base */,
 				75ED4266231115F9003DE72E /* ru */,
+				75AC53732326FE6E000AA4FB /* nl */,
 				75AC539E2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = PasswordGeneratorVC.storyboard;
@@ -1309,6 +1364,7 @@
 			children = (
 				751E0D082309AF250088BB10 /* Base */,
 				75ED426823116E7A003DE72E /* ru */,
+				75AC535D2326FE6E000AA4FB /* nl */,
 				75AC53882326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ViewEntryVC.storyboard;
@@ -1319,6 +1375,7 @@
 			children = (
 				751E0D0B2309AF380088BB10 /* Base */,
 				75ED426C23116F23003DE72E /* ru */,
+				75AC53522326FE6E000AA4FB /* nl */,
 				75AC537D2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ViewEntryFieldsVC.storyboard;
@@ -1329,6 +1386,7 @@
 			children = (
 				751E0D0E2309AF400088BB10 /* Base */,
 				75ED426E23116FB9003DE72E /* ru */,
+				75AC53692326FE6E000AA4FB /* nl */,
 				75AC53942326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ViewEntryFilesVC.storyboard;
@@ -1339,6 +1397,7 @@
 			children = (
 				751E0D112309AF4C0088BB10 /* Base */,
 				75ED427023117062003DE72E /* ru */,
+				75AC536B2326FE6E000AA4FB /* nl */,
 				75AC53962326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ViewEntryHistoryVC.storyboard;
@@ -1349,6 +1408,7 @@
 			children = (
 				751E0D142309AF540088BB10 /* Base */,
 				75ED42742311727A003DE72E /* ru */,
+				75AC53572326FE6E000AA4FB /* nl */,
 				75AC53822326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ChooseDatabaseVC.storyboard;
@@ -1359,6 +1419,7 @@
 			children = (
 				751E0D172309AF5D0088BB10 /* Base */,
 				75ED4276231173E3003DE72E /* ru */,
+				75AC53642326FE6E000AA4FB /* nl */,
 				75AC538F2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ChooseKeyFileVC.storyboard;
@@ -1369,6 +1430,7 @@
 			children = (
 				751E0D1A2309AF620088BB10 /* Base */,
 				75ED427823117569003DE72E /* ru */,
+				75AC53502326FE6E000AA4FB /* nl */,
 				75AC537B2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ChangeMasterKeyVC.storyboard;
@@ -1379,6 +1441,7 @@
 			children = (
 				751E0D1D2309AF670088BB10 /* Base */,
 				75ED427C231177C8003DE72E /* ru */,
+				75AC535C2326FE6E000AA4FB /* nl */,
 				75AC53872326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = UnlockDatabaseVC.storyboard;
@@ -1389,6 +1452,7 @@
 			children = (
 				751E0D202309AF6B0088BB10 /* Base */,
 				75ED428023117EAE003DE72E /* ru */,
+				75AC536E2326FE6E000AA4FB /* nl */,
 				75AC53992326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = DatabaseCreatorVC.storyboard;
@@ -1399,6 +1463,7 @@
 			children = (
 				751E0D232309AFAC0088BB10 /* Base */,
 				751E0D412309B04F0088BB10 /* ru */,
+				75AC53582326FE6E000AA4FB /* nl */,
 				75AC53832326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ChooseIconVC.storyboard;
@@ -1409,6 +1474,7 @@
 			children = (
 				751E0D272309AFBA0088BB10 /* Base */,
 				75ED4249230EF063003DE72E /* ru */,
+				75AC534F2326FE6E000AA4FB /* nl */,
 				75AC537A2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = FileInfoVC.storyboard;
@@ -1419,6 +1485,7 @@
 			children = (
 				751E0D2A2309AFE50088BB10 /* Base */,
 				751E0D5B2309B0520088BB10 /* ru */,
+				75AC53532326FE6E000AA4FB /* nl */,
 				75AC537E2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = CrashReportVC.storyboard;
@@ -1429,6 +1496,7 @@
 			children = (
 				751E0D2D2309AFE90088BB10 /* Base */,
 				75ED42B12315896C003DE72E /* ru */,
+				75AC536A2326FE6E000AA4FB /* nl */,
 				75AC53952326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = FirstSetupVC.storyboard;
@@ -1439,6 +1507,7 @@
 			children = (
 				751E0D302309AFED0088BB10 /* Base */,
 				751B99AE2315B4EF002AA609 /* ru */,
+				75AC53662326FE6E000AA4FB /* nl */,
 				75AC53912326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = DatabaseChooserVC.storyboard;
@@ -1449,6 +1518,7 @@
 			children = (
 				751E0D332309AFF30088BB10 /* Base */,
 				751B99B22315B56D002AA609 /* ru */,
+				75AC53712326FE6E000AA4FB /* nl */,
 				75AC539C2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = DatabaseUnlockerVC.storyboard;
@@ -1459,6 +1529,7 @@
 			children = (
 				751E0D362309AFFC0088BB10 /* Base */,
 				751B99B62315B736002AA609 /* ru */,
+				75AC53612326FE6E000AA4FB /* nl */,
 				75AC538C2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = EntryFinderVC.storyboard;
@@ -1469,6 +1540,7 @@
 			children = (
 				751E0D392309B0120088BB10 /* Base */,
 				755E7DA4232019770010E199 /* ru */,
+				75AC53512326FE6E000AA4FB /* nl */,
 				75AC537C2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = KeyFileChooserVC.storyboard;
@@ -1479,6 +1551,7 @@
 			children = (
 				751E0D3C2309B01A0088BB10 /* Base */,
 				751B99BA2315C778002AA609 /* ru */,
+				75AC535E2326FE6E000AA4FB /* nl */,
 				75AC53892326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = DiagnosticsViewerVC.storyboard;
@@ -1505,6 +1578,7 @@
 			children = (
 				755B862C23054F9900E9FC83 /* Base */,
 				751E0D3E2309B04E0088BB10 /* ru */,
+				75AC535F2326FE6E000AA4FB /* nl */,
 				75AC538A2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = BetaTransitionVC.storyboard;
@@ -1515,6 +1589,7 @@
 			children = (
 				755B862F23054FA200E9FC83 /* Base */,
 				75ED4246230EB892003DE72E /* ru */,
+				75AC53682326FE6E000AA4FB /* nl */,
 				75AC53932326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = AboutVC.storyboard;
@@ -1525,6 +1600,7 @@
 			children = (
 				755B863323054FAD00E9FC83 /* Base */,
 				75ED4245230EB877003DE72E /* ru */,
+				75AC53742326FE6E000AA4FB /* nl */,
 				75AC539F2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = PasscodeInputVC.storyboard;
@@ -1535,6 +1611,7 @@
 			children = (
 				755B863623054FBF00E9FC83 /* Base */,
 				75ED424D230EF126003DE72E /* ru */,
+				75AC536C2326FE6E000AA4FB /* nl */,
 				75AC53972326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = ViewDiagnosticsVC.storyboard;
@@ -1545,6 +1622,7 @@
 			children = (
 				755B863A23054FC700E9FC83 /* Base */,
 				75209D73231B1C760010E142 /* ru */,
+				75AC536D2326FE6E000AA4FB /* nl */,
 				75AC53982326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = WelcomeVC.storyboard;
@@ -1554,6 +1632,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				755E7D98232008300010E199 /* ru */,
+				75AC534B2326FE6E000AA4FB /* nl */,
 				75AC53762326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
@@ -1563,6 +1642,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				755E7D9B232008300010E199 /* ru */,
+				75AC534C2326FE6E000AA4FB /* nl */,
 				75AC53772326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
@@ -1572,6 +1652,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				755E7D9E232008300010E199 /* ru */,
+				75AC534D2326FE6E000AA4FB /* nl */,
 				75AC53782326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = Localizable.strings;
@@ -1581,6 +1662,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				755E7DA1232008300010E199 /* ru */,
+				75AC534E2326FE6E000AA4FB /* nl */,
 				75AC53792326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = Localizable.strings;
@@ -1591,6 +1673,7 @@
 			children = (
 				75ED428A23132A80003DE72E /* Base */,
 				75ED428D23132A86003DE72E /* ru */,
+				75AC53652326FE6E000AA4FB /* nl */,
 				75AC53902326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsAppTimeoutVC.storyboard;
@@ -1601,6 +1684,7 @@
 			children = (
 				75ED429323133DEF003DE72E /* Base */,
 				75ED429623133DF3003DE72E /* ru */,
+				75AC53752326FE6E000AA4FB /* nl */,
 				75AC53A02326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsBackupTimeoutPickerVC.storyboard;
@@ -1611,6 +1695,7 @@
 			children = (
 				75ED429E2313A3EF003DE72E /* Base */,
 				75ED42A32313AAAB003DE72E /* ru */,
+				75AC53602326FE6E000AA4FB /* nl */,
 				75AC538B2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsDatabaseTimeoutVC.storyboard;
@@ -1621,6 +1706,7 @@
 			children = (
 				75ED42A52313C0BB003DE72E /* Base */,
 				75ED42A82313C0C5003DE72E /* ru */,
+				75AC53722326FE6E000AA4FB /* nl */,
 				75AC539D2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsClipboardTimeoutVC.storyboard;
@@ -1631,6 +1717,7 @@
 			children = (
 				75ED42AA2313C20A003DE72E /* Base */,
 				75ED42AD2313C20F003DE72E /* ru */,
+				75AC53632326FE6E000AA4FB /* nl */,
 				75AC538E2326FF7E000AA4FB /* zh-Hant */,
 			);
 			name = SettingsItemListVC.storyboard;
