@@ -197,6 +197,16 @@ class ViewEntryFilesVC: UITableViewController, Refreshable {
         return [deleteAction]
     }
     
+    override func tableView(
+        _ tableView: UITableView,
+        commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath)
+    {
+        if editingStyle == .insert {
+            didPressAddAttachment()
+        }
+    }
+    
     // MARK: - Actions
     
     @objc func didPressEdit() {
