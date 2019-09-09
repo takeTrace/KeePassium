@@ -26,6 +26,8 @@
 		750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */; };
 		750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D127D20CF071600BE0CCE /* EditGroupVC.swift */; };
 		7514CC9F22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514CC9E22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift */; };
+		75151D3323268AB300F3C411 /* UILabel+strikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75151D3223268AB300F3C411 /* UILabel+strikethrough.swift */; };
+		75151D3423268AB300F3C411 /* UILabel+strikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75151D3223268AB300F3C411 /* UILabel+strikethrough.swift */; };
 		751BE253211C395D0071050A /* ViewDiagnosticsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751BE252211C395D0071050A /* ViewDiagnosticsVC.swift */; };
 		751E0CE62309AE5D0088BB10 /* SettingsDataProtectionVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751E0CE82309AE5D0088BB10 /* SettingsDataProtectionVC.storyboard */; };
 		751E0CE92309AE860088BB10 /* SettingsFileSortingVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751E0CEB2309AE860088BB10 /* SettingsFileSortingVC.storyboard */; };
@@ -246,6 +248,7 @@
 		750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseChooserVC.swift; sourceTree = "<group>"; };
 		750D127D20CF071600BE0CCE /* EditGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupVC.swift; sourceTree = "<group>"; };
 		7514CC9E22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressAwareNavigationController.swift; sourceTree = "<group>"; };
+		75151D3223268AB300F3C411 /* UILabel+strikethrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+strikethrough.swift"; sourceTree = "<group>"; };
 		751B99AE2315B4EF002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DatabaseChooserVC.strings; sourceTree = "<group>"; };
 		751B99B22315B56D002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DatabaseUnlockerVC.strings; sourceTree = "<group>"; };
 		751B99B62315B736002AA609 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EntryFinderVC.strings; sourceTree = "<group>"; };
@@ -595,6 +598,7 @@
 				75DDB5E3228BF88C0018A50F /* FileInfoReloader.swift */,
 				75B24DD421C523AE003C9486 /* SearchHelper.swift */,
 				7599636F22E112E50004BC85 /* Attachment+extensions.swift */,
+				75151D3223268AB300F3C411 /* UILabel+strikethrough.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -1026,6 +1030,7 @@
 				75B24DD521C523AE003C9486 /* SearchHelper.swift in Sources */,
 				7582544B2211BB830053FCC9 /* Watchdog.swift in Sources */,
 				750CFC0721BAD98B00E62B09 /* LString.swift in Sources */,
+				75151D3423268AB300F3C411 /* UILabel+strikethrough.swift in Sources */,
 				75A2677E22904E0D0097C693 /* PremiumFeature+extension.swift in Sources */,
 				750CFBDA21BAD7FF00E62B09 /* KeyboardLayoutConstraint.swift in Sources */,
 				750CFBDE21BAD7FF00E62B09 /* UIViewController+storyboard.swift in Sources */,
@@ -1075,6 +1080,7 @@
 				75B5FB7920D6101100D402D9 /* ItemCategory.swift in Sources */,
 				75D1674A21464333005E33C3 /* AboutVC.swift in Sources */,
 				750C683220D767F6001A6AA0 /* EditEntryVC.swift in Sources */,
+				75151D3323268AB300F3C411 /* UILabel+strikethrough.swift in Sources */,
 				755E9C4D20BE5DC200FD7C7A /* UIImage+extensions.swift in Sources */,
 				75F5CACD20BD18320056C969 /* UIView+extension.swift in Sources */,
 				7523F71D21C98D620025C706 /* SupportEmailComposer.swift in Sources */,
