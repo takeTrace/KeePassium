@@ -55,6 +55,7 @@ class EditGroupVC: UIViewController, Refreshable {
         
         let navVC = UINavigationController(rootViewController: editGroupVC)
         navVC.modalPresentationStyle = .formSheet
+        navVC.presentationController?.delegate = editGroupVC
         if let popover = navVC.popoverPresentationController, let popoverSource = popoverSource {
             popover.sourceView = popoverSource
             popover.sourceRect = popoverSource.bounds
@@ -261,5 +262,13 @@ extension EditGroupVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         didPressDone(self)
         return true
+    }
+}
+
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension EditGroupVC: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didPressCancel(presentationController)
     }
 }

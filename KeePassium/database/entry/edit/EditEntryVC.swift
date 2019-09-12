@@ -90,6 +90,7 @@ class EditEntryVC: UITableViewController, Refreshable {
 
         let navVC = UINavigationController(rootViewController: editEntryVC)
         navVC.modalPresentationStyle = .formSheet
+        navVC.presentationController?.delegate = editEntryVC
         if let popover = navVC.popoverPresentationController, let popoverSource = popoverSource {
             popover.sourceView = popoverSource
             popover.sourceRect = popoverSource.bounds
@@ -470,5 +471,18 @@ extension EditEntryVC: DatabaseManagerObserver {
     
     func databaseManager(progressDidChange progress: ProgressEx) {
         savingOverlay?.update(with: progress)
+    }
+}
+
+extension EditEntryVC: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidAttemptToDismiss(
+        _ presentationController: UIPresentationController)
+    {
+        // called when the user tried but failed to dismiss.
+        onCancelAction(presentationController) // will show an alert about unsaved chages
+    }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        onCancelAction(presentationController) // will clean up
     }
 }
