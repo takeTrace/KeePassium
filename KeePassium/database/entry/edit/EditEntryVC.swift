@@ -25,8 +25,13 @@ class EditEntryVC: UITableViewController, Refreshable {
     private weak var delegate: EditEntryFieldsDelegate?
     private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var fields = [EditableField]()
-    private var isModified = false // was anything edited?
-    
+    private var isModified = false {// was anything edited?
+        didSet {
+            if #available(iOS 13.0, *) {
+                isModalInPresentation = true
+            }
+        }
+    }
     /// Operation mode of the editor
     public enum Mode {
         case create
