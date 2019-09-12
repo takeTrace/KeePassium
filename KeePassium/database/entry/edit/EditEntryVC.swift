@@ -99,6 +99,9 @@ class EditEntryVC: UITableViewController, Refreshable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44.0
+        
         entry?.accessed()
         refresh()
         if mode == .create {
