@@ -394,9 +394,6 @@ extension EditEntryVC: EditableFieldCellDelegate {
         if field.internalName.isEmpty {
             return false
         }
-        if field.isFixed { // we only check _custom_ names
-            return true
-        }
         
         // unique: met only once
         var sameNameCount = 0
