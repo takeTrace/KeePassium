@@ -174,6 +174,9 @@ class EditGroupVC: UIViewController, Refreshable {
             view,
             title: LString.databaseStatusSaving,
             animated: true)
+        if #available(iOS 13, *) {
+            isModalInPresentation = true // block dismissal while in progress
+        }
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     

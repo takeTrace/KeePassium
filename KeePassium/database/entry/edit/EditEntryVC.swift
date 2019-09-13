@@ -28,7 +28,7 @@ class EditEntryVC: UITableViewController, Refreshable {
     private var isModified = false {// was anything edited?
         didSet {
             if #available(iOS 13.0, *) {
-                isModalInPresentation = true
+                isModalInPresentation = isModified
             }
         }
     }
@@ -325,6 +325,9 @@ class EditEntryVC: UITableViewController, Refreshable {
     
     private func showSavingOverlay() {
         navigationController?.setNavigationBarHidden(true, animated: true)
+        if #available(iOS 13, *) {
+            isModalInPresentation = true // block dismissal while in progress
+        }
         savingOverlay = ProgressOverlay.addTo(
             view,
             title: LString.databaseStatusSaving,
@@ -478,6 +481,10 @@ extension EditEntryVC: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidAttemptToDismiss(
         _ presentationController: UIPresentationController)
     {
+        guard savingOverlay == nil else {
+            // saving in progress, don't interrupt
+            return
+        }
         // called when the user tried but failed to dismiss.
         onCancelAction(presentationController) // will show an alert about unsaved chages
     }
