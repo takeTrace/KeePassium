@@ -102,6 +102,9 @@ class ChangeMasterKeyVC: UIViewController {
         progressOverlay?.isCancellable = true
         
         // Temporarily disable navigation
+        if #available(iOS 13, *) {
+            isModalInPresentation = true
+        }
         navigationItem.leftBarButtonItem?.isEnabled = false
         navigationItem.rightBarButtonItem?.isEnabled = false
         navigationItem.hidesBackButton = true
@@ -124,6 +127,9 @@ class ChangeMasterKeyVC: UIViewController {
             }
         )
         // Enable navigation
+        if #available(iOS 13, *) {
+            isModalInPresentation = false
+        }
         navigationItem.leftBarButtonItem?.isEnabled = true
         navigationItem.rightBarButtonItem?.isEnabled = true
         navigationItem.hidesBackButton = false
