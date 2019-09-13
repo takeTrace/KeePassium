@@ -57,6 +57,7 @@ class EditEntryVC: UITableViewController, Refreshable {
         
         if let newEntry2 = newEntry as? Entry2, let group2 = group as? Group2 {
             newEntry2.customIconUUID = group2.customIconUUID
+            newEntry2.userName = (group2.database as? Database2)?.defaultUserName ?? ""
         }
         newEntry.title = LString.defaultNewEntryName
         return make(mode: .create, entry: newEntry, popoverSource: popoverSource, delegate: delegate)
