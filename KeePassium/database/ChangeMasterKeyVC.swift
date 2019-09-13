@@ -16,6 +16,7 @@ class ChangeMasterKeyVC: UIViewController {
     @IBOutlet weak var passwordField: ValidatingTextField!
     @IBOutlet weak var repeatPasswordField: ValidatingTextField!
     @IBOutlet weak var keyFileField: ValidatingTextField!
+    @IBOutlet weak var passwordMismatchImage: UIImageView!
     
     private var databaseRef: URLReference!
     private var keyFileRef: URLReference?
@@ -35,6 +36,7 @@ class ChangeMasterKeyVC: UIViewController {
         databaseIcon.image = UIImage.databaseIcon(for: databaseRef)
         
         passwordField.invalidBackgroundColor = nil
+        repeatPasswordField.invalidBackgroundColor = nil
         keyFileField.invalidBackgroundColor = nil
         passwordField.delegate = self
         passwordField.validityDelegate = self
@@ -169,6 +171,9 @@ extension ChangeMasterKeyVC: ValidatingTextFieldDelegate {
             return gotPassword || gotKeyFile
         case repeatPasswordField:
             let isPasswordsMatch = (passwordField.text == repeatPasswordField.text)
+            UIView.animate(withDuration: 0.5) {
+                self.passwordMismatchImage.alpha = isPasswordsMatch ? 0.0 : 1.0
+            }
             return isPasswordsMatch
         default:
             return true
