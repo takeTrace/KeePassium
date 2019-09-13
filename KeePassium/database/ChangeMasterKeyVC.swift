@@ -14,6 +14,7 @@ class ChangeMasterKeyVC: UIViewController {
     @IBOutlet weak var databaseNameLabel: UILabel!
     @IBOutlet weak var databaseIcon: UIImageView!
     @IBOutlet weak var passwordField: ValidatingTextField!
+    @IBOutlet weak var repeatPasswordField: ValidatingTextField!
     @IBOutlet weak var keyFileField: ValidatingTextField!
     
     private var databaseRef: URLReference!
@@ -37,6 +38,8 @@ class ChangeMasterKeyVC: UIViewController {
         keyFileField.invalidBackgroundColor = nil
         passwordField.delegate = self
         passwordField.validityDelegate = self
+        repeatPasswordField.delegate = self
+        repeatPasswordField.validityDelegate = self
         keyFileField.delegate = self
         keyFileField.validityDelegate = self
         
@@ -129,8 +132,13 @@ class ChangeMasterKeyVC: UIViewController {
 
 extension ChangeMasterKeyVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField === passwordField {
+        switch textField {
+        case passwordField:
+            repeatPasswordField.becomeFirstResponder()
+        case repeatPasswordField:
             didPressSaveChanges(self)
+        default:
+            break
         }
         return true
     }
@@ -148,13 +156,28 @@ extension ChangeMasterKeyVC: UITextFieldDelegate {
 
 extension ChangeMasterKeyVC: ValidatingTextFieldDelegate {
     func validatingTextFieldShouldValidate(_ sender: ValidatingTextField) -> Bool {
-        let gotPassword = passwordField.text?.isNotEmpty ?? false
-        let gotKeyFile = keyFileRef != nil
-        return gotPassword || gotKeyFile
+        switch sender {
+        case passwordField, keyFileField:
+            let gotPassword = passwordField.text?.isNotEmpty ?? false
+            let gotKeyFile = keyFileRef != nil
+            return gotPassword || gotKeyFile
+        case repeatPasswordField:
+            let isPasswordsMatch = (passwordField.text == repeatPasswordField.text)
+            return isPasswordsMatch
+        default:
+            return true
+        }
+    }
+    
+    func validatingTextField(_ sender: ValidatingTextField, textDidChange text: String) {
+        if sender === passwordField {
+            repeatPasswordField.validate()
+        }
     }
     
     func validatingTextField(_ sender: ValidatingTextField, validityDidChange isValid: Bool) {
-        navigationItem.rightBarButtonItem?.isEnabled = isValid
+        let allValid = passwordField.isValid && repeatPasswordField.isValid && keyFileField.isValid
+        navigationItem.rightBarButtonItem?.isEnabled = allValid
     }
 }
 
