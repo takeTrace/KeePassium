@@ -96,7 +96,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{Field Name}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CN9-CU-AJF">
-                                            <rect key="frame" x="20" y="11.999999999999998" width="374" height="19.333333333333329"/>
+                                            <rect key="frame" x="20" y="11.999999999999998" width="89" height="19.333333333333329"/>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                             <color key="textColor" name="PrimaryText"/>
                                             <nil key="highlightedColor"/>
@@ -119,14 +119,31 @@
                                                 <fragment content="#bc-ignore!"/>
                                             </attributedString>
                                         </textField>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxs-MK-Ca2">
+                                            <rect key="frame" x="334" y="4" width="60" height="35.333333333333336"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <state key="normal" title="{Button}">
+                                                <color key="titleColor" name="ActionTint"/>
+                                            </state>
+                                            <attributedString key="userComments">
+                                                <fragment content="#bc-ignore!"/>
+                                            </attributedString>
+                                            <connections>
+                                                <action selector="didPressActionButton:" destination="fOA-rA-t9w" eventType="touchUpInside" id="c5P-cn-3LK"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="yxs-MK-Ca2" firstAttribute="firstBaseline" secondItem="CN9-CU-AJF" secondAttribute="firstBaseline" priority="750" id="A4M-vW-rRZ"/>
                                         <constraint firstAttribute="trailing" secondItem="zo6-9v-QQD" secondAttribute="trailing" id="NKp-Gx-XFk"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="CN9-CU-AJF" secondAttribute="trailing" id="Qk4-hL-53H"/>
+                                        <constraint firstItem="zr2-BH-wQ3" firstAttribute="top" secondItem="yxs-MK-Ca2" secondAttribute="bottom" id="PTj-t3-edN"/>
+                                        <constraint firstItem="yxs-MK-Ca2" firstAttribute="trailing" secondItem="zr2-BH-wQ3" secondAttribute="trailing" id="Pa6-83-ed7"/>
                                         <constraint firstItem="zo6-9v-QQD" firstAttribute="leading" secondItem="fv0-vc-xOU" secondAttribute="leading" id="VMh-Ye-oOw"/>
                                         <constraint firstItem="zr2-BH-wQ3" firstAttribute="leading" secondItem="fv0-vc-xOU" secondAttribute="leadingMargin" id="XB0-Mn-9Av"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="zr2-BH-wQ3" secondAttribute="trailing" id="YXl-RR-pqr"/>
                                         <constraint firstItem="zr2-BH-wQ3" firstAttribute="top" secondItem="CN9-CU-AJF" secondAttribute="bottom" constant="8" id="b0A-5H-XPw"/>
+                                        <constraint firstItem="yxs-MK-Ca2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CN9-CU-AJF" secondAttribute="trailing" constant="8" id="cU9-nc-Tmi"/>
+                                        <constraint firstItem="yxs-MK-Ca2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zo6-9v-QQD" secondAttribute="bottom" id="dWV-ps-qIT"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="zr2-BH-wQ3" secondAttribute="bottom" id="r3g-HG-5oV"/>
                                         <constraint firstItem="zo6-9v-QQD" firstAttribute="top" secondItem="fv0-vc-xOU" secondAttribute="top" id="y0D-zA-Rob"/>
                                         <constraint firstItem="CN9-CU-AJF" firstAttribute="top" secondItem="zo6-9v-QQD" secondAttribute="bottom" constant="8" id="yW0-WQ-5Cv"/>
@@ -134,6 +151,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="actionButton" destination="yxs-MK-Ca2" id="1UT-Qs-8ZH"/>
                                     <outlet property="textField" destination="zr2-BH-wQ3" id="Bqm-QR-otS"/>
                                     <outlet property="titleLabel" destination="CN9-CU-AJF" id="W1O-DL-4V6"/>
                                 </connections>

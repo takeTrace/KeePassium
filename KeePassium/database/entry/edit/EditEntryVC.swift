@@ -368,6 +368,16 @@ extension EditEntryVC: ValidatingTextFieldDelegate {
 // MARK: - EditableFieldCellDelegate
 
 extension EditEntryVC: EditableFieldCellDelegate {
+    func didPressButton(field: EditableField, in cell: EditableFieldCell) {
+        if cell is EditEntryTitleCell {
+            didPressChangeIcon(in: cell)
+        } else if cell is EditEntrySingleLineProtectedCell {
+            didPressRandomize(field: field, in: cell)
+        } else if field.internalName == EntryField.userName {
+            didPressChooseUserName(field: field, in: cell)
+        }
+    }
+    
     func didPressChangeIcon(in cell: EditableFieldCell) {
         showIconChooser()
     }
@@ -391,6 +401,37 @@ extension EditEntryVC: EditableFieldCellDelegate {
             _self.revalidate()
         })
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func didPressChooseUserName(field: EditableField, in cell: EditableFieldCell) {
+        guard let database = entry?.database,
+            let userNameCell = cell as? EditEntrySingleLineCell
+            else { return }
+        
+        let textField = userNameCell.textField!
+        textField.becomeFirstResponder()
+        let handler = { (action: UIAlertAction) in
+            self.isModified = true
+            field.value = action.title
+            userNameCell.textField.text = action.title
+            cell.validate()
+        }
+
+        let nameChooser = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        for userName in UserNameHelper.getUserNameSuggestions(from: database, count: 5) {
+            let action = UIAlertAction(title: userName, style: .default, handler: handler)
+            nameChooser.addAction(action)
+        }
+        nameChooser.addAction(
+            UIAlertAction(title: LString.actionCancel, style: .cancel, handler: nil))
+        
+        nameChooser.modalPresentationStyle = .popover
+        if let popover = nameChooser.popoverPresentationController {
+            popover.sourceView = textField
+            popover.sourceRect = textField.bounds
+            popover.permittedArrowDirections = [.up, .down]
+        }
+        self.present(nameChooser, animated: true, completion: nil)
     }
     
     func isFieldValid(field: EditableField) -> Bool {

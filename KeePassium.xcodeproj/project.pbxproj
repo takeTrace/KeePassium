@@ -189,6 +189,7 @@
 		75DDB5E4228BF88C0018A50F /* FileInfoReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DDB5E3228BF88C0018A50F /* FileInfoReloader.swift */; };
 		75DDB5E5228BF88C0018A50F /* FileInfoReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DDB5E3228BF88C0018A50F /* FileInfoReloader.swift */; };
 		75E371942108CA08002602BD /* ProgressOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E371932108CA08002602BD /* ProgressOverlay.swift */; };
+		75E4CA5D232C455D00EB6805 /* UserNameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4CA5C232C455D00EB6805 /* UserNameHelper.swift */; };
 		75E7612122DE7A9800397D8C /* PremiumBenefitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E7612022DE7A9800397D8C /* PremiumBenefitView.swift */; };
 		75EA64182098FC0500DDB941 /* ChooseDatabaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA64172098FC0500DDB941 /* ChooseDatabaseVC.swift */; };
 		75ED428923132A80003DE72E /* SettingsAppTimeoutVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75ED428B23132A80003DE72E /* SettingsAppTimeoutVC.storyboard */; };
@@ -523,6 +524,7 @@
 		75DC043220E9E0C9007E63EC /* GroupChangeObserver+Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GroupChangeObserver+Notifier.swift"; sourceTree = "<group>"; };
 		75DDB5E3228BF88C0018A50F /* FileInfoReloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInfoReloader.swift; sourceTree = "<group>"; };
 		75E371932108CA08002602BD /* ProgressOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlay.swift; sourceTree = "<group>"; };
+		75E4CA5C232C455D00EB6805 /* UserNameHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameHelper.swift; sourceTree = "<group>"; };
 		75E7612022DE7A9800397D8C /* PremiumBenefitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumBenefitView.swift; sourceTree = "<group>"; };
 		75EA64172098FC0500DDB941 /* ChooseDatabaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDatabaseVC.swift; sourceTree = "<group>"; };
 		75ED4245230EB877003DE72E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeInputVC.strings; sourceTree = "<group>"; };
@@ -742,6 +744,7 @@
 				75CA919920E90C3700B286F0 /* EntryChangeObserver+Notifier.swift */,
 				757EF2F420EB3D1C0024AACD /* PasswordGeneratorVC.swift */,
 				751E0D062309AF210088BB10 /* PasswordGeneratorVC.storyboard */,
+				75E4CA5C232C455D00EB6805 /* UserNameHelper.swift */,
 			);
 			path = edit;
 			sourceTree = "<group>";
@@ -1181,6 +1184,7 @@
 				752BB12520F089B30070FAC0 /* SettingsItemListVC.swift in Sources */,
 				752ED68D2235547D00C20D3E /* SettingsDataProtectionVC.swift in Sources */,
 				751BE253211C395D0071050A /* ViewDiagnosticsVC.swift in Sources */,
+				75E4CA5D232C455D00EB6805 /* UserNameHelper.swift in Sources */,
 				7561850320E033DB00EEFAEE /* WatchdogAwareTextView.swift in Sources */,
 				7546FBC620C1027700C5D834 /* SettingsVC.swift in Sources */,
 				757EF2F520EB3D1C0024AACD /* PasswordGeneratorVC.swift in Sources */,
