@@ -417,7 +417,10 @@ extension EditEntryVC: EditableFieldCellDelegate {
             cell.validate()
         }
 
-        let nameChooser = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let nameChooser = UIAlertController(
+            title: LString.fieldUserName,
+            message: nil,
+            preferredStyle: .actionSheet)
         for userName in UserNameHelper.getUserNameSuggestions(from: database, count: 5) {
             let action = UIAlertAction(title: userName, style: .default, handler: handler)
             nameChooser.addAction(action)
