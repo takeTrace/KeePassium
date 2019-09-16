@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </containerView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMH-EU-BBX">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMH-EU-BBX">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMR-51-SFR"/>

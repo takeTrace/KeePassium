@@ -15,7 +15,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="s7i-Va-c39">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FileItemCell" textLabel="WUw-Hm-GLz" detailTextLabel="Kbg-2Y-UcU" imageView="c2m-da-5aZ" style="IBUITableViewCellStyleSubtitle" id="4LX-3D-gq2">
                                 <rect key="frame" x="0.0" y="28" width="375" height="57.5"/>
@@ -58,7 +58,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="There are no attached files" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="W86-tp-bfF">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="There are no attached files" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="W86-tp-bfF" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                             <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -67,6 +67,10 @@
                                             <attributedString key="userComments">
                                                 <fragment content="Placeholder shown when there are no attached files in the entry."/>
                                             </attributedString>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="W86-tp-bfF.text"/>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="ViewEntryFilesVC"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
@@ -78,7 +82,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="51.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Add File" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="bgK-Q6-nzE">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Add File" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="bgK-Q6-nzE" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                             <rect key="frame" x="60" y="0.0" width="299" height="51.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -87,6 +91,10 @@
                                             <attributedString key="userComments">
                                                 <fragment content="Action: attach a file to the entry."/>
                                             </attributedString>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="bgK-Q6-nzE.text"/>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="ViewEntryFilesVC"/>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="create-attachment-listitem" id="XnV-a4-8Mp">
                                             <rect key="frame" x="16" y="11" width="29" height="29"/>
@@ -114,10 +122,10 @@
         <image name="attached-file-listitem" width="29" height="29"/>
         <image name="create-attachment-listitem" width="29" height="29"/>
         <namedColor name="ActionTint">
-            <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.4779999852180481" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="AuxiliaryText">
-            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.23499999940395355" green="0.23499999940395355" blue="0.2630000114440918" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="PrimaryText">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

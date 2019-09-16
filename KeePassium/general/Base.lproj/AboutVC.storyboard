@@ -72,7 +72,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Contact Support" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="TOl-DA-gYc">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Contact Support" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="TOl-DA-gYc" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="60" y="5" width="127.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -81,13 +81,21 @@
                                                     <attributedString key="userComments">
                                                         <fragment content="Action: contact us"/>
                                                     </attributedString>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="TOl-DA-gYc.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Any questions? We have answers." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="jzd-La-4YT">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Any questions? We have answers." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="jzd-La-4YT" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="60" y="25.5" width="191" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="jzd-La-4YT.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="email-us-listitem" id="UGg-sp-gxz">
                                                     <rect key="frame" x="16" y="7.5" width="29" height="29"/>
@@ -104,7 +112,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Do you like what you see?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="AMd-x7-PDa">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Do you like what you see?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="AMd-x7-PDa" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="60" y="5" width="197.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -113,8 +121,12 @@
                                                     <attributedString key="userComments">
                                                         <fragment content="First part of the 'Do you like what you see? / Leave an App Store review.&quot;"/>
                                                     </attributedString>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="AMd-x7-PDa.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Leave an App Store review." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="uiw-Qh-pNp">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Leave an App Store review." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="uiw-Qh-pNp" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="60" y="25.5" width="152.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
@@ -123,6 +135,10 @@
                                                     <attributedString key="userComments">
                                                         <fragment content="Second part of the 'Do you like what you see? / Leave an App Store review.&quot;"/>
                                                     </attributedString>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="uiw-Qh-pNp.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="app-rating-listitem" id="FyT-5Z-8aw">
                                                     <rect key="frame" x="16" y="7.5" width="29" height="29"/>
@@ -175,7 +191,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Translation by KeePassium contributors" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="aqX-J9-IzD">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Translation by KeePassium contributors" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="aqX-J9-IzD" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="301.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -184,13 +200,21 @@
                                                     <attributedString key="userComments">
                                                         <fragment content="Replace with a credit to yourself. For example: `German translation by Erika Mustermann and @JohnDoe`."/>
                                                     </attributedString>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="aqX-J9-IzD.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="daJ-ma-jhe">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="daJ-ma-jhe" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="daJ-ma-jhe.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -202,19 +226,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="KeePass by Dominik Reichl" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="CNI-b8-7Da">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="KeePass by Dominik Reichl" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="CNI-b8-7Da" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="205" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="CNI-b8-7Da.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="GPL license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="JRy-jy-KXb">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="GPL license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="JRy-jy-KXb" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="66.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="JRy-jy-KXb.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -226,19 +258,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Feather icons by Cole Bemis" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="tOr-N9-2UY">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Feather icons by Cole Bemis" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="tOr-N9-2UY" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="217" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="tOr-N9-2UY.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Rab-wf-OQe">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Rab-wf-OQe" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="Rab-wf-OQe.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -250,19 +290,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Ionicons by Ionic" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9lh-fA-Xgx">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Ionicons by Ionic" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9lh-fA-Xgx" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="128" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="9lh-fA-Xgx.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Aig-jg-p8B">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Aig-jg-p8B" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="Aig-jg-p8B.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -274,19 +322,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Linecons by Andrian Valeanu" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="SOX-Re-yl9">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Linecons by Andrian Valeanu" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="SOX-Re-yl9" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="220.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="SOX-Re-yl9.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC BY-ND 3.0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="iKy-z5-Ox7">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC BY-ND 3.0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="iKy-z5-Ox7" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="80" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="iKy-z5-Ox7.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -298,19 +354,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Icons by Icons8" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="7id-QT-w26">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Icons by Icons8" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="7id-QT-w26" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="120" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="7id-QT-w26.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Proprietary license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="7cl-Fc-8Nf">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Proprietary license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="7cl-Fc-8Nf" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="106" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="7cl-Fc-8Nf.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -322,19 +386,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Fancy deboss pattern by Daniel Beaton" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Kdg-Hz-XOQ">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Fancy deboss pattern by Daniel Beaton" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Kdg-Hz-XOQ" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="299" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="Kdg-Hz-XOQ.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC BY 3.0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="hVm-qH-TAI">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC BY 3.0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="hVm-qH-TAI" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="57.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="hVm-qH-TAI.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -346,19 +418,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="System settings icon by Vicons Design" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="wYr-Ya-qAP">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="System settings icon by Vicons Design" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="wYr-Ya-qAP" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="295.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="wYr-Ya-qAP.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC BY 3.0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Qz4-PJ-Tra">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC BY 3.0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Qz4-PJ-Tra" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="57.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="Qz4-PJ-Tra.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -370,19 +450,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="AEXML by Marko Tadić" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="sI5-AG-Y6p">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="AEXML by Marko Tadić" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="sI5-AG-Y6p" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="176" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="sI5-AG-Y6p.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="lht-LP-o0Y">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="lht-LP-o0Y" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="lht-LP-o0Y.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -394,19 +482,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Rijndael implementation by Szymon Stefanek" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="hDU-6p-Bzr">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Rijndael implementation by Szymon Stefanek" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="hDU-6p-Bzr" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="-6" width="210.5" height="42.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="hDU-6p-Bzr.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Public domain" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="JgR-60-OMp">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Public domain" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="JgR-60-OMp" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="36.5" width="80" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="JgR-60-OMp.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -418,19 +514,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Argon2 by Daniel Dinu, Dmitry Khovratovich, Jean-Philippe Aumasson, and Samuel Neves" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="rDJ-4G-8Oz">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Argon2 by Daniel Dinu, Dmitry Khovratovich, Jean-Philippe Aumasson, and Samuel Neves" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="rDJ-4G-8Oz" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="-17" width="323.5" height="64.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="rDJ-4G-8Oz.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC0 license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="o9e-qb-mMw">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CC0 license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="o9e-qb-mMw" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="47.5" width="68" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="o9e-qb-mMw.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -442,19 +546,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="ChaCha20 &amp; Salsa20 implementation by D. J. Bernstein" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Ha8-Qv-0qg">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="ChaCha20 &amp; Salsa20 implementation by D. J. Bernstein" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Ha8-Qv-0qg" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="-6" width="313" height="42.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="Ha8-Qv-0qg.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Public domain" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="QV5-N8-NRt">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Public domain" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="QV5-N8-NRt" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="36.5" width="80" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="QV5-N8-NRt.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -466,19 +578,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Twofish implementation by Niels Ferguson" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="axY-gm-XNr">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Twofish implementation by Niels Ferguson" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="axY-gm-XNr" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="323" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="axY-gm-XNr.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Custom permissive license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="EWy-OI-IxL">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Custom permissive license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="EWy-OI-IxL" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="151" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="EWy-OI-IxL.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -490,19 +610,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="GzipSwift by 1024jp" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="sDW-ws-pQf">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="GzipSwift by 1024jp" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="sDW-ws-pQf" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="153" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="sDW-ws-pQf.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="sCk-Se-Vvo">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="sCk-Se-Vvo" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="sCk-Se-Vvo.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -514,19 +642,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Base32 for Swift by Norio Nomura" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9MZ-zt-75x">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Base32 for Swift by Norio Nomura" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9MZ-zt-75x" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="260.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="9MZ-zt-75x.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="bAq-tq-nuY">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="bAq-tq-nuY" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="bAq-tq-nuY.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -538,19 +674,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="347.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="KeyboardLayoutConstraint by James Tang" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="vg0-6M-OIq">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="KeyboardLayoutConstraint by James Tang" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="vg0-6M-OIq" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="5" width="322.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="vg0-6M-OIq.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="dMv-Zw-y7y">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MIT license" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="dMv-Zw-y7y" customClass="Xcode11GM_LocalizedLabel" customModule="KeePassium" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="25.5" width="64.5" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" name="AuxiliaryText"/>
                                                     <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nKey" value="dMv-Zw-y7y.text"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="l10nTable" value="AboutVC"/>
+                                                    </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -582,7 +726,7 @@
         <image name="app-rating-listitem" width="29" height="29"/>
         <image name="email-us-listitem" width="29" height="29"/>
         <namedColor name="AuxiliaryText">
-            <color white="0.46700000762939453" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.23499999940395355" green="0.23499999940395355" blue="0.2630000114440918" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="IconTint">
             <color red="0.0" green="0.41176470588235292" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
