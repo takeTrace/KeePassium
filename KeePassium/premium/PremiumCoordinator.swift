@@ -15,7 +15,7 @@ protocol PremiumCoordinatorDelegate: class {
     func didFinish(_ premiumCoordinator: PremiumCoordinator)
 }
 
-class PremiumCoordinator {
+class PremiumCoordinator: NSObject {
     
     weak var delegate: PremiumCoordinatorDelegate?
     
@@ -32,7 +32,10 @@ class PremiumCoordinator {
         self.presentingViewController = presentingViewController
         premiumVC = PremiumVC.create()
         navigationController = UINavigationController(rootViewController: premiumVC)
+        super.init()
+
         navigationController.modalPresentationStyle = .formSheet
+        navigationController.presentationController?.delegate = self
         premiumVC.delegate = self
     }
     
@@ -203,4 +206,11 @@ extension PremiumCoordinator: PremiumManagerDelegate {
     }
     
     
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension PremiumCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didPressCancel(in: premiumVC)
+    }
 }
