@@ -37,7 +37,7 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YUw-D5-oyJ" userLabel="ErrorStack">
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YUw-D5-oyJ" userLabel="ErrorStack">
                                         <rect key="frame" x="73" y="137.5" width="174" height="50"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Crk-4o-Fqu" userLabel="ErrorPanel">
@@ -202,7 +202,7 @@
                                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="YUw-D5-oyJ" secondAttribute="trailing" id="gVV-A4-UAE"/>
                                     <constraint firstItem="Q5g-RY-uXD" firstAttribute="centerY" secondItem="fAZ-VX-s1Y" secondAttribute="centerY" priority="250" id="gaS-ck-Wc3"/>
                                     <constraint firstItem="i0B-8N-nM0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fAZ-VX-s1Y" secondAttribute="leading" constant="8" id="m4A-7S-ULI"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="89h-8b-LRO" secondAttribute="bottom" constant="8" id="ndT-fa-Ujj"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="89h-8b-LRO" secondAttribute="bottom" priority="750" constant="8" id="ndT-fa-Ujj"/>
                                 </constraints>
                             </view>
                         </subviews>
