@@ -66,6 +66,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     
     func showErrorMessage(text: String) {
         errorMessageLabel.text = text
+        Diag.error(text)
 
         // In a stack view, visibility calls are accumulated
         // (https://stackoverflow.com/a/45599835)

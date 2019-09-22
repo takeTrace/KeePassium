@@ -209,11 +209,14 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     func showErrorMessage(_ message: String?, details: String?=nil) {
         guard let message = message else { return }
         
+        let errorText: String
         if let details = details {
-            errorLabel.text = " \(message)\n\(details) "
+            errorText = "\(message)\n\(details)"
         } else {
-            errorLabel.text = message
+            errorText = message
         }
+        errorLabel.text = errorText
+        Diag.error(errorText)
         
         // In a stack view, visibility calls are accumulated
         // (https://stackoverflow.com/a/45599835)
