@@ -214,6 +214,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         } else {
             errorLabel.text = message
         }
+        
+        // In a stack view, visibility calls are accumulated
+        // (https://stackoverflow.com/a/45599835)
+        // so we avoid re-showing the panel.
+        guard errorMessagePanel.isHidden else { return }
+        
         UIView.animate(
             withDuration: 0.3,
             delay: 0.0,
@@ -232,6 +238,11 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     
     /// Hides the previously shown error message, if any.
     func hideErrorMessage(animated: Bool) {
+        // In a stack view, visibility calls are accumulated
+        // (https://stackoverflow.com/a/45599835)
+        // so we avoid re-hiding the panel.
+        guard !errorMessagePanel.isHidden else { return }
+
         if animated {
             UIView.animate(
                 withDuration: 0.3,
