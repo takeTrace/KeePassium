@@ -42,15 +42,12 @@ extension NewsItem {
 class NewsCenter {
     public static let shared = NewsCenter()
     
-    let betaTransitionNews = _201908_BetaTransitionNews()
     let specialPricesNews = _201908_SpecialPricesExpireNews()
     
     public func getTopItem() -> NewsItem? {
         if Settings.current.isTestEnvironment {
             // TestFlight
-            if !betaTransitionNews.isHidden {
-                return betaTransitionNews
-            }
+            // no special news
         } else {
             // AppStore
             // nothing special, fallthrough to general

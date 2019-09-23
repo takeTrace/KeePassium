@@ -9,9 +9,9 @@
 import UIKit
 
 class _201908_BetaTransitionNews: NewsItem {
-    let key = "201908_SpecialPricesExpire"
+    let key = "201908_BetaTransition"
     
-    let isCurrent = true // always current (but can be hidden)
+    let isCurrent = false // was shown for 1.5 months, assume everyone has seen it
     
     var title = NSLocalizedString(
         "[News/2019/08/BetaTransition/title] Now on the App Store!",
