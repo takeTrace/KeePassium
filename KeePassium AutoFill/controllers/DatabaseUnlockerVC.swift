@@ -64,7 +64,10 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
         }
     }
     
-    func showErrorMessage(text: String) {
+    func showErrorMessage(_ text: String, reason: String?=nil, suggestion: String?=nil) {
+        let text = [text, reason, suggestion]
+            .compactMap { return $0 } // drop empty
+            .joined(separator: "\n")
         errorMessageLabel.text = text
         Diag.error(text)
 
@@ -118,7 +121,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
     }
 
     func showMasterKeyInvalid(message: String) {
-        showErrorMessage(text: message)
+        showErrorMessage(message)
     }
     
     func refresh() {
@@ -178,7 +181,7 @@ class DatabaseUnlockerVC: UIViewController, Refreshable {
                     comment: "Error message related to key file. [errorDetails: String]"),
                 errorDetails)
             Diag.warning(errorMessage)
-            showErrorMessage(text: errorMessage)
+            showErrorMessage(errorMessage)
             keyFileField.text = ""
         } else {
             Diag.info("Key file set successfully")

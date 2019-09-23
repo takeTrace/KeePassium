@@ -206,17 +206,13 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     // MARK: - Showing/hiding various messagess
 
     /// Shows an error message about database loading.
-    func showErrorMessage(_ message: String?, details: String?=nil) {
-        guard let message = message else { return }
-        
-        let errorText: String
-        if let details = details {
-            errorText = "\(message)\n\(details)"
-        } else {
-            errorText = message
-        }
-        errorLabel.text = errorText
-        Diag.error(errorText)
+    func showErrorMessage(_ text: String?, details: String?=nil, suggestion: String?=nil) {
+        guard let text = text else { return }
+        let message = [text, details, suggestion]
+            .compactMap{ return $0 }
+            .joined(separator: "\n")
+        errorLabel.text = message
+        Diag.error(message)
         
         // In a stack view, visibility calls are accumulated
         // (https://stackoverflow.com/a/45599835)
