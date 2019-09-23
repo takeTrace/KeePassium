@@ -11,9 +11,18 @@ import UIKit
 /// General info about file URL: file name, timestamps, etc.
 public struct FileInfo {
     public var fileName: String
-    public var hasError: Bool { return errorMessage != nil}
-    public var errorMessage: String?
-    
+    public var hasError: Bool { return error != nil}
+    public var errorMessage: String? { return error?.localizedDescription }
+    public var error: Error?
+
+    /// True if the error is an access permission error associated with iOS 13 upgrade.
+    /// (iOS 13 cannot access files bookmarked in iOS 12 (GitHub #63):
+    /// "The file couldn’t be opened because you don’t have permission to view it.")
+    public var hasPermissionError257: Bool {
+        guard let nsError = error as NSError? else { return false }
+        return (nsError.domain == "NSCocoaErrorDomain") && (nsError.code == 257)
+    }
+
     public var fileSize: Int64?
     public var creationDate: Date?
     public var modificationDate: Date?
@@ -164,14 +173,14 @@ public class URLReference: Equatable, Codable {
             }
             result = FileInfo(
                 fileName: url.lastPathComponent,
-                errorMessage: nil,
+                error: nil,
                 fileSize: url.fileSize,
                 creationDate: url.fileCreationDate,
                 modificationDate: url.fileModificationDate)
         } catch {
             result = FileInfo(
                 fileName: "?",
-                errorMessage: error.localizedDescription,
+                error: error,
                 fileSize: nil,
                 creationDate: nil,
                 modificationDate: nil)

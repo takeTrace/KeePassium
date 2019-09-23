@@ -132,7 +132,12 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         databaseIconImage.image = UIImage.databaseIcon(for: databaseRef)
         databaseNameLabel.text = databaseRef.info.fileName
         if databaseRef.info.hasError {
-            showErrorMessage(databaseRef.info.errorMessage)
+            let text = databaseRef.info.errorMessage
+            if databaseRef.info.hasPermissionError257 {
+                showErrorMessage(text, suggestion: LString.tryToReAddFile)
+            } else {
+                showErrorMessage(text)
+            }
         }
         
         let associatedKeyFileRef = Settings.current
