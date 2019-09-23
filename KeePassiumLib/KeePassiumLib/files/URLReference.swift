@@ -92,6 +92,12 @@ public class URLReference: Equatable, Codable {
             [.canonicalPathKey, .nameKey, .fileSizeKey,
             .creationDateKey, .contentModificationDateKey]
         )
+        let isAccessed = url.startAccessingSecurityScopedResource()
+        defer {
+            if isAccessed {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
         data = try url.bookmarkData(
             options: [], //.minimalBookmark,
             includingResourceValuesForKeys: resourceKeys,
@@ -123,7 +129,11 @@ public class URLReference: Equatable, Codable {
     
     public func resolve() throws -> URL {
         var isStale = false
-        let url = try URL(resolvingBookmarkData: data, bookmarkDataIsStale: &isStale)
+        let url = try URL(
+            resolvingBookmarkData: data,
+            options: [URL.BookmarkResolutionOptions.withoutUI],
+            relativeTo: nil,
+            bookmarkDataIsStale: &isStale)
         return url
     }
     
