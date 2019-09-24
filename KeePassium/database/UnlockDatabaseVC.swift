@@ -218,6 +218,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
             .joined(separator: "\n")
         errorLabel.text = message
         Diag.error(message)
+        UIAccessibility.post(notification: .layoutChanged, argument: errorLabel)
         
         // In a stack view, visibility calls are accumulated
         // (https://stackoverflow.com/a/45599835)
