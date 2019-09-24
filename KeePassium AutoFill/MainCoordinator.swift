@@ -475,16 +475,14 @@ extension MainCoordinator: DatabaseManagerObserver {
             as? DatabaseUnlockerVC else { return }
         Settings.current.isAutoFillFinishedOK = true
         databaseUnlockerVC.hideProgressOverlay()
-
-        let errorText = (reason != nil) ? (message + "\n" + reason!) : message
         
         if urlRef.info.hasPermissionError257 {
             databaseUnlockerVC.showErrorMessage(
-                errorText,
+                message,
                 reason: reason,
                 suggestion: LString.tryToReAddFile)
         } else {
-            databaseUnlockerVC.showErrorMessage(errorText, reason: reason)
+            databaseUnlockerVC.showErrorMessage(message, reason: reason)
         }
     }
     
