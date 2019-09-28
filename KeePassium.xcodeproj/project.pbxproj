@@ -414,13 +414,6 @@
 			remoteGlobalIDString = 75D7DF7A233E5E310029AD87;
 			remoteInfo = "KeePassiumPro AutoFill";
 		};
-		75D7DFC8233E5E8C0029AD87 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 754BF0732082A6BD00E3A292 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 75D7DF7A233E5E310029AD87;
-			remoteInfo = "KeePassiumPrepaid AutoFill";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1972,11 +1965,6 @@
 			isa = PBXTargetDependency;
 			target = 75D7DF7A233E5E310029AD87 /* KeePassiumPro AutoFill */;
 			targetProxy = 75530C92233E604300EC557E /* PBXContainerItemProxy */;
-		};
-		75D7DFC9233E5E8C0029AD87 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 75D7DF7A233E5E310029AD87 /* KeePassiumPro AutoFill */;
-			targetProxy = 75D7DFC8233E5E8C0029AD87 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
