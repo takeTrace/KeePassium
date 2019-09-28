@@ -224,14 +224,17 @@ public class PremiumManager: NSObject {
 
     /// Returns the type of the purchased product (with the latest expiration).
     public func getPremiumProduct() -> InAppProduct? {
+        #if PREPAID_VERSION
+        return InAppProduct.forever
+        #endif
+        
         #if DEBUG
         return InAppProduct.betaForever // temporary premium for debug
-        #else
+        #endif
         if Settings.current.isTestEnvironment {
             // TestFlight only, not a local debug build
             return InAppProduct.betaForever
         }
-        #endif
 
         do {
             return try Keychain.shared.getPremiumProduct() // throws KeychainError
@@ -244,14 +247,17 @@ public class PremiumManager: NSObject {
     /// Returns subscription expiry date (distantFuture for one-time purcahse),
     /// or `nil` if not subscribed.
     public func getPremiumExpiryDate() -> Date? {
+        #if PREPAID_VERSION
+        return Date.distantFuture
+        #endif
+        
         #if DEBUG
         return Date.distantFuture // temporary premium for debug
-        #else
+        #endif
         if Settings.current.isTestEnvironment {
             // TestFlight only, not a local debug build
             return Date.distantFuture
         }
-        #endif
         
         do {
             return try Keychain.shared.getPremiumExpiryDate() // throws KeychainError
