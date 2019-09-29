@@ -46,11 +46,20 @@ public class FileKeeper {
     public static let shared = FileKeeper()
     
     private enum UserDefaultsKey {
-        // Since the extension cannot resolve URL bookmarks created
+        // Freemium and Pro versions have independent file lists
+        // to make transition less confusing (since then cannot access
+        // each other's references).
+        //
+        // Also, since extension cannot resolve URL bookmarks created
         // by the main app, the app and the extension have separate
         // and independent file lists. Therefore, different prefixes.
+        #if PREPAID_VERSION
+        static let mainAppPrefix = "com.keepassium.pro.recentFiles"
+        static let autoFillExtensionPrefix = "com.keepassium.pro.autoFill.recentFiles"
+        #else 
         static let mainAppPrefix = "com.keepassium.recentFiles"
         static let autoFillExtensionPrefix = "com.keepassium.autoFill.recentFiles"
+        #endif
         
         static let internalDatabases = ".internal.databases"
         static let internalKeyFiles = ".internal.keyFiles"
