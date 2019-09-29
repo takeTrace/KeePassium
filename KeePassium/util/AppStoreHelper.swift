@@ -10,7 +10,11 @@ import UIKit
 
 class AppStoreHelper {
     // App ID in AppStore
+    #if PREPAID_VERSION
+    static private let appStoreID = 1481781647
+    #else
     static private let appStoreID = 1435127111
+    #endif
 
     /// Opens AppStore page of the app
     static func openInAppStore() {
