@@ -224,9 +224,9 @@ public class PremiumManager: NSObject {
 
     /// Returns the type of the purchased product (with the latest expiration).
     public func getPremiumProduct() -> InAppProduct? {
-        #if PREPAID_VERSION
-        return InAppProduct.forever
-        #endif
+        if BusinessModel.type == .prepaid {
+            return InAppProduct.forever
+        }
         
         #if DEBUG
         return InAppProduct.betaForever // temporary premium for debug
@@ -247,9 +247,9 @@ public class PremiumManager: NSObject {
     /// Returns subscription expiry date (distantFuture for one-time purcahse),
     /// or `nil` if not subscribed.
     public func getPremiumExpiryDate() -> Date? {
-        #if PREPAID_VERSION
-        return Date.distantFuture
-        #endif
+        if BusinessModel.type == .prepaid {
+            return Date.distantFuture
+        }
         
         #if DEBUG
         return Date.distantFuture // temporary premium for debug

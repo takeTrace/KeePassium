@@ -31,6 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
         ) -> Bool
     {
+        #if PREPAID_VERSION
+        BusinessModel.type = .prepaid
+        #else
+        BusinessModel.type = .freemium
+        #endif
         AppGroup.applicationShared = application
         SettingsMigrator.processAppLaunch(with: Settings.current)
         Diag.info(AppInfo.description)

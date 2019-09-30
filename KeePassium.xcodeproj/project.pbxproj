@@ -25,8 +25,6 @@
 		750CFC0721BAD98B00E62B09 /* LString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4ACFB21776F4800B22D8B /* LString.swift */; };
 		750CFC0921BADBA500E62B09 /* DatabaseChooserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750CFC0821BADBA500E62B09 /* DatabaseChooserVC.swift */; };
 		750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D127D20CF071600BE0CCE /* EditGroupVC.swift */; };
-		751146E3233F9E1500443BCD /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751146E2233F9E1500443BCD /* KeePassiumLib.framework */; };
-		751146E4233F9E1500443BCD /* KeePassiumLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 751146E2233F9E1500443BCD /* KeePassiumLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		751146E6233F9E2900443BCD /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751146E5233F9E2900443BCD /* KeePassiumLib.framework */; };
 		7514CC9F22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514CC9E22D5D14B00A0D7A4 /* LongPressAwareNavigationController.swift */; };
 		75151D3323268AB300F3C411 /* UILabel+strikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75151D3223268AB300F3C411 /* UILabel+strikethrough.swift */; };
@@ -150,6 +148,8 @@
 		758BF0DD20D220B300897C83 /* WatchdogAwareTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758BF0DC20D220B300897C83 /* WatchdogAwareTextField.swift */; };
 		758D8E902274D2BE00644FA6 /* DatabaseCreatorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758D8E8F2274D2BE00644FA6 /* DatabaseCreatorVC.swift */; };
 		7596771E20FB36BD00E54827 /* SettingsAppTimeoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7596771D20FB36BD00E54827 /* SettingsAppTimeoutVC.swift */; };
+		7598963F2341590300DF39AA /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEC2222175292C0034334B /* KeePassiumLib.framework */; };
+		759896402341590300DF39AA /* KeePassiumLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEC2222175292C0034334B /* KeePassiumLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7599637022E112E50004BC85 /* Attachment+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599636F22E112E50004BC85 /* Attachment+extensions.swift */; };
 		759BCEB02144E6E8002FC18B /* RootSplitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BCEAF2144E6E7002FC18B /* RootSplitVC.swift */; };
 		75A26774228E7D200097C693 /* PremiumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A26773228E7D200097C693 /* PremiumVC.swift */; };
@@ -439,6 +439,17 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		759896412341590300DF39AA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				759896402341590300DF39AA /* KeePassiumLib.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75B38C79233E5B7C006BDEFC /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -448,17 +459,6 @@
 				75D7DFC7233E5E8C0029AD87 /* KeePassiumPro AutoFill.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		75B38C7B233E5B7C006BDEFC /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				751146E4233F9E1500443BCD /* KeePassiumLib.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -962,7 +962,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75B38C4D233E5B7C006BDEFC /* AuthenticationServices.framework in Frameworks */,
-				751146E3233F9E1500443BCD /* KeePassiumLib.framework in Frameworks */,
+				7598963F2341590300DF39AA /* KeePassiumLib.framework in Frameworks */,
 				75B38C4E233E5B7C006BDEFC /* LocalAuthentication.framework in Frameworks */,
 				75B38C4F233E5B7C006BDEFC /* StoreKit.framework in Frameworks */,
 			);
@@ -1360,13 +1360,12 @@
 				75B38C4B233E5B7C006BDEFC /* Frameworks */,
 				75B38C50233E5B7C006BDEFC /* Resources */,
 				75B38C79233E5B7C006BDEFC /* Embed App Extensions */,
-				75B38C7B233E5B7C006BDEFC /* Embed Frameworks */,
 				75B38C7D233E5B7C006BDEFC /* BartyCrouch */,
+				759896412341590300DF39AA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				75D7DFC9233E5E8C0029AD87 /* PBXTargetDependency */,
 				75530C93233E604300EC557E /* PBXTargetDependency */,
 			);
 			name = KeePassiumPro;

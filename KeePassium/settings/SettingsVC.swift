@@ -64,12 +64,12 @@ class SettingsVC: UITableViewController, Refreshable {
             selector: #selector(refreshPremiumStatus),
             name: PremiumManager.statusUpdateNotification,
             object: nil)
-        #if PREPAID_VERSION
-        isPremiumSectionHidden = true
-        setPremiumCellVisibility(premiumTrialCell, isHidden: true)
-        setPremiumCellVisibility(premiumStatusCell, isHidden: true)
-        setPremiumCellVisibility(manageSubscriptionCell, isHidden: true)
-        #endif
+        if BusinessModel.type == .prepaid {
+            isPremiumSectionHidden = true
+            setPremiumCellVisibility(premiumTrialCell, isHidden: true)
+            setPremiumCellVisibility(premiumStatusCell, isHidden: true)
+            setPremiumCellVisibility(manageSubscriptionCell, isHidden: true)
+        }
         refreshPremiumStatus()
         #if DEBUG
         premiumStatusCell.accessoryType = .detailButton
@@ -278,9 +278,7 @@ class SettingsVC: UITableViewController, Refreshable {
     #endif
     
     @objc private func refreshPremiumStatus() {
-        #if PREPAID_VERSION
-        return
-        #endif
+        guard BusinessModel.type != .prepaid else { return }
         
         let premiumManager = PremiumManager.shared
         premiumManager.usageMonitor.refresh()
