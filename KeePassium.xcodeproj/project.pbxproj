@@ -525,8 +525,6 @@
 		752BB12420F089B30070FAC0 /* SettingsItemListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemListVC.swift; sourceTree = "<group>"; };
 		752ED68C2235547D00C20D3E /* SettingsDataProtectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataProtectionVC.swift; sourceTree = "<group>"; };
 		7532A24C21C5A035005DF56F /* KeyFileChooserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyFileChooserVC.swift; sourceTree = "<group>"; };
-		75358CDC2340169F002DE078 /* InfoPro.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoPro.plist; sourceTree = "<group>"; };
-		75358CDD234016AF002DE078 /* InfoPro.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoPro.plist; sourceTree = "<group>"; };
 		753A3EE920D3776D00A1CF70 /* Refreshable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refreshable.swift; sourceTree = "<group>"; };
 		753C23CD22FEADA700C30A71 /* BetaTransitionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaTransitionVC.swift; sourceTree = "<group>"; };
 		753F924A22905621005E496F /* PremiumUpgradeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumUpgradeHelper.swift; sourceTree = "<group>"; };
@@ -1019,7 +1017,6 @@
 				750CFBCA21BA9ACD00E62B09 /* CredentialProviderViewController.swift */,
 				750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */,
 				750CFBCF21BA9ACD00E62B09 /* Info.plist */,
-				75358CDD234016AF002DE078 /* InfoPro.plist */,
 				755E7D9D232008300010E199 /* Localizable.strings */,
 				755E7D97232008300010E199 /* InfoPlist.strings */,
 				750CFBD021BA9ACD00E62B09 /* KeePassium_AutoFill.entitlements */,
@@ -1101,7 +1098,6 @@
 				754BF0892082A6BD00E3A292 /* Assets.xcassets */,
 				756D15602129AFB60052C728 /* KeePassium.entitlements */,
 				754BF08E2082A6BD00E3A292 /* Info.plist */,
-				75358CDC2340169F002DE078 /* InfoPro.plist */,
 				755E7DA0232008300010E199 /* Localizable.strings */,
 				755E7D9A232008300010E199 /* InfoPlist.strings */,
 			);
@@ -2862,7 +2858,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/KeePassium/InfoPro.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/KeePassium/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.03;
@@ -2887,7 +2883,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_UNROLL_LOOPS = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/KeePassium/InfoPro.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/KeePassium/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.03;
@@ -2908,7 +2904,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 84W4PHXS24;
-				INFOPLIST_FILE = "$(SRCROOT)/KeePassium AutoFill/InfoPro.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/KeePassium AutoFill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.03;
@@ -2932,7 +2928,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 84W4PHXS24;
-				INFOPLIST_FILE = "$(SRCROOT)/KeePassium AutoFill/InfoPro.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/KeePassium AutoFill/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.03;
