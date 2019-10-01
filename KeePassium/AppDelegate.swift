@@ -41,6 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Diag.info(AppInfo.description)
         PremiumManager.shared.startObservingTransactions()
         
+        if #available(iOS 13, *) {
+            let args = ProcessInfo.processInfo.arguments
+            if args.contains("darkMode") {
+                window?.overrideUserInterfaceStyle = .dark
+            }
+        }
+
         // First thing first, cover the app to avoid flashing any content.
         // The cover will be hidden by Watchdog, if appropriate.
         showAppCoverScreen()
