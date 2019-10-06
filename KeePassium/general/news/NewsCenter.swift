@@ -42,7 +42,7 @@ extension NewsItem {
 class NewsCenter {
     public static let shared = NewsCenter()
     
-    let specialPricesNews = _201908_SpecialPricesExpireNews()
+    let proVersionReleaseNews = _201910_ProVersionReleaseNews()
     
     public func getTopItem() -> NewsItem? {
         if Settings.current.isTestEnvironment {
@@ -53,11 +53,8 @@ class NewsCenter {
             // nothing special, fallthrough to general
         }
         
-        if specialPricesNews.isCurrent
-            && !specialPricesNews.isHidden
-            && PremiumManager.shared.status != .subscribed
-        {
-            return specialPricesNews
+        if proVersionReleaseNews.isCurrent && !proVersionReleaseNews.isHidden {
+            return proVersionReleaseNews
         }
         return nil
     }
