@@ -6,7 +6,7 @@
 //  by the Free Software Foundation: https://www.gnu.org/licenses/).
 //  For commercial licensing, please contact the author.
 
-import UIKit
+import KeePassiumLib
 
 protocol PremiumProDelegate: class {
     func didPressOpenInAppStore(_ sender: PremiumProVC)
@@ -15,6 +15,7 @@ protocol PremiumProDelegate: class {
 class PremiumProVC: UIViewController {
     
     weak var delegate: PremiumProDelegate?
+    @IBOutlet weak var contactSupportButton: MultilineButton!
     
     public static func create(delegate: PremiumProDelegate?=nil) -> PremiumProVC {
         let vc = PremiumProVC.instantiateFromStoryboard()
@@ -22,7 +23,22 @@ class PremiumProVC: UIViewController {
         return vc
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let product = PremiumManager.shared.getPremiumProduct(),
+            product == .forever {
+            // Free upgrade for .forever users
+            contactSupportButton.isHidden = false
+        } else {
+            contactSupportButton.isHidden = true
+        }
+        contactSupportButton.titleLabel?.textAlignment = .center
+    }
+    
     @IBAction func didPressOpenInAppStore(_ sender: UIButton) {
         delegate?.didPressOpenInAppStore(self)
+    }
+    @IBAction func didPressContactSupport(_ sender: Any) {
+        SupportEmailComposer.show(subject: .proUpgrade)
     }
 }
