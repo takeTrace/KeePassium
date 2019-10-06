@@ -90,6 +90,7 @@ class EntryFinderVC: UITableViewController {
         searchController.dimsBackgroundDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
+        searchController.delegate = self
         definesPresentationContext = true
     }
     
@@ -111,9 +112,7 @@ class EntryFinderVC: UITableViewController {
         updateSearchResults(for: searchController)
         DispatchQueue.main.async {
             self.searchController.isActive = true
-            self.searchController.searchBar.becomeFirstResponder()
         }
-        
     }
     
     func refreshDatabaseName() {
@@ -243,6 +242,15 @@ class EntryFinderVC: UITableViewController {
     @IBAction func didPressLockDatabase(_ sender: Any) {
         Watchdog.shared.restart()
         delegate?.entryFinderShouldLockDatabase(self)
+    }
+}
+
+// MARK: - UISearchControllerDelegate
+extension EntryFinderVC: UISearchControllerDelegate {
+    func didPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchBar.becomeFirstResponder()
+        }
     }
 }
 
