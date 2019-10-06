@@ -23,6 +23,7 @@ public enum InAppProduct: String {
     case betaForever = "com.keepassium.ios.iap.beta.forever"
     
     case forever = "com.keepassium.ios.iap.forever"
+    case forever2 = "com.keepassium.ios.iap.forever.2"
     case montlySubscription = "com.keepassium.ios.iap.subscription.1month"
     case yearlySubscription = "com.keepassium.ios.iap.subscription.1year"
     case yearlyBusinessSubscription = "com.keepassium.ios.iap.subscription.1year.business"
@@ -35,6 +36,7 @@ public enum InAppProduct: String {
     public var isSubscription: Bool {
         switch self {
         case .forever,
+             .forever2,
              .betaForever:
             return false
         case .montlySubscription,
@@ -50,6 +52,7 @@ public enum InAppProduct: String {
         case .yearlyBusinessSubscription:
             return true
         case .forever,
+             .forever2,
              .betaForever,
              .montlySubscription,
              .yearlySubscription:
@@ -323,7 +326,7 @@ public class PremiumManager: NSObject {
     
     public fileprivate(set) var availableProducts: [SKProduct]?
     private let purchaseableProductIDs = Set<String>([
-        InAppProduct.forever.rawValue,
+        InAppProduct.forever2.rawValue,
         InAppProduct.montlySubscription.rawValue,
         InAppProduct.yearlySubscription.rawValue,
         InAppProduct.yearlyBusinessSubscription.rawValue])
