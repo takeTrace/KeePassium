@@ -13,7 +13,7 @@ protocol PremiumContainerNavigationDelegate: UIPageViewControllerDelegate {
 }
 
 class PremiumContainerVC: UIPageViewController {
-    @IBOutlet weak var containerView: UIView!
+
     @IBOutlet var segmentedControl: UISegmentedControl!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
