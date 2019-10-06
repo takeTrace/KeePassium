@@ -52,7 +52,7 @@ public extension Settings {
              .freeLightUse:
             return timeout <= Settings.lightUseDatabaseLockTimeout
         case .freeHeavyUse:
-            return timeout <= Settings.heavyUseDatabaseLockTimeout
+            return timeout <= Settings.heavyUseDatabaseLockTimeout && timeout != .never
         case .subscribed,
              .lapsed:
             return true
