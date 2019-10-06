@@ -15,7 +15,6 @@
 		750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */; };
 		750CFBD321BA9ACD00E62B09 /* KeePassium AutoFill.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 750CFBC721BA9ACD00E62B09 /* KeePassium AutoFill.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		750CFBD721BA9B6200E62B09 /* KeePassiumLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEC2222175292C0034334B /* KeePassiumLib.framework */; };
-		750CFBD821BA9E6700E62B09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754BF0892082A6BD00E3A292 /* Assets.xcassets */; };
 		750CFBD921BAD7FF00E62B09 /* Refreshable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753A3EE920D3776D00A1CF70 /* Refreshable.swift */; };
 		750CFBDA21BAD7FF00E62B09 /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CA73902144381200ADAD64 /* KeyboardLayoutConstraint.swift */; };
 		750CFBDB21BAD7FF00E62B09 /* UIAlertController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C5C3752129DE0800CD7FE3 /* UIAlertController+extensions.swift */; };
@@ -81,6 +80,14 @@
 		7546FBD920C3A3F600C5D834 /* Watchdog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546FBD820C3A3F600C5D834 /* Watchdog.swift */; };
 		7546FBDB20C3AC5E00C5D834 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546FBDA20C3AC5E00C5D834 /* main.swift */; };
 		7546FBDD20C3ACFD00C5D834 /* KPApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546FBDC20C3ACFD00C5D834 /* KPApplication.swift */; };
+		7547C9D2234804B5004B159C /* PremiumProVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7547C9D4234804B5004B159C /* PremiumProVC.storyboard */; };
+		7547C9E22348064A004B159C /* PremiumContainerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7547C9E12348064A004B159C /* PremiumContainerVC.storyboard */; };
+		7547C9E32348064A004B159C /* PremiumContainerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7547C9E12348064A004B159C /* PremiumContainerVC.storyboard */; };
+		7547C9E52348D472004B159C /* PremiumContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547C9E42348D472004B159C /* PremiumContainerVC.swift */; };
+		7547C9E62348D472004B159C /* PremiumContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547C9E42348D472004B159C /* PremiumContainerVC.swift */; };
+		7547C9E82348D89A004B159C /* PremiumProVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547C9E72348D89A004B159C /* PremiumProVC.swift */; };
+		7547C9E92348D89A004B159C /* PremiumProVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547C9E72348D89A004B159C /* PremiumProVC.swift */; };
+		7547C9EA234900B3004B159C /* PremiumProVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7547C9D4234804B5004B159C /* PremiumProVC.storyboard */; };
 		7548BC1821B07BFE001B00E9 /* ProtectedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548BC1721B07BFE001B00E9 /* ProtectedTextField.swift */; };
 		754BF07F2082A6BD00E3A292 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754BF07E2082A6BD00E3A292 /* AppDelegate.swift */; };
 		754BF0882082A6BD00E3A292 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 754BF0862082A6BD00E3A292 /* Main.storyboard */; };
@@ -370,7 +377,6 @@
 		75D7DFAF233E5E310029AD87 /* PasscodeInputVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755B863423054FAD00E9FC83 /* PasscodeInputVC.storyboard */; };
 		75D7DFB0233E5E310029AD87 /* EntryFinderVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751E0D372309AFFC0088BB10 /* EntryFinderVC.storyboard */; };
 		75D7DFB1233E5E310029AD87 /* DiagnosticsViewerVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 751E0D3D2309B01A0088BB10 /* DiagnosticsViewerVC.storyboard */; };
-		75D7DFB2233E5E310029AD87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 754BF0892082A6BD00E3A292 /* Assets.xcassets */; };
 		75D7DFB3233E5E310029AD87 /* ProgressVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75802630222EBC3800F4525F /* ProgressVC.storyboard */; };
 		75D7DFB4233E5E310029AD87 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 750CFBCC21BA9ACD00E62B09 /* MainInterface.storyboard */; };
 		75D7DFB5233E5E310029AD87 /* WelcomeVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755B863B23054FC700E9FC83 /* WelcomeVC.storyboard */; };
@@ -536,6 +542,17 @@
 		7546FBD820C3A3F600C5D834 /* Watchdog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watchdog.swift; sourceTree = "<group>"; };
 		7546FBDA20C3AC5E00C5D834 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		7546FBDC20C3ACFD00C5D834 /* KPApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPApplication.swift; sourceTree = "<group>"; };
+		7547C9D3234804B5004B159C /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ru; path = ru.lproj/PremiumProVC.storyboard; sourceTree = "<group>"; };
+		7547C9D6234804B7004B159C /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/PremiumProVC.strings; sourceTree = "<group>"; };
+		7547C9D8234804BA004B159C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PremiumProVC.strings; sourceTree = "<group>"; };
+		7547C9DA234804BB004B159C /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PremiumProVC.strings; sourceTree = "<group>"; };
+		7547C9DC234804BC004B159C /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/PremiumProVC.strings; sourceTree = "<group>"; };
+		7547C9DE234804BD004B159C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/PremiumProVC.strings"; sourceTree = "<group>"; };
+		7547C9E0234804BE004B159C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/PremiumProVC.strings"; sourceTree = "<group>"; };
+		7547C9E12348064A004B159C /* PremiumContainerVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PremiumContainerVC.storyboard; sourceTree = "<group>"; };
+		7547C9E42348D472004B159C /* PremiumContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumContainerVC.swift; sourceTree = "<group>"; };
+		7547C9E72348D89A004B159C /* PremiumProVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumProVC.swift; sourceTree = "<group>"; };
+		7547C9EB234900FE004B159C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PremiumProVC.storyboard; sourceTree = "<group>"; };
 		7548BC1721B07BFE001B00E9 /* ProtectedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectedTextField.swift; sourceTree = "<group>"; };
 		754BF07B2082A6BD00E3A292 /* KeePassium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeePassium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		754BF07E2082A6BD00E3A292 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1028,10 +1045,14 @@
 			isa = PBXGroup;
 			children = (
 				75A26773228E7D200097C693 /* PremiumVC.swift */,
+				751E0CFA2309AEF90088BB10 /* PremiumVC.storyboard */,
+				7547C9E72348D89A004B159C /* PremiumProVC.swift */,
+				7547C9D4234804B5004B159C /* PremiumProVC.storyboard */,
+				7547C9E42348D472004B159C /* PremiumContainerVC.swift */,
+				7547C9E12348064A004B159C /* PremiumContainerVC.storyboard */,
 				75A26775228F02C70097C693 /* PremiumCoordinator.swift */,
 				753F924A22905621005E496F /* PremiumUpgradeHelper.swift */,
 				753F924D2290705D005E496F /* SKProduct+extension.swift */,
-				751E0CFA2309AEF90088BB10 /* PremiumVC.storyboard */,
 				75A2677C22904E0D0097C693 /* PremiumFeature+extension.swift */,
 				75E7612022DE7A9800397D8C /* PremiumBenefitView.swift */,
 			);
@@ -1486,7 +1507,6 @@
 				755B863223054FAD00E9FC83 /* PasscodeInputVC.storyboard in Resources */,
 				751E0D352309AFFC0088BB10 /* EntryFinderVC.storyboard in Resources */,
 				751E0D3B2309B01A0088BB10 /* DiagnosticsViewerVC.storyboard in Resources */,
-				750CFBD821BA9E6700E62B09 /* Assets.xcassets in Resources */,
 				75802632222EBC3800F4525F /* ProgressVC.storyboard in Resources */,
 				750CFBCE21BA9ACD00E62B09 /* MainInterface.storyboard in Resources */,
 				755B863923054FC700E9FC83 /* WelcomeVC.storyboard in Resources */,
@@ -1531,11 +1551,13 @@
 				751E0CF82309AEF90088BB10 /* PremiumVC.storyboard in Resources */,
 				751E0CF22309AEB00088BB10 /* SettingsAppLockVC.storyboard in Resources */,
 				751E0CFE2309AF150088BB10 /* EditGroupVC.storyboard in Resources */,
+				7547C9E22348064A004B159C /* PremiumContainerVC.storyboard in Resources */,
 				751E0D0D2309AF400088BB10 /* ViewEntryFilesVC.storyboard in Resources */,
 				751E0D252309AFBA0088BB10 /* FileInfoVC.storyboard in Resources */,
 				75C38045217A3204006F74C2 /* PlaceholderVC.storyboard in Resources */,
 				75ED429D2313A3EF003DE72E /* SettingsDatabaseTimeoutVC.storyboard in Resources */,
 				751E0CE92309AE860088BB10 /* SettingsFileSortingVC.storyboard in Resources */,
+				7547C9EA234900B3004B159C /* PremiumProVC.storyboard in Resources */,
 				751E0CF52309AEBB0088BB10 /* SettingsAutoFillVC.storyboard in Resources */,
 				751E0D1C2309AF670088BB10 /* UnlockDatabaseVC.storyboard in Resources */,
 				75ED42A42313C0BB003DE72E /* SettingsClipboardTimeoutVC.storyboard in Resources */,
@@ -1578,7 +1600,9 @@
 				75B38C6B233E5B7C006BDEFC /* PremiumVC.storyboard in Resources */,
 				75B38C6C233E5B7C006BDEFC /* SettingsAppLockVC.storyboard in Resources */,
 				75B38C6D233E5B7C006BDEFC /* EditGroupVC.storyboard in Resources */,
+				7547C9E32348064A004B159C /* PremiumContainerVC.storyboard in Resources */,
 				75B38C6E233E5B7C006BDEFC /* ViewEntryFilesVC.storyboard in Resources */,
+				7547C9D2234804B5004B159C /* PremiumProVC.storyboard in Resources */,
 				75B38C6F233E5B7C006BDEFC /* FileInfoVC.storyboard in Resources */,
 				75B38C70233E5B7C006BDEFC /* PlaceholderVC.storyboard in Resources */,
 				75B38C71233E5B7C006BDEFC /* SettingsDatabaseTimeoutVC.storyboard in Resources */,
@@ -1602,7 +1626,6 @@
 				75D7DFAF233E5E310029AD87 /* PasscodeInputVC.storyboard in Resources */,
 				75D7DFB0233E5E310029AD87 /* EntryFinderVC.storyboard in Resources */,
 				75D7DFB1233E5E310029AD87 /* DiagnosticsViewerVC.storyboard in Resources */,
-				75D7DFB2233E5E310029AD87 /* Assets.xcassets in Resources */,
 				75D7DFB3233E5E310029AD87 /* ProgressVC.storyboard in Resources */,
 				75D7DFB4233E5E310029AD87 /* MainInterface.storyboard in Resources */,
 				75D7DFB5233E5E310029AD87 /* WelcomeVC.storyboard in Resources */,
@@ -1713,6 +1736,7 @@
 			files = (
 				75679ACE22FD897000372301 /* NewsCenter.swift in Sources */,
 				758BF0DD20D220B300897C83 /* WatchdogAwareTextField.swift in Sources */,
+				7547C9E82348D89A004B159C /* PremiumProVC.swift in Sources */,
 				754BF07F2082A6BD00E3A292 /* AppDelegate.swift in Sources */,
 				7584B3F120DD908A0086C094 /* UITextView+border.swift in Sources */,
 				752BB12520F089B30070FAC0 /* SettingsItemListVC.swift in Sources */,
@@ -1752,6 +1776,7 @@
 				75D1674A21464333005E33C3 /* AboutVC.swift in Sources */,
 				750C683220D767F6001A6AA0 /* EditEntryVC.swift in Sources */,
 				75151D3323268AB300F3C411 /* UILabel+strikethrough.swift in Sources */,
+				7547C9E52348D472004B159C /* PremiumContainerVC.swift in Sources */,
 				755E9C4D20BE5DC200FD7C7A /* UIImage+extensions.swift in Sources */,
 				75F5CACD20BD18320056C969 /* UIView+extension.swift in Sources */,
 				7523F71D21C98D620025C706 /* SupportEmailComposer.swift in Sources */,
@@ -1808,6 +1833,7 @@
 			files = (
 				75B38BF3233E5B7C006BDEFC /* NewsCenter.swift in Sources */,
 				75B38BF4233E5B7C006BDEFC /* WatchdogAwareTextField.swift in Sources */,
+				7547C9E92348D89A004B159C /* PremiumProVC.swift in Sources */,
 				75B38BF5233E5B7C006BDEFC /* AppDelegate.swift in Sources */,
 				75B38BF6233E5B7C006BDEFC /* UITextView+border.swift in Sources */,
 				75B38BF7233E5B7C006BDEFC /* SettingsItemListVC.swift in Sources */,
@@ -1847,6 +1873,7 @@
 				75B38C19233E5B7C006BDEFC /* AboutVC.swift in Sources */,
 				75B38C1A233E5B7C006BDEFC /* EditEntryVC.swift in Sources */,
 				75B38C1B233E5B7C006BDEFC /* UILabel+strikethrough.swift in Sources */,
+				7547C9E62348D472004B159C /* PremiumContainerVC.swift in Sources */,
 				75B38C1C233E5B7C006BDEFC /* UIImage+extensions.swift in Sources */,
 				75B38C1D233E5B7C006BDEFC /* UIView+extension.swift in Sources */,
 				75B38C1E233E5B7C006BDEFC /* SupportEmailComposer.swift in Sources */,
@@ -2405,6 +2432,21 @@
 				75FDEF5D233ABEEC00F17C26 /* sv */,
 			);
 			name = DiagnosticsViewerVC.storyboard;
+			sourceTree = "<group>";
+		};
+		7547C9D4234804B5004B159C /* PremiumProVC.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7547C9D3234804B5004B159C /* ru */,
+				7547C9D6234804B7004B159C /* sv */,
+				7547C9D8234804BA004B159C /* de */,
+				7547C9DA234804BB004B159C /* nl */,
+				7547C9DC234804BC004B159C /* cs */,
+				7547C9DE234804BD004B159C /* zh-Hant */,
+				7547C9E0234804BE004B159C /* zh-Hans */,
+				7547C9EB234900FE004B159C /* Base */,
+			);
+			name = PremiumProVC.storyboard;
 			sourceTree = "<group>";
 		};
 		754BF0862082A6BD00E3A292 /* Main.storyboard */ = {
