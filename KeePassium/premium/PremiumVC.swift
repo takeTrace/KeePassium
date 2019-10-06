@@ -138,7 +138,9 @@ class PremiumVC: UIViewController {
     }
     
     public func refresh(animated: Bool) {
-        guard let products = delegate?.getAvailableProducts() else { return }
+        guard let products = delegate?.getAvailableProducts(),
+            !products.isEmpty
+            else { return }
         setAvailableProducts(products, animated: animated)
     }
     
