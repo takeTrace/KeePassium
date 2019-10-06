@@ -19,7 +19,7 @@ class SupportEmailComposer: NSObject {
     enum Subject: String { // do not localize
         case problem = "Problem"
         case supportRequest = "Support Request"
-        case proUpgrade = "Pro Upgrade"
+        case proUpgrade = "Pro Upgradе"
     }
     
     typealias CompletionHandler = ((Bool)->Void)
