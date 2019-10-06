@@ -16,6 +16,12 @@ class SupportEmailComposer: NSObject {
     private let betaSupportEmail = "beta@keepassium.com"
     private let premiumSupportEmail = "premium-support@keepassium.com"
     
+    enum Subject: String { // do not localize
+        case problem = "Problem"
+        case supportRequest = "Support Request"
+        case proUpgrade = "Pro Upgrade"
+    }
+    
     typealias CompletionHandler = ((Bool)->Void)
     private let completionHandler: CompletionHandler?
     private var subject = ""
@@ -31,23 +37,25 @@ class SupportEmailComposer: NSObject {
     /// - Parameters
     ///     includeDiagnostics: whether to include detailed diagnostic info.
     ///     completion: called once the email has been saved or sent.
-    static func show(includeDiagnostics: Bool, completion: CompletionHandler?=nil) {
-        let subject, content: String
+    static func show(subject: Subject, completion: CompletionHandler?=nil) {
+        let subjectText = "\(AppInfo.name) - \(subject.rawValue)" // do not localize
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
+        
+        let includeDiagnostics = (subject == .problem)
+        let contentText: String
         if includeDiagnostics {
-            subject = "\(AppInfo.name) - Problem" // do not localize
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
-            content = LString.emailTemplateDescribeTheProblemHere +
+            contentText = LString.emailTemplateDescribeTheProblemHere +
                 "\n\n----- Diagnostic Info -----\n" +
                 Diag.toString() +
                 "\n\n\(AppInfo.description)"
         } else {
-            subject = "\(AppInfo.name) - Support Request" // do not localize
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! // safe to unwrap
-            content = "\n\n\(AppInfo.description)"
+            contentText = "\n\n\(AppInfo.description)"
         }
         
-        let instance = SupportEmailComposer(subject: subject, content: content,
-                                            completionHandler: completion)
+        let instance = SupportEmailComposer(
+            subject: subjectText,
+            content: contentText,
+            completionHandler: completion)
         
         //        if MFMailComposeViewController.canSendMail() {
         //            instance.showEmailComposer()
