@@ -33,7 +33,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
     }
     
     private var keyFileRef: URLReference?
-    private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var fileKeeperNotifications: FileKeeperNotifications!
 
     static func make(databaseRef: URLReference) -> UnlockDatabaseVC {
@@ -48,7 +47,6 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         passwordField.delegate = self
         keyFileField.delegate = self
         
-        databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         fileKeeperNotifications = FileKeeperNotifications(observer: self)
         // listen for
         NotificationCenter.default.addObserver(
@@ -376,7 +374,7 @@ class UnlockDatabaseVC: UIViewController, Refreshable {
         let password = passwordField.text ?? ""
         passwordField.resignFirstResponder()
         hideWatchdogTimeoutMessage(animated: true)
-        databaseManagerNotifications.startObserving()
+        DatabaseManager.shared.addObserver(self)
         
         do {
             if let databaseKey = try Keychain.shared.getDatabaseKey(databaseRef: databaseRef) {
@@ -485,7 +483,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     }
     
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         refresh()
         hideProgressOverlay()
@@ -498,7 +496,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     }
     
     func databaseManager(database urlRef: URLReference, invalidMasterKey message: String) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         refresh()
         hideProgressOverlay()
@@ -507,7 +505,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     }
     
     func databaseManager(didLoadDatabase urlRef: URLReference, warnings: DatabaseLoadingWarnings) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideProgressOverlay()
         
 //        Watchdog.shared.restart()
@@ -527,7 +525,7 @@ extension UnlockDatabaseVC: DatabaseManagerObserver {
     }
 
     func databaseManager(database urlRef: URLReference, loadingError message: String, reason: String?) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         try? Keychain.shared.removeDatabaseKey(databaseRef: urlRef) // throws KeychainError, ignored
         refresh()
         hideProgressOverlay()

@@ -18,7 +18,6 @@ class EditGroupVC: UIViewController, Refreshable {
     @IBOutlet weak var nameTextField: ValidatingTextField!
     
     private weak var delegate: EditGroupDelegate?
-    private var databaseManagerNotifications: DatabaseManagerNotifications!
 
     private weak var group: Group! {
         didSet { rememberOriginalState() }
@@ -42,7 +41,6 @@ class EditGroupVC: UIViewController, Refreshable {
     {
         let editGroupVC = EditGroupVC.instantiateFromStoryboard()
         editGroupVC.delegate = delegate
-        editGroupVC.databaseManagerNotifications = DatabaseManagerNotifications(observer: editGroupVC)
         editGroupVC.mode = mode
         switch mode {
         case .create:
@@ -66,7 +64,7 @@ class EditGroupVC: UIViewController, Refreshable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        databaseManagerNotifications.startObserving()
+        DatabaseManager.shared.addObserver(self)
         nameTextField.delegate = self
         nameTextField.validityDelegate = self
         switch mode {
@@ -80,7 +78,7 @@ class EditGroupVC: UIViewController, Refreshable {
     }
     
     deinit {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {

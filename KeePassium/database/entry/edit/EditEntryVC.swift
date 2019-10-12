@@ -23,7 +23,6 @@ class EditEntryVC: UITableViewController, Refreshable {
         }
     }
     private weak var delegate: EditEntryFieldsDelegate?
-    private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var fields = [EditableField]()
     private var isModified = false {// was anything edited?
         didSet {
@@ -86,8 +85,6 @@ class EditEntryVC: UITableViewController, Refreshable {
         guard let database = entry.database else { fatalError() }
         editEntryVC.fields = EditableFieldFactory.makeAll(from: entry, in: database)
         editEntryVC.delegate = delegate
-        editEntryVC.databaseManagerNotifications =
-            DatabaseManagerNotifications(observer: editEntryVC)
 
         let navVC = UINavigationController(rootViewController: editEntryVC)
         navVC.modalPresentationStyle = .formSheet
@@ -318,7 +315,7 @@ class EditEntryVC: UITableViewController, Refreshable {
         guard let entry = entry else { return }
         entry.modified()
         view.endEditing(true)
-        databaseManagerNotifications.startObserving()
+        DatabaseManager.shared.addObserver(self)
         DatabaseManager.shared.startSavingDatabase()
     }
 
@@ -480,7 +477,7 @@ extension EditEntryVC: DatabaseManagerObserver {
     }
     
     func databaseManager(didSaveDatabase urlRef: URLReference) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideSavingOverlay()
         if let entry = self.entry {
             delegate?.entryEditor(entryDidChange: entry)
@@ -490,7 +487,7 @@ extension EditEntryVC: DatabaseManagerObserver {
     }
     
     func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideSavingOverlay()
     }
     
@@ -499,7 +496,7 @@ extension EditEntryVC: DatabaseManagerObserver {
         savingError message: String,
         reason: String?)
     {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         hideSavingOverlay()
         
         let errorAlert = UIAlertController.make(

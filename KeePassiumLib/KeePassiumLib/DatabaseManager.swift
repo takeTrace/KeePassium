@@ -44,7 +44,7 @@ public class DatabaseManager {
         label: "com.keepassium.DatabaseManager",
         qos: .userInitiated)
     
-    private init() {
+    public init() {
         // left empty
     }
 
@@ -361,28 +361,6 @@ public class DatabaseManager {
 
     // MARK: - Notification management
 
-    internal enum Notifications {
-        static let cancelled = Notification.Name("com.keepassium.databaseManager.cancelled")
-        static let progressDidChange = Notification.Name("com.keepassium.databaseManager.progressDidChange")
-        static let willLoadDatabase = Notification.Name("com.keepassium.databaseManager.willLoadDatabase")
-        static let didLoadDatabase = Notification.Name("com.keepassium.databaseManager.didLoadDatabase")
-        static let willSaveDatabase = Notification.Name("com.keepassium.databaseManager.willSaveDatabase")
-        static let didSaveDatabase = Notification.Name("com.keepassium.databaseManager.didSaveDatabase")
-        static let invalidMasterKey = Notification.Name("com.keepassium.databaseManager.invalidMasterKey")
-        static let loadingError = Notification.Name("com.keepassium.databaseManager.loadingError")
-        static let savingError = Notification.Name("com.keepassium.databaseManager.savingError")
-        static let willCreateDatabase = Notification.Name("com.keepassium.databaseManager.willCreateDatabase")
-        // the rest of database creation is reported by saving notifications
-        static let willCloseDatabase = Notification.Name("com.keepassium.databaseManager.willCloseDatabase")
-        static let didCloseDatabase = Notification.Name("com.keepassium.databaseManager.didCloseDatabase")
-        
-        static let userInfoURLRefKey = "urlRef"
-        static let userInfoProgressKey = "progress"
-        static let userInfoErrorMessageKey = "errorMessage"
-        static let userInfoErrorReasonKey = "errorReason"
-        static let userInfoWarningsKey = "warningMessages"
-    }
-    
     fileprivate func notifyDatabaseWillLoad(database urlRef: URLReference) {
         notificationQueue.async { // strong self
             for (_, observer) in self.observers {
@@ -392,11 +370,6 @@ public class DatabaseManager {
                 }
             }
         }
-        
-        NotificationCenter.default.post(
-            name: Notifications.willLoadDatabase,
-            object: self,
-            userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
     
     fileprivate func notifyDatabaseDidLoad(
@@ -411,15 +384,6 @@ public class DatabaseManager {
                 }
             }
         }
-        
-        NotificationCenter.default.post(
-            name: Notifications.didLoadDatabase,
-            object: self,
-            userInfo: [
-                Notifications.userInfoURLRefKey: urlRef,
-                Notifications.userInfoWarningsKey: warnings
-            ]
-        )
     }
     
     fileprivate func notifyOperationCancelled(database urlRef: URLReference) {
@@ -431,11 +395,6 @@ public class DatabaseManager {
                 }
             }
         }
-        
-        NotificationCenter.default.post(
-            name: Notifications.cancelled,
-            object: self,
-            userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
 
     fileprivate func notifyProgressDidChange(database urlRef: URLReference, progress: ProgressEx) {
@@ -447,10 +406,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.progressDidChange,
-            object: self,
-            userInfo: [Notifications.userInfoProgressKey: progress])
     }
 
     
@@ -476,21 +431,6 @@ public class DatabaseManager {
                 }
             }
         }
-        let userInfo: [AnyHashable: Any]
-        if let reason = reason {
-            userInfo = [
-                Notifications.userInfoURLRefKey: urlRef,
-                Notifications.userInfoErrorMessageKey: message,
-                Notifications.userInfoErrorReasonKey: reason]
-        } else {
-            userInfo = [
-                Notifications.userInfoURLRefKey: urlRef,
-                Notifications.userInfoErrorMessageKey: message]
-        }
-        NotificationCenter.default.post(
-            name: Notifications.loadingError,
-            object: nil,
-            userInfo: userInfo)
     }
     
     fileprivate func notifyDatabaseInvalidMasterKey(database urlRef: URLReference, message: String) {
@@ -502,14 +442,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.invalidMasterKey,
-            object: self,
-            userInfo: [
-                Notifications.userInfoURLRefKey: urlRef,
-                Notifications.userInfoErrorMessageKey: message
-            ]
-        )
     }
     
     fileprivate func notifyDatabaseWillSave(database urlRef: URLReference) {
@@ -521,13 +453,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.willSaveDatabase,
-            object: self,
-            userInfo: [
-                Notifications.userInfoURLRefKey: urlRef
-            ]
-        )
     }
     
     fileprivate func notifyDatabaseDidSave(database urlRef: URLReference) {
@@ -539,13 +464,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.didSaveDatabase,
-            object: self,
-            userInfo: [
-                Notifications.userInfoURLRefKey: urlRef
-            ]
-        )
     }
     
     fileprivate func notifyDatabaseSaveError(
@@ -570,21 +488,6 @@ public class DatabaseManager {
                 }
             }
         }
-        let userInfo: [AnyHashable: Any]
-        if let reason = reason {
-            userInfo = [
-                Notifications.userInfoURLRefKey: urlRef,
-                Notifications.userInfoErrorMessageKey: message,
-                Notifications.userInfoErrorReasonKey: reason]
-        } else {
-            userInfo = [
-                Notifications.userInfoURLRefKey: urlRef,
-                Notifications.userInfoErrorMessageKey: message]
-        }
-        NotificationCenter.default.post(
-            name: Notifications.savingError,
-            object: self,
-            userInfo: userInfo)
     }
 
     fileprivate func notifyDatabaseWillCreate(database urlRef: URLReference) {
@@ -596,10 +499,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.willCreateDatabase,
-            object: self,
-            userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
 
     fileprivate func notifyDatabaseWillClose(database urlRef: URLReference) {
@@ -611,10 +510,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.willCloseDatabase,
-            object: self,
-            userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
     
     fileprivate func notifyDatabaseDidClose(database urlRef: URLReference) {
@@ -626,10 +521,6 @@ public class DatabaseManager {
                 }
             }
         }
-        NotificationCenter.default.post(
-            name: Notifications.didCloseDatabase,
-            object: self,
-            userInfo: [Notifications.userInfoURLRefKey: urlRef])
     }
 }
 

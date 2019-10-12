@@ -19,7 +19,6 @@ class MainCoordinator: NSObject, Coordinator {
     var navigationController: UINavigationController
     
     var serviceIdentifiers = [ASCredentialServiceIdentifier]()
-    fileprivate var databaseManagerNotifications: DatabaseManagerNotifications?
     fileprivate var isLoadingUsingStoredDatabaseKey = false
     
     fileprivate weak var addDatabasePicker: UIDocumentPickerViewController?
@@ -52,13 +51,17 @@ class MainCoordinator: NSObject, Coordinator {
         watchdog.delegate = self
     }
     
+    deinit {
+        DatabaseManager.shared.removeObserver(self)
+    }
+
     func start() {
         // Sometimes the extension is not killed immediately (issue #2).
         // In case the previous instance is still alive, close the DB.
         DatabaseManager.shared.closeDatabase(clearStoredKey: false)
         
-        databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
-        databaseManagerNotifications?.startObserving()
+        DatabaseManager.shared.addObserver(self)
+        
         watchdog.didBecomeActive()
         if !isAppLockVisible {
             pageController.setViewControllers(
@@ -91,7 +94,7 @@ class MainCoordinator: NSObject, Coordinator {
     
     // Clears and closes any resources before quitting the extension.
     func cleanup() {
-        databaseManagerNotifications?.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         DatabaseManager.shared.closeDatabase(clearStoredKey: false)
         PremiumManager.shared.usageMonitor.stopInterval()
     }

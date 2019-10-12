@@ -65,7 +65,6 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     
     private var loadingWarnings: DatabaseLoadingWarnings?
     
-    private var databaseManagerNotifications: DatabaseManagerNotifications!
     private var groupChangeNotifications: GroupChangeNotifications!
     private var entryChangeNotifications: EntryChangeNotifications!
     private var settingsNotifications: SettingsNotifications!
@@ -97,7 +96,6 @@ open class ViewGroupVC: UITableViewController, Refreshable {
         
         isActivateSearch = Settings.current.isStartWithSearch && (group?.isRoot ?? false)
         
-        databaseManagerNotifications = DatabaseManagerNotifications(observer: self)
         groupChangeNotifications = GroupChangeNotifications(observer: self)
         entryChangeNotifications = EntryChangeNotifications(observer: self)
         settingsNotifications = SettingsNotifications(observer: self)
@@ -693,7 +691,7 @@ open class ViewGroupVC: UITableViewController, Refreshable {
     // MARK: - Database saving
     
     func saveDatabase() {
-        databaseManagerNotifications.startObserving()
+        DatabaseManager.shared.addObserver(self)
         DatabaseManager.shared.startSavingDatabase()
     }
     
@@ -726,13 +724,13 @@ extension ViewGroupVC: DatabaseManagerObserver {
     }
     
     public func databaseManager(didSaveDatabase urlRef: URLReference) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         refresh()
         hideSavingOverlay()
     }
     
     public func databaseManager(database urlRef: URLReference, isCancelled: Bool) {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         refresh()
         hideSavingOverlay()
     }
@@ -746,7 +744,7 @@ extension ViewGroupVC: DatabaseManagerObserver {
         savingError message: String,
         reason: String?)
     {
-        databaseManagerNotifications.stopObserving()
+        DatabaseManager.shared.removeObserver(self)
         refresh()
         hideSavingOverlay()
 
