@@ -94,6 +94,7 @@ class EditEntryTitleCell:
     
     override func awakeFromNib() {
         super.awakeFromNib()
+
         titleTextField.validityDelegate = self
         titleTextField.delegate = self
         
@@ -165,6 +166,11 @@ class EditEntrySingleLineCell:
     }
     override func awakeFromNib() {
         super.awakeFromNib()
+        titleLabel.font = UIFont.systemFont(forTextStyle: .subheadline, weight: .thin)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        textField.font = UIFont.monospaceFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
+        
         textField.validityDelegate = self
         textField.delegate = self
     }
@@ -223,6 +229,12 @@ class EditEntrySingleLineProtectedCell:
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        titleLabel.font = UIFont.systemFont(forTextStyle: .subheadline, weight: .thin)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        textField.font = UIFont.monospaceFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
+        
         textField.validityDelegate = self
         textField.delegate = self
     }
@@ -274,6 +286,12 @@ class EditEntryMultiLineCell: UITableViewCell, EditableFieldCell, ValidatingText
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        titleLabel.font = UIFont.systemFont(forTextStyle: .subheadline, weight: .thin)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        textView.font = UIFont.monospaceFont(forTextStyle: .body)
+        textView.adjustsFontForContentSizeCategory = true
+        
         textView.validityDelegate = self
         DispatchQueue.main.async {
             self.textView.setupBorder()
@@ -322,6 +340,11 @@ class EditEntryCustomFieldCell:
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        //nameTextField font is configured in the storyboard
+        valueTextView.font = UIFont.monospaceFont(forTextStyle: .body)
+        valueTextView.adjustsFontForContentSizeCategory = true
+        
         protectionSwitch.addTarget(self, action: #selector(protectionDidChange), for: .valueChanged)
         nameTextField.validityDelegate = self
         valueTextView.validityDelegate = self

@@ -149,6 +149,10 @@
 		75802635222ED11D00F4525F /* ProgressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75802633222ED11D00F4525F /* ProgressVC.swift */; };
 		7582544B2211BB830053FCC9 /* Watchdog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546FBD820C3A3F600C5D834 /* Watchdog.swift */; };
 		7584B3F120DD908A0086C094 /* UITextView+border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584B3F020DD908A0086C094 /* UITextView+border.swift */; };
+		758544642351FE8D000D5E5E /* UIFont+monospace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758544632351FE8D000D5E5E /* UIFont+monospace.swift */; };
+		758544652351FE8D000D5E5E /* UIFont+monospace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758544632351FE8D000D5E5E /* UIFont+monospace.swift */; };
+		758544662351FE8D000D5E5E /* UIFont+monospace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758544632351FE8D000D5E5E /* UIFont+monospace.swift */; };
+		758544672351FE8D000D5E5E /* UIFont+monospace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758544632351FE8D000D5E5E /* UIFont+monospace.swift */; };
 		758BF0D820D1B1DA00897C83 /* ValidatingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758BF0D720D1B1DA00897C83 /* ValidatingTextField.swift */; };
 		758BF0DD20D220B300897C83 /* WatchdogAwareTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758BF0DC20D220B300897C83 /* WatchdogAwareTextField.swift */; };
 		758D8E902274D2BE00644FA6 /* DatabaseCreatorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758D8E8F2274D2BE00644FA6 /* DatabaseCreatorVC.swift */; };
@@ -600,6 +604,7 @@
 		75802630222EBC3800F4525F /* ProgressVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ProgressVC.storyboard; sourceTree = "<group>"; };
 		75802633222ED11D00F4525F /* ProgressVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressVC.swift; sourceTree = "<group>"; };
 		7584B3F020DD908A0086C094 /* UITextView+border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+border.swift"; sourceTree = "<group>"; };
+		758544632351FE8D000D5E5E /* UIFont+monospace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+monospace.swift"; sourceTree = "<group>"; };
 		758BF0D720D1B1DA00897C83 /* ValidatingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatingTextField.swift; sourceTree = "<group>"; };
 		758BF0DC20D220B300897C83 /* WatchdogAwareTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogAwareTextField.swift; sourceTree = "<group>"; };
 		758D8E8F2274D2BE00644FA6 /* DatabaseCreatorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCreatorVC.swift; sourceTree = "<group>"; };
@@ -1139,6 +1144,7 @@
 				7599636F22E112E50004BC85 /* Attachment+extensions.swift */,
 				75151D3223268AB300F3C411 /* UILabel+strikethrough.swift */,
 				75E446C82330307300E24E70 /* Xcode11GM_LocalizedLabel.swift */,
+				758544632351FE8D000D5E5E /* UIFont+monospace.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -1713,6 +1719,7 @@
 				75A2677E22904E0D0097C693 /* PremiumFeature+extension.swift in Sources */,
 				750CFBDA21BAD7FF00E62B09 /* KeyboardLayoutConstraint.swift in Sources */,
 				750CFBDE21BAD7FF00E62B09 /* UIViewController+storyboard.swift in Sources */,
+				758544652351FE8D000D5E5E /* UIFont+monospace.swift in Sources */,
 				750CFBDD21BAD7FF00E62B09 /* UIImage+extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1801,6 +1808,7 @@
 				758BF0D820D1B1DA00897C83 /* ValidatingTextField.swift in Sources */,
 				754BF09A20984DEE00E3A292 /* UnlockDatabaseVC.swift in Sources */,
 				7578488F22C1DFF400BBEF9A /* SettingsBackupTimeoutPickerVC.swift in Sources */,
+				758544642351FE8D000D5E5E /* UIFont+monospace.swift in Sources */,
 				75C5C3762129DE0800CD7FE3 /* UIAlertController+extensions.swift in Sources */,
 				75F4ACFC21776F4800B22D8B /* LString.swift in Sources */,
 				750D127E20CF071600BE0CCE /* EditGroupVC.swift in Sources */,
@@ -1896,6 +1904,7 @@
 				75B38C3F233E5B7C006BDEFC /* ValidatingTextField.swift in Sources */,
 				75B38C40233E5B7C006BDEFC /* UnlockDatabaseVC.swift in Sources */,
 				75B38C41233E5B7C006BDEFC /* SettingsBackupTimeoutPickerVC.swift in Sources */,
+				758544662351FE8D000D5E5E /* UIFont+monospace.swift in Sources */,
 				75B38C42233E5B7C006BDEFC /* UIAlertController+extensions.swift in Sources */,
 				75B38C43233E5B7C006BDEFC /* LString.swift in Sources */,
 				75B38C44233E5B7C006BDEFC /* EditGroupVC.swift in Sources */,
@@ -1953,6 +1962,7 @@
 				75D7DFA4233E5E310029AD87 /* PremiumFeature+extension.swift in Sources */,
 				75D7DFA5233E5E310029AD87 /* KeyboardLayoutConstraint.swift in Sources */,
 				75D7DFA6233E5E310029AD87 /* UIViewController+storyboard.swift in Sources */,
+				758544672351FE8D000D5E5E /* UIFont+monospace.swift in Sources */,
 				75D7DFA7233E5E310029AD87 /* UIImage+extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
