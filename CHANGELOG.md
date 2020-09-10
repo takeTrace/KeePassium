@@ -1,5 +1,55 @@
 #CHANGELOG
 
+## [1.16.73] - 2020-08-31
+
+### Added
+
+- Change entry text size with a zoom gesture [thanks, Rick and Thomas]
+
+### Changed
+
+- Refined: preserving the expanded/collapsed state of the Notes field [thanks, Arjan and Thomas]
+- Improved Export and Trash icons [thanks, Ivo]
+- Updated translations [thanks, everyone]
+
+### Fixed
+
+- Help article text was black in dark mode [thanks, Christian]
+
+
+## [1.15.72] - 2020-08-28
+
+### Fixed
+
+- Replaced "Try it free" with "Upgrade now" to address AppStore reviewer's comment
+
+
+## [1.15.71] - 2020-08-28
+
+### Fixed
+
+- Moved trial conditions to the purchase button itself (to address AppStore reviewer's comment)
+
+
+## [1.15.70] - 2020-08-27
+
+### Added
+
+- Perpetual fallback license for subscriptions (a.k.a. "rent-to-own license")
+- App history screen (What's New)
+
+### Changed
+
+- Improved search with diacritics: insensitive to diacritics, unless you use diacritics in the query (closes #118) [thanks, hunhejj]
+- Improved haptic feedback in AutoFill
+- Updated translations [thanks, everyone]
+
+### Fixed 
+
+- Replacing broken references to external files failed sometimes [thanks, Paul]
+- Relative project file paths on GitHub (thanks, @mj)
+
+
 ## [1.14.69] - 2020-08-11
 
 ### Added
